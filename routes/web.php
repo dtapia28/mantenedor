@@ -30,7 +30,7 @@ Route::post('/priorities/crear', 'PriorityController@store');
 Route::get('/requerimientos/nuevo', 'RequerimientoController@create')
 	->name('Requerimiento.create');
 
-Route::post('/requerimientos/crear', 'PriorityController@store');
+Route::post('/requerimientos/crear', 'RequerimientoController@store');
 
 Route::get('/resolutors/nuevo', 'ResolutorController@create')
 	->name('Resolutor.create');
@@ -121,3 +121,13 @@ Route::put('/teams/{team}', 'TeamController@update');
 //Rutas para destroy
 
 Route::delete('/empresas/{empresa}', 'EmpresaController@destroy')->name('Empresas.destroy');
+
+Route::delete('/priorities/{priority}', 'PriorityController@destroy')->name('Priorities.destroy');
+
+Route::delete('/resolutors/{resolutor}', 'ResolutorController@destroy')->name('Resolutor.destroy');
+
+Route::delete('/teams/{team}', 'TeamController@destroy')->name('Team.destroy');
+
+Route::delete('/solicitantes/{solicitante}', 'SolicitanteController@destroy')->name('Solicitantes.destroy');
+
+Route::delete('/requerimientos/{requerimiento}', 'RequerimientoController@destroy')->name('Requerimientos.destroy');

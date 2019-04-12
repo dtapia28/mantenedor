@@ -4,32 +4,45 @@
 	<p>
 	</p>
 	<form method='HEAD' action="{{ url('priorities/nueva') }}">
-	<input type="submit" value="Nueva Prioridad" class="btn btn-primary" name="">
+	<button type="submit" value="Nueva Prioridad" class="btn btn-primary" name="">Nueva Prioridad</button>
 	</form>
-	<div class="row mb-6 p-3" style="max-width: 100px text-align: center;">
-	    <div class="col-md-2 themed-grid-col"><strong>ID</strong></div>
-	    <div class="col-md-4 themed-grid-col"><strong>Nombre</strong></div>
-	    <div class="col-md-3 themed-grid-col"><strong>Editar</strong></div>
-	    <div class="col-md-3 themed-grid-col"><strong>Eliminar</strong></div>
-	</div>
-	<div class="row mb-6" style="max-width: 100px text-align: center;">
+	<table class="table">
+		<thead>
+		    <th scope="col"><strong>ID</strong></th>
+		    <th scope="col"><strong>Nombre</strong></th>
+		    <th scope="col"><strong>Editar</strong></th>
+		    <th scope="col"><strong>Eliminar</strong></th>
+	    </thead>
+		<tbody>
 			@forelse ($priorities as $priority)
-				<div class="col-md-2 p-3 themed-grid-col">
-					{{ $priority->id }}
-				</div>
-				<div class="col-md-4 p-3 themed-grid-col">
-					<a href="priorities/{{ $priority->id }}">									
-						{{ $priority->namePriority }}
-					</a>
-				</div>
-				<div class="col-md-3 p-3 themed-grid-col">									
-					<button class="btn btn-info">Editar</button>
-				</div>
-				<div class="col-md-3 p-3 themed-grid-col">									
-					<button class="btn btn-danger">Eliminar</button>
-				</div>								
+				<tr>
+					<th scope="row">
+						{{ $priority->id }}
+					</th>
+					<th scope="row">
+						<a href="priorities/{{ $priority->id }}">
+							{{ $priority->namePriority }}
+						</a>
+					</th>
+					<th scope="row">									
+						<form method='HEAD' action="/priorities/{{$priority->id}}/editar">
+							<button type="submit" value="Editar" class="btn btn-info" name="">Editar</button>
+						</form>
+					</th>
+					<th scope="row">									
+					<form method='POST' action="/priorities/{{$priority->id}}">
+						{{ csrf_field() }}
+						{{ method_field('DELETE') }}						
+						<button type="submit" value="Eliminar" class="btn btn-danger" name="">Eliminar</button>
+					</form>
+					</th>								
 			@empty
 				<li>No hay prioridades registradas</li>	
-			@endforelse	
-	</div>
+			@endforelse									
+				</tr>
+		</tbody>
+		<div class="row mb-6" style="max-width: 100px text-align: center;">
+
+		</div>
+	</table>
 @endsection	

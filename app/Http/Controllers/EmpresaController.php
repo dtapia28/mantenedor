@@ -46,7 +46,7 @@ class EmpresaController extends Controller
         Empresa::create([
             'nombreEmpresa' => $data['nombreEmpresa']]);
 
-        return redirect()->route('Empresas.index');
+        return redirect('empresas');
     }
 
     /**
@@ -84,7 +84,6 @@ class EmpresaController extends Controller
      */
     public function update(Request $request, Empresa $empresa)
     {
-        return $request;
         $data = request()->validate([
             'nombreEmpresa' => 'required',
         ]);
@@ -101,6 +100,6 @@ class EmpresaController extends Controller
     public function destroy(Empresa $empresa)
     {
         $empresa->delete();
-        return redirect()->route('Empresas.index');      
+        return redirect('empresas');      
     }
 }

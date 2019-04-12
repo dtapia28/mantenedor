@@ -1,35 +1,48 @@
 @extends('Bases.base')
+@section('titulo', 'Teams')
 @section('contenido')
 	<h1>Listado de Teams</h1>
 	<p>
 	</p>
 	<form method='HEAD' action="{{ url('teams/nuevo') }}">
-	<input type="submit" value="Nuevo Team" class="btn btn-primary" name="">
+	<button type="submit" value="Nuevo Teams" class="btn btn-primary" name="">Nuevo Team</button>
 	</form>
-	<div class="row mb-6 p-3" style="max-width: 100px text-align: center;">
-	    <div class="col-md-2 themed-grid-col"><strong>ID</strong></div>
-	    <div class="col-md-4 themed-grid-col"><strong>Nombre</strong></div>
-	    <div class="col-md-3 themed-grid-col"><strong>Editar</strong></div>
-	    <div class="col-md-3 themed-grid-col"><strong>Eliminar</strong></div>
-	</div>
-	<div class="row mb-6" style="max-width: 100px text-align: center;">
+	<tr>
+	<table class="table">
+		<thead>
+		    <th scope="col"><strong>ID</strong></th>
+		    <th scope="col"><strong>Nombre</strong></th>
+		    <th scope="col"><strong>Editar</strong></th>
+		    <th scope="col"><strong>Eliminar</strong></th>
+		</thead>
+		<tbody>
 			@forelse ($teams as $team)
-				<div class="col-md-2 p-3 themed-grid-col">
+				<tr>
+				<th scope="row">
 					{{ $team->id }}
-				</div>
-				<div class="col-md-4 p-3 themed-grid-col">
-					<a href="/teams/{{ $team->id }}">
+				</th>
+				<th scope="row">
+					<a href="/teams/{{ $team->id }}">									
 						{{ $team->nameTeam }}
 					</a>
-				</div>
-				<div class="col-md-3 p-3 themed-grid-col">									
-					<button class="btn btn-info">Editar</button>
-				</div>
-				<div class="col-md-3 p-3 themed-grid-col">									
-					<button class="btn btn-danger">Eliminar</button>
-				</div>								
+				</th>
+				<th scope="row">									
+					<form method='HEAD' action="/teams/{{$team->id}}/editar">
+						{{ csrf_field() }}
+						<button type="submit" value="Editar" class="btn btn-info" name="">Editar</button>
+					</form>
+				</th>
+				<th scope="row">
+					<form method='post' action="/teams/{{$team->id}}">
+						{{ csrf_field() }}
+						{{ method_field('DELETE') }}					
+						<button type="submit" value="Eliminar" class="btn btn-danger" name="">Eliminar</button>
+					</form>
+				</th>								
 			@empty
 				<li>No hay teams registrados</li>	
-			@endforelse	
-	</div>
-@endsection
+			@endforelse
+				</tr>
+		</tbody>		
+	</table>
+@endsection	

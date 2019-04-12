@@ -5,7 +5,7 @@
 	<p>
 	</p>
 	<form method='HEAD' action="{{ url('empresas/nueva') }}">
-	<input type="submit" value="Nueva Empresa" class="btn btn-primary" name="">
+	<button type="submit" value="Nueva Empresa" class="btn btn-primary" name="">Nueva Empresa</button>
 	</form>
 	<tr>
 	<table class="table">
@@ -28,12 +28,15 @@
 				</th>
 				<th scope="row">									
 					<form method='HEAD' action="/empresas/{{$empresa->id}}/editar">
-						<input type="submit" value="Editar" class="btn btn-info" name="">
+						{{ csrf_field() }}
+						<button type="submit" value="Editar" class="btn btn-info" name="">Editar</button>
 					</form>
 				</th>
 				<th scope="row">
-					<form method='post' action="/empresas/{{$empresa->id}}">
-						<input type="reset" value="Eliminar" class="btn btn-danger" name="">
+					<form method='POST' action="/empresas/{{$empresa->id}}">
+						{{ csrf_field() }}
+						{{ method_field('DELETE') }}						
+						<button type="submit" value="Eliminar" class="btn btn-danger" name="">Eliminar</button>
 					</form>
 				</th>								
 			@empty

@@ -45,7 +45,7 @@ class SolicitanteController extends Controller
         Solicitante::create([
             'nombreSolicitante' => $data['nombreSolicitante']]);
 
-        return redirect()->route('Solicitantes.index');        
+        return redirect('solicitantes');        
     }
 
     /**
@@ -71,7 +71,7 @@ class SolicitanteController extends Controller
      */
     public function edit(Solicitante $solicitante)
     {
-        //
+        return view('Solicitantes.edit', ['solicitante' => $solicitante]);        
     }
 
     /**
@@ -83,7 +83,11 @@ class SolicitanteController extends Controller
      */
     public function update(Request $request, Solicitante $solicitante)
     {
-        //
+        $data = request()->validate([
+            'nombreSolicitante' => 'required',
+        ]);
+        $solicitante->update($data);
+        return redirect()->route('Solicitantes.show', ['solicitante' => $solicitante]);
     }
 
     /**
@@ -94,6 +98,7 @@ class SolicitanteController extends Controller
      */
     public function destroy(Solicitante $solicitante)
     {
-        //
+        $solicitante->delete();
+        return redirect('solicitantes');   
     }
 }

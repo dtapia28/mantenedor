@@ -3,7 +3,7 @@
 @section('titulo', "Editar empresa")
 
 @section('contenido')
-    <h1>Editar empresa</h1>
+    <h1>Editar resolutor</h1>
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -40,7 +40,7 @@
             @endforeach
         </select>
         <br>                
-        <button type="submit">Actualizar resolutor</button>
+        <button class="btn btn-primary" type="submit">Actualizar resolutor</button>
     </form>
 
 	<p>

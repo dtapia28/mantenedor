@@ -15,17 +15,19 @@
             </ul>
         </div>
     @endif
+    <div class="row">
+        <div class="col-xs-7">
+            <form method="POST" action="{{ url("priorities/{$priority->id}") }}">
+                {{ method_field('PUT') }}
+                {{ csrf_field() }}
 
-    <form method="POST" action="{{ url("priorities/{$priority->id}") }}">
-        {{ method_field('PUT') }}
-        {{ csrf_field() }}
-
-        <label for="name">Nombre:</label>
-        <input type="text" name="nombreEmpresa" id="nombreEmpresa" value="{{ old('nombreEmpresa', $empresa->nombreEmpresa) }}">
-        <br>
-        <button type="submit">Actualizar empresa</button>
-    </form>
-
+                <label for="name">Nombre:</label>
+                <input class="form-control" type="text" name="namePriority" id="namePriority" value="{{ old('namePriority', $priority->namePriority) }}">
+                <br>
+                <button class="btn btn-primary" type="submit">Actualizar prioridad</button>
+            </form>
+        </div>
+    </div>        
 	<p>
-		<a href="/empresas/">Volver al listado de Empresas</a>
+		<a href="/priorities/">Volver al listado de prioridades</a>
     </p>

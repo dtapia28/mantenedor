@@ -63,7 +63,7 @@ class ResolutorController extends Controller
             'idTeam' => $data['idTeam'],
         ]);
 
-        return redirect()->route('Resolutors.index');
+        return redirect('resolutors');
     }
 
     /**
@@ -117,6 +117,7 @@ class ResolutorController extends Controller
      */
     public function destroy(Resolutor $resolutor)
     {
-        //
+        $resolutor->delete();
+        return redirect('resolutors'); 
     }
 }

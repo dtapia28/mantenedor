@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Requerimiento;
+use App\Empresa;
+use App\Resolutor;
+use App\Priority;
+use App\Solicitante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -27,7 +31,12 @@ class RequerimientoController extends Controller
      */
     public function create()
     {
-        //
+        $empresas = Empresa::all();
+        $resolutors = Resolutor::all();
+        $priorities = Priority::all();
+        $solicitantes = Solicitante::all();
+
+        return view('Requerimientos.create', compact('empresas', 'resolutors', 'priorities', 'solicitantes'));        
     }
 
     /**
@@ -38,7 +47,41 @@ class RequerimientoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = request()->validate([
+            'textoRequerimiento' => 'required',
+            'fechaEmail' => 'required',
+            'fechaSolicitud' => 'required',
+            'fechaCierre' => 'required',
+            'fechaRealCierre' => 'nullable',
+            'numeroCambios' => 'nullable',
+            'porcentajeEjecutado' => 'nullable',
+            'cierre' => 'nullable',
+            'idSolicitante' => 'required',
+            'idPrioridad' => 'required',
+            'idResolutor' => 'required',
+            'idEmpresa' => 'required'],
+            ['nombreResolutor.required' => 'El campo nombre es obligatorio'],
+            ['fechaEmail.required' => 'La fecha de email es obligatoria'],
+            ['fechaSolicitud' => 'La fecha de solicitud es obligatoria'],
+            ['fechaCierre' => 'La fecha de cierre es obligatoria']);
+
+
+        Requerimiento::create([
+            'textoRequerimiento' => $data['textoRequerimiento'],            
+            'fechaEmail' => $data['fechaEmail'],
+            'fechaSolicitud' => $data['fechaSolicitud'],
+            'fechaCierre' => $data['fechaCierre'],
+            'fechaRealCierre' => $data['fechaRealCierre'],
+            'numeroCambios' => $data['numeroCambios'],
+            'porcentajeEjecutado' => $data['porcentajeEjecutado'],
+            'cierre' => $data['cierre'],
+            'idSolicitante' => $data['idSolicitante'],
+            'idPrioridad' => $data['idPrioridad'],
+            'idResolutor' => $data['idResolutor'],
+            'idEmpresa' => $data['idEmpresa'],
+        ]);
+
+        return redirect('requerimientos');        
     }
 
     /**
@@ -49,7 +92,10 @@ class RequerimientoController extends Controller
      */
     public function show(Requerimiento $requerimiento)
     {
-        return view('Requerimiento.show', compact('requerimiento'));        
+        $resolutors = Resolutor::all();
+        $priorities = Priority::all();
+
+        return view('Requerimientos.show', compact('requerimiento', 'resolutors', 'priorities'));        
     }
 
     /**
@@ -60,7 +106,12 @@ class RequerimientoController extends Controller
      */
     public function edit(Requerimiento $requerimiento)
     {
-        return view('Requerimientos.edit', ['requerimiento' => $requerimiento]);        
+        $solicitantes = Solicitante::all();
+        $priorities = Priority::all();
+        $resolutors = Resolutor::all();
+        $empresas = Empresa::all();
+
+        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'empresas'));        
     }
 
     /**
@@ -87,6 +138,7 @@ class RequerimientoController extends Controller
      */
     public function destroy(Requerimiento $requerimiento)
     {
-        //
+        $requerimiento->delete();
+        return redirect('requerimientos');   
     }
 }

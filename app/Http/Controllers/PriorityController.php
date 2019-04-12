@@ -45,7 +45,7 @@ class PriorityController extends Controller
         Priority::create([
             'namePriority' => $data['namePriority']]);
 
-        return redirect()->route('Priorities.index');
+        return redirect('priorities');
     }
 
     /**
@@ -94,6 +94,7 @@ class PriorityController extends Controller
      */
     public function destroy(Priority $priority)
     {
-        //
+        $priority->delete();
+        return redirect('priorities'); 
     }
 }

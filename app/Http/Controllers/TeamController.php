@@ -45,7 +45,7 @@ class TeamController extends Controller
         Team::create([
             'nameTeam' => $data['nameTeam']]);
 
-        return redirect()->route('Teams.index');
+        return redirect('teams');
     }
 
     /**
@@ -71,7 +71,7 @@ class TeamController extends Controller
      */
     public function edit(Team $team)
     {
-        //
+        return view('Teams.edit', ['team' => $team]); 
     }
 
     /**
@@ -83,7 +83,11 @@ class TeamController extends Controller
      */
     public function update(Request $request, Team $team)
     {
-        //
+        $data = request()->validate([
+            'nameTeam' => 'required',
+        ]);
+        $team->update($data);
+        return redirect()->route('Teams.show', ['team' => $team]);          
     }
 
     /**
@@ -94,6 +98,7 @@ class TeamController extends Controller
      */
     public function destroy(Team $team)
     {
-        //
+        $team->delete();
+        return redirect('teams'); 
     }
 }
