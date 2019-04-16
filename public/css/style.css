@@ -8,7 +8,8 @@ body {
     /* Margin bottom by footer height */
     font-family: 'Nunito', sans-serif;
     margin-bottom: 60px;
-    margin: 60px 30px;
+    padding: 60px 30px;
+    width: 2000px;
 }
 .footer {
     position: absolute;
@@ -37,3 +38,8 @@ body > .container {
 code {
     font-size: 80%;
 }
+
+#tablaRequerimiento {
+    width: 800px;
+}
+

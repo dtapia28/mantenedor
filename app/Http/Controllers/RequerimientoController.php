@@ -9,6 +9,7 @@ use App\Priority;
 use App\Solicitante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class RequerimientoController extends Controller
 {
@@ -20,6 +21,7 @@ class RequerimientoController extends Controller
     public function index()
     {
         $requerimientos = Requerimiento::all();
+
 
         return view('Requerimientos.index', compact('requerimientos'));
     }

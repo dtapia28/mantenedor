@@ -7,13 +7,14 @@
 	<form method='HEAD' action="{{ url('requerimientos/nuevo') }}">
 	<button type="submit" value="Nuevo Requerimiento" class="btn btn-primary" name="">Nuevo Requerimiento</button>
 	</form>
-	<table class="table">
+	<table id="tablaRequerimiento" class="table">
 		<thead>
 		    <th scope="col"><strong>ID</strong></th>
 		    <th scope="col"><strong><strong>Fecha Solicitud</strong></th>
 		    <th scope="col"><strong><strong>Fecha Cierre</strong></th>
 		    <th scope="col"><strong>% Ejecutado</strong></th>
-		   	<th scope="col"><strong>Actualizar</strong></th>
+		   	<th scope="col"><strong>Editar</strong></th>
+		   	<th scope="col"><strong>Actualizar</strong></th>		   	
 		    <th scope="col"><strong>Eliminar</strong></th>
 	    </thead>
 	    <tbody>
@@ -38,6 +39,13 @@
 						{{ csrf_field() }}
 						<button type="submit" value="Editar" class="btn btn-info" name="">Editar</button>
 					</form>
+				</td>
+				<td>
+					<form method='PUT' action="/requerimientos/{{$requerimiento->id}}/actualizar">
+						{{ csrf_field() }}
+						<button type="submit" class="btn btn-success">Actualizar</button>
+					</form>
+					
 				</td>
 				<td>									
 					<form method='POST' action="/requerimientos/{{$requerimiento->id}}">
