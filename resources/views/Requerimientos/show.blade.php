@@ -1,4 +1,5 @@
 @extends('Bases.base')
+@section('titulo', "Detalle de Requerimiento")
 @section('contenido')
 	<h1>Detalle de requerimiento:</h1>
 	<h2>requerimiento n° {{ $requerimiento->id }}</h2>
@@ -24,5 +25,9 @@
     <p><strong>Número de cambios: </strong> {{ $requerimiento->numeroCambios }}</p>
     <p><strong>Porcentaje ejecutado: </strong> {{ $requerimiento->porcentajeEjecutado }}</p>
     <br>
-    <p><a href="/requerimientos/">Volver al listado de Requerimientos</a></p>
+    <p>
+    	<a href="/requerimientos/{{$requerimiento->id}}/avances">Avances del requerimiento</a> 
+    	<br>   	
+    	<a href="/requerimientos/">Volver al listado de Requerimientos</a>
+    </p>
 @endsection	

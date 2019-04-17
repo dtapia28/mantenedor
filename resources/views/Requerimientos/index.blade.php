@@ -7,9 +7,11 @@
 	<form method='HEAD' action="{{ url('requerimientos/nuevo') }}">
 	<button type="submit" value="Nuevo Requerimiento" class="btn btn-primary" name="">Nuevo Requerimiento</button>
 	</form>
-	<table id="tablaRequerimiento" class="table">
+	<br>
+	<table id="" class="table table-striped">
 		<thead>
 		    <th scope="col"><strong>ID</strong></th>
+		    <th scope="col"><strong>Requerimiento</strong></th>
 		    <th scope="col"><strong><strong>Fecha Solicitud</strong></th>
 		    <th scope="col"><strong><strong>Fecha Cierre</strong></th>
 		    <th scope="col"><strong>% Ejecutado</strong></th>
@@ -25,6 +27,9 @@
 					{{ $requerimiento->id }}
 				</a>						
 				</th>
+				<td>	
+					{{ $requerimiento->textoRequerimiento }}
+				</td>				
 				<td>	
 					{{ $requerimiento->fechaSolicitud }}
 				</td>

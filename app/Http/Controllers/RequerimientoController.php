@@ -126,9 +126,13 @@ class RequerimientoController extends Controller
     public function update(Request $request, Requerimiento $requerimiento)
     {
         $data = request()->validate([
-            'nombreEmpresa' => 'required',
+            'textoRequerimiento' => 'nullable',
+            'idSolicitante' => 'nullable',
+            'idrioridad' => 'nullable',
+            'idResolutor' => 'nullable',
+            'idEmpresa' => 'nullable'
         ]);
-        $empresa->update($data);
+        $requerimiento->update($data);
         return redirect()->route('Empresas.show', ['empresa' => $empresa]);         
     }
 
@@ -143,4 +147,21 @@ class RequerimientoController extends Controller
         $requerimiento->delete();
         return redirect('requerimientos');   
     }
+
+    public function actualizar(Requerimiento $requerimiento)
+    {
+        return view('Requerimientos.actualizar', compact('requerimiento'));        
+    }
+
+    public function save(Request $request, Requerimiento $requerimiento)
+    {
+        $data = request()->validate([
+            'fechaRealCierre' => 'nullable',
+            'numeroCambios' => 'nullable',
+            'porcentajeEjecutado' => 'nullable',
+            'cierre' => 'nullable'
+        ]);
+        $requerimiento->update($data);
+        return redirect()->route('Requerimientos.show', ['requerimiento' => $requerimiento]);         
+    }       
 }

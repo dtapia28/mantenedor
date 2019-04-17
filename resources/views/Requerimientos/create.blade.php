@@ -16,7 +16,7 @@
     @endif
 
     <div class="form-row align-items-center">
-        <div class="form-group">
+        <div class="form-group col-md-8">
             <form method="POST" action="{{ url('requerimientos/crear') }}">
                 {{ csrf_field() }}
 
@@ -45,7 +45,6 @@
                 <label for="cierre">Cierre (no obligatorio):</label>
                 <br>
                 <textarea class="form-control col-md-10" name="cierre" placeholder="Cierre" rows="5" cols="50"></textarea>
-                <br> 
                 <br>
                 <label for="idSolicitante">Solicitante:</label>
                 <br>

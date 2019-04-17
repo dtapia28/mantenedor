@@ -5,7 +5,7 @@
 	<br>
 	<div class="p-4">
 		<div class="form-group col-md-8">
-		<form method='post' action="{{ url("requerimientos/{$requerimiento->id}/actualizar") }}">
+		<form method='POST' action="{{ url("requerimientos/{$requerimiento->id}/save") }}">
 			{{ method_field('PUT') }}
         	{{ csrf_field() }}
 	        <label for='fechaCierre'>Fecha real de Cierre (no obligatoria):</label>
@@ -19,7 +19,7 @@
 	        <br>	
 	        <label for="cierre">Cierre (no obligatorio):</label>
 	        <br>
-	        <textarea class="form-control" name="cierre" placeholder="Cierre" rows="5" cols="50"></textarea>
+	        <textarea class="form-control col-md-10" name="cierre" placeholder="Cierre" rows="5" cols="50"></textarea>
 	        <br>
             <button class="btn btn-primary" type="submit">Actualizar</button>
 		</form>

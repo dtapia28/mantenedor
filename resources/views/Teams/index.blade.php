@@ -7,8 +7,9 @@
 	<form method='HEAD' action="{{ url('teams/nuevo') }}">
 	<button type="submit" value="Nuevo Teams" class="btn btn-primary" name="">Nuevo Team</button>
 	</form>
+	<br>
 	<tr>
-	<table class="table">
+	<table class="table table-striped">
 		<thead>
 		    <th scope="col"><strong>ID</strong></th>
 		    <th scope="col"><strong>Nombre</strong></th>

@@ -7,8 +7,9 @@
 	<form method='HEAD' action="{{ url('resolutors/nuevo') }}">
 	<button type="submit" value="Nuevo Resolutor" class="btn btn-primary" name="">Nuevo Resolutor</button>
 	</form>
+	<br>
 	<tr>
-	<table class="table">
+	<table class="table table-striped">
 		<thead>
 		    <th scope="col"><strong>ID</strong></th>
 		    <th scope="col"><strong>Nombre</strong></th>
@@ -21,24 +22,24 @@
 				<th scope="row">
 					{{ $resolutor->id }}
 				</th>
-				<th scope="row">
+				<td>
 					<a href="/resolutors/{{ $resolutor->id }}">									
 						{{ $resolutor->nombreResolutor }}
 					</a>
-				</th>
-				<th scope="row">									
+				</td>
+				<td>									
 					<form method='HEAD' action="/resolutors/{{$resolutor->id}}/editar">
 						{{ csrf_field() }}						
 						<button type="submit" value="Editar" class="btn btn-info" name="">Editar</button>
 					</form>
-				</th>
-				<th scope="row">
+				</td>
+				<td>
 					<form method='post' action="/resolutors/{{$resolutor->id}}">
 						{{ csrf_field() }}
 						{{ method_field('DELETE') }}						
 						<button type="submit" value="Eliminar" class="btn btn-danger" name="">Eliminar</button>
 					</form>
-				</th>								
+				</td>								
 			@empty
 				<li>No hay empresas registradas</li>	
 			@endforelse

@@ -7,8 +7,7 @@ html {
 body {
     /* Margin bottom by footer height */
     font-family: 'Nunito', sans-serif;
-    margin-bottom: 60px;
-    padding: 60px 30px;
+    padding: 60px 0px;
     width: 2000px;
 }
 .footer {
@@ -40,6 +39,9 @@ code {
 }
 
 #tablaRequerimiento {
-    width: 800px;
+    margin: 0px;
+    padding: 0px;
+    width: 900px;
+    text-align: left;
 }
 

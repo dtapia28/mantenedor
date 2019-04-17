@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Requerimiento;
 use App\Avance;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,10 @@ class AvanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Requerimiento $requerimiento)
     {
-        //
+        $avances = Avance::all();
+        return view('Avances.index', compact('requerimiento', 'avances'));         
     }
 
     /**
@@ -22,9 +24,10 @@ class AvanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Requerimiento $requerimiento)
     {
-        //
+
+        return view('Avances.create', compact('requerimiento'));
     }
 
     /**

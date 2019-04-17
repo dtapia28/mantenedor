@@ -47,6 +47,14 @@ Route::get('/teams/nuevo', 'TeamController@create')
 
 Route::post('/teams/crear', 'TeamController@store');
 
+Route::get('/requerimientos/{requerimiento}/avances/nuevo', 'AvanceController@create')
+	->name('Avances.create');
+
+Route::post('/avances/ingresar', 'AvanceController@store');
+
+
+
+
 //Rutas para los index
 Route::get('/empresas', 'EmpresaController@index');
 
@@ -59,6 +67,8 @@ Route::get('/resolutors', 'ResolutorController@index');
 Route::get('/solicitantes', 'SolicitanteController@index');
 
 Route::get('/teams', 'TeamController@index');
+
+Route::get('/requerimientos/{requerimiento}/avances', 'AvanceController@index');
 
 //Rutas para los show
 
@@ -85,6 +95,13 @@ Route::get('/solicitantes/{solicitante}', 'SolicitanteController@show')
 Route::get('/teams/{team}', 'TeamController@show')
 	->where('id', '[0-9]+')
 	->name('Teams.show');
+
+
+Route::get('/requerimientos/{requerimiento}/actualizar', 'RequerimientoController@actualizar')->name('Requerimientos.actualizar');
+
+Route::put('/requerimientos/{requerimiento}/save', 'RequerimientoController@save');
+
+
 
 // Rutas para los edit
 
@@ -131,3 +148,5 @@ Route::delete('/teams/{team}', 'TeamController@destroy')->name('Team.destroy');
 Route::delete('/solicitantes/{solicitante}', 'SolicitanteController@destroy')->name('Solicitantes.destroy');
 
 Route::delete('/requerimientos/{requerimiento}', 'RequerimientoController@destroy')->name('Requerimientos.destroy');
+
+
