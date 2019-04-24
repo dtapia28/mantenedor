@@ -16,8 +16,9 @@
     @endif
     <div class="form-row align-items-center">
         <div class="form-group col-md-8">    
-            <form method="POST" action="{{ url('avance/ingresar') }}">
+            <form method="POST" action="{{ url('avances/ingresar') }}">
                 {{ csrf_field() }}
+                 <input type="hidden" id="idRequerimiento" name="idRequerimiento" value="{{$requerimiento->id}}">
                 <label class="" for="textAvance">Texto del avance:</label>
                 <br>
                 <textarea class="form-control col-md-10" name="textAvance" placeholder="Texto del avance" rows="5" cols="50"></textarea>

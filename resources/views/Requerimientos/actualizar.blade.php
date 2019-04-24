@@ -9,7 +9,7 @@
 			{{ method_field('PUT') }}
         	{{ csrf_field() }}
 	        <label for='fechaCierre'>Fecha real de Cierre (no obligatoria):</label>
-	        <input class="form-control col-md-5" value="{{ old('fechaRealCierre', $requerimiento->fechaRealCierre) }}" type="date" name="fechaRealCierre">
+	        <input class="form-control col-md-3" value="{{ old('fechaRealCierre', $requerimiento->fechaRealCierre) }}" type="date" name="fechaRealCierre">
 	        <br>
 	        <label for="numeroCambios">Número de cambios:</label>
 	        <input class="form-control col-md-2" value="{{ old('numeroCambios', $requerimiento->numeroCambios) }}" type="number" name="numeroCambios">
@@ -19,7 +19,7 @@
 	        <br>	
 	        <label for="cierre">Cierre (no obligatorio):</label>
 	        <br>
-	        <textarea class="form-control col-md-10" name="cierre" placeholder="Cierre" rows="5" cols="50"></textarea>
+	        <textarea class="form-control col-md-7" name="cierre" placeholder="Cierre" rows="5" cols="50"></textarea>
 	        <br>
             <button class="btn btn-primary" type="submit">Actualizar</button>
 		</form>

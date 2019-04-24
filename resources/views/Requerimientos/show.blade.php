@@ -1,9 +1,13 @@
-@extends('Bases.base')
-@section('titulo', "Detalle de Requerimiento")
-@section('contenido')
+@extends('Bases.detalles')
+@section('hojaEstilo', "{{ asset('css/style.css') }}")
+@section('titulo', "Detalle de Requerimientos")
+@section('tituloRequerimiento')
 	<h1>Detalle de requerimiento:</h1>
-	<h2>requerimiento n° {{ $requerimiento->id }}</h2>
-
+@endsection
+@section('requerimiento')
+	<br>
+	<h2>Requerimiento n° {{ $requerimiento->id }}</h2>
+	<br>
 	<p><strong>Texto del requerimiento: </strong>{{ $requerimiento->textoRequerimiento }}</p>
 	<p>
 		@forelse ($priorities as $priority)
@@ -25,9 +29,22 @@
     <p><strong>Número de cambios: </strong> {{ $requerimiento->numeroCambios }}</p>
     <p><strong>Porcentaje ejecutado: </strong> {{ $requerimiento->porcentajeEjecutado }}</p>
     <br>
+@endsection 
+@section('avances')
+	<header><h1>Avances del requerimiento:</h1></header>
+		<br>
+		@forelse ($avances as $avance)	
+		<p>
+			@if ($avance->idRequerimiento == $requerimiento->id)
+				<strong>Avance del {{ $avance->created_at->format('d-m-Y') }}: </strong>{{ $avance->textAvance }}
+			@endif
+   		 </p>
+		@empty
+		@endforelse    
+@endsection   
+    @section('footerMain')
     <p>
-    	<a href="/requerimientos/{{$requerimiento->id}}/avances">Avances del requerimiento</a> 
     	<br>   	
     	<a href="/requerimientos/">Volver al listado de Requerimientos</a>
     </p>
-@endsection	
+    @endsection

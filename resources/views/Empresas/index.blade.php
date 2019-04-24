@@ -9,7 +9,7 @@
 	</form>
 	<br>
 	<tr>
-	<table class="table table-striped">
+	<table class="table table-striped stacktable">
 		<thead>
 		    <th scope="col"><strong>ID</strong></th>
 		    <th scope="col"><strong>Nombre</strong></th>

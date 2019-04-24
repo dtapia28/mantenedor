@@ -12,6 +12,7 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <!-- Custom styles for this template -->
+    <link rel="stylesheet" type="text/css" href=@yield('hojaEstilo')>
     <link href="{{ asset('css/estilos.css') }}" rel="stylesheet">
 </head>
 
@@ -51,10 +52,24 @@
 
 <!-- Begin page content -->
 <main role="main" class="container">
-            @yield('contenido')
-            <p>&nbsp;</p>
-        </div>
+	<header>
+		@yield('tituloRequerimiento')
+	</header>
+    <div class="row mt-3">
+        <div id="contenedor" class="col-8">
+        	<section id="articulos">
+        		<article id="requerimiento">
+            		@yield('requerimiento')        			
+        		</article>
+        		<article id="avances">
+            		@yield('avances')        			
+        		</article>
+        	</section>
+        </div>        
     </div>
+    <footer>
+    	@yield('footerMain')
+    </footer>    
 </main>
 
 <footer class="footer">

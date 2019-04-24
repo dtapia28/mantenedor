@@ -11,21 +11,39 @@
 	<tr>
 	<table class="table table-striped">
 		<thead>
-		    <th scope="col"><strong>ID</strong></th>
-		    <th scope="col"><strong>Nombre</strong></th>
+		    <th scope="col"><strong>Fecha Avance</strong></th>
+		    <th scope="col"><strong>Texto Avance</strong></th>
 		    <th scope="col"><strong>Editar</strong></th>
 		    <th scope="col"><strong>Eliminar</strong></th>
 		</thead>
 		<tbody>
 			@forelse ($avances as $avance)
 				@if ($avance->idRequerimiento == $requerimiento->id)
-					<th scope="row">
-						{{ $avance->textAvance }}
-					</th>	
-				@endif
-			@empty
-				<p>Error</p>	
-			@endforelse	
+				<tr>
+						<th scope="row">
+							{{ $avance->fechaAvance }}
+						</th>
+						<td>
+							{{ $avance->textAvance }}
+						</td>
+						<td>									
+							<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/editar">
+								{{ csrf_field() }}
+								<button type="submit" value="Editar" class="btn btn-info" name="">Editar</button>
+							</form>
+						</td>
+						<td>									
+							<form method='POST' action="/requerimientos/{{$requerimiento->id}}">
+								{{ csrf_field() }}
+								{{ method_field('DELETE') }}						
+								<button type="submit" value="Eliminar" class="btn btn-danger" name="">Eliminar</button>
+							</form>
+						</td>											
+					@endif
+				@empty
+					<p>Error</p>	
+				@endforelse
+				</tr>	
 		</tbody>		
 	</table>
 @endsection	

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Requerimiento;
 use App\Avance;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+
 
 class AvanceController extends Controller
 {
@@ -27,6 +29,7 @@ class AvanceController extends Controller
     public function create(Requerimiento $requerimiento)
     {
 
+
         return view('Avances.create', compact('requerimiento'));
     }
 
@@ -38,7 +41,20 @@ class AvanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = request()->validate([
+            'textAvance' => 'required',
+            'idRequerimiento' => 'required'],
+            ['textAvance.required' => 'El campo texto del avance es obligatorio']);
+        $id = request()->validate([
+            'idRequerimiento' => 'required']);
+
+        Avance::create([
+            'textAvance' => $data['textAvance'],
+            'fechaAvance' => Carbon::now(),
+            'idRequerimiento' => $data['idRequerimiento']
+        ]);
+
+        return redirect('requerimientos/');
     }
 
     /**

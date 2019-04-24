@@ -7,6 +7,8 @@ use App\Empresa;
 use App\Resolutor;
 use App\Priority;
 use App\Solicitante;
+use App\Avance;
+use App\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -20,10 +22,12 @@ class RequerimientoController extends Controller
      */
     public function index()
     {
+        $resolutors = Resolutor::all();
+        $teams = Team::all();
         $requerimientos = Requerimiento::all();
 
 
-        return view('Requerimientos.index', compact('requerimientos'));
+        return view('Requerimientos.index', compact('requerimientos', 'resolutors', 'teams'));
     }
 
     /**
@@ -94,10 +98,11 @@ class RequerimientoController extends Controller
      */
     public function show(Requerimiento $requerimiento)
     {
+        $avances = Avance::all();
         $resolutors = Resolutor::all();
         $priorities = Priority::all();
 
-        return view('Requerimientos.show', compact('requerimiento', 'resolutors', 'priorities'));        
+        return view('Requerimientos.show', compact('requerimiento', 'resolutors', 'priorities', 'avances'));        
     }
 
     /**

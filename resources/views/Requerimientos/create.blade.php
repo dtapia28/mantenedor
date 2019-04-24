@@ -2,7 +2,9 @@
 @section('titulo', "Crear Requerimiento")
 
 @section('contenido')
+    <header>
     <h1>Crear Requerimiento</h1>
+    </header>
     <br>
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -22,33 +24,33 @@
 
                 <label class="" for="textoRequerimiento">Texto del requerimiento:</label>
                 <br>
-                <textarea class="form-control col-md-10" name="textoRequerimiento" placeholder="Texto del requerimiento" rows="5" cols="50"></textarea>
+                <textarea class="form-control col-md-7" name="textoRequerimiento" placeholder="Texto del requerimiento" rows="5" cols="50"></textarea>
                 <br>
                 <label for='fechaEmail'>Fecha de Email:</label>
-                <input class="form-control col-md-5" type="date" name="fechaEmail">
+                <input class="form-control col-md-3" type="date" name="fechaEmail">
                 <br>
                 <label for='fechaSolicitud'>Fecha de Solicitud:</label>
-                <input class="form-control col-md-5" type="date" name="fechaSolicitud">
+                <input class="form-control col-md-3" type="date" name="fechaSolicitud">
                 <br>
                 <label for='fechaCierre'>Fecha de Cierre:</label>
-                <input class="form-control col-md-5" type="date" name="fechaCierre">
+                <input class="form-control col-md-3" type="date" name="fechaCierre">
                 <br>
                 <label for='fechaCierre'>Fecha real de Cierre (no obligatoria):</label>
-                <input class="form-control col-md-5" type="date" name="fechaRealCierre">
+                <input class="form-control col-md-3" type="date" name="fechaRealCierre">
                 <br>
                 <label for="numeroCambios">Número de cambios:</label>
-                <input class="form-control col-md-2" type="number" name="numeroCambios">
+                <input class="form-control col-md-1" type="number" name="numeroCambios">
                 <br>
                 <label for="porcentajeEjecutado">Porcentaje Ejecutado:</label>
                 <input class="form-control col-md-2" type="number" name="porcentajeEjecutado">
                 <br>
                 <label for="cierre">Cierre (no obligatorio):</label>
                 <br>
-                <textarea class="form-control col-md-10" name="cierre" placeholder="Cierre" rows="5" cols="50"></textarea>
+                <textarea class="form-control col-md-7" name="cierre" placeholder="Cierre" rows="5" cols="50"></textarea>
                 <br>
                 <label for="idSolicitante">Solicitante:</label>
                 <br>
-                <select class="form-control col-md-5" name="idSolicitante">
+                <select class="form-control col-md-3" name="idSolicitante">
                     @foreach($solicitantes as $solicitante)
                         <optgroup>
                             <option value={{ $solicitante->id }}>{{ $solicitante->nombreSolicitante }}</option>
@@ -58,7 +60,7 @@
                 <br>
                 <label for="idEmpresa">Empresa:</label>        
                 <br>                 
-                <select class="form-control col-md-5" name="idEmpresa">
+                <select class="form-control col-md-3" name="idEmpresa">
                     @foreach($empresas as $empresa)
                         <optgroup>
                             <option value={{ $empresa->id }}>{{ $empresa->nombreEmpresa }}</option>
@@ -68,7 +70,7 @@
                 <br>
                 <label for="idResolutor">Resolutor:</label>        
                 <br>                 
-                <select class="form-control col-md-5" name="idResolutor">
+                <select class="form-control col-md-3" name="idResolutor">
                     @foreach($resolutors as $resolutor)
                         <optgroup>
                             <option value={{ $resolutor->id }}>{{ $resolutor->nombreResolutor }}</option>
@@ -78,7 +80,7 @@
                 <br>
                 <label for="idPrioridad">Prioridad:</label>        
                 <br>                 
-                <select class="form-control col-md-5" name="idPrioridad">
+                <select class="form-control col-md-3" name="idPrioridad">
                     @foreach($priorities as $priority)
                         <optgroup>
                             <option value={{ $priority->id }}>{{ $priority->namePriority }}</option>

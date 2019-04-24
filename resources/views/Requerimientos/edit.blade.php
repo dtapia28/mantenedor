@@ -22,12 +22,12 @@
 
             <label for="textoRequerimiento">Texto del requerimiento:</label>
             <br>
-            <textarea class="form-control col-md-10" name="textoRequerimiento" value='{{ old('textoRequerimiento', $requerimiento->textoRequerimiento) }}' placeholder="Texto del requerimiento" rows="5" cols="50"></textarea>
+            <textarea class="form-control col-md-7" name="textoRequerimiento" value='{{ old('textoRequerimiento', $requerimiento->textoRequerimiento) }}' placeholder="Texto del requerimiento" rows="5" cols="50"></textarea>
             <label>Texto de requerimiento: {{ $requerimiento->textoRequerimiento }}</label>
             <br>
             <label for="idSolicitante">Solicitante:</label> 
             <br>       
-            <select class="form-control col-md-5" name="idSolicitante">
+            <select class="form-control col-md-3" name="idSolicitante">
                 @foreach($solicitantes as $solicitante)
                     <optgroup>
                         <option value="{{ old('idSolicitante', $solicitante->id) }}">{{ $solicitante->nombreSolicitante }}</option>
@@ -37,7 +37,7 @@
             <br>
             <label for="idPrioridad">Prioridad:</label>   
             <br>         
-            <select class="form-control col-md-5" name="idPrioridad">
+            <select class="form-control col-md-3" name="idPrioridad">
                 @foreach($priorities as $priority)
                     <optgroup>
                         <option value="{{ old('idPrioridad', $priority->id) }}">{{ $priority->namePriority }}</option>
@@ -47,7 +47,7 @@
             <br>
             <label for="idResolutor">Resolutor:</label>
             <br>        
-            <select class="form-control col-md-5" name="idResolutor">
+            <select class="form-control col-md-3" name="idResolutor">
                 @foreach($resolutors as $resolutor)
                     <optgroup>
                         <option value="{{ old('idResolutor', $resolutor->id) }}">{{ $resolutor->nombreResolutor }}</option>
@@ -57,7 +57,7 @@
             <br>
             <label for="idEmpresa">Empresa:</label>
             <br>             
-            <select class="form-control col-md-5" name="idEmpresa">
+            <select class="form-control col-md-3" name="idEmpresa">
                 @foreach($empresas as $empresa)
                     <optgroup>
                         <option value="{{ old('idEmpresa', $empresa->id) }}">{{ $empresa->nombreEmpresa }}</option>
