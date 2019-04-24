@@ -24,7 +24,7 @@ class RequerimientoController extends Controller
     {
         $resolutors = Resolutor::all();
         $teams = Team::all();
-        $requerimientos = Requerimiento::all();
+        $requerimientos = Requerimiento::paginate(10);
 
 
         return view('Requerimientos.index', compact('requerimientos', 'resolutors', 'teams'));

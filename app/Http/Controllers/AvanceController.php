@@ -41,6 +41,11 @@ class AvanceController extends Controller
      */
     public function store(Request $request)
     {
+        $contador = 0;
+        $avances = Avance::all();
+        if (condition) {
+            # code...
+        }
         $data = request()->validate([
             'textAvance' => 'required',
             'idRequerimiento' => 'required'],

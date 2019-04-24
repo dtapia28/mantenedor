@@ -12,11 +12,11 @@
 	<table id="tablaRequerimientos" class="table table-striped stacktable">
 		<thead>
 		    <th scope="col"><strong>ID</strong></th>
-		    <th scope="col"><strong>Requerimiento</strong></th>
-		    <th scope="col"><strong><strong>Fecha Solicitud</strong></th>
-		    <th scope="col"><strong><strong>Fecha Cierre</strong></th>
+		    <th style="text-align: center;" width="700px" scope="col"><strong>Requerimiento</strong></th>
+		    <th width="250px" scope="col"><strong><strong>Fecha Solicitud</strong></th>
+		    <th width="230px" scope="col"><strong><strong>Fecha Cierre</strong></th>
 		    <th scope="col"><strong>Resolutor</strong></th>
-		    <th scope="col"><strong>Team</strong></th>
+		    <th style="text-align: center;" width="250px" scope="col"><strong>Team</strong></th>
 		   	<th scope="col"><strong></strong></th>
 		   	<th scope="col"><strong></strong></th>		   	
 		    <th scope="col"><strong></strong></th>
@@ -28,43 +28,43 @@
 				<a href="/requerimientos/{{ $requerimiento->id }}">					
 					{{ $requerimiento->id }}
 				</a>						
-				</th>
-				<td>	
-					{{ $requerimiento->textoRequerimiento }}
-				</td>				
-				<td>	
-					{{ $requerimiento->fechaSolicitud }}
-				</td>
-				<td>	
-					{{ $requerimiento->fechaCierre }}
-				</td>
-				@forelse ($resolutors as $resolutor)
-				<td style="text-align: center">
-					@if ($requerimiento->idResolutor == $resolutor->id)	
-					{{ $resolutor->nombreResolutor }}
-					@endif
-				@empty
-				@endforelse	
-				</td>	
-				@forelse ($teams as $team)
-				<td style="text-align: center">
-					@if ($resolutor->idTeam == $team->id)	
-					{{ $team->nameTeam }}
-					@endif
-				@empty
-				@endforelse	
-				</td>											
-				<td>									
-					<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/editar">
-						{{ csrf_field() }}
-						<input type="image" align="center" src="{{ asset('img/edit.png') }}" width="30" height="30">
-					</form>
-				</td>
-				<td>
-					<form method='PUT' action="/requerimientos/{{$requerimiento->id}}/actualizar">
-						{{ csrf_field() }}
-						<input type="image" align="center" src="{{ asset('img/update.png') }}" width="30" height="30">
-					</form>
+			</th>
+			<td style="text-align:left;">	
+				{{ $requerimiento->textoRequerimiento }}
+			</td>				
+			<td style="text-align: center;">	
+				{{ $requerimiento->fechaSolicitud }}
+			</td>
+			<td style="text-align: center;">	
+				{{ $requerimiento->fechaCierre }}
+			</td>
+			@forelse ($resolutors as $resolutor)
+				@if ($requerimiento->idResolutor == $resolutor->id)
+			<td style="text-align: center">				
+				{{ $resolutor->nombreResolutor }}
+				@endif
+			</td>
+			@empty
+			@endforelse	
+			@forelse ($teams as $team)
+			<td style="text-align: center">
+				@if ($resolutor->idTeam == $team->id)	
+				{{ $team->nameTeam }}
+				@endif
+			</td>
+			@empty
+			@endforelse														
+			<td>									
+				<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/editar">
+					{{ csrf_field() }}
+					<input type="image" align="center" src="{{ asset('img/edit.png') }}" width="30" height="30">
+				</form>
+			</td>
+			<td>
+				<form method='PUT' action="/requerimientos/{{$requerimiento->id}}/actualizar">
+					{{ csrf_field() }}
+					<input type="image" align="center" src="{{ asset('img/update.png') }}" width="30" height="30">
+				</form>
 					
 				</td>
 				<td>									
@@ -80,5 +80,6 @@
 			</tr>
 		</tbody>
 	</table>
+	{{ $requerimientos->links() }}
 	</main>
 @endsection	

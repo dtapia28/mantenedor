@@ -32,6 +32,9 @@
 @endsection 
 @section('avances')
 	<header><h1>Avances del requerimiento:</h1></header>
+		<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/avances/nuevo">
+			<button type="submit" value="Ingresar avance" class="btn btn-primary" name="">Ingresar avance</button>
+		</form>		
 		<br>
 		@forelse ($avances as $avance)	
 		<p>

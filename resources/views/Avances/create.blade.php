@@ -23,7 +23,7 @@
                 <br>
                 <textarea class="form-control col-md-10" name="textAvance" placeholder="Texto del avance" rows="5" cols="50"></textarea>
                 <br>
-                <button class="btn btn-primary" type="submit">Crear empresa</button>
+                <button class="btn btn-primary" type="submit">Guardar avance</button>
             </form>
          </div>
     </div>        
