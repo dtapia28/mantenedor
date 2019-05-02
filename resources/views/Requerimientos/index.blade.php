@@ -47,33 +47,32 @@
 			@empty
 			@endforelse	
 			@forelse ($teams as $team)
-			<td style="text-align: center">
-				@if ($resolutor->idTeam == $team->id)	
+				@if ($resolutor->idTeam == $team->id)
+				<td style="text-align: center">				
 				{{ $team->nameTeam }}
 				@endif
 			</td>
 			@empty
-			@endforelse														
+			@endforelse	
+			<td>									
+				<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/editar">
+					{{ csrf_field() }}
+					<input type="image" align="center" src="{{ asset('img/correcta-marca.png') }}" width="30" height="30">
+				</form>
+			</td>																
 			<td>									
 				<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/editar">
 					{{ csrf_field() }}
 					<input type="image" align="center" src="{{ asset('img/edit.png') }}" width="30" height="30">
 				</form>
 			</td>
-			<td>
-				<form method='PUT' action="/requerimientos/{{$requerimiento->id}}/actualizar">
+			<td>									
+				<form method='POST' action="/requerimientos/{{$requerimiento->id}}">
 					{{ csrf_field() }}
-					<input type="image" align="center" src="{{ asset('img/update.png') }}" width="30" height="30">
+					{{ method_field('DELETE') }}						
+					<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="30" height="30">
 				</form>
-					
-				</td>
-				<td>									
-					<form method='POST' action="/requerimientos/{{$requerimiento->id}}">
-						{{ csrf_field() }}
-						{{ method_field('DELETE') }}						
-						<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="30" height="30">
-					</form>
-				</td>								
+			</td>								
 			@empty
 				<li>No hay requerimientos registrados</li>	
 			@endforelse

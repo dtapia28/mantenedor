@@ -13,8 +13,8 @@
 		<thead>
 		    <th scope="col"><strong>ID</strong></th>
 		    <th scope="col"><strong>Nombre</strong></th>
-		    <th scope="col"><strong>Editar</strong></th>
-		    <th scope="col"><strong>Eliminar</strong></th>
+		    <th scope="col"><strong></strong></th>
+		    <th scope="col"><strong></strong></th>
 		</thead>
 		<tbody>
 			@forelse ($resolutors as $resolutor)
@@ -30,14 +30,14 @@
 				<td>									
 					<form method='HEAD' action="/resolutors/{{$resolutor->id}}/editar">
 						{{ csrf_field() }}						
-						<button type="submit" value="Editar" class="btn btn-info" name="">Editar</button>
+						<input style="text-align: center;" type="image" align="center" src="{{ asset('img/edit.png') }}" width="30" height="30">
 					</form>
 				</td>
 				<td>
 					<form method='post' action="/resolutors/{{$resolutor->id}}">
 						{{ csrf_field() }}
 						{{ method_field('DELETE') }}						
-						<button type="submit" value="Eliminar" class="btn btn-danger" name="">Eliminar</button>
+						<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="30" height="30">
 					</form>
 				</td>								
 			@empty

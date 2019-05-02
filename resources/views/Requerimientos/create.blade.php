@@ -35,19 +35,6 @@
                 <label for='fechaCierre'>Fecha de Cierre:</label>
                 <input class="form-control col-md-3" type="date" name="fechaCierre">
                 <br>
-                <label for='fechaCierre'>Fecha real de Cierre (no obligatoria):</label>
-                <input class="form-control col-md-3" type="date" name="fechaRealCierre">
-                <br>
-                <label for="numeroCambios">Número de cambios:</label>
-                <input class="form-control col-md-1" type="number" name="numeroCambios">
-                <br>
-                <label for="porcentajeEjecutado">Porcentaje Ejecutado:</label>
-                <input class="form-control col-md-2" type="number" name="porcentajeEjecutado">
-                <br>
-                <label for="cierre">Cierre (no obligatorio):</label>
-                <br>
-                <textarea class="form-control col-md-7" name="cierre" placeholder="Cierre" rows="5" cols="50"></textarea>
-                <br>
                 <label for="idSolicitante">Solicitante:</label>
                 <br>
                 <select class="form-control col-md-3" name="idSolicitante">

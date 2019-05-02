@@ -16,13 +16,14 @@ class CreateRequerimientosTable extends Migration
         Schema::create('requerimientos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('textoRequerimiento', 200);
-            $table->date('fechaEmail');
-            $table->date('fechaSolicitud');
-            $table->date('fechaCierre');
-            $table->date('fechaRealCierre');
-            $table->integer('numeroCambios', false, false)->length(2);
-            $table->integer('porcentajeEjecutado', false, false)->length(3);
-            $table->string('cierre', 200);
+            $table->datetime('fechaEmail');
+            $table->datetime('fechaSolicitud');
+            $table->datetime('fechaCierre');
+            $table->datetime('fechaRealCierre')->nullable();
+            $table->integer('numeroCambios', false, false)->length(2)->nullable();
+            $table->integer('porcentajeEjecutado', false, false)->length(3)->nullable();
+            $table->string('cierre', 200)->nullable();
+            $table->boolean('estado')->default(1);
             $table->bigInteger('idSolicitante')->unsigned();
             $table->foreign('idSolicitante')->references('id')->on('solicitantes');
             $table->bigInteger('idPrioridad')->unsigned();

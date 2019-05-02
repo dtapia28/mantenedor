@@ -101,7 +101,10 @@ Route::get('/requerimientos/{requerimiento}/actualizar', 'RequerimientoControlle
 
 Route::put('/requerimientos/{requerimiento}/save', 'RequerimientoController@save');
 
+//Ruta para requerimiento terminado
+Route::get('/requerimientos/{requerimiento}/terminado', 'RequerimientoController@terminado')->name('Requerimientos.terminado');
 
+Route::put('/requerimientos/{requerimiento}/guardar', 'RequerimientoController@guardar');
 
 // Rutas para los edit
 

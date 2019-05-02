@@ -77,10 +77,6 @@ class RequerimientoController extends Controller
             'fechaEmail' => $data['fechaEmail'],
             'fechaSolicitud' => $data['fechaSolicitud'],
             'fechaCierre' => $data['fechaCierre'],
-            'fechaRealCierre' => $data['fechaRealCierre'],
-            'numeroCambios' => $data['numeroCambios'],
-            'porcentajeEjecutado' => $data['porcentajeEjecutado'],
-            'cierre' => $data['cierre'],
             'idSolicitante' => $data['idSolicitante'],
             'idPrioridad' => $data['idPrioridad'],
             'idResolutor' => $data['idResolutor'],
@@ -160,13 +156,50 @@ class RequerimientoController extends Controller
 
     public function save(Request $request, Requerimiento $requerimiento)
     {
-        $data = request()->validate([
-            'fechaRealCierre' => 'nullable',
-            'numeroCambios' => 'nullable',
-            'porcentajeEjecutado' => 'nullable',
-            'cierre' => 'nullable'
-        ]);
-        $requerimiento->update($data);
-        return redirect()->route('Requerimientos.show', ['requerimiento' => $requerimiento]);         
-    }       
+        if ($request->fechaRealCierre != "") {
+            $cambios=$requerimiento->numeroCambios;
+            if ($cambios == null) {
+                $cambios = 1;
+                $request->merge(['numeroCambios' => $cambios]);
+                $data = request()->validate([
+                    'fechaRealCierre' => 'nullable',
+                    'numeroCambios' => 'nullable',
+                    'porcentajeEjecutado' => 'nullable',
+                    'cierre' => 'nullable'
+                ]);
+
+
+                $requerimiento->update($data);
+                return redirect()->route('Requerimientos.show', ['requerimiento' => $requerimiento]);                 
+            } else {
+                $cambios +=1;
+                $request->merge(['numeroCambios' => $cambios]);                
+                $data = request()->validate([
+                    'fechaRealCierre' => 'nullable',
+                    'numeroCambios' => 'nullable',
+                    'porcentajeEjecutado' => 'nullable',
+                    'cierre' => 'nullable'
+                ]);
+
+
+                $requerimiento->update($data);
+                return redirect()->route('Requerimientos.show', ['requerimiento' => $requerimiento]);                
+            }
+        }
+        else {
+                $data = request()->validate([
+                    'fechaRealCierre' => 'nullable',
+                    'numeroCambios' => 'nullable',
+                    'porcentajeEjecutado' => 'nullable',
+                    'cierre' => 'nullable'
+                ]);
+                $requerimiento->update($data);
+                return redirect()->route('Requerimientos.show', ['requerimiento' => $requerimiento]);
+        }            
+    }
+
+    public function terminado(Requerimiento $requerimiento)
+    {
+        return view('Requerimientos.actualizar', compact('requerimiento'));        
+    }           
 }

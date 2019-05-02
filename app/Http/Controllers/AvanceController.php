@@ -6,6 +6,7 @@ use App\Requerimiento;
 use App\Avance;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use DB;
 
 
 class AvanceController extends Controller
@@ -41,11 +42,6 @@ class AvanceController extends Controller
      */
     public function store(Request $request)
     {
-        $contador = 0;
-        $avances = Avance::all();
-        if (condition) {
-            # code...
-        }
         $data = request()->validate([
             'textAvance' => 'required',
             'idRequerimiento' => 'required'],
@@ -59,7 +55,22 @@ class AvanceController extends Controller
             'idRequerimiento' => $data['idRequerimiento']
         ]);
 
-        return redirect('requerimientos/');
+        if ($request->input("fechaRealCierre") != null or $request->input("porcentajeEjecutado") != null) {
+            $requerimiento = DB::table('requerimientos')->select('numeroCambios')->where('id', $request->input("idRequerimiento"))->first();
+            $fechaRealCierre = $request->input("fechaRealCierre"); 
+            $idRequerimiento = $request->input("idRequerimiento");  
+            $porcentaje = $request->input("porcentajeEjecutado");                                   
+            $cambios=$requerimiento->numeroCambios;
+            if ($cambios == null) {
+                $cambios = 1;
+                DB::select('call editarRequerimiento(?,?,?,?)', array($idRequerimiento, $fechaRealCierre, $porcentaje, $cambios));                        
+            }                      
+        else {
+            $cambios +=1;
+            DB::select('call editarRequerimiento(?,?,?,?)', array($idRequerimiento, $fechaRealCierre, $porcentaje, $cambios));             
+            }
+        }
+        return redirect('requerimientos/{{ idRequerimiento }}');
     }
 
     /**
@@ -67,12 +78,12 @@ class AvanceController extends Controller
      *
      * @param  \App\Avance  $avance
      * @return \Illuminate\Http\Response
-     */
+
     public function show(Avance $avance)
     {
         //
     }
-
+    */
     /**
      * Show the form for editing the specified resource.
      *
