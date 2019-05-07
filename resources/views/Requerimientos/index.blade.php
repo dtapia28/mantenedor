@@ -2,12 +2,33 @@
 @section('titulo', "Listado Requerimientos")
 @section('contenido')
 	<header>
-	<h1>Listado de Requerimientos</h1>
+	<h1>Listado de Requerimientos</h1>	
 	</header>
 	<main>
-	<form method='HEAD' action="{{ url('requerimientos/nuevo') }}">
-	<button type="submit" value="Nuevo Requerimiento" class="btn btn-primary" name="">Nuevo Requerimiento</button>
-	</form>
+		<div class="form-check form-check-inline">
+			<form method='HEAD' action="{{ url('requerimientos/nuevo') }}">
+				<button type="submit" value="Nuevo Requerimiento" class="btn btn-primary" name="">Nuevo Requerimiento</button>
+			</form>
+		</div>
+		<div class="form-check form-check-inline">
+			<form class="navbar-form navbar-left pull-right" method='GET' action="{{ url('requerimientos/') }}">
+				<select class="custom-select" name="state">
+					<option value="">Escoja una opción</option>
+					<option value="0">Inactivo</option>
+					<option value="1">Activo</option>			      	
+				</select>
+				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Filtrar</button>
+			</form>
+		</div>
+		<div class="form-check form-check-inline">	
+			<?php
+				if ($valor == 1)
+				    {echo "<h5>requerimientos activos:</h5>";}
+				else {
+				    echo "<h5>requerimientos inactivos:</h5>";
+				    }
+			?>
+		</div>			
 	<br>
 	<table id="tablaRequerimientos" class="table table-striped stacktable">
 		<thead>
@@ -33,10 +54,10 @@
 				{{ $requerimiento->textoRequerimiento }}
 			</td>				
 			<td style="text-align: center;">	
-				{{ $requerimiento->fechaSolicitud }}
+				{{ date('d-m-Y', strtotime($requerimiento->fechaSolicitud)) }}
 			</td>
 			<td style="text-align: center;">	
-				{{ $requerimiento->fechaCierre }}
+				{{ date('d-m-Y', strtotime($requerimiento->fechaCierre)) }}
 			</td>
 			@forelse ($resolutors as $resolutor)
 				@if ($requerimiento->idResolutor == $resolutor->id)
@@ -55,7 +76,7 @@
 			@empty
 			@endforelse	
 			<td>									
-				<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/editar">
+				<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/terminado">
 					{{ csrf_field() }}
 					<input type="image" align="center" src="{{ asset('img/correcta-marca.png') }}" width="30" height="30">
 				</form>

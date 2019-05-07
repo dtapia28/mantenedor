@@ -12,6 +12,9 @@ use App\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use DateTime;
+use DateInterval;
 
 class RequerimientoController extends Controller
 {
@@ -20,14 +23,19 @@ class RequerimientoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $resolutors = Resolutor::all();
         $teams = Team::all();
-        $requerimientos = Requerimiento::paginate(10);
+        $requerimientos = Requerimiento::where('estado', $request->state)->paginate(10);
+        $valor = 1;
+        if ($request->state == 1) {
+            $valor = 1;
+        }else {
+            $valor = 0;
+        }
 
-
-        return view('Requerimientos.index', compact('requerimientos', 'resolutors', 'teams'));
+        return view('Requerimientos.index', compact('requerimientos', 'resolutors', 'teams', 'valor'));
     }
 
     /**
@@ -94,11 +102,26 @@ class RequerimientoController extends Controller
      */
     public function show(Requerimiento $requerimiento)
     {
-        $avances = Avance::all();
+        $avances = Avance::latest('created_at')->paginate(9);
         $resolutors = Resolutor::all();
         $priorities = Priority::all();
+        $teams = Team::all();
+        $fechaCierre = new DateTime($requerimiento->fechaCierre);
+        $fechaSolicitud = new DateTime($requerimiento->fechaSolicitud);
+        $contador = 0;
+        while ($fechaSolicitud->getTimestamp() <= $fechaCierre->getTimestamp()) {
+            if ($fechaSolicitud->format('l') == 'Saturday' or $fechaSolicitud->format('l') == 'Sunday') {
+                $fechaSolicitud->modify("+1 days");
+            }else{
+                $contador++;
+                $fechaSolicitud->modify("+1 days");                           
+            }
+        }
 
-        return view('Requerimientos.show', compact('requerimiento', 'resolutors', 'priorities', 'avances'));        
+        $hoy = new DateTime();
+        dd($hoy);       
+
+        return view('Requerimientos.show', compact('requerimiento', 'resolutors', 'priorities', 'avances', 'teams', "contador"));        
     }
 
     /**
@@ -200,6 +223,18 @@ class RequerimientoController extends Controller
 
     public function terminado(Requerimiento $requerimiento)
     {
-        return view('Requerimientos.actualizar', compact('requerimiento'));        
-    }           
+        return view('Requerimientos.terminado', compact('requerimiento'));        
+    } 
+
+    public function guardar(Request $request, Requerimiento $requerimiento)
+    {
+        $data = request()->validate([
+            'cierre'=>'required'],
+            ['cierre.required' => 'El texto de cierre es obligatorio']);
+
+        $requerimiento->update($data);
+        DB::select('call terminarRequerimiento(?)', array($requerimiento->id));        
+
+        return redirect('requerimientos');   
+    }              
 }

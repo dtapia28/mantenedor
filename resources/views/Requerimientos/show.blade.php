@@ -1,5 +1,4 @@
 @extends('Bases.detalles')
-@section('hojaEstilo', "{{ asset('css/style.css') }}")
 @section('titulo', "Detalle de Requerimientos")
 @section('tituloRequerimiento')
 	<h1>Detalle de requerimiento:</h1>
@@ -16,7 +15,26 @@
 			@endif
 		@empty
 		@endforelse
-    </p>	
+    </p>
+	<p>
+		<strong>Fecha de email: </strong>{{date('d-m-Y', strtotime($requerimiento->fechaEmail)) }}
+    </p>
+	<p>
+		<strong>Fecha de solicitud: </strong>{{date('d-m-Y', strtotime($requerimiento->fechaSolicitud)) }}
+    </p>
+	<p>
+		@forelse ($teams as $team)
+			@forelse ($resolutors as $resolutor)
+				@if ($resolutor->idTeam == $team->id)
+					@if ($resolutor->id == $requerimiento->idResolutor)
+						<strong>Equipo: </strong>{{ $team->nameTeam }}
+					@endif
+				@endif
+			@empty
+			@endforelse
+		@empty
+		@endforelse
+    </p>           	
 	<p>
 		@forelse ($resolutors as $resolutor)
 			@if ($resolutor->id == $requerimiento->idResolutor)
@@ -25,8 +43,32 @@
 		@empty
 		@endforelse
     </p>
-    <p><strong>Fecha de cierre: </strong> {{ $requerimiento->fechaCierre }}</p>
+    <p><strong>Fecha de cierre: </strong> {{date('d-m-Y', strtotime($requerimiento->fechaCierre)) }}</p>
+    <p>
+    	@if ($requerimiento->fechaRealCierre != null)
+    		<strong>Fecha real cierre: </strong> {{date('d-m-Y', strtotime($requerimiento->fechaRealCierre)) }}
+    	@else
+    		<strong>Fecha real cierre: </strong>
+    	@endif
+    </p>
+    <p>
+    	@if ($resolutor->fechaRealCierre != "")
+    		<strong>Mes de cierre real: </strong> {{date('F', strtotime($requerimiento->fechaRealCierre)).strftime("%B") }}
+    	@else
+    		<strong>Mes de cierre: </strong>{{ date('F', strtotime($requerimiento->fechaCierre)) }}
+    	@endif    	
+    </p>		    
     <p><strong>Número de cambios: </strong> {{ $requerimiento->numeroCambios }}</p>
+    <p>
+    	@if ($requerimiento->numeroCambios <=1)
+    		<strong>Status de cambio: </strong>V
+    	@elseif ($requerimiento->numeroCambios <=3)
+    		<strong>Status de cambio: </strong>A
+    	@else
+    		<strong>Status de cambio: </strong>R		
+    	@endif
+    </p>
+    <p><strong>Días laborales: </strong> {{ $contador }}</p>
     <p><strong>Porcentaje ejecutado: </strong> {{ $requerimiento->porcentajeEjecutado }}</p>
     <br>
 @endsection 
@@ -39,15 +81,11 @@
 		@forelse ($avances as $avance)	
 		<p>
 			@if ($avance->idRequerimiento == $requerimiento->id)
-				<strong>Avance del {{ $avance->created_at->format('d-m-Y') }}: </strong>{{ $avance->textAvance }}
+				<strong>{{ $avance->created_at->format('d-m-Y') }}: </strong>{{ $avance->textAvance }}
 			@endif
    		 </p>
 		@empty
 		@endforelse    
 @endsection   
     @section('footerMain')
-    <p>
-    	<br>   	
-    	<a href="/requerimientos/">Volver al listado de Requerimientos</a>
-    </p>
     @endsection

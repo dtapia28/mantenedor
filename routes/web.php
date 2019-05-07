@@ -60,7 +60,8 @@ Route::get('/empresas', 'EmpresaController@index');
 
 Route::get('/priorities', 'PriorityController@index');
 
-Route::get('/requerimientos', 'RequerimientoController@index');
+Route::get('/requerimientos', 'RequerimientoController@index')
+	->name('Requerimientos.index');
 
 Route::get('/resolutors', 'ResolutorController@index');
 

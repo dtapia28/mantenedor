@@ -18,7 +18,8 @@ class AvanceController extends Controller
      */
     public function index(Requerimiento $requerimiento)
     {
-        $avances = Avance::all();
+        $avances = Avance::oldest('updated_at')->get();
+        dd($avances);
         return view('Avances.index', compact('requerimiento', 'avances'));         
     }
 
@@ -55,22 +56,34 @@ class AvanceController extends Controller
             'idRequerimiento' => $data['idRequerimiento']
         ]);
 
-        if ($request->input("fechaRealCierre") != null or $request->input("porcentajeEjecutado") != null) {
+        $idRequerimiento = $request->input("idRequerimiento");
+        if ($request->input("fechaRealCierre") != null) {
             $requerimiento = DB::table('requerimientos')->select('numeroCambios')->where('id', $request->input("idRequerimiento"))->first();
-            $fechaRealCierre = $request->input("fechaRealCierre"); 
-            $idRequerimiento = $request->input("idRequerimiento");  
-            $porcentaje = $request->input("porcentajeEjecutado");                                   
             $cambios=$requerimiento->numeroCambios;
+            $fechaRealCierre = $request->input("fechaRealCierre");
             if ($cambios == null) {
-                $cambios = 1;
-                DB::select('call editarRequerimiento(?,?,?,?)', array($idRequerimiento, $fechaRealCierre, $porcentaje, $cambios));                        
+                $cambios = 1;                       
             }                      
         else {
-            $cambios +=1;
-            DB::select('call editarRequerimiento(?,?,?,?)', array($idRequerimiento, $fechaRealCierre, $porcentaje, $cambios));             
+            $cambios +=1;             
             }
-        }
-        return redirect('requerimientos/{{ idRequerimiento }}');
+        } else {
+            $requerimiento = DB::table('requerimientos')->select('fechaRealCierre')->where('id', $request->input("idRequerimiento"))->first();
+            $fechaRealCierre = $requerimiento->fechaRealCierre;
+            $requerimiento = DB::table('requerimientos')->select('numeroCambios')->where('id', $request->input("idRequerimiento"))->first();
+            $cambios=$requerimiento->numeroCambios;                      
+        }                               
+          
+        if ($request->input("porcentajeEjecutado") != null) {
+            $porcentaje = $request->input("porcentajeEjecutado"); 
+            } else {
+                $requerimiento = DB::table('requerimientos')->select('numeroCambios')->where('id', $request->input("idRequerimiento"))->first();
+                $porcentaje = $requerimiento->porcentajeEjecutado;               
+            }
+
+        DB::select('call editarRequerimiento(?,?,?,?)', array($idRequerimiento, $fechaRealCierre, $porcentaje, $cambios));            
+                                
+        return redirect('requerimientos');
     }
 
     /**

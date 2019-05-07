@@ -20,7 +20,7 @@ class CreateRequerimientosTable extends Migration
             $table->datetime('fechaSolicitud');
             $table->datetime('fechaCierre');
             $table->datetime('fechaRealCierre')->nullable();
-            $table->integer('numeroCambios', false, false)->length(2)->nullable();
+            $table->integer('numeroCambios', false, false)->length(2)->default(0);
             $table->integer('porcentajeEjecutado', false, false)->length(3)->nullable();
             $table->string('cierre', 200)->nullable();
             $table->boolean('estado')->default(1);

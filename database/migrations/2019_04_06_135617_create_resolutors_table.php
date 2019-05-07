@@ -20,7 +20,7 @@ class CreateResolutorsTable extends Migration
             $table->foreign('idEmpresa')->references('id')->on('empresas');
             $table->bigInteger('idTeam')->unsigned();
             $table->foreign('idTeam')->references('id')->on('teams');
-            $table->boolean('lider');
+            $table->boolean('lider')->default(0);
             $table->timestamps();
         });
     }

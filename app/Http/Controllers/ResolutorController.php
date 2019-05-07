@@ -50,19 +50,17 @@ class ResolutorController extends Controller
             'idEmpresa' => 'required'],
             ['nombreResolutor.required' => 'El campo nombre es obligatorio']);
 
-        if (Input::get('lider')) {
-            $lider = 1;
-        } else {
-            $lider = 0;
-        }
 
         Resolutor::create([
-            'nombreResolutor' => $data['nombreResolutor'],
-            'lider' => $lider,            
+            'nombreResolutor' => $data['nombreResolutor'],          
             'idEmpresa' => $data['idEmpresa'],
             'idTeam' => $data['idTeam'],
         ]);
 
+        if (Input::get('lider')) {
+            $resolutor = DB::table('resolutors')->select('id')->where('nombreResolutor', $data['nombreResolutor'])->first();
+            DB::select('call editarResolutor(?,?)', array(1, $resolutor->id));
+        }    
         return redirect('resolutors');
     }
 
