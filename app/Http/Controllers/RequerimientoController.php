@@ -108,21 +108,88 @@ class RequerimientoController extends Controller
         $teams = Team::all();
         $fechaCierre = new DateTime($requerimiento->fechaCierre);
         $fechaSolicitud = new DateTime($requerimiento->fechaSolicitud);
-        $contador = 0;
-        while ($fechaSolicitud->getTimestamp() <= $fechaCierre->getTimestamp()) {
-            if ($fechaSolicitud->format('l') == 'Saturday' or $fechaSolicitud->format('l') == 'Sunday') {
-                $fechaSolicitud->modify("+1 days");
+        $fechaRealCierre = new DateTime($requerimiento->fechaRealCierre);
+        $hastaCierre = 0;
+        $variable = $fechaSolicitud;
+        while ($variable->getTimestamp() <= $fechaCierre->getTimestamp()) {
+            if ($variable->format('l') == 'Saturday' or $variable->format('l') == 'Sunday') {
+                $variable->modify("+1 days");
             }else{
-                $contador++;
-                $fechaSolicitud->modify("+1 days");                           
+                $hastaCierre++;
+                $variable->modify("+1 days");                           
             }
         }
 
+        $hastaHoy = 0;
         $hoy = new DateTime();
-        dd($hoy);       
+        if ($requerimiento->estado == 1) {
+            $variable = new DateTime($requerimiento->fechaSolicitud);           
+            while ($variable->getTimestamp() <= $hoy->getTimestamp()) {
+                if ($variable->format('l') == 'Saturday' or $variable->format('l') == 'Sunday') {
+                    $variable->modify("+1 days");                    
+                } else {
+                    $hastaHoy++;
+                    $variable->modify("+1 days");
+                }
+            }
 
-        return view('Requerimientos.show', compact('requerimiento', 'resolutors', 'priorities', 'avances', 'teams', "contador"));        
-    }
+        } else 
+        {
+            if ($requerimiento->fechaRealCierre != null) {
+                $variable = new DateTime($requerimiento->fechaSolicitud);             
+                while ($variable->getTimestamp() <= $fechaRealCierre->getTimestamp()) {
+                    if ($variable->format('l') == 'Saturday' or $variable->format('l') == 'Sunday') {
+                        $variable->modify("+1 days");                    
+                    } else {
+                        $hastaHoy++;
+                        $variable->modify("+1 days");
+                    }
+                }                
+            } else
+            {
+                $variable = new DateTime($requerimiento->fechaSolicitud);               
+                while ($variable->getTimestamp() <= $fechaCierre->getTimestamp()) {
+                    if ($variable->format('l') == 'Saturday' or $variable->format('l') == 'Sunday') {
+                        $variable->modify("+1 days");                    
+                    } else {
+                        $hastaHoy++;
+                        $variable->modify("+1 days");
+                    }
+                }                
+            }
+        }
+
+        $restantes = 0;
+        $comienzo = new DateTime();
+        $fechaFinal;
+            
+            if ($requerimiento->fechaRealCierre != null) {
+
+                $fechaFinal = new DateTime($requerimiento->fechaRealCierre);
+
+            } else {
+
+                $fechaFinal = new DateTime($requerimiento->fechaCierre);
+
+            }
+
+            if ($comienzo>$fechaFinal) {
+                    
+            } else {
+                while ($comienzo->getTimestamp() > $fechaFinal->getTimestamp()){
+
+                    if ($fechaFinal->format('l') == 'Saturday' or $fechaFinal->format('l') == 'Sunday'){
+                        $fechaFinal->modify("+1 days");                         
+                    } else {
+                        $restantes++;
+                        $fechaFinal->modify("+1 days");                        
+                    }
+                }
+            }
+         
+
+        return view('Requerimientos.show', compact('requerimiento', 'resolutors', 'priorities', 'avances', 'teams', "hastaCierre", "hastaHoy", "restantes", "hoy", "fechaCierre"));        
+        }
 
     /**
      * Show the form for editing the specified resource.
