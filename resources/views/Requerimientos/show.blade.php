@@ -53,9 +53,9 @@
     </p>
     <p>
     	@if ($resolutor->fechaRealCierre != "")
-    		<strong>Mes de cierre real: </strong> {{date('F', strtotime($requerimiento->fechaRealCierre)).strftime("%B") }}
+    		<strong>Mes de cierre real: </strong> {{date('n', strtotime($requerimiento->fechaRealCierre)).strftime("%e") }}
     	@else
-    		<strong>Mes de cierre: </strong>{{ date('F', strtotime($requerimiento->fechaCierre)) }}
+    		<strong>Mes de cierre: </strong>{{ date('n', strtotime($requerimiento->fechaCierre)) }}
     	@endif    	
     </p>		    
     <p><strong>Número de cambios: </strong> {{ $requerimiento->numeroCambios }}</p>
