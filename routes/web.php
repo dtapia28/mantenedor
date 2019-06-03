@@ -16,11 +16,11 @@ Route::get('/', 'WelcomeController@index');
 //Rutas para los create
 
 Route::get('/empresas/nueva', 'EmpresaController@create')
-	->name('Empresas.create')
-	->middleware('auth');
+	->name('Empresas.create');
+	//->middleware('auth');
 
-Route::post('/empresas/crear', 'EmpresaController@store')
-	->middleware('auth');
+Route::post('/empresas/crear', 'EmpresaController@store');
+	//->middleware('auth');
 
 Route::get('/priorities/nueva', 'PriorityController@create')
 	->name('Priority.create')
@@ -68,8 +68,8 @@ Route::post('/avances/ingresar', 'AvanceController@store')
 
 
 //Rutas para los index
-Route::get('/empresas', 'EmpresaController@index')
-	->middleware('auth');
+Route::get('/empresas', 'EmpresaController@index');
+	//->middleware('auth');
 
 Route::get('/priorities', 'PriorityController@index')
 	->middleware('auth');
@@ -94,8 +94,8 @@ Route::get('/requerimientos/{requerimiento}/avances', 'AvanceController@index')
 
 Route::get('/empresas/{empresa}', 'EmpresaController@show')
     ->where('id', '[0-9]+')
-    ->name('Empresas.show')
-	->middleware('auth');    
+    ->name('Empresas.show');
+	//->middleware('auth');    
 
 Route::get('/priorities/{priority}', 'PriorityController@show')
 	->where('id', '[0-9]+')
@@ -141,11 +141,11 @@ Route::put('/requerimientos/agrupar', 'RequerimientoController@agrupar')
 // Rutas para los edit
 
 
-Route::get('/empresas/{empresa}/editar', 'EmpresaController@edit')->name('Empresas.edit')
-	->middleware('auth');
+Route::get('/empresas/{empresa}/editar', 'EmpresaController@edit')->name('Empresas.edit');
+	//->middleware('auth');
 
-Route::put('/empresas/{empresa}', 'EmpresaController@update')
-	->middleware('auth');
+Route::put('/empresas/{empresa}', 'EmpresaController@update');
+	//->middleware('auth');
 
 
 Route::get('/priorities/{priority}/editar', 'PriorityController@edit')->name('Priorities.edit')
@@ -184,8 +184,8 @@ Route::put('/teams/{team}', 'TeamController@update')
 
 //Rutas para destroy
 
-Route::delete('/empresas/{empresa}', 'EmpresaController@destroy')->name('Empresas.destroy')
-	->middleware('auth');
+Route::delete('/empresas/{empresa}', 'EmpresaController@destroy')->name('Empresas.destroy');
+	//->middleware('auth');
 
 Route::delete('/priorities/{priority}', 'PriorityController@destroy')->name('Priorities.destroy')
 	->middleware('auth');
