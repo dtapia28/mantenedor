@@ -26,15 +26,21 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav bd-navbar-nav flex-row">
+                @can('editar')
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/empresas') }}">Empresas</a>               
                 </li>
+
                 <li>
                      <a class="nav-link" href="{{ url('/priorities') }}">Prioridades</a>                	
                 </li>
+                @endcan
+                @can('ver')                
                 <li>
                      <a class="nav-link" href="{{ url('/requerimientos') }}">Requerimientos</a>                	
                 </li>
+                @endcan
+                @can('editar')
                 <li>
                      <a class="nav-link" href="{{ url('/solicitantes') }}">Solicitantes</a>                 
                 </li>
@@ -43,7 +49,8 @@
                 </li>
                 <li>
                      <a class="nav-link" href="{{ url('/resolutors') }}">Resolutores</a>                
-                </li>                                                                   
+                </li> 
+                @endcan                                                                  
             </ul>
         </div>
                     <!-- Right Side Of Navbar -->

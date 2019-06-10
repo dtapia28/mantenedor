@@ -5,11 +5,13 @@
 	<h1>Listado de Requerimientos</h1>	
 	</header>
 	<main>
+		@can('editar')
 		<div class="form-check form-check-inline">
 			<form method='HEAD' action="{{ url('requerimientos/nuevo') }}">
 				<button type="submit" value="Nuevo Requerimiento" class="btn btn-primary" name="">Nuevo Requerimiento</button>
 			</form>
 		</div>
+		@endcan
 		<div class="form-check form-check-inline">
 			<form class="navbar-form navbar-left pull-right" method='GET' action="{{ url('requerimientos/') }}">
 				<select class="custom-select" name="state">

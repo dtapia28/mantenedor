@@ -68,8 +68,8 @@ Route::post('/avances/ingresar', 'AvanceController@store')
 
 
 //Rutas para los index
-Route::get('/empresas', 'EmpresaController@index')
-	->middleware('auth');
+Route::get('/empresas', 'EmpresaController@index');
+	//->middleware('auth');
 
 Route::get('/priorities', 'PriorityController@index')
 	->middleware('auth');
@@ -203,6 +203,10 @@ Route::delete('/requerimientos/{requerimiento}', 'RequerimientoController@destro
 	->middleware('auth');
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
