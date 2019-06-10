@@ -207,3 +207,7 @@ Route::delete('/requerimientos/{requerimiento}', 'RequerimientoController@destro
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
