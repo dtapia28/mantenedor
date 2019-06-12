@@ -68,7 +68,9 @@ Route::post('/avances/ingresar', 'AvanceController@store')
 
 
 //Rutas para los index
-Route::get('/empresas', 'EmpresaController@index');
+Route::group(['middleware' => 'can:editar'], function(){
+	Route::get('/empresas', 'EmpresaController@index');
+});	
 	//->middleware('auth');
 
 Route::get('/priorities', 'PriorityController@index')
