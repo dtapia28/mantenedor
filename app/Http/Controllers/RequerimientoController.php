@@ -106,25 +106,29 @@ class RequerimientoController extends Controller
         $resolutors = Resolutor::all();
         $priorities = Priority::all();
         $teams = Team::all();
-        $fechaCierre = new DateTime($requerimiento->fechaCierre);
-        $fechaSolicitud = new DateTime($requerimiento->fechaSolicitud);
-        $fechaRealCierre = new DateTime($requerimiento->fechaRealCierre);
+        define("FECHACIERRE", "$requerimiento->fechaCierre");
+        define("FECHASOLICITUD", "$requerimiento->fechaSolicitud");
+        define("FECHAREALCIERRE", "$requerimiento->fechaRealCierre");
+        $fechaCierre = new DateTime(FECHACIERRE);
         $hastaCierre = 0;
-        $variable = $fechaSolicitud;
-        while ($variable->getTimestamp() <= $fechaCierre->getTimestamp()) {
+        $variable = new DateTime(FECHASOLICITUD);
+
+        while ($variable->getTimestamp() < $fechaCierre->getTimestamp()) {
             if ($variable->format('l') == 'Saturday' or $variable->format('l') == 'Sunday') {
-                $variable->modify("+1 days");
+                $variable->modify("+1 days");               
             }else{
                 $hastaCierre++;
-                $variable->modify("+1 days");                           
+                $variable->modify("+1 days");                       
             }
         }
 
-        $hastaHoy = 0;
+        $hastaHoy = -1;
         $hoy = new DateTime();
-        if ($requerimiento->estado == 1) {
-            $variable = new DateTime($requerimiento->fechaSolicitud);           
-            while ($variable->getTimestamp() <= $hoy->getTimestamp()) {
+        if ($requerimiento->estado == 1) 
+        {
+
+            $variable = new DateTime(FECHASOLICITUD);         
+            while ($variable->getTimestamp() < $hoy->getTimestamp()) {
                 if ($variable->format('l') == 'Saturday' or $variable->format('l') == 'Sunday') {
                     $variable->modify("+1 days");                    
                 } else {
@@ -161,35 +165,62 @@ class RequerimientoController extends Controller
 
         $restantes = 0;
         $comienzo = new DateTime();
-        $fechaFinal;
-            
-            if ($requerimiento->fechaRealCierre != null) {
+        $fechaFinal = new DateTime(FECHACIERRE);
 
-                $fechaFinal = new DateTime($requerimiento->fechaRealCierre);
+        if ($comienzo>$fechaFinal) 
+        {
 
-            } else {
+            $restantes = 0;    
 
-                $fechaFinal = new DateTime($requerimiento->fechaCierre);
+        } else {
+            while ($comienzo->getTimestamp() < $fechaFinal->getTimestamp()){
 
+                if ($comienzo->format('l') == 'Saturday' or $comienzo->format('l') == 'Sunday'){
+                    $comienzo->modify("+1 days");                         
+                } else {
+                    $restantes++;
+                    $comienzo->modify("+1 days");                        
+                }
             }
+        }
 
-            if ($comienzo>$fechaFinal) {
-                    
-            } else {
-                while ($comienzo->getTimestamp() > $fechaFinal->getTimestamp()){
+        $excedidos = -1;
 
-                    if ($fechaFinal->format('l') == 'Saturday' or $fechaFinal->format('l') == 'Sunday'){
-                        $fechaFinal->modify("+1 days");                         
+        if ($restantes>0) {
+            $excedidos = 0;
+        } else{
+
+            $cierreReal = new DateTime(FECHAREALCIERRE);
+            $cierre = new DateTime(FECHACIERRE);
+            $ahora = new DateTime();
+            if ($ahora->getTimestamp() < $cierreReal->getTimestamp()) {
+                while ($cierre->getTimestamp() < $ahora->getTimestamp()) {
+
+                    if ($cierre->format('l') == 'Saturday' or $comienzo->format('l') == 'Sunday') {
+
+                        $cierre->modify("+1 days");
                     } else {
-                        $restantes++;
-                        $fechaFinal->modify("+1 days");                        
+                        $excedidos++;
+                        $cierre->modify("+1 days");
+                    }
+                }
+            } else {
+                while ($cierre->getTimestamp() < $cierreReal->getTimestamp()) {
+
+                    if ($cierre->format('l') == 'Saturday' or $comienzo->format('l') == 'Sunday') {
+
+                        $cierre->modify("+1 days");
+                    } else {
+                        $excedidos++;
+                        $cierre->modify("+1 days");
                     }
                 }
             }
-         
-
-        return view('Requerimientos.show', compact('requerimiento', 'resolutors', 'priorities', 'avances', 'teams', "hastaCierre", "hastaHoy", "restantes", "hoy", "fechaCierre"));        
         }
+
+
+        return view('Requerimientos.show', compact('requerimiento', 'resolutors', 'priorities', 'avances', 'teams', 'hastaCierre', 'hastaHoy', 'restantes', 'hoy', 'fechaCierre', 'excedidos'));        
+    }
 
     /**
      * Show the form for editing the specified resource.

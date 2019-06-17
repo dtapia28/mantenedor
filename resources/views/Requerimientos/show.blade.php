@@ -71,13 +71,13 @@
     <p><strong>Días laborales: </strong> {{ $hastaCierre }}</p>
     <p><strong>Días transcurridos: </strong> {{ $hastaHoy }}</p>
     <p><strong>Días restantes: </strong> {{ $restantes }}</p>
-    <p><strong>Días excedidos: </strong> {{ $hastaHoy-$hastaCierre }}</p>
+    <p><strong>Días excedidos: </strong> {{ $excedidos }}</p>
     <p><strong>Avance diario: </strong>{{ number_format(100/$hastaCierre, 2, ',', '.') }}%</p>
 
     	@if ($fechaCierre<=$hoy)
     		    <p><strong>Avance esperado: </strong>100%</p>
     	@else
-    		<p><strong>Avance esperado: </strong>{{ (100/$hastaCierre)*$hastaHoy }}</p>
+    		<p><strong>Avance esperado: </strong>{{ (100/$hastaCierre)*$hastaHoy }}%</p>
     	@endif		      
     <p><strong>Porcentaje ejecutado: </strong> {{ $requerimiento->porcentajeEjecutado }}%</p>
 

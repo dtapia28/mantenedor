@@ -68,9 +68,16 @@ Route::post('/avances/ingresar', 'AvanceController@store')
 
 
 //Rutas para los index
-Route::group(['middleware' => 'can:editar'], function(){
+//Route::group(['middleware' => 'can:ver'], function()
+//{
+
 	Route::get('/empresas', 'EmpresaController@index');
-});	
+	Route::get('/dashboard', 'DashboardController@index');
+	Route::get('/dashboard/green', 'DashboardController@green');
+	Route::get('/dashboard/yellow', 'DashboardController@yellow');
+	Route::get('/dashboard/red', 'DashboardController@red');		
+	
+//});	
 	//->middleware('auth');
 
 Route::get('/priorities', 'PriorityController@index')
