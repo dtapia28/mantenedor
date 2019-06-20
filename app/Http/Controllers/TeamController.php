@@ -43,7 +43,9 @@ class TeamController extends Controller
             [ 'nameTeam.required' => 'El campo nombre es obligatorio']);
 
         Team::create([
-            'nameTeam' => $data['nameTeam']]);
+            'nameTeam' => $data['nameTeam'],
+            'rutEmpresa' => auth()->user()->rutEmpresa,
+        ]);
 
         return redirect('teams');
     }

@@ -97,6 +97,9 @@
    		 </p>
 		@empty
 		@endforelse    
+@endsection
+@section('anidado')
+	<header><h2>Requerimientos anidados</h2></header>
 @endsection   
     @section('footerMain')
     @endsection

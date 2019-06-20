@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Role;
+use App\Empresa;
 use Bouncer;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -52,7 +53,8 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'idEmpresa' => ['required', 'int', 'max:255'],
+            'rut' => ['required', 'string', 'max:10'],
+            'nombre' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -66,13 +68,36 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $empresa = Empresa::where('rut', $data['rut'])->get();
+        if ($empresa->count() != 0) {
+
         $user = User::create([
             'name' => $data['name'],
-            'idEmpresa' => $data['idEmpresa'],
+            'rutEmpresa' => $data['rut'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
         Bouncer::assign('usuario')->to($user);
-        return $user;    
+        return $user;
+
+        } else {
+
+        Empresa::create([
+            'rut' => $data['rut'],
+            'nombreEmpresa' => $data['nombre']]);
+
+        $user = User::create([
+            'name' => $data['name'],
+            'rutEmpresa' => $data['rut'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+
+        Bouncer::assign('administrador')->to($user);
+        return $user; 
+
+        }
+
     }
 }

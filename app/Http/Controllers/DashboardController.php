@@ -19,7 +19,7 @@ class DashboardController extends Controller
     	foreach ($requerimientos as $requerimiento) {
     		$hoy = new DateTime();
     		$fechaCierre = new DateTime($requerimiento->fechaCierre);
-    		if ($requerimiento->fechaRealCierre == "" or ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
+    		if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
     			$variable = 0;
     			while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
 
@@ -52,7 +52,7 @@ class DashboardController extends Controller
     	foreach ($requerimientos as $requerimiento) {
     		$hoy = new DateTime();
     		$fechaCierre = new DateTime($requerimiento->fechaCierre);
-    		if ($requerimiento->fechaRealCierre == "" or ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
+    		if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
     			$variable = 0;
     			while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
 
@@ -81,7 +81,7 @@ class DashboardController extends Controller
         foreach ($requerimientos as $requerimiento) {
             $hoy = new DateTime();
             $fechaCierre = new DateTime($requerimiento->fechaCierre);
-            if ($requerimiento->fechaRealCierre == "" or ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
+            if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
                 $variable = 0;
                 while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
 

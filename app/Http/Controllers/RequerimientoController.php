@@ -11,7 +11,6 @@ use App\Avance;
 use App\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use DateTime;
 use DateInterval;
@@ -25,9 +24,13 @@ class RequerimientoController extends Controller
      */
     public function index(Request $request)
     {
+        
         $resolutors = Resolutor::all();
         $teams = Team::all();
-        $requerimientos = Requerimiento::where('estado', $request->state)->paginate(10);
+        $requerimientos = Requerimiento::where([
+            ['estado', '=', $request->state],
+            ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+        ])->simplePaginate(10);
         $valor = 1;
         if ($request->state == 1) {
             $valor = 1;
@@ -36,6 +39,7 @@ class RequerimientoController extends Controller
         }
 
         return view('Requerimientos.index', compact('requerimientos', 'resolutors', 'teams', 'valor'));
+
     }
 
     /**
@@ -45,12 +49,12 @@ class RequerimientoController extends Controller
      */
     public function create()
     {
-        $empresas = Empresa::all();
+    
         $resolutors = Resolutor::all();
         $priorities = Priority::all();
         $solicitantes = Solicitante::all();
 
-        return view('Requerimientos.create', compact('empresas', 'resolutors', 'priorities', 'solicitantes'));        
+        return view('Requerimientos.create', compact('resolutors', 'priorities', 'solicitantes'));        
     }
 
     /**
@@ -72,8 +76,7 @@ class RequerimientoController extends Controller
             'cierre' => 'nullable',
             'idSolicitante' => 'required',
             'idPrioridad' => 'required',
-            'idResolutor' => 'required',
-            'idEmpresa' => 'required'],
+            'idResolutor' => 'required'],
             ['nombreResolutor.required' => 'El campo nombre es obligatorio'],
             ['fechaEmail.required' => 'La fecha de email es obligatoria'],
             ['fechaSolicitud' => 'La fecha de solicitud es obligatoria'],
@@ -88,7 +91,7 @@ class RequerimientoController extends Controller
             'idSolicitante' => $data['idSolicitante'],
             'idPrioridad' => $data['idPrioridad'],
             'idResolutor' => $data['idResolutor'],
-            'idEmpresa' => $data['idEmpresa'],
+            'rutEmpresa' => auth()->user()->rutEmpresa,
         ]);
 
         return redirect('requerimientos');        
@@ -140,7 +143,7 @@ class RequerimientoController extends Controller
         } else 
         {
             if ($requerimiento->fechaRealCierre != null) {
-                $variable = new DateTime($requerimiento->fechaSolicitud);             
+                $variable = new DateTime(FECHASOLICITUD);             
                 while ($variable->getTimestamp() <= $fechaRealCierre->getTimestamp()) {
                     if ($variable->format('l') == 'Saturday' or $variable->format('l') == 'Sunday') {
                         $variable->modify("+1 days");                    
@@ -151,7 +154,7 @@ class RequerimientoController extends Controller
                 }                
             } else
             {
-                $variable = new DateTime($requerimiento->fechaSolicitud);               
+                $variable = new DateTime(FECHASOLICITUD);               
                 while ($variable->getTimestamp() <= $fechaCierre->getTimestamp()) {
                     if ($variable->format('l') == 'Saturday' or $variable->format('l') == 'Sunday') {
                         $variable->modify("+1 days");                    
@@ -250,12 +253,12 @@ class RequerimientoController extends Controller
         $data = request()->validate([
             'textoRequerimiento' => 'nullable',
             'idSolicitante' => 'nullable',
-            'idrioridad' => 'nullable',
+            'idPrioridad' => 'nullable',
             'idResolutor' => 'nullable',
             'idEmpresa' => 'nullable'
         ]);
         $requerimiento->update($data);
-        return redirect()->route('Empresas.show', ['empresa' => $empresa]);         
+        return redirect('requerimientos');         
     }
 
     /**
@@ -266,6 +269,10 @@ class RequerimientoController extends Controller
      */
     public function destroy(Requerimiento $requerimiento)
     {
+        $avances = Avance::where('idRequerimientos', $requerimiento->id)->get();
+        foreach ($avances as $avance) {
+            $avance->delete();
+        }
         $requerimiento->delete();
         return redirect('requerimientos');   
     }
@@ -331,7 +338,11 @@ class RequerimientoController extends Controller
             ['cierre.required' => 'El texto de cierre es obligatorio']);
 
         $requerimiento->update($data);
-        DB::select('call terminarRequerimiento(?)', array($requerimiento->id));        
+        $data = [
+            'estado' => 0,
+            'porcentajeEjecutado' => 100,
+        ];
+        DB::table('requerimientos')->where('id', $requerimiento->id)->update($data);        
 
         return redirect('requerimientos');   
     }              

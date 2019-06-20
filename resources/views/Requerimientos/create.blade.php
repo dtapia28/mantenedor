@@ -45,16 +45,6 @@
                     @endforeach
                 </select>
                 <br>
-                <label for="idEmpresa">Empresa:</label>        
-                <br>                 
-                <select class="form-control col-md-3" name="idEmpresa">
-                    @foreach($empresas as $empresa)
-                        <optgroup>
-                            <option value={{ $empresa->id }}>{{ $empresa->nombreEmpresa }}</option>
-                        </optgroup>
-                    @endforeach
-                </select>
-                <br>
                 <label for="idResolutor">Resolutor:</label>        
                 <br>                 
                 <select class="form-control col-md-3" name="idResolutor">

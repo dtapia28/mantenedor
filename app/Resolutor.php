@@ -11,5 +11,5 @@ class Resolutor extends Model
      *
      * @var array
      */
-    protected $fillable = ['nombreResolutor', 'idEmpresa', 'idTeam'];
+    protected $fillable = ['nombreResolutor', 'rutEmpresa', 'idTeam'];
 }

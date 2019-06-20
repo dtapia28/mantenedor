@@ -43,7 +43,9 @@ class SolicitanteController extends Controller
             [ 'nombreSolicitante.required' => 'El campo nombre es obligatorio']);
 
         Solicitante::create([
-            'nombreSolicitante' => $data['nombreSolicitante']]);
+            'nombreSolicitante' => $data['nombreSolicitante'],
+            'rutEmpresa' => auth()->user()->rutEmpresa,
+        ]);
 
         return redirect('solicitantes');        
     }

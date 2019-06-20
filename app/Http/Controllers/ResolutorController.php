@@ -30,10 +30,10 @@ class ResolutorController extends Controller
      */
     public function create()
     {
-        $empresas = Empresa::all();
+
         $teams = Team::all();
 
-        return view('Resolutors.create', compact('empresas', 'teams'));
+        return view('Resolutors.create', compact('teams'));
     }
 
     /**
@@ -46,21 +46,23 @@ class ResolutorController extends Controller
     {
         $data = request()->validate([
             'nombreResolutor' => 'required',
-            'idTeam' => 'required',
-            'idEmpresa' => 'required'],
+            'idTeam' => 'required'],
             ['nombreResolutor.required' => 'El campo nombre es obligatorio']);
 
 
         Resolutor::create([
             'nombreResolutor' => $data['nombreResolutor'],          
-            'idEmpresa' => $data['idEmpresa'],
+            'rutEmpresa' => auth()->user()->rutEmpresa,
             'idTeam' => $data['idTeam'],
         ]);
 
         if (Input::get('lider')) {
             $resolutor = DB::table('resolutors')->select('id')->where('nombreResolutor', $data['nombreResolutor'])->first();
-            DB::select('call editarResolutor(?,?)', array(1, $resolutor->id));
-        }    
+            $data = [
+                'lider' => 1];
+            DB::table('resolutors')->where('id', $resolutor->id)->update($data);
+        }
+        $resolutor = null;    
         return redirect('resolutors');
     }
 

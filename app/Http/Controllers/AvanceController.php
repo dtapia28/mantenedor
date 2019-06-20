@@ -43,6 +43,7 @@ class AvanceController extends Controller
      */
     public function store(Request $request)
     {
+        
         $data = request()->validate([
             'textAvance' => 'required',
             'idRequerimiento' => 'required'],
@@ -81,9 +82,14 @@ class AvanceController extends Controller
                 $porcentaje = $requerimiento->porcentajeEjecutado;               
             }
 
-        DB::select('call editarRequerimiento(?,?,?,?)', array($idRequerimiento, $fechaRealCierre, $porcentaje, $cambios));            
+            $data = [
+                'fechaRealCierre' => $fechaRealCierre,
+                'porcentajeEjecutado' => $porcentaje,
+                'numeroCambios' => $cambios];
+
+        DB::table('requerimientos')->where('id', $request->input('idRequerimiento'))->update($data);            
                                 
-        return redirect('requerimientos');
+        return redirect(url("requerimientos/$request->idRequerimiento"));
     }
 
     /**

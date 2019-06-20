@@ -11,7 +11,7 @@
 		<h1>Listado de Requerimientos</h1>	
 		</header>
 		<main>
-			@can('editar')
+			@can('ver')
 			<div class="form-check form-check-inline">
 				<form method='HEAD' action="{{ url('requerimientos/nuevo') }}">
 					<button type="submit" value="Nuevo Requerimiento" class="btn btn-primary" name="">Nuevo Requerimiento</button>
@@ -128,10 +128,14 @@
 					</form>
 				</td>
 				<td>
-	                <input type="number" name="anidar" class="form-control">				
+					<form method="POST" action="{{ url('requerimientos/anidar') }}">
+						{{ csrf_field() }}						
+	               	 	<input type="number" name="anidar" class="form-control">
+	               	 	<input type="hidden" name="requerimiento" value={{ $requerimiento->id }}>				
 				</td>
 				<td>
-					<button type="button" class="btn btn-success">Anidar</button>
+						<button type="submit" class="btn btn-success">Anidar</button>
+					</form>
 				</td>																                  
 	                    @empty
 	                    @endforelse

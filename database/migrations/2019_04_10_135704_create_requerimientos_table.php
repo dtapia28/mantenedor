@@ -30,8 +30,8 @@ class CreateRequerimientosTable extends Migration
             $table->foreign('idPrioridad')->references('id')->on('priorities');
             $table->bigInteger('idResolutor')->unsigned();
             $table->foreign('idResolutor')->references('id')->on('resolutors');
-            $table->bigInteger('idEmpresa')->unsigned();
-            $table->foreign('idEmpresa')->references('id')->on('empresas');
+            $table->string('rutEmpresa', 10);
+            $table->foreign('rutEmpresa')->references('rut')->on('empresas');
             $table->timestamps();
         });
     }

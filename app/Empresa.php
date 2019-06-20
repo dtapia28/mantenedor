@@ -14,5 +14,5 @@ class Empresa extends Model
      *
      * @var array
      */
-    protected $fillable = ['nombreEmpresa'];
+    protected $fillable = ['rut','nombreEmpresa'];
 }

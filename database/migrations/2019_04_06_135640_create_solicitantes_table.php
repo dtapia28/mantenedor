@@ -16,6 +16,8 @@ class CreateSolicitantesTable extends Migration
         Schema::create('solicitantes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombreSolicitante', 50)->unique();
+            $table->string('rutEmpresa', 10);
+            $table->foreign('rutEmpresa')->references('rut')->on('empresas');
             $table->timestamps();
         });
     }

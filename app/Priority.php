@@ -11,5 +11,5 @@ class Priority extends Model
      *
      * @var array
      */
-    protected $fillable = ['namePriority'];
+    protected $fillable = ['namePriority', 'rutEmpresa'];
 }

@@ -16,8 +16,8 @@ class CreateResolutorsTable extends Migration
         Schema::create('resolutors', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombreResolutor', 50)->unique();
-            $table->bigInteger('idEmpresa')->unsigned();
-            $table->foreign('idEmpresa')->references('id')->on('empresas');
+            $table->string('rutEmpresa', 10);
+            $table->foreign('rutEmpresa')->references('rut')->on('empresas');
             $table->bigInteger('idTeam')->unsigned();
             $table->foreign('idTeam')->references('id')->on('teams');
             $table->boolean('lider')->default(0);

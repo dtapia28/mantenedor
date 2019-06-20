@@ -60,10 +60,15 @@
         		<article id="requerimiento">
             		@yield('requerimiento')        			
         		</article>
-        		<article id="avances">
+            </section>
+            <aside>                
+        		<section id="avances">
             		@yield('avances')        			
-        		</article>
-        	</section>
+        		</section>
+                <section id="anidado">
+                    @yield('anidado')
+                </section>
+            </aside>    
         </div>        
     </div>
     <footer>

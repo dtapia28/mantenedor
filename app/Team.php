@@ -13,5 +13,5 @@ class Team extends Model
      *
      * @var array
      */
-    protected $fillable = ['nameTeam'];
+    protected $fillable = ['nameTeam', 'rutEmpresa'];
 }

@@ -15,7 +15,7 @@ class PriorityController extends Controller
      */
     public function index()
     {
-        $priorities = Priority::all();
+        $priorities = Priority::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
 
         return view('Priorities.index', compact('priorities'));
     }
@@ -43,7 +43,9 @@ class PriorityController extends Controller
             [ 'namePriority.required' => 'El campo nombre es obligatorio']);
 
         Priority::create([
-            'namePriority' => $data['namePriority']]);
+            'namePriority' => $data['namePriority'],
+            'rutEmpresa' => auth()->user()->rutEmpresa,
+        ]);
 
         return redirect('priorities');
     }

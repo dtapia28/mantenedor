@@ -16,6 +16,8 @@ class CreateTeamsTable extends Migration
         Schema::create('teams', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nameTeam', 50)->unique();
+            $table->string('rutEmpresa', 10);
+            $table->foreign('rutEmpresa')->references('rut')->on('empresas');
             $table->timestamps();
         });
     }
