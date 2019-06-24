@@ -24,21 +24,15 @@ class RequerimientoController extends Controller
      */
     public function index(Request $request)
     {
-
-        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
-        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
-        if ($request->state != "") {
-            $request->session()->put('state', $request->state);            
-        } else
-        {
-            $request->session()->put('state', 1);
-        }
+        
+        $resolutors = Resolutor::all();
+        $teams = Team::all();
         $requerimientos = Requerimiento::where([
-            ['estado', '=', $request->session()->get('state')],
+            ['estado', '=', $request->state],
             ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-        ])->get();
+        ])->simplePaginate(10);
         $valor = 1;
-        if ($request->session()->get('state') == 1) {
+        if ($request->state == 1) {
             $valor = 1;
         }else {
             $valor = 0;
@@ -56,9 +50,9 @@ class RequerimientoController extends Controller
     public function create()
     {
     
-        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
-        $priorities = Priority::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
-        $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $resolutors = Resolutor::all();
+        $priorities = Priority::all();
+        $solicitantes = Solicitante::all();
 
         return view('Requerimientos.create', compact('resolutors', 'priorities', 'solicitantes'));        
     }
@@ -112,9 +106,9 @@ class RequerimientoController extends Controller
     public function show(Requerimiento $requerimiento)
     {
         $avances = Avance::latest('created_at')->paginate(9);
-        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
-        $priorities = Priority::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
-        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $resolutors = Resolutor::all();
+        $priorities = Priority::all();
+        $teams = Team::all();
         define("FECHACIERRE", "$requerimiento->fechaCierre");
         define("FECHASOLICITUD", "$requerimiento->fechaSolicitud");
         define("FECHAREALCIERRE", "$requerimiento->fechaRealCierre");
@@ -239,11 +233,12 @@ class RequerimientoController extends Controller
      */
     public function edit(Requerimiento $requerimiento)
     {
-        $solicitantes = Solicitante::all('rutEmpresa', auth()->user()->rutEmpresa);
-        $priorities = Priority::where('rutEmpresa', auth()->user()->rutEmpresa);
-        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa);
+        $solicitantes = Solicitante::all();
+        $priorities = Priority::all();
+        $resolutors = Resolutor::all();
+        $empresas = Empresa::all();
 
-        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors'));        
+        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'empresas'));        
     }
 
     /**
@@ -274,7 +269,7 @@ class RequerimientoController extends Controller
      */
     public function destroy(Requerimiento $requerimiento)
     {
-        $avances = Avance::where('idRequerimiento', $requerimiento->id)->get();
+        $avances = Avance::where('idRequerimientos', $requerimiento->id)->get();
         foreach ($avances as $avance) {
             $avance->delete();
         }

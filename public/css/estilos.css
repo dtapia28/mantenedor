@@ -29,23 +29,40 @@ main {
 }
 
 #articulos #requerimiento {
-	width: 600px;
+	width: 550px;
 	display: inline-block;
 	vertical-align: top;
+	border: red 2px solid;
 }
 
-#articulos #detalles {
-	width: 800px;
-	height: 800px;
+#articulos #avances {
+	width: 600px;
+	height: 400px;
 	display: inline;
 	vertical-align: top;
 	margin: 0px;
 	padding: 0px;
 	font-size: 100%;
-	float: right;
+	border: blue 2px solid;
 }
 
-#articulos #detalles #avances {
-	height: 400px;
+#articulos #avances header {
+	font-size: 5px;
+	text-align: center;
 }
 
+#articulos #anidado {
+	width: 400px;
+	height: 300px;
+	display: inline;
+	vertical-align: top;
+	margin: 0px;
+	padding: 0px;
+	font-size: 100%;
+	border: green 2px solid;
+}
+
+#articulos #anidado header {
+	font-size: 5px;
+	text-align: center;
+}

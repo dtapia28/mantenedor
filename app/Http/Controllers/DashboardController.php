@@ -15,10 +15,7 @@ class DashboardController extends Controller
     	$verde = 0;
     	$amarillo = 0;
     	$rojo = 0;
-    	$requerimientos = Requerimiento::where([
-            ['estado', 1],
-            ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-        ])->get();
+    	$requerimientos = Requerimiento::where('estado', 1)->get();
     	foreach ($requerimientos as $requerimiento) {
     		$hoy = new DateTime();
     		$fechaCierre = new DateTime($requerimiento->fechaCierre);
@@ -48,12 +45,9 @@ class DashboardController extends Controller
 
     public function green(){
 
-        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();  
-        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();          	
-    	$requerimientos = Requerimiento::where([
-            ['estado', 1],
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-        ])->get();
+        $resolutors = Resolutor::all();  
+        $teams = Team::all();          	
+    	$requerimientos = Requerimiento::where('estado', 1)->get();
     	$requerimientosGreen = [];
     	foreach ($requerimientos as $requerimiento) {
     		$hoy = new DateTime();
@@ -80,12 +74,9 @@ class DashboardController extends Controller
 
     public function yellow(){
 
-        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();  
-        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();           
-        $requerimientos = Requerimiento::where([
-            ['estado', 1],
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-        ])->get();
+        $resolutors = Resolutor::all();  
+        $teams = Team::all();           
+        $requerimientos = Requerimiento::where('estado', 1)->get();
         $requerimientosYellow = [];
         foreach ($requerimientos as $requerimiento) {
             $hoy = new DateTime();
@@ -112,12 +103,9 @@ class DashboardController extends Controller
 
     public function red(){
 
-        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();  
-        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();           
-        $requerimientos = Requerimiento::where([
-            ['estado', 1],
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-        ])->get();
+        $resolutors = Resolutor::all();  
+        $teams = Team::all();           
+        $requerimientos = Requerimiento::where('estado', 1)->get();
         $requerimientosRed = [];
         foreach ($requerimientos as $requerimiento) {
             $hoy = new DateTime();

@@ -53,7 +53,6 @@
 	                    <th>Fecha Cierre</th>
 	                    <th>Resolutor</th>
 	                    <th>Team</th>
-	                    <th>Porcentaje</th>
 	                    <th></th>
 	                    <th></th>
 	                    <th></th>
@@ -69,7 +68,6 @@
 	                    <th>Fecha Cierre</th>
 	                    <th>Resolutor</th>
 	                    <th>Team</th>
-	                    <th>Porcentaje</th>
 	                    <th></th>
 	                    <th></th>
 	                    <th></th>
@@ -81,7 +79,7 @@
 						@forelse ($requerimientos as $requerimiento)
 							<tr>
 							<th id="tabla" scope="row">
-								<a href="../requerimientos/{{ $requerimiento->id }}">					
+								<a href="/requerimientos/{{ $requerimiento->id }}">					
 									{{ $requerimiento->id }}
 								</a>						
 							</th>
@@ -103,22 +101,11 @@
 							@empty
 							@endforelse	
 							@forelse ($teams as $team)
-								@forelse ($resolutors as $resolutor)
-									@if ($requerimiento->idResolutor == $resolutor->id)
-										@if ($resolutor->idTeam == $team->id)
-											<td style="text-align: center">				
-											{{ $team->nameTeam }}
-										@endif
-									@endif	
-								@empty
-								@endforelse	
+								@if ($resolutor->idTeam == $team->id)
+								<td style="text-align: center">				
+								{{ $team->nameTeam }}
+								@endif
 							</td>
-							@empty
-							@endforelse
-							@forelse ($requerimientos as $requerimiento)
-								<td style="text-align: center">
-									{{ $requerimiento->porcentajeEjecutado }}
-								</td>
 							@empty
 							@endforelse
 							<td>
@@ -158,5 +145,6 @@
 	          </div>
 	          <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 	        </div>												
+		{{ $requerimientos->links() }}
 		</main>
 	@endsection	

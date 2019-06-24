@@ -15,8 +15,7 @@ class TeamController extends Controller
      */
     public function index()
     {
-
-        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $teams = Team::all();
 
         return view('Teams.index', compact('teams'));
     }

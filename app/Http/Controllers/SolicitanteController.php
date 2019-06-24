@@ -15,7 +15,7 @@ class SolicitanteController extends Controller
      */
     public function index()
     {
-        $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $solicitantes = Solicitante::all();
 
         return view('Solicitantes.index', compact('solicitantes'));
     }
@@ -46,7 +46,7 @@ class SolicitanteController extends Controller
             'nombreSolicitante' => $data['nombreSolicitante'],
             'rutEmpresa' => auth()->user()->rutEmpresa,
         ]);
-¿
+
         return redirect('solicitantes');        
     }
 

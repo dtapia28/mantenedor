@@ -34,16 +34,7 @@
 			@endforelse
 		@empty
 		@endforelse
-    </p>
-    <p><strong>Avance diario: </strong>{{ number_format(100/$hastaCierre, 2, ',', '.') }}%</p>
-
-    	@if ($fechaCierre<=$hoy)
-    		    <p><strong>Avance esperado: </strong>100%</p>
-    	@else
-    		<p><strong>Avance esperado: </strong>{{ (100/$hastaCierre)*$hastaHoy }}%</p>
-    	@endif		      
-    <p><strong>Porcentaje ejecutado: </strong> {{ $requerimiento->porcentajeEjecutado }}%</p>
-              	
+    </p>           	
 	<p>
 		@forelse ($resolutors as $resolutor)
 			@if ($resolutor->id == $requerimiento->idResolutor)
@@ -81,36 +72,29 @@
     <p><strong>Días transcurridos: </strong> {{ $hastaHoy }}</p>
     <p><strong>Días restantes: </strong> {{ $restantes }}</p>
     <p><strong>Días excedidos: </strong> {{ $excedidos }}</p>
+    <p><strong>Avance diario: </strong>{{ number_format(100/$hastaCierre, 2, ',', '.') }}%</p>
+
+    	@if ($fechaCierre<=$hoy)
+    		    <p><strong>Avance esperado: </strong>100%</p>
+    	@else
+    		<p><strong>Avance esperado: </strong>{{ (100/$hastaCierre)*$hastaHoy }}%</p>
+    	@endif		      
+    <p><strong>Porcentaje ejecutado: </strong> {{ $requerimiento->porcentajeEjecutado }}%</p>
+
     <br>
 @endsection 
 @section('avances')
-	<header id="avanceTitulo"><h1>Avances del requerimiento:</h1></header>
+	<header><h1>Avances del requerimiento:</h1></header>
 		<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/avances/nuevo">
 			<button type="submit" value="Ingresar avance" class="btn btn-primary" name="">Ingresar avance</button>
 		</form>		
 		<br>
-		@forelse ($avances as $avance)
-		<table>	
-			<td>
-					@if ($avance->idRequerimiento == $requerimiento->id)
-						<strong>{{ $avance->created_at->format('d-m-Y') }}: </strong>{{ $avance->textAvance }}
-					@endif
-			</td>
-			<td>
-				<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/avances/{{$avance->id}}/editar">
-					{{ csrf_field() }}
-					<input type="image" align="center" src="{{ asset('img/edit.png') }}" width="20" height="20">
-				</form>							
-			</td>	
-			<td>
-				<form method='POST' action="/requerimientos/{{$requerimiento->id}}">
-					{{ csrf_field() }}
-					{{ method_field('DELETE') }}						
-					<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="20" height="20">
-				</form>				
-			</td>
-		</table>	
-
+		@forelse ($avances as $avance)	
+		<p>
+			@if ($avance->idRequerimiento == $requerimiento->id)
+				<strong>{{ $avance->created_at->format('d-m-Y') }}: </strong>{{ $avance->textAvance }}
+			@endif
+   		 </p>
 		@empty
 		@endforelse    
 @endsection

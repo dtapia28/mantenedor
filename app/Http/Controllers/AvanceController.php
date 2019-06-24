@@ -109,9 +109,9 @@ class AvanceController extends Controller
      * @param  \App\Avance  $avance
      * @return \Illuminate\Http\Response
      */
-    public function edit(Requerimiento $requerimiento, Avance $avance)
+    public function edit(Avance $avance)
     {
-        return view('Avances.edit', compact('requerimiento', 'avance'));
+        //
     }
 
     /**
