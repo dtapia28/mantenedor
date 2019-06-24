@@ -64,6 +64,12 @@ Route::get('/requerimientos/{requerimiento}/avances/nuevo', 'AvanceController@cr
 Route::post('/avances/ingresar', 'AvanceController@store')
 	->middleware('auth');
 
+Route::get('/requerimientos/{requerimiento}/avances/{avance}/editar', 'AvanceController@edit')
+	->name('Avances.edit')
+	->middleware('auth');
+
+Route::put('/requerimientos/{requerimiento}/avances', 'AvanceController@update');		
+
 
 
 
