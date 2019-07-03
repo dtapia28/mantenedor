@@ -18,7 +18,7 @@ class ResolutorController extends Controller
      */
     public function index()
     {
-        $resolutors = Resolutor::all();
+        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
 
         return view('Resolutors.index', compact('resolutors'));
     }
@@ -31,7 +31,7 @@ class ResolutorController extends Controller
     public function create()
     {
 
-        $teams = Team::all();
+        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
 
         return view('Resolutors.create', compact('teams'));
     }

@@ -4195,11 +4195,11 @@
 			/* Update all other filter input elements for the new display */
 			var n = features.f;
 			var val = !this.value ? "" : this.value; // mental IE8 fix :-(
-	
 			/* Now do the filter */
 			if ( val != previousSearch.sSearch ) {
+				/*console.log(val);*/					
 				_fnFilterComplete( settings, {
-					"sSearch": val,
+					"sSearch": val,				
 					"bRegex": previousSearch.bRegex,
 					"bSmart": previousSearch.bSmart ,
 					"bCaseInsensitive": previousSearch.bCaseInsensitive
@@ -4262,6 +4262,7 @@
 	function _fnFilterComplete ( oSettings, oInput, iForce )
 	{
 		var oPrevSearch = oSettings.oPreviousSearch;
+		console.log(oPrevSearch);
 		var aoPrevSearch = oSettings.aoPreSearchCols;
 		var fnSaveFilter = function ( oFilter ) {
 			/* Save the filtering values */
@@ -11388,7 +11389,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sNext": "Next",
+				"sNext": "Siguiente",
 	
 	
 				/**
@@ -11411,7 +11412,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sPrevious": "Previous"
+				"sPrevious": "Anterior"
 			},
 	
 			/**
@@ -11423,7 +11424,7 @@
 			 *  @default No data available in table
 			 *
 			 *  @dtopt Language
-			 *  @name DataTable.defaults.language.emptyTable
+			 *  @name DataTable.defaults.language.emp tyTable
 			 *
 			 *  @example
 			 *    $(document).ready( function() {
@@ -11434,7 +11435,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sEmptyTable": "No data available in table",
+			"sEmptyTable": "No hay información para mostrar en la tabla",
 	
 	
 			/**
@@ -11466,7 +11467,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Viendo _START_ de _END_ de _TOTAL_ elemento",
+			"sInfo": "Viendo _START_ a _END_ de _TOTAL_ requerimiento(s)",
 	
 	
 			/**
@@ -11487,7 +11488,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoEmpty": "Showing 0 to 0 of 0 entries",
+			"sInfoEmpty": "Viendo 0 a 0 de 0 requerimientos",
 	
 	
 			/**
@@ -11627,7 +11628,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLengthMenu": "Show _MENU_ entries",
+			"sLengthMenu": "Viendo _MENU_ requerimiento(s)",
 	
 	
 			/**
@@ -11707,7 +11708,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sSearch": "Search:",
+			"sSearch": "Buscar:",
 	
 	
 			/**

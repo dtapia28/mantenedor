@@ -20,6 +20,7 @@
   <!-- Custom styles for this template-->
   <link href="{{ asset('css/sb-admin.css')}}  " rel="stylesheet">
 
+
 </head>
 
 <body id="page-top">
@@ -99,9 +100,9 @@
           <span>Charts</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/extracciones">
           <i class="fas fa-fw fa-table"></i>
-          <span>Tables</span></a>
+          <span>Exportar</span></a>
       </li>
     </ul>
 

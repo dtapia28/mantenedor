@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
 use DateTime;
 use DateInterval;
+use App\Exports\RequerimientosExport;
+use App\Http\Controllers\Controller;
+use Excel;
 
 class RequerimientoController extends Controller
 {
@@ -22,17 +25,27 @@ class RequerimientoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function exportar()
+    {
+        return (new RequerimientosExport(1))->download('requerimientos.xlsx');
+    }
     public function index(Request $request)
     {
-        
+
         $resolutors = Resolutor::all();
         $teams = Team::all();
-        $requerimientos = Requerimiento::where([
-            ['estado', '=', $request->state],
+        if ($request->state != "") {
+            $request->session()->put('state', $request->state);
+        } else {
+            $request->session()->put('state', 1);
+        }
+        $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+            ['estado', '=', $request->session()->get('state')],
             ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-        ])->simplePaginate(10);
+        ])->get();
         $valor = 1;
-        if ($request->state == 1) {
+        if ($request->session()->get('state') == 1) {
             $valor = 1;
         }else {
             $valor = 0;
@@ -50,9 +63,9 @@ class RequerimientoController extends Controller
     public function create()
     {
     
-        $resolutors = Resolutor::all();
-        $priorities = Priority::all();
-        $solicitantes = Solicitante::all();
+        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $priorities = Priority::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
 
         return view('Requerimientos.create', compact('resolutors', 'priorities', 'solicitantes'));        
     }
@@ -90,7 +103,7 @@ class RequerimientoController extends Controller
             'fechaCierre' => $data['fechaCierre'],
             'idSolicitante' => $data['idSolicitante'],
             'idPrioridad' => $data['idPrioridad'],
-            'idResolutor' => $data['idResolutor'],
+            'resolutor' => $data['idResolutor'],
             'rutEmpresa' => auth()->user()->rutEmpresa,
         ]);
 

@@ -13,6 +13,15 @@
 
 Route::get('/', 'WelcomeController@index');
 
+Route::get('/download', 'UserController@exportar');
+Route::get('/downloadReq', 'RequerimientoController@exportar');
+
+Route::get('/extracciones', 'ExtraerController@index');
+Route::get('/extracciones/estado', 'ExtraerController@porEstado');
+Route::get('/extracciones/ejecutado', 'ExtraerController@porEjecutado');
+Route::get('/extracciones/cambios', 'ExtraerController@cambios');
+Route::get('/extracciones/solicitantes', 'ExtraerController@solicitantes');
+
 //Rutas para los create
 
 Route::get('/empresas/nueva', 'EmpresaController@create')
@@ -212,14 +221,6 @@ Route::delete('/requerimientos/{requerimiento}', 'RequerimientoController@destro
 	->middleware('auth');
 
 
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 

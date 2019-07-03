@@ -1,0 +1,65 @@
+div#body{
+
+	margin: auto;
+	margin-top: 30px;
+	width: 1050px;
+	height: 200px;
+
+}
+
+div#body2{
+	margin: auto;
+	margin-top: 30px;
+	width: 1050px;
+	height: 200px;
+
+}
+
+div#porSolicitante{
+	width: 300px;
+	height: 200px;
+	float: left;
+	
+}
+
+div#porEstado{
+
+	width: 300px;
+	height: 200px;
+	float: left;
+}
+
+select {
+
+	width: 200px;
+	height: 37px;
+	margin: 5px;
+}
+
+input {
+	margin: 5px;
+	height: 37px; 
+}
+
+label {
+	margin: 5px;
+}
+
+button {
+
+	margin: 5px;
+}
+
+div#porEjecutado{
+
+	width: 350px;
+	height: 200px;
+	float: left;
+}
+
+select#comparacion{
+
+	width: 200px;
+	height: 37px;
+	margin: 5px;
+}

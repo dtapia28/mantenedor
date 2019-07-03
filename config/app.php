@@ -162,6 +162,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Silber\Bouncer\BouncerServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,        
 
 
         /*
@@ -228,7 +229,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Bouncer' => Silber\Bouncer\BouncerFacade::class,
-
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

@@ -13,6 +13,7 @@
                     <th>Requerimiento</th>
                     <th>Fecha Solicitud</th>
                     <th>Fecha Cierre</th>
+                    <th>Solicitante</th>
                     <th>Resolutor</th>
                     <th>Team</th>
                   </tr>
@@ -23,6 +24,7 @@
                     <th>Requerimiento</th>
                     <th>Fecha Solicitud</th>
                     <th>Fecha Cierre</th>
+                    <th>Solicitante </th>
                     <th>Resolutor</th>
                     <th>Team</th>
                   </tr>
@@ -44,8 +46,14 @@
 						<td style="text-align: center;">	
 							{{ date('d-m-Y', strtotime($requerimiento->fechaCierre)) }}
 						</td>
+            @forelse ($solicitantes as $solicitante)
+              @if($requerimiento->idSolicitante == $solicitante->id)
+                <td style="text-align: center">{{ $solicitante->nombreSolicitante }}</td>
+              @endif  
+            @empty
+            @endforelse
 						@forelse ($resolutors as $resolutor)
-							@if ($requerimiento->idResolutor == $resolutor->id)
+							@if ($requerimiento->resolutor == $resolutor->id)
 						<td style="text-align: center">				
 							{{ $resolutor->nombreResolutor }}
 							@endif
@@ -60,8 +68,8 @@
 						</td>
 						@empty
 						@endforelse						                  
-                    @empty
-                    @endforelse
+          @empty
+          @endforelse
                 </tbody>
               </table>
             </div>

@@ -6,16 +6,60 @@ use Illuminate\Http\Request;
 use App\Requerimiento;
 use App\Resolutor;
 use App\Team;
+use App\Solicitante;
 use DateTime;
 
 class DashboardController extends Controller
 {
-    public function index()
-    {
-    	$verde = 0;
-    	$amarillo = 0;
-    	$rojo = 0;
-    	$requerimientos = Requerimiento::where('estado', 1)->get();
+    public function index(Request $request)
+    {   
+
+        $vVerde = 0;
+        $vAmarillo = 0;
+        $vRojo = 0;
+        if ($request->lista != null) {
+        $variable = $request->lista;
+        $teamEscogido = Team::where([
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+            ['id', $request->lista],
+        ])->get();
+        $resolutors = Resolutor::where([
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+            ['idTeam', $request->lista],
+        ])->get();
+        $requerimientos = Requerimiento::where([
+            ['estado', 1],
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+        ])->get();
+        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();        
+        $requerimientosTeam = [];        
+        foreach ($resolutors as $resolutor) {
+            foreach ($requerimientos as $requerimiento) {
+                if ($requerimiento->resolutor == $resolutor->id) {
+                    $requerimientosTeam[] = $requerimiento;
+                }
+            }
+        }
+
+        $colores = array(
+            'verde' => 12,
+            'amarillo' => 5,
+            'rojo' => 8);
+
+    }
+
+        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $colores = array(
+            'verde' => 0,
+            'amarillo' => 0,
+            'rojo' => 0);
+        $verde = 0;
+        $amarillo = 0;
+        $rojo = 0;
+    	$requerimientos = Requerimiento::where([
+            ['estado', 1],
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+        ])->get();
     	foreach ($requerimientos as $requerimiento) {
     		$hoy = new DateTime();
     		$fechaCierre = new DateTime($requerimiento->fechaCierre);
@@ -40,14 +84,19 @@ class DashboardController extends Controller
     		}
 
     	}
-    	return view('dashboard.index', compact("verde", "amarillo", "rojo"));
+
+    	return view('dashboard.index', compact("verde", "amarillo", "rojo", "teams", "colores"));
     }
 
     public function green(){
 
-        $resolutors = Resolutor::all();  
-        $teams = Team::all();          	
-    	$requerimientos = Requerimiento::where('estado', 1)->get();
+        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();  
+        $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();        	
+    	$requerimientos = Requerimiento::where([
+            ['estado', 1],
+            ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+        ])->get();
     	$requerimientosGreen = [];
     	foreach ($requerimientos as $requerimiento) {
     		$hoy = new DateTime();
@@ -67,9 +116,10 @@ class DashboardController extends Controller
     			$requerimientosGreen[] = $requerimiento;    			
     		}
     		}
+
     	}	
     	
-    	return view('dashboard.green', compact('requerimientosGreen', 'resolutors', 'teams'));   	    	
+    	return view('dashboard.green', compact('requerimientosGreen', 'resolutors', 'teams', 'solicitantes'));   	    	
     }
 
     public function yellow(){
@@ -77,6 +127,7 @@ class DashboardController extends Controller
         $resolutors = Resolutor::all();  
         $teams = Team::all();           
         $requerimientos = Requerimiento::where('estado', 1)->get();
+        $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $requerimientosYellow = [];
         foreach ($requerimientos as $requerimiento) {
             $hoy = new DateTime();
@@ -98,7 +149,7 @@ class DashboardController extends Controller
             }
         }   
         
-        return view('dashboard.yellow', compact('requerimientosYellow', 'resolutors', 'teams'));              
+        return view('dashboard.yellow', compact('requerimientosYellow', 'resolutors', 'teams', 'solicitantes'));              
     }
 
     public function red(){
@@ -106,6 +157,7 @@ class DashboardController extends Controller
         $resolutors = Resolutor::all();  
         $teams = Team::all();           
         $requerimientos = Requerimiento::where('estado', 1)->get();
+        $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $requerimientosRed = [];
         foreach ($requerimientos as $requerimiento) {
             $hoy = new DateTime();
@@ -115,6 +167,6 @@ class DashboardController extends Controller
             }
         }   
         
-        return view('dashboard.red', compact('requerimientosRed', 'resolutors', 'teams'));              
+        return view('dashboard.red', compact('requerimientosRed', 'resolutors', 'teams', 'solicitantes'));              
     }        
 }

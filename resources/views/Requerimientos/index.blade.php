@@ -14,7 +14,7 @@
 			@can('ver')
 			<div class="form-check form-check-inline">
 				<form method='HEAD' action="{{ url('requerimientos/nuevo') }}">
-					<button type="submit" value="Nuevo Requerimiento" class="btn btn-primary" name="">Nuevo Requerimiento</button>
+					<button type="submit" value="Nuevo Requerimiento" class="btn btn-primary" name="">Nuevo</button>
 				</form>
 			</div>
 			@endcan
@@ -31,9 +31,9 @@
 			<div class="form-check form-check-inline">	
 				<?php
 					if ($valor == 1)
-					    {echo "<h5>requerimientos activos:</h5>";}
+					    {echo "<h5>Activos:</h5>";}
 					else {
-					    echo "<h5>requerimientos inactivos:</h5>";
+					    echo "<h5>Inactivos:</h5>";
 					    }
 				?>
 			</div>			
@@ -44,13 +44,14 @@
 	            Requerimientos</div>
 	          <div class="card-body">
 	            <div class="table-responsive">
-	              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+	              <table class="table table-bordered" id="dataTable" width="1300px" cellspacing="0">
 	                <thead>
 	                  <tr>
 	                    <th>Id</th>
 	                    <th>Requerimiento</th>
 	                    <th>Fecha Solicitud</th>
 	                    <th>Fecha Cierre</th>
+	                    <th>Ejecutado (%)</th>
 	                    <th>Resolutor</th>
 	                    <th>Team</th>
 	                    <th></th>
@@ -60,21 +61,6 @@
 	                    <th></th>
 	                  </tr>
 	                </thead>
-	                <tfoot>
-	                  <tr>
-	                    <th>Id</th>
-	                    <th>Requerimiento</th>
-	                    <th>Fecha Solicitud</th>
-	                    <th>Fecha Cierre</th>
-	                    <th>Resolutor</th>
-	                    <th>Team</th>
-	                    <th></th>
-	                    <th></th>
-	                    <th></th>
-	                    <th>Anidar</th>
-	                    <th></th>            
-	                  </tr>
-	                </tfoot>
 	                <tbody>
 						@forelse ($requerimientos as $requerimiento)
 							<tr>
@@ -83,31 +69,45 @@
 									{{ $requerimiento->id }}
 								</a>						
 							</th>
-							<td style="text-align:left;">	
+							<td width="350px" style="text-align:left;">	
 								{{ $requerimiento->textoRequerimiento }}
 							</td>				
 							<td style="text-align: center;">	
 								{{ date('d-m-Y', strtotime($requerimiento->fechaSolicitud)) }}
 							</td>
-							<td style="text-align: center;">	
+							@if($requerimiento->fechaRealCierre != "")
+							<td width="100px" style="text-align: center;">	
+								{{ date('d-m-Y', strtotime($requerimiento->fechaRealCierre)) }}
+							</td>
+							@else							
+							<td width="100px" style="text-align: center;">	
 								{{ date('d-m-Y', strtotime($requerimiento->fechaCierre)) }}
 							</td>
+							@endif
+							<td style="text-align: center;">
+								{{ $requerimiento->porcentajeEjecutado }}
+							</td>
+							<td width="100px" style="text-align: center">								
 							@forelse ($resolutors as $resolutor)
-								@if ($requerimiento->idResolutor == $resolutor->id)
-							<td style="text-align: center">				
+								@if ($requerimiento->resolutor == $resolutor->id)			
 								{{ $resolutor->nombreResolutor }}
 								@endif
-							</td>
 							@empty
 							@endforelse	
-							@forelse ($teams as $team)
-								@if ($resolutor->idTeam == $team->id)
-								<td style="text-align: center">				
-								{{ $team->nameTeam }}
-								@endif
 							</td>
+							@forelse($resolutors as $resolutor)
+								@if($requerimiento->resolutor == $resolutor->id)	
+									@forelse ($teams as $team)
+										@if ($resolutor->idTeam == $team->id)
+										<td style="text-align: center">				
+										{{ $team->nameTeam }}
+										@endif
+									@empty
+									@endforelse
+								@endif	
 							@empty
-							@endforelse
+							@endforelse	
+							</td>							
 							<td>
 					<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/terminado">
 						{{ csrf_field() }}
@@ -145,6 +145,5 @@
 	          </div>
 	          <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 	        </div>												
-		{{ $requerimientos->links() }}
 		</main>
 	@endsection	

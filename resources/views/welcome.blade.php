@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Mantenedor</title>
+        <title>EasyTask</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -68,7 +68,7 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/') }}">Home</a>
+                        <a href="{{ url('/requerimientos') }}">Requerimientos</a>
                     @else
                         <a href="{{ route('login') }}">Login</a>
 
@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Mantenedor
+                    EasyTask
                 </div>
             </div>
         </div>

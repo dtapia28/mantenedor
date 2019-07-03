@@ -1,4 +1,8 @@
 @extends('Bases.dashboard')
+@section('script')
+  <!-- Google Charts -->
+
+@endsection
 @section('contenido')
         <div class="row">
           <div class="col-xl-4 col-sm-6 mb-3">
@@ -51,4 +55,5 @@
             </div>
           </div>
         </div>
+
 @endsection
