@@ -109,9 +109,9 @@ class AvanceController extends Controller
      * @param  \App\Avance  $avance
      * @return \Illuminate\Http\Response
      */
-    public function edit(Avance $avance)
+    public function edit(Requerimiento $requerimiento, Avance $avance)
     {
-        //
+        return view('Avances.edit', compact('requerimiento', 'avance'));
     }
 
     /**
@@ -121,9 +121,16 @@ class AvanceController extends Controller
      * @param  \App\Avance  $avance
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Avance $avance)
+    public function update(Requerimiento $requerimiento, Request $request, Avance $avance)
     {
-        //
+        
+        $data = request()->validate([
+            'idAvance' => 'required',
+            'textAvance' => 'required'
+        ]);
+        $avance->update($data);
+        return redirect(url("requerimientos/$requerimiento->id"));        
+
     }
 
     /**
@@ -132,8 +139,10 @@ class AvanceController extends Controller
      * @param  \App\Avance  $avance
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Avance $avance)
+    public function destroy(Requerimiento $requerimiento, Avance $avance)
     {
-        //
+        
+      $avance->delete();
+      return redirect(url("requerimientos/$requerimiento->id"));
     }
 }

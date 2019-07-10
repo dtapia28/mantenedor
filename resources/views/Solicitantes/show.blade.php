@@ -1,4 +1,4 @@
-@extends('Bases.base')
+@extends('Bases.dashboard')
 @section('contenido')
 	<h1>Detalle de solicitante:</h1>
 	<h2>Solicitante n° {{ $solicitante->id }}</h2>

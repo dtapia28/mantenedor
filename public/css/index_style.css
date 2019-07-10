@@ -22,6 +22,13 @@ div#porSolicitante{
 	
 }
 
+div#porResolutor{
+	width: 300px;
+	height: 200px;
+	float: left;
+	
+}
+
 div#porEstado{
 
 	width: 300px;
@@ -63,3 +70,47 @@ select#comparacion{
 	height: 37px;
 	margin: 5px;
 }
+
+div#graficos1{
+
+	margin: auto;
+	margin-top: auto;
+	width: 1170px;
+	height: 300px;
+
+}
+
+div#graficos{
+
+	margin: auto;
+	padding-left: 200px;
+	margin-top: auto;
+	width: 1170px;
+	height: 500px;
+
+}
+
+div#donutchart{
+
+	width: 380px;
+	height: 280px;	
+	float: left;
+	margin: 0px;
+	padding: 0px;
+
+}
+
+div#donutchart2{
+
+	width: 380px;
+	height: 280px;	
+	float: left;
+
+}
+
+div#donutchart3{
+
+	margin: auto;
+	padding: 0px;
+	margin: 0px;	
+	float: left;

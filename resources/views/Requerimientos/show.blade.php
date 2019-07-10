@@ -1,4 +1,4 @@
-@extends('Bases.detalles')
+@extends('Bases.detalles2')
 @section('titulo', "Detalle de Requerimientos")
 @section('tituloRequerimiento')
 	<h1>Detalle de requerimiento:</h1>
@@ -89,17 +89,52 @@
 			<button type="submit" value="Ingresar avance" class="btn btn-primary" name="">Ingresar avance</button>
 		</form>		
 		<br>
+		<table>
+		<thead>
+			<tr>
+				<th></th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
 		@forelse ($avances as $avance)	
-		<p>
+			<tr>
 			@if ($avance->idRequerimiento == $requerimiento->id)
+				<th style="padding-right: 12px;">
 				<strong>{{ $avance->created_at->format('d-m-Y') }}: </strong>{{ $avance->textAvance }}
+				</th>
+				<td style="padding-right: 12px;">
+					<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/avances/{{ $avance->id }}/editar">
+						{{ csrf_field() }}
+						<input type="image" align="center" src="{{ asset('img/edit.png') }}" width="20" height="20">
+					</form>
+				</td>
+				<td style="padding-right: 8px;">
+					<form method='POST' action="/requerimientos/{{$requerimiento->id}}/avances/{{ $avance->id }}">
+						{{ csrf_field() }}
+						{{ method_field('DELETE') }}						
+						<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="20" height="20">
+					</form>					
+				</td>					
 			@endif
    		 </p>
 		@empty
-		@endforelse    
+		@endforelse 
+		</tbody>
+		</table>
 @endsection
 @section('anidado')
-	<header><h2>Requerimientos anidados</h2></header>
+	<header><h2>Requerimientos anidados:</h2></header>
+	<br>
+	@forelse($requerimientosAnidados as $requerimiento)
+		<th>
+			<a href="/requerimientos/{{ $requerimiento->id }}">{{ $requerimiento->id }}</a> {{ $requerimiento->textoRequerimiento }}
+		</th>
+		<br>
+	@empty
+	@endforelse	
+
 @endsection   
     @section('footerMain')
     @endsection

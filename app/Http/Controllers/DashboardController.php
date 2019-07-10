@@ -14,45 +14,7 @@ class DashboardController extends Controller
     public function index(Request $request)
     {   
 
-        $vVerde = 0;
-        $vAmarillo = 0;
-        $vRojo = 0;
-        if ($request->lista != null) {
-        $variable = $request->lista;
-        $teamEscogido = Team::where([
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-            ['id', $request->lista],
-        ])->get();
-        $resolutors = Resolutor::where([
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-            ['idTeam', $request->lista],
-        ])->get();
-        $requerimientos = Requerimiento::where([
-            ['estado', 1],
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-        ])->get();
-        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();        
-        $requerimientosTeam = [];        
-        foreach ($resolutors as $resolutor) {
-            foreach ($requerimientos as $requerimiento) {
-                if ($requerimiento->resolutor == $resolutor->id) {
-                    $requerimientosTeam[] = $requerimiento;
-                }
-            }
-        }
-
-        $colores = array(
-            'verde' => 12,
-            'amarillo' => 5,
-            'rojo' => 8);
-
-    }
-
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
-        $colores = array(
-            'verde' => 0,
-            'amarillo' => 0,
-            'rojo' => 0);
         $verde = 0;
         $amarillo = 0;
         $rojo = 0;
@@ -85,7 +47,8 @@ class DashboardController extends Controller
 
     	}
 
-    	return view('dashboard.index', compact("verde", "amarillo", "rojo", "teams", "colores"));
+
+    	return view('dashboard.index', compact("verde", "amarillo", "rojo", "teams"));
     }
 
     public function green(){

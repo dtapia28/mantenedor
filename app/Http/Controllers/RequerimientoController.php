@@ -9,6 +9,7 @@ use App\Priority;
 use App\Solicitante;
 use App\Avance;
 use App\Team;
+use App\Anidado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
@@ -33,13 +34,14 @@ class RequerimientoController extends Controller
     public function index(Request $request)
     {
 
-        $resolutors = Resolutor::all();
-        $teams = Team::all();
+        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         if ($request->state != "") {
             $request->session()->put('state', $request->state);
         } else {
             $request->session()->put('state', 1);
         }
+
         $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
             ['estado', '=', $request->session()->get('state')],
             ['rutEmpresa', '=', auth()->user()->rutEmpresa],
@@ -118,10 +120,21 @@ class RequerimientoController extends Controller
      */
     public function show(Requerimiento $requerimiento)
     {
-        $avances = Avance::latest('created_at')->paginate(9);
-        $resolutors = Resolutor::all();
-        $priorities = Priority::all();
-        $teams = Team::all();
+        $avances = Avance::where('idRequerimiento', $requerimiento->id)->latest('created_at')->paginate(5);
+        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $priorities = Priority::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $requerimientosAnidadosLista = Anidado::where('idRequerimientoBase', $requerimiento->id)->get();
+        $requerimientos = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $requerimientosAnidados = [];
+        foreach ($requerimientosAnidadosLista as $requerimiento1) {
+            foreach ($requerimientos as $requerimientos1) {
+                if ($requerimientos1->id == $requerimiento1->idRequerimientoAnexo) {
+                    $requerimientosAnidados[] = $requerimientos1;
+                }
+            }
+        }
+
         define("FECHACIERRE", "$requerimiento->fechaCierre");
         define("FECHASOLICITUD", "$requerimiento->fechaSolicitud");
         define("FECHAREALCIERRE", "$requerimiento->fechaRealCierre");
@@ -235,7 +248,7 @@ class RequerimientoController extends Controller
         }
 
 
-        return view('Requerimientos.show', compact('requerimiento', 'resolutors', 'priorities', 'avances', 'teams', 'hastaCierre', 'hastaHoy', 'restantes', 'hoy', 'fechaCierre', 'excedidos'));        
+        return view('Requerimientos.show', compact('requerimiento', 'resolutors', 'priorities', 'avances', 'teams', 'hastaCierre', 'hastaHoy', 'restantes', 'hoy', 'fechaCierre', 'excedidos', 'requerimientosAnidados'));        
     }
 
     /**
@@ -246,12 +259,11 @@ class RequerimientoController extends Controller
      */
     public function edit(Requerimiento $requerimiento)
     {
-        $solicitantes = Solicitante::all();
-        $priorities = Priority::all();
-        $resolutors = Resolutor::all();
-        $empresas = Empresa::all();
+        $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $priorities = Priority::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
 
-        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'empresas'));        
+        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors'));        
     }
 
     /**
@@ -268,8 +280,9 @@ class RequerimientoController extends Controller
             'idSolicitante' => 'nullable',
             'idPrioridad' => 'nullable',
             'idResolutor' => 'nullable',
-            'idEmpresa' => 'nullable'
+            'fechaCierre' => 'nullable'
         ]);
+        $data['idEmpresa'] = auth()->user()->rutEmpresa;
         $requerimiento->update($data);
         return redirect('requerimientos');         
     }
@@ -282,7 +295,7 @@ class RequerimientoController extends Controller
      */
     public function destroy(Requerimiento $requerimiento)
     {
-        $avances = Avance::where('idRequerimientos', $requerimiento->id)->get();
+        $avances = Avance::where('idRequerimiento', $requerimiento->id)->get();
         foreach ($avances as $avance) {
             $avance->delete();
         }

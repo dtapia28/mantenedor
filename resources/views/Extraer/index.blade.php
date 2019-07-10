@@ -5,7 +5,7 @@
 <h2 style="padding-bottom: 40px" align="center">Exportar requerimientos</h2>
 <div id="body">
 <div id="porEstado" class="from-row">
-	<h5>Por Estado:</h5>
+	<h5>Por estado:</h5>
 	<form method="GET" action="{{ url('/extracciones/estado') }}">
 		<select id="porEstado" class="form-control col-md-8" name="estado">
 			<option selected="selected" disabled="disabled">Escoge una opción</option>
@@ -16,7 +16,7 @@
 	</form>
 </div>
 <div id="porEjecutado" class="from-row">
-	<h5>Por Porcentaje Ejecutado:</h5>
+	<h5>Por porcentaje ejecutado:</h5>
 	<form method="GET" action="{{ url('/extracciones/ejecutado') }}">
 		<select id="comparacion" class="form-control col-md-7" name="comparacion">
 			<option selected="selected" disabled="disabled">Escoger una opción</option>
@@ -31,7 +31,7 @@
 	</form>
 </div>
 <div id="porEjecutado" class="from-row">
-	<h5>Por Número de Cambios:</h5>
+	<h5>Por número de cambios:</h5>
 	<form method="GET" action="{{ url('/extracciones/cambios') }}">
 		<select id="comparacion" class="form-control col-md-7" name="comparacion">
 			<option selected="selected" disabled="disabled">Escoge una opción</option>
@@ -50,7 +50,7 @@
 	<div id="porSolicitante" class="from-row">
 		<h5>Por solicitante:</h5>
 		<form method="GET" action="{{ url('/extracciones/solicitantes') }}">
-        	<select class="form-control col-md-6" name="idSolicitante">
+        	<select class="form-control col-md-8" name="idSolicitante">
 				<option selected="selected" disabled="disabled">Escoge una opción</option>
             	@foreach($solicitantes as $solicitante)
                 	<optgroup>
@@ -59,6 +59,20 @@
                 @endforeach
             </select>
 			<button class="btn btn-primary" type="submit">Extraer</button>            			
+		</form>
+	</div>
+	<div id="porResolutor" class="from-row">
+		<h5>Por resolutor:</h5>
+		<form method="GET" action="{{ url('/extracciones/resolutores') }}">
+			<select class="form-control col-md-8" name="idResolutor">
+				<option selected="selected" disabled="disabled">Escoge una opción</option>
+				@foreach($resolutors as $resolutor)
+					<optgroup>
+						<option value="{{ $resolutor->id }}">{{ $resolutor->nombreResolutor }}</option>
+					</optgroup>
+				@endforeach
+			</select>
+			<button class="btn btn-primary" type="submit">Extraer</button>
 		</form>
 	</div>
 </div>

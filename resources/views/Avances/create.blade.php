@@ -1,4 +1,4 @@
-@extends('Bases.base')
+@extends('Bases.dashboard')
 @section('titulo', "Ingresar Avance")
 
 @section('contenido')
@@ -34,6 +34,6 @@
          </div>
     </div>        
     <p>
-        <a href="/empresas">Regresar al listado de empresas</a>
+        <a href="/requerimientos/{{$requerimiento->id}}">Regresar al requerimiento</a>
     </p>
 @endsection

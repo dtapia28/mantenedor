@@ -1,4 +1,4 @@
-@extends('Bases.base')
+@extends('Bases.dashboard')
 
 @section('titulo', "Editar empresa")
 

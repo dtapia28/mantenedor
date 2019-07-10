@@ -1,5 +1,5 @@
-@extends('Bases.base')
-@section('titulo', "Editar empresa")
+@extends('Bases.dashboard')
+@section('titulo', "Editar requerimiento")
 
 @section('contenido')
     <h1>Editar requerimiento</h1>
@@ -25,6 +25,9 @@
             <textarea class="form-control col-md-7" name="textoRequerimiento" value='{{ old('textoRequerimiento', $requerimiento->textoRequerimiento) }}' placeholder="Texto del requerimiento" rows="5" cols="50"></textarea>
             <label>Texto de requerimiento: {{ $requerimiento->textoRequerimiento }}</label>
             <br>
+            <label for='fechaSolicitud'>Fecha de Cierre:</label>
+            <input value="{{ old('fechaCierre', $requerimiento->fechaCierre) }}" class="form-control col-md-3" type="date" name="fechaCierre">
+            <br>            
             <label for="idSolicitante">Solicitante:</label> 
             <br>       
             <select class="form-control col-md-3" name="idSolicitante">
@@ -54,16 +57,6 @@
                     </optgroup>
                 @endforeach
             </select>                      
-            <br>
-            <label for="idEmpresa">Empresa:</label>
-            <br>             
-            <select class="form-control col-md-3" name="idEmpresa">
-                @foreach($empresas as $empresa)
-                    <optgroup>
-                        <option value="{{ old('idEmpresa', $empresa->id) }}">{{ $empresa->nombreEmpresa }}</option>
-                    </optgroup>
-                @endforeach
-            </select>
             <br>            
             <button class="btn btn-primary" type="submit">Actualizar requerimiento</button>
             <br>
@@ -71,6 +64,6 @@
 
 	<p>
         <br>
-		<a href="/requerimientos/">Volver al listado de requerimentos</a>
+		<a href="../requerimientos/">Volver al listado de requerimentos</a>
     </p>
 @endsection    

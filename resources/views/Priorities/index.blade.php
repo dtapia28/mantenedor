@@ -5,7 +5,7 @@
 	<p>
 	</p>
 	<form method='HEAD' action="{{ url('priorities/nueva') }}">
-	<button type="submit" value="Nueva Prioridad" class="btn btn-primary" name="">Nueva Prioridad</button>
+	<button type="submit" value="Nueva Prioridad" class="btn btn-primary" name="">Nueva</button>
 	</form>
 	<br>
         <div class="card mb-3">

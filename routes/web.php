@@ -21,6 +21,7 @@ Route::get('/extracciones/estado', 'ExtraerController@porEstado');
 Route::get('/extracciones/ejecutado', 'ExtraerController@porEjecutado');
 Route::get('/extracciones/cambios', 'ExtraerController@cambios');
 Route::get('/extracciones/solicitantes', 'ExtraerController@solicitantes');
+Route::get('/extracciones/resolutores', 'ExtraerController@resolutors');
 
 //Rutas para los create
 
@@ -70,8 +71,12 @@ Route::get('/requerimientos/{requerimiento}/avances/nuevo', 'AvanceController@cr
 	->name('Avances.create')
 	->middleware('auth');
 
+Route::get('/requerimientos/{requerimiento}/avances/{avance}/editar', 'AvanceController@edit')->name('Avances.edit');	
+
 Route::post('/avances/ingresar', 'AvanceController@store')
 	->middleware('auth');
+
+Route::put('/requerimientos/{requerimiento}/avances/{avance}', 'AvanceController@update');	
 
 
 
@@ -219,6 +224,8 @@ Route::delete('/solicitantes/{solicitante}', 'SolicitanteController@destroy')->n
 
 Route::delete('/requerimientos/{requerimiento}', 'RequerimientoController@destroy')->name('Requerimientos.destroy')
 	->middleware('auth');
+
+Route::delete('/requerimientos/{requerimiento}/avances/{avance}', 'AvanceController@destroy')->name('Avances.destroy');	
 
 
 

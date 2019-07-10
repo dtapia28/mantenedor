@@ -11,7 +11,7 @@ header {
 main {
 	position: relative;
 	padding: 50px 0px;
-	font-size: 92%;
+	font-size: 100%;
 }
 
 .footer {
@@ -28,11 +28,21 @@ main {
 	width: 1200px;
 }
 
-#articulos #requerimiento {
+#requerimiento {
+	margin: 0px;
+	padding: px;
 	width: 550px;
 	display: inline-block;
 	vertical-align: top;
-	border: red 2px solid;
+	height: 800px;
+}
+
+#avanceanidado {
+	float: right;
+}
+
+#avances {
+	height: 400px;
 }
 
 #articulos #avances {
@@ -43,7 +53,6 @@ main {
 	margin: 0px;
 	padding: 0px;
 	font-size: 100%;
-	border: blue 2px solid;
 }
 
 #articulos #avances header {

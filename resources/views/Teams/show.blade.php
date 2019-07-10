@@ -1,4 +1,4 @@
-@extends('Bases.base')
+@extends('Bases.dashboard')
 @section('contenido')
 	<h1>Detalle de Teams:</h1>
 	<h2>Team n° {{ $team->id }}</h2>

@@ -1,11 +1,5 @@
 	@extends('Bases.dashboard')
 	@section('titulo', "Requerimientos")
-	@section('encabezado1')
-		<a href="/requerimientos">Requerimientos</a>
-	@endsection
-	@section('encabezado2')
-	    <li class="breadcrumb-item active">requerimientos</li>
-	@endsection
 	@section('contenido')
 		<header>
 		<h1>Listado de Requerimientos</h1>	
@@ -65,7 +59,7 @@
 						@forelse ($requerimientos as $requerimiento)
 							<tr>
 							<th id="tabla" scope="row">
-								<a href="/requerimientos/{{ $requerimiento->id }}">					
+								<a href="/requerimientos/{{ $requerimiento->id }}">
 									{{ $requerimiento->id }}
 								</a>						
 							</th>
@@ -109,19 +103,19 @@
 							@endforelse	
 							</td>							
 							<td>
-					<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/terminado">
+					<form method='HEAD' action="../public/requerimientos/{{$requerimiento->id}}/terminado">
 						{{ csrf_field() }}
 						<input type="image" align="center" src="{{ asset('img/correcta-marca.png') }}" width="30" height="30">
 					</form>
 				</td>																
 				<td>									
-					<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/editar">
+					<form method='HEAD' action="../public/requerimientos/{{$requerimiento->id}}/editar">
 						{{ csrf_field() }}
 						<input type="image" align="center" src="{{ asset('img/edit.png') }}" width="30" height="30">
 					</form>
 				</td>
 				<td>									
-					<form method='POST' action="/requerimientos/{{$requerimiento->id}}">
+					<form method='POST' action="../public/requerimientos/{{$requerimiento->id}}">
 						{{ csrf_field() }}
 						{{ method_field('DELETE') }}						
 						<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="30" height="30">
@@ -143,7 +137,6 @@
 	              </table>
 	            </div>
 	          </div>
-	          <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 	        </div>												
 		</main>
 	@endsection	

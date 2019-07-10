@@ -11467,7 +11467,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Viendo _START_ a _END_ de _TOTAL_ requerimiento(s)",
+			"sInfo": "Viendo _START_ a _END_ de _TOTAL_ elementos",
 	
 	
 			/**
@@ -11488,7 +11488,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoEmpty": "Viendo 0 a 0 de 0 requerimientos",
+			"sInfoEmpty": "Viendo 0 a 0 de 0 elementos",
 	
 	
 			/**
@@ -11628,7 +11628,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLengthMenu": "Viendo _MENU_ requerimiento(s)",
+			"sLengthMenu": "Viendo _MENU_ elementos",
 	
 	
 			/**

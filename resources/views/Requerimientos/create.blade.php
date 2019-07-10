@@ -1,4 +1,4 @@
-@extends('Bases.base')
+@extends('Bases.dashboard')
 @section('titulo', "Crear Requerimiento")
 
 @section('contenido')
@@ -72,6 +72,6 @@
     </div>    
     <br>
     <p>
-        <a href="/requerimientos">Regresar al listado de requerimientos</a>
+        <a href="../requerimientos">Regresar al listado de requerimientos</a>
     </p>
 @endsection

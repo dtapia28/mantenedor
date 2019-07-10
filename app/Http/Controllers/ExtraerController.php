@@ -7,7 +7,9 @@ use App\Exports\EstadoExport;
 use App\Exports\EjecutadoExport;
 use App\Exports\CambiosExport;
 use App\Exports\SolicitantesExport;
+use App\Exports\ResolutorsExport;
 use App\Solicitante;
+use App\Resolutor;
 
 class ExtraerController extends Controller
 {
@@ -18,8 +20,12 @@ class ExtraerController extends Controller
     	$solicitantes = Solicitante::where([
     		['rutEmpresa', auth()->user()->rutEmpresa],
     	])->get();
+
+        $resolutors = Resolutor::where([
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+        ])->get();
     
-        return view('Extraer.index', compact('solicitantes'));
+        return view('Extraer.index', compact('solicitantes', 'resolutors'));
     }   
 
     public function porEstado(Request $request)
@@ -40,5 +46,10 @@ class ExtraerController extends Controller
     public function solicitantes(Request $request)
     {
     	return (new SolicitantesExport($request['idSolicitante']))->download('porSolicitante.xlsx');
+    }
+
+    public function resolutors(Request $request)
+    {
+        return (new ResolutorsExport($request['idResolutor']))->download('porResolutor.xlsx');
     }
 }

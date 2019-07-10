@@ -1,4 +1,4 @@
-@extends('Bases.base')
+@extends('Bases.dashboard')
 @section('contenido')
 	<h1>Detalle de Resolutor:</h1>
 	<h2>resolutor n° {{ $resolutor->id }}</h2>
