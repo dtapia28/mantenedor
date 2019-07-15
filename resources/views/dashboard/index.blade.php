@@ -96,5 +96,4 @@
     <div id="donutchart3" style="width: 900px; height: 500px;"></div>      
     </div>
 
-
 @endsection

@@ -6,6 +6,9 @@
         "framework",
         "laravel"
     ],
+    "files": [
+        "app/includes/fusioncharts.php"
+    ],
     "license": "MIT",
     "require": {
         "php": "^7.1.3",
