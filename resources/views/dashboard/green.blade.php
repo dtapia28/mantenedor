@@ -33,7 +33,7 @@
 					@forelse ($requerimientosGreen as $requerimiento)
 						<tr>
 						<th id="tabla" scope="row">
-							<a href="/requerimientos/{{ $requerimiento->id }}">					
+							<a href="../requerimientos/{{ $requerimiento->id }}">					
 								{{ $requerimiento->id }}
 							</a>						
 						</th>

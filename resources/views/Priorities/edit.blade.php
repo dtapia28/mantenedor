@@ -29,6 +29,6 @@
         </div>
     </div>        
 	<p>
-		<a href="/priorities/">Volver al listado de prioridades</a>
+		<a href="{{url('priorities')}}">Volver al listado de prioridades</a>
     </p>
 @endsection    

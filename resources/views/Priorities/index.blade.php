@@ -1,6 +1,11 @@
 @extends('Bases.dashboard')
 @section('titulo', "Prioridades")
 @section('contenido')
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+ <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
 	<h1>Listado de Prioridades</h1>
 	<p>
 	</p>
@@ -14,7 +19,7 @@
             Prioridades</div>
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <table class="table table-bordered table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                   <tr>
                     <th>Id</th>
@@ -43,13 +48,13 @@
 							{{ $priority->namePriority }}
 						</td>																				
 						<td>									
-							<form method='HEAD' action="/priorities/{{$priority->id}}/editar">
+							<form method='HEAD' action="../public/priorities/{{$priority->id}}/editar">
 								{{ csrf_field() }}
 								<input type="image" align="center" src="{{ asset('img/edit.png') }}" width="30" height="30">
 							</form>
 						</td>
 						<td>									
-							<form method='POST' action="/priorities/{{$priority->id}}">
+							<form method='POST' action="../public/priorities/{{$priority->id}}">
 								{{ csrf_field() }}
 								{{ method_field('DELETE') }}						
 								<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="30" height="30">
@@ -61,5 +66,4 @@
 				</table>
 			</div>
 		</div>
-		<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 @endsection	

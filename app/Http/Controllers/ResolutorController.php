@@ -85,8 +85,7 @@ class ResolutorController extends Controller
      */
     public function edit(Resolutor $resolutor)
     {
-        $empresas = Empresa::all();
-        $teams = Team::all();
+        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         return view('Resolutors.edit', compact('empresas', 'teams', 'resolutor')); 
     }
 
@@ -101,7 +100,6 @@ class ResolutorController extends Controller
     {
         $data = request()->validate([
             'nombreResolutor' => 'required',
-            'idEmpresa' => 'required',
             'idTeam' => 'required'
         ]);
 

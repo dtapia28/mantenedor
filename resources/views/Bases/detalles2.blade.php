@@ -38,7 +38,6 @@
             <ul class="navbar-nav bd-navbar-nav flex-row">
                 @can('ver')
                 @endcan
-                @can('ver')                
                 <li>
                      <a class="nav-link" href="{{ url('/requerimientos') }}">Requerimientos</a>                 
                 </li>
@@ -48,15 +47,12 @@
                 <li>
                      <a class="nav-link" href="{{ url('/resolutors') }}">Resolutores</a>                
                 </li>                                               
-                @endcan
-                @can('ver')
                 <li>
                      <a class="nav-link" href="{{ url('/solicitantes') }}">Solicitantes</a>                 
                 </li>
                 <li>
                      <a class="nav-link" href="{{ url('/teams') }}">Teams</a>                 
                 </li>
-                @endcan                                                                  
             </ul>
         </div>    
 
@@ -101,7 +97,7 @@
     <!-- Sidebar -->
     <ul class="sidebar navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="/dashboard">
+        <a class="nav-link" href="{{url('dashboard')}}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Tablero</span>
         </a>
@@ -112,19 +108,12 @@
           <span>Páginas</span>
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-          <a class="dropdown-item" href="/requerimientos">Requerimientos</a>
-          @can('ver')
+          <a class="dropdown-item" href="{{url('/requerimientos')}}">Requerimientos</a>
           <a class="dropdown-item" href="/priorities">Prioridades</a>
           <a class="dropdown-item" href="/resolutors">Resolutores</a>
           <a class="dropdown-item" href="/solicitantes">Solicitantes</a>
           <a class="dropdown-item" href="/teams">Teams</a>
-          @endcan
         </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/extracciones">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Exportar</span></a>
       </li>
     </ul>
 

@@ -4195,11 +4195,11 @@
 			/* Update all other filter input elements for the new display */
 			var n = features.f;
 			var val = !this.value ? "" : this.value; // mental IE8 fix :-(
+	
 			/* Now do the filter */
 			if ( val != previousSearch.sSearch ) {
-				/*console.log(val);*/					
 				_fnFilterComplete( settings, {
-					"sSearch": val,				
+					"sSearch": val,
 					"bRegex": previousSearch.bRegex,
 					"bSmart": previousSearch.bSmart ,
 					"bCaseInsensitive": previousSearch.bCaseInsensitive
@@ -4262,7 +4262,6 @@
 	function _fnFilterComplete ( oSettings, oInput, iForce )
 	{
 		var oPrevSearch = oSettings.oPreviousSearch;
-		console.log(oPrevSearch);
 		var aoPrevSearch = oSettings.aoPreSearchCols;
 		var fnSaveFilter = function ( oFilter ) {
 			/* Save the filtering values */
@@ -11389,7 +11388,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sNext": "Siguiente",
+				"sNext": "Next",
 	
 	
 				/**
@@ -11412,7 +11411,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sPrevious": "Anterior"
+				"sPrevious": "Previous"
 			},
 	
 			/**
@@ -11424,7 +11423,7 @@
 			 *  @default No data available in table
 			 *
 			 *  @dtopt Language
-			 *  @name DataTable.defaults.language.emp tyTable
+			 *  @name DataTable.defaults.language.emptyTable
 			 *
 			 *  @example
 			 *    $(document).ready( function() {
@@ -11435,7 +11434,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sEmptyTable": "No hay información para mostrar en la tabla",
+			"sEmptyTable": "No data available in table",
 	
 	
 			/**
@@ -11467,7 +11466,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Viendo _START_ a _END_ de _TOTAL_ elementos",
+			"sInfo": "Viendo _START_ al _END_ de _TOTAL_ elemento",
 	
 	
 			/**
@@ -11488,7 +11487,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoEmpty": "Viendo 0 a 0 de 0 elementos",
+			"sInfoEmpty": "Showing 0 to 0 of 0 entries",
 	
 	
 			/**
@@ -11628,7 +11627,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLengthMenu": "Viendo _MENU_ elementos",
+			"sLengthMenu": "Ver _MENU_ entradas",
 	
 	
 			/**

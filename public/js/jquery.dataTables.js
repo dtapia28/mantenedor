@@ -4,7 +4,7 @@
 
 /**
  * @summary     DataTables
- * @description Paginar, buscar y ordenar tablas HTML
+ * @description Paginate, search and order HTML tables
  * @version     1.10.19
  * @file        jquery.dataTables.js
  * @author      SpryMedia Ltd
@@ -60,11 +60,11 @@
 	"use strict";
 
 	/**
-	 * DataTables es un complemento para la biblioteca jQuery Javascript.
-	 * Es una herramienta altamente flexible, basada en los fundamentos de la mejora progresiva,
-	 * que agregará controles de interacción avanzados a cualquier tabla HTML.
-	 * Para obtener una lista completa de características,
-	 * consulte [DataTables.net] (href = "http://datatables.net).
+	 * DataTables is a plug-in for the jQuery Javascript library. It is a highly
+	 * flexible tool, based upon the foundations of progressive enhancement,
+	 * which will add advanced interaction controls to any HTML table. For a
+	 * full list of features please refer to
+	 * [DataTables.net](href="http://datatables.net).
 	 *
 	 * Note that the `DataTable` object is not a global variable but is aliased
 	 * to `jQuery.fn.DataTable` and `jQuery.fn.dataTable` through which it may
@@ -94,16 +94,15 @@
 	var DataTable = function ( options )
 	{
 		/**
-		 *  Realice una acción de selector de jQuery en los elementos TR de la tabla
-		 *  (desde el cuerpo) y devuelva el objeto jQuery resultante.
-		 *  @param {string | node | jQuery} sSelector jQuery selector o colección
-		 *	de nodos para actuar.
-		 *  @param {objeto} [oOpts] Parámetros opcionales para modificar las filas a incluir
-		 *  @param {cadena} [oOpts.filter = none] Seleccione los elementos TR que cumplan
-		 *  con el criterio de filtro actual ("aplicado") o todos los elementos TR (es decir, sin filtro).
-		 *  @param {cadena} [oOpts.order = actual] Orden de los elementos TR en la matriz procesada
-		 *    Puede ser 'current', mediante el cual se utiliza la clasificación actual de la tabla,
-		 *		o 'original', por el cual se utiliza el orden original en que se leyeron los datos en la tabla.
+		 * Perform a jQuery selector action on the table's TR elements (from the tbody) and
+		 * return the resulting jQuery object.
+		 *  @param {string|node|jQuery} sSelector jQuery selector or node collection to act on
+		 *  @param {object} [oOpts] Optional parameters for modifying the rows to be included
+		 *  @param {string} [oOpts.filter=none] Select TR elements that meet the current filter
+		 *    criterion ("applied") or all TR elements (i.e. no filter).
+		 *  @param {string} [oOpts.order=current] Order of the TR elements in the processed array.
+		 *    Can be either 'current', whereby the current sorting of the table is used, or
+		 *    'original' whereby the original order the data was read into the table is used.
 		 *  @param {string} [oOpts.page=all] Limit the selection to the currently displayed page
 		 *    ("current") or not ("all"). If 'current' is given, then order is assumed to be
 		 *    'current' and filter is 'applied', regardless of what they might be given as.
@@ -259,7 +258,7 @@
 			if ( redraw === undefined || redraw ) {
 				api.draw();
 			}
-			
+		
 			return rows.flatten().toArray();
 		};
 		
@@ -467,10 +466,6 @@
 			}
 		
 			api.draw();
-
-			<?php
-			dd(api);
-			?>
 		};
 		
 		
@@ -4267,7 +4262,6 @@
 	function _fnFilterComplete ( oSettings, oInput, iForce )
 	{
 		var oPrevSearch = oSettings.oPreviousSearch;
-		/*console.log(oPrevSearch);*/
 		var aoPrevSearch = oSettings.aoPreSearchCols;
 		var fnSaveFilter = function ( oFilter ) {
 			/* Save the filtering values */
@@ -11472,7 +11466,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Viendo _START_ a _END_ de _TOTAL_ requerimientos",
+			"sInfo": "Viendo _START_ de _END_ de _TOTAL_ requerimientos",
 	
 	
 			/**
@@ -11493,7 +11487,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoEmpty": "Viendo 0 a 0 de 0 requerimientos",
+			"sInfoEmpty": "Showing 0 to 0 of 0 entries",
 	
 	
 			/**

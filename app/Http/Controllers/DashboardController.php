@@ -117,9 +117,12 @@ class DashboardController extends Controller
 
     public function red(){
 
-        $resolutors = Resolutor::all();  
-        $teams = Team::all();           
-        $requerimientos = Requerimiento::where('estado', 1)->get();
+        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();  
+        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();           
+        $requerimientos = Requerimiento::where([
+            ['estado', 1],
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+            ])->get();
         $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $requerimientosRed = [];
         foreach ($requerimientos as $requerimiento) {

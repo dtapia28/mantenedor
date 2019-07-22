@@ -30,6 +30,6 @@
     </div>    
 
 	<p>
-		<a href="/teams/">Volver al listado de Teams</a>
+		<a href="{{url('teams')}}">Volver al listado de Teams</a>
     </p>
 @endsection    

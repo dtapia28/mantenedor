@@ -1,17 +1,20 @@
 	@extends('Bases.dashboard')
 	@section('titulo', "Requerimientos")
 	@section('contenido')
-		<header>
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	 <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
+		<header><meta http-equiv="Content-Type" content="text/html; charset=gb18030">
 		<h1>Listado de Requerimientos</h1>	
 		</header>
 		<main>
-			@can('ver')
 			<div class="form-check form-check-inline">
 				<form method='HEAD' action="{{ url('requerimientos/nuevo') }}">
 					<button type="submit" value="Nuevo Requerimiento" class="btn btn-primary" name="">Nuevo</button>
 				</form>
 			</div>
-			@endcan
 			<div class="form-check form-check-inline">
 				<form class="navbar-form navbar-left pull-right" method='GET' action="{{ url('requerimientos/') }}">
 					<select class="custom-select" name="state">
@@ -38,7 +41,7 @@
 	            Requerimientos</div>
 	          <div class="card-body">
 	            <div class="table-responsive">
-	              <table class="table table-bordered" id="dataTable" width="1300px" cellspacing="0">
+	              <table class="table table-bordered table-striped table-hover" id="dataTable" width="100%"  cellspacing="0">
 	                <thead>
 	                  <tr>
 	                    <th>Id</th>
@@ -59,7 +62,7 @@
 						@forelse ($requerimientos as $requerimiento)
 							<tr>
 							<th id="tabla" scope="row">
-								<a href="/requerimientos/{{ $requerimiento->id }}">
+								<a href="../public/requerimientos/{{ $requerimiento->id }}">
 									{{ $requerimiento->id }}
 								</a>						
 							</th>

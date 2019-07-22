@@ -29,6 +29,6 @@
 
 	<p>
         <br>
-		<a href="/requerimientos/">Volver al listado de requerimentos</a>
+		<a href="{{url('requerimientos')}}">Volver al listado de requerimentos</a>
     </p>
 @endsection    

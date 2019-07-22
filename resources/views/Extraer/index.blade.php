@@ -1,12 +1,16 @@
 @extends('Bases.dashboard')
 @section('titulo', "Extracciones")
 @section('contenido')
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> 
 <link rel="stylesheet" type="text/css" href="{{ asset('css/index_style.css') }}">
-<h2 style="padding-bottom: 40px" align="center">Exportar requerimientos</h2>
-<div id="body">
-<div id="porEstado" class="from-row">
+<h1 style="padding-bottom: 40px" align="center">Exportar requerimientos</h1>
+<div id="body" class="row">
+<div id="porEstado" class="from-row col-md-4">
 	<h5>Por estado:</h5>
-	<form method="GET" action="{{ url('/extracciones/estado') }}">
+	<form method="GET" action="{{ url('../public/extracciones/estado') }}">
 		<select id="porEstado" class="form-control col-md-8" name="estado">
 			<option selected="selected" disabled="disabled">Escoge una opción</option>
 			<option value="0">Inactivo</option>
@@ -15,7 +19,7 @@
 		<button id="btn1" class="btn btn-primary" type="submit">Extraer</button>	    	
 	</form>
 </div>
-<div id="porEjecutado" class="from-row">
+<div id="porEjecutado" class="from-row col-md-4">
 	<h5>Por porcentaje ejecutado:</h5>
 	<form method="GET" action="{{ url('/extracciones/ejecutado') }}">
 		<select id="comparacion" class="form-control col-md-7" name="comparacion">
@@ -30,7 +34,7 @@
 		<button class="btn btn-primary" type="submit">Extraer</button>	    	
 	</form>
 </div>
-<div id="porEjecutado" class="from-row">
+<div id="porEjecutado" class="from-row col-md-4">
 	<h5>Por número de cambios:</h5>
 	<form method="GET" action="{{ url('/extracciones/cambios') }}">
 		<select id="comparacion" class="form-control col-md-7" name="comparacion">
@@ -46,8 +50,8 @@
 	</form>
 </div>
 </div>
-<div id="body2">
-	<div id="porSolicitante" class="from-row">
+<div id="body2" class="row">
+	<div id="porSolicitante" class="from-row col-md-4">
 		<h5>Por solicitante:</h5>
 		<form method="GET" action="{{ url('/extracciones/solicitantes') }}">
         	<select class="form-control col-md-8" name="idSolicitante">
@@ -61,7 +65,7 @@
 			<button class="btn btn-primary" type="submit">Extraer</button>            			
 		</form>
 	</div>
-	<div id="porResolutor" class="from-row">
+	<div id="porResolutor" class="from-row col-md-4">
 		<h5>Por resolutor:</h5>
 		<form method="GET" action="{{ url('/extracciones/resolutores') }}">
 			<select class="form-control col-md-8" name="idResolutor">

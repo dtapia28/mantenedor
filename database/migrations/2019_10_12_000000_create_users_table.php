@@ -19,8 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('email', 50)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('rutEmpresa', 10);
-            $table->foreign('rutEmpresa')->references('rut')->on('empresas');
+            $table->bigInteger('idEmpresa')->unsigned();
+            $table->foreign('idEmpresa')->references('id')->on('empresas');
             $table->rememberToken();
             $table->timestamps();
         });

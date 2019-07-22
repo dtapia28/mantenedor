@@ -38,6 +38,6 @@
         </div>
     </div>    
     <p>
-        <a href="/resolutors">Regresar al listado de resolutores</a>
+        <a href="{{url('resolutors')}}">Regresar al listado de resolutores</a>
     </p>
 @endsection

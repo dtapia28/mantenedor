@@ -24,15 +24,6 @@
                 <label for="name">Nombre:</label>
                 <input class="form-control col-md-6" type="text" name="nombreResolutor" id="nombreResolutor" value="{{ old('nombreResolutor', $resolutor->nombreResolutor) }}">
                 <br>
-                <label for="idEmpresa">Empresa:</label>                
-                <select class="form-control col-md-5" name="idEmpresa">
-                    @foreach($empresas as $empresa)
-                        <optgroup>
-                            <option value="{{ old('idEmpresa', $empresa->id) }}">{{ $empresa->nombreEmpresa }}</option>
-                        </optgroup>
-                    @endforeach
-                </select>
-                <br>
                 <label for="idTeam">Team:</label>                
                 <select class="form-control col-md-6" name="idTeam">
                     @foreach($teams as $team)
@@ -47,6 +38,6 @@
         </div>
     </div>    
 	<p>
-		<a href="/resolutors/">Volver al listado de resolutores</a>
+		<a href="{{url('resolutors')}}">Volver al listado de resolutores</a>
     </p>
 @endsection    

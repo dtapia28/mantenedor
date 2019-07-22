@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Mantenedor'),
+    'name' => env('APP_NAME', 'Laravel'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://easytask.itconsultants.cl/laravel'),
 
     'asset_url' => env('ASSET_URL', null),
 
@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'America/Santiago',
+    'timezone' => 'UTC',
 
     /*
     |--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'spanish',
+    'locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------
@@ -119,7 +119,7 @@ return [
     |
     */
 
-    'key' => env('APP_KEY'),
+    'key' => env('APP_KEY','fmc9rofnasags0xb77yyjyukskirgans'),
 
     'cipher' => 'AES-256-CBC',
 
@@ -161,9 +161,8 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Silber\Bouncer\BouncerServiceProvider::class,
-        Maatwebsite\Excel\ExcelServiceProvider::class,        
-
+        //Maatwebsite\Excel\ExcelServiceProvider::class,
+        //Silber\Bouncer\BouncerServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -228,8 +227,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Bouncer' => Silber\Bouncer\BouncerFacade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        //'Bouncer' => Silber\Bouncer\BouncerFacade::class,
 
     ],
 

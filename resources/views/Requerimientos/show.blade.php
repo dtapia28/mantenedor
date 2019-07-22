@@ -85,7 +85,7 @@
 @endsection 
 @section('avances')
 	<header><h1>Avances del requerimiento:</h1></header>
-		<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/avances/nuevo">
+		<form method='HEAD' action="../requerimientos/{{$requerimiento->id}}/avances/nuevo">
 			<button type="submit" value="Ingresar avance" class="btn btn-primary" name="">Ingresar avance</button>
 		</form>		
 		<br>
@@ -105,13 +105,13 @@
 				<strong>{{ $avance->created_at->format('d-m-Y') }}: </strong>{{ $avance->textAvance }}
 				</th>
 				<td style="padding-right: 12px;">
-					<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/avances/{{ $avance->id }}/editar">
+					<form method='HEAD' action="../requerimientos/{{$requerimiento->id}}/avances/{{ $avance->id }}/editar">
 						{{ csrf_field() }}
 						<input type="image" align="center" src="{{ asset('img/edit.png') }}" width="20" height="20">
 					</form>
 				</td>
 				<td style="padding-right: 8px;">
-					<form method='POST' action="/requerimientos/{{$requerimiento->id}}/avances/{{ $avance->id }}">
+					<form method='POST' action="../requerimientos/{{$requerimiento->id}}/avances/{{ $avance->id }}">
 						{{ csrf_field() }}
 						{{ method_field('DELETE') }}						
 						<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="20" height="20">
@@ -129,7 +129,7 @@
 	<br>
 	@forelse($requerimientosAnidados as $requerimiento)
 		<th>
-			<a href="/requerimientos/{{ $requerimiento->id }}">{{ $requerimiento->id }}</a> {{ $requerimiento->textoRequerimiento }}
+			</strong><a href="../requerimientos/{{ $requerimiento->id }}"><strong>{{ $requerimiento->id }}</strong></a> {{ $requerimiento->textoRequerimiento }}
 		</th>
 		<br>
 	@empty

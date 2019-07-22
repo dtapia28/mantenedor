@@ -20,13 +20,17 @@
   <!-- Custom styles for this template-->
   <link href="{{ asset('css/sb-admin.css')}}  " rel="stylesheet">
 
-
-
+  <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 
 <body id="page-top">
 
-  <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+  <nav class="navbar navbar-expand navbar-dark static-top" style="background:#004080;">
 
     <a class="navbar-brand mr-1" href="/">EasyTask</a>
 
@@ -34,10 +38,8 @@
       <i class="fas fa-bars"></i>
     </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav bd-navbar-nav flex-row">
-                @can('ver')
-                @endcan
-                @can('ver')                
+            <ul class="navbar-nav bd-navbar-nav flex-row" style="color:#f5f5f5;">
+
                 <li>
                      <a class="nav-link" href="{{ url('/requerimientos') }}">Requerimientos</a>                 
                 </li>
@@ -47,15 +49,14 @@
                 <li>
                      <a class="nav-link" href="{{ url('/resolutors') }}">Resolutores</a>                
                 </li>                                               
-                @endcan
-                @can('ver')
+
                 <li>
                      <a class="nav-link" href="{{ url('/solicitantes') }}">Solicitantes</a>                 
                 </li>
                 <li>
                      <a class="nav-link" href="{{ url('/teams') }}">Teams</a>                 
                 </li>
-                @endcan                                                                  
+                                                             
             </ul>
         </div>    
 
@@ -100,7 +101,7 @@
     <!-- Sidebar -->
     <ul class="sidebar navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="/dashboard">
+        <a class="nav-link" href="{{url('/dashboard')}}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Tablero</span>
         </a>
@@ -111,20 +112,18 @@
           <span>Páginas</span>
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-          <a class="dropdown-item" href="/requerimientos">Requerimientos</a>
-          @can('ver')
-          <a class="dropdown-item" href="/priorities">Prioridades</a>
-          <a class="dropdown-item" href="/resolutors">Resolutores</a>
-          <a class="dropdown-item" href="/solicitantes">Solicitantes</a>
-          <a class="dropdown-item" href="/teams">Teams</a>
-          @endcan
+          <a class="dropdown-item" href="../public/requerimientos">Requerimientos</a>
+          <a class="dropdown-item" href="../public/priorities">Prioridades</a>
+          <a class="dropdown-item" href="../public/resolutors">Resolutores</a>
+          <a class="dropdown-item" href="../public/solicitantes">Solicitantes</a>
+          <a class="dropdown-item" href="../public/teams">Teams</a>
         </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/extracciones">
           <i class="fas fa-fw fa-table"></i>
           <span>Exportar</span></a>
-      </li>
+      </li>      
     </ul>
 
     <div id="content-wrapper">

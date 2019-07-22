@@ -27,6 +27,6 @@
         </div>
     </div>    
 	<p>
-		<a href="/solicitantes/">Volver al listado de solicitantes</a>
+		<a href="{{url('solicitantes')}}">Volver al listado de solicitantes</a>
     </p>
 @endsection    

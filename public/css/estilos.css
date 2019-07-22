@@ -11,7 +11,7 @@ header {
 main {
 	position: relative;
 	padding: 50px 0px;
-	font-size: 100%;
+	font-size: 92%;
 }
 
 .footer {
@@ -28,50 +28,23 @@ main {
 	width: 1200px;
 }
 
-#requerimiento {
-	margin: 0px;
-	padding: px;
-	width: 550px;
+#articulos #requerimiento {
+	width: 600px;
 	display: inline-block;
 	vertical-align: top;
-	height: 800px;
-}
-
-#avanceanidado {
-	float: right;
-}
-
-#avances {
-	height: 400px;
 }
 
 #articulos #avances {
-	width: 600px;
-	height: 400px;
-	display: inline;
+	width: 550px;
+	height: 500px;
+	display: inline-table;
 	vertical-align: top;
 	margin: 0px;
 	padding: 0px;
-	font-size: 100%;
+	font-size: 100%
 }
 
 #articulos #avances header {
-	font-size: 5px;
-	text-align: center;
-}
-
-#articulos #anidado {
-	width: 400px;
-	height: 300px;
-	display: inline;
-	vertical-align: top;
-	margin: 0px;
-	padding: 0px;
-	font-size: 100%;
-	border: green 2px solid;
-}
-
-#articulos #anidado header {
 	font-size: 5px;
 	text-align: center;
 }

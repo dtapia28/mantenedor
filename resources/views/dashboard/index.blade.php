@@ -5,6 +5,10 @@
 
 @endsection
 @section('contenido')
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <div class="row">
           <div class="col-xl-4 col-sm-6 mb-3">
             <div class="card text-white bg-success o-hidden h-100">
@@ -95,5 +99,6 @@
     <div id="graficos">
     <div id="donutchart3" style="width: 900px; height: 500px;"></div>      
     </div>
+
 
 @endsection

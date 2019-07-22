@@ -16,8 +16,6 @@ class CreatePrioritiesTable extends Migration
         Schema::create('priorities', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('namePriority', 50)->unique();
-            $table->string('rutEmpresa', 10);
-            $table->foreign('rutEmpresa')->references('rut')->on('empresas');
             $table->timestamps();
         });
     }

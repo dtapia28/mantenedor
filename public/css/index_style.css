@@ -1,116 +1,316 @@
-div#body{
-
-	margin: auto;
-	margin-top: 30px;
-	width: 1050px;
-	height: 200px;
-
-}
-
-div#body2{
-	margin: auto;
-	margin-top: 30px;
-	width: 1050px;
-	height: 200px;
-
-}
-
-div#porSolicitante{
-	width: 300px;
-	height: 200px;
-	float: left;
-	
-}
-
-div#porResolutor{
-	width: 300px;
-	height: 200px;
-	float: left;
-	
-}
-
-div#porEstado{
-
-	width: 300px;
-	height: 200px;
-	float: left;
-}
-
-select {
-
-	width: 200px;
-	height: 37px;
-	margin: 5px;
-}
-
-input {
-	margin: 5px;
-	height: 37px; 
-}
-
-label {
-	margin: 5px;
-}
-
-button {
-
-	margin: 5px;
-}
-
-div#porEjecutado{
-
-	width: 350px;
-	height: 200px;
-	float: left;
-}
-
-select#comparacion{
-
-	width: 200px;
-	height: 37px;
-	margin: 5px;
-}
-
-div#graficos1{
-
-	margin: auto;
-	margin-top: auto;
-	width: 1170px;
-	height: 300px;
-
-}
-
-div#graficos{
-
-	margin: auto;
-	padding-left: 200px;
-	margin-top: auto;
-	width: 1170px;
-	height: 500px;
-
-}
-
-div#donutchart{
-
-	width: 380px;
-	height: 280px;	
-	float: left;
-	margin: 0px;
-	padding: 0px;
-
-}
-
-div#donutchart2{
-
-	width: 380px;
-	height: 280px;	
-	float: left;
-
-}
-
-div#donutchart3{
-
-	margin: auto;
-	padding: 0px;
-	margin: 0px;	
-	float: left;
+div#body{
+
+	margin: auto;
+	margin-top: 30px;
+/*	width: 1050px;
+	height: 200px;*/
+
+}
+
+div#body2{
+	margin: auto;
+	margin-top: 50px;
+/*	width: 1050px;
+	height: 200px;*/
+
+}
+
+div#porSolicitante{
+	width: 300px;
+	/*height: 200px;*/
+	/*float: left;*/
+	
+}
+
+div#porResolutor{
+	width: 300px;
+/*	height: 200px;
+	float: left;*/
+	
+}
+
+.from-row{
+/*margin-top: 20px;*/
+}
+
+div#porEstado{
+
+	width: 300px;
+	/*height: 200px;*/
+	/*float: left;*/
+}
+
+select {
+
+	width: 180px;
+	height: 37px;
+	margin: 5px;
+}
+
+input {
+	margin: 5px;
+	height: 37px; 
+}
+
+label {
+	margin: 5px;
+}
+
+button {
+
+	margin: 5px;
+}
+
+div#porEjecutado{
+
+	width: 350px;
+/*	height: 200px;*/
+	float: left;
+}
+
+select#comparacion{
+
+	width: 200px;
+	height: 37px;
+	margin: 5px;
+}
+
+div#graficos1{
+
+	margin: auto;
+	margin-top: auto;
+	width: 1170px;
+	height: 300px;
+
+}
+
+div#graficos{
+
+	margin: auto;
+	padding-left: 200px;
+	margin-top: auto;
+
+	width: 800px;
+	height: 500px;
+
+}
+
+div#donutchart{
+
+	width: 380px;
+	height: 280px;	
+	float: left;
+	margin: 0px;
+	padding: 0px;
+
+}
+
+div#donutchart2{
+
+	width: 380px;
+	height: 280px;	
+	float: left;
+
+}
+
+div#donutchart3{
+
+	margin: auto;
+	padding: 0px;
+	margin: 0px;	
+	float: left;
+
+
+}
+
+
+
+
+
+
+@media only screen and (max-width: 810px) {
+
+.sidebar{
+	width: 75px !important;
+}
+
+.sidebar li a{
+	padding-left: 5px !important;
+	padding-right: 5px !important;
+		width: 60px !important;
+}
+ul.pagination{
+	justify-content: left !important;
+}
+
+
+div#graficos{
+
+	margin: auto;
+	padding-left: 0px;
+	margin-top: auto;
+	width: 550px;
+	height: 500px;
+}
+
+div#donutchart3{
+
+	margin: auto;
+	padding: 0px;
+	margin: 0px;	
+	float: left;
+	width: 550px;
+	height: 500px;
+}
+}
+
+
+
+
+@media only screen and (max-width: 650px) {
+
+
+.sidebar{
+	width: 75px !important;
+}
+ul.pagination{
+	justify-content: left !important;
+}
+
+
+.sidebar li a{
+	padding-left: 5px !important;
+	padding-right: 5px !important;
+		width: 60px !important;
+}
+
+div#graficos{
+
+	margin: auto;
+	padding-left: 0px;
+	margin-top: auto;
+	width: 550px;
+	height: 500px;
+}
+
+div#donutchart3{
+
+	margin: auto;
+	padding: 0px;
+	margin: 0px;	
+	float: left;
+	width: 500px !important;
+	height: 500px !important;
+}
+}
+
+@media only screen and (max-width: 550px) {
+
+.sidebar{
+	width: 75px !important;
+}
+
+
+.sidebar li a{
+	padding-left: 5px !important;
+	padding-right: 5px !important;
+		width: 60px !important;
+}
+
+ul.pagination{
+	justify-content: left !important;
+}
+
+div#graficos{
+
+	margin: auto;
+	padding-left: 0px;
+	margin-top: auto;
+	width: 550px;
+	height: 500px;
+}
+
+div#donutchart3{
+
+	margin: auto;
+	padding: 0px;
+	margin: 0px;	
+	float: left;
+	width: 450px !important;
+	height: 500px !important;
+}
+}
+
+@media only screen and (max-width: 450px) {
+
+
+.sidebar{
+	width: 75px !important;
+}
+
+.sidebar li a{
+	padding-left: 5px !important;
+	padding-right: 5px !important;
+		width: 60px !important;
+}
+ul.pagination{
+	justify-content: left !important;
+}
+
+div#graficos{
+
+	margin: auto;
+	padding-left: 0px;
+	margin-top: auto;
+	width: 500px;
+	height: 500px;
+}
+
+div#donutchart3{
+
+	margin: auto;
+	padding: 0px;
+	margin: 0px;	
+	float: left;
+	width: 400px !important;
+	height: 500px !important;
+}
+}
+
+@media only screen and (max-width: 400px) {
+
+
+.sidebar{
+	width: 75px !important;
+}
+
+.sidebar li a{
+	padding-left: 5px !important;
+	padding-right: 5px !important;
+	width: 60px !important;
+}
+ul.pagination{
+	justify-content: left !important;
+}
+
+div#graficos{
+
+	margin: auto;
+	padding-left: 0px;
+	margin-top: auto;
+	width: 500px;
+	height: 500px;
+}
+
+div#donutchart3{
+
+	margin: auto;
+	padding: 0px;
+	margin: 0px;	
+	float: left;
+	width: 350px !important;
+	height: 400px !important;
+}
+}
+
+

@@ -7,6 +7,6 @@
 	<p>Creado el: <strong>{{ $resolutor->created_at->format('d-m-Y') }}</strong></p>	
 
 	<p>
-		<a href="/resolutors/">Volver al listado de Resolutores</a>
+		<a href="{{url('resolutors')}}">Volver al listado de Resolutores</a>
     </p>
 @endsection	

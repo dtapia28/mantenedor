@@ -27,6 +27,6 @@
         </div>
     </div>    
     <p>
-        <a href="/teams">Regresar al listado de teams</a>
+        <a href="{{url('teams')}}">Regresar al listado de teams</a>
     </p>
 @endsection
