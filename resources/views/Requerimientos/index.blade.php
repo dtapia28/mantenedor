@@ -106,7 +106,7 @@
 							@endforelse	
 							</td>							
 							<td>
-					<form method='HEAD' action="../public/requerimientos/{{$requerimiento->id}}/terminado">
+					<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/terminado") }}">
 						{{ csrf_field() }}
 						<input type="image" align="center" src="{{ asset('img/correcta-marca.png') }}" width="30" height="30">
 					</form>

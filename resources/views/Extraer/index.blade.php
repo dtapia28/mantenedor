@@ -1,3 +1,29 @@
+<?php
+if (! empty($requerimientos)) {
+
+	$pruebas = $requerimientos;
+	$filename = "exportacion.xls";
+	header("Content-Type: application/vnd.ms-excel");
+	header("Content-Disposition: attachment; filename=\"$filename\"");
+	$isPrintHeader = false;
+
+		foreach ($pruebas as $row) {
+
+			if (! $isPrintHeader) {
+
+				echo implode("\t", array_keys($row)) . "\n";
+				$isPrintHeader = true;
+
+			}
+			echo implode("\t", array_values($row)) . "\n";
+
+		}
+
+	exit();
+
+}
+
+?>
 @extends('Bases.dashboard')
 @section('titulo', "Extracciones")
 @section('contenido')
@@ -10,7 +36,7 @@
 <div id="body" class="row">
 <div id="porEstado" class="from-row col-md-4">
 	<h5>Por estado:</h5>
-	<form method="GET" action="{{ url('../public/extracciones/estado') }}">
+	<form method="GET" action="{{ url('/extracciones/estado') }}">
 		<select id="porEstado" class="form-control col-md-8" name="estado">
 			<option selected="selected" disabled="disabled">Escoge una opción</option>
 			<option value="0">Inactivo</option>

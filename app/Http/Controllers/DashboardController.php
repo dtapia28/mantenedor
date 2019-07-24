@@ -47,6 +47,8 @@ class DashboardController extends Controller
 
     	}
 
+        
+
 
     	return view('dashboard.index', compact("verde", "amarillo", "rojo", "teams"));
     }

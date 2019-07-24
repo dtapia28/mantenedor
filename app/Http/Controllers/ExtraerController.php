@@ -10,6 +10,8 @@ use App\Exports\SolicitantesExport;
 use App\Exports\ResolutorsExport;
 use App\Solicitante;
 use App\Resolutor;
+use App\Requerimiento;
+use Illuminate\Support\Facades\DB;
 
 class ExtraerController extends Controller
 {
@@ -30,17 +32,49 @@ class ExtraerController extends Controller
 
     public function porEstado(Request $request)
     {
-    	return (new EstadoExport($request['estado']))->download('requerimientosPorEstado.xlsx');
+
+        $requerimientos = Requerimiento::where([
+            ['estado', $request['estado']],
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+        ])->get(['id', 'textoRequerimiento', 'fechaEmail', 'fechaCierre'])->toArray();
+
+
+        return view('Extraer.index', compact('requerimientos'));
     } 
 
     public function porEjecutado(Request $request)
     {
-    	return (new EjecutadoExport($request['porcentaje'], $request['comparacion']))->download('porPorcentaje.xlsx');
+
+        if ($request['comparacion'] == 1) {
+            $requerimientos = Requerimiento::where([
+                ['porcentajeEjecutado', '<=', $request['porcentaje']],
+                ['rutEmpresa', auth()->user()->rutEmpresa],               
+            ])->get(['id', 'textoRequerimiento', 'fechaEmail', 'fechaCierre', 'porcentajeEjecutado'])->toArray();
+        } else {
+            $requerimientos = Requerimiento::where([
+                ['porcentajeEjecutado', '>', $request['porcentaje']],
+                ['rutEmpresa', auth()->user()->rutEmpresa],                
+            ])->get(['id', 'textoRequerimiento', 'fechaEmail', 'fechaCierre', 'porcentajeEjecutado'])->toArray();
+        }
+    	
+        return view('Extraer.index', compact('requerimientos'));
     }
 
     public function cambios(Request $request)
     {
-    	return (new CambiosExport($request['cambios'], $request['comparacion']))->download('porCambios.xlsx');
+        if ($request['comparacion'] == 1) {
+            $requerimientos = Requerimiento::where([
+                ['numeroCambios', '<=', $request['cambios']],
+                ['rutEmpresa', auth()->user()->rutEmpresa],               
+            ])->get(['id', 'textoRequerimiento', 'fechaEmail', 'fechaCierre', 'porcentajeEjecutado'])->toArray();
+        } else {
+            $requerimientos = Requerimiento::where([
+                ['numeroCambios', '>', $request['cambios']],
+                ['rutEmpresa', auth()->user()->rutEmpresa],                
+            ])->get(['id', 'textoRequerimiento', 'fechaEmail', 'fechaCierre', 'porcentajeEjecutado'])->toArray();
+        }
+        
+        return view('Extraer.index', compact('requerimientos'));
     }
 
     public function solicitantes(Request $request)

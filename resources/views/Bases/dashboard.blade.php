@@ -1,3 +1,4 @@
+@yield('prueba')
 <!DOCTYPE html>
 <html lang="es">
 
