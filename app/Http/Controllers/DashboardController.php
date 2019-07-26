@@ -13,8 +13,13 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {   
+        //variable array para contener equipos. Linea 18
+        $equipos = [];
+        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get(['id', 'nameTeam'])->toArray();
+        $resolutores = Resolutor::where([
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+        ])->get();
 
-        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $verde = 0;
         $amarillo = 0;
         $rojo = 0;
@@ -47,10 +52,80 @@ class DashboardController extends Controller
 
     	}
 
-        
+        $equipos2 = [];
+        //Prueba para ver array de equipos
+        foreach ($teams as $team) {
+            $equipos[] = $team;
+        }
+
+        $everde = 0;
+        $eamarillo = 0;
+        $erojo = 0;
 
 
-    	return view('dashboard.index', compact("verde", "amarillo", "rojo", "teams"));
+        foreach ($equipos as $equipo) 
+        {
+            //Busca los resolutores por equipo
+            foreach ($resolutores as $resolutor) {
+                if ($resolutor->idTeam == $equipo['id']) {
+                    foreach ($requerimientos as $requerimiento) {
+                        if ($requerimiento->resolutor == $resolutor->id) {
+                            $hoy = new DateTime();
+                            $fechaCierre = new DateTime($requerimiento->fechaCierre);
+                            if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
+                                $variable = 0;
+                                while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
+
+                                   if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                        $hoy->modify("+1 days");               
+                                    }else{
+                                        $variable++;
+                                        $hoy->modify("+1 days");                       
+                                    }                   
+                                }
+                            if ($variable >= 3) {
+                                $everde++;               
+                            } else {
+                                $eamarillo++;
+                            }               
+                            } else {
+                                $erojo++;
+                            }                            
+                        }
+                    }
+                }
+            }
+
+            array_push($equipos2, array('id'=>$equipo['id'], 'verde'=>$everde, 'amarillo'=>$eamarillo, 'rojo'=>$erojo));
+            $everde = 0;
+            $eamarillo = 0;
+            $erojo = 0;
+        }
+ 
+        // Termino de prueba        
+
+    	return view('dashboard.index', compact("verde", "amarillo", "rojo", "teams", "equipos2"));
+    }
+
+    public function teams()
+    {
+
+        $paraGraficoTeams = [];
+
+        $requerimientos = Requerimientos::where([
+            ['estado', 1],
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+        ])->get();
+
+        $resolutores = Resolutor::where([
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+        ])->get();
+
+
+        foreach ($variable as $key => $value) {
+            # code...
+        }
+
     }
 
     public function green(){

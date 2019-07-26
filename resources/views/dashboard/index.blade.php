@@ -64,41 +64,40 @@
 <!-- Prueba de graficos con Chart.js-->
 <link rel="stylesheet" type="text/css" href="{{ asset('css/index_style.css') }}">
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load("current", {packages:["corechart"]});
+<script type="text/javascript">
+google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
+
       function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Al día',     {{ $verde }}],
-          ['Por vencer',      {{ $amarillo }}],
-          ['Vencido',  {{ $rojo }}]
-        ]);
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'nombre');
+        data.addColumn('date', 'numero');
+        data.addRows(6);
+        data.setCell(0, 0, 'Mike');
+        data.setCell(0, 1, 4);
+        data.setCell(1, 0, 'Bob');
+        data.setCell(1, 1, 7);
+        data.setCell(2, 0, 'Alice');
+        data.setCell(2, 1, 16);
 
+
+        // Create a view that shows everyone hired since 2007.
         var options = {
-          title: 'Requerimientos de todos los equipos',
-          pieHole: 0.3,
-          colors: ['#35A41D', '#CBA20B', '#BB3125'],
+          title: 'My Daily Activities',
+          pieHole: 0.4,
         };
-
-        var chart = new google.visualization.PieChart(document.getElementById('donutchart3'));
-       function selectHandler() {
-          var selectedItem = chart.getSelection()[0];
-          if (selectedItem) {
-            var topping = data.getValue(selectedItem.row, 0);
-            alert('The user selected ' + topping);
-          }
-        }
-
-        google.visualization.events.addListener(chart, 'select', selectHandler);        
-        chart.draw(data, options);
+        var view = new google.visualization.DataView(data);
+        //view.setRows(view.getFilteredRows([{column: 1, minValue: new Date(2007, 0, 1)}]));
+        var table = new google.visualization.PieChart(document.getElementById('table_div'));
+        table.draw(view,options);
       }
-    </script>           
+</script>
+
 
     <!--Div that will hold the pie chart-->
+    <div id="table_div"></div>
     <div id="graficos">
-    <div id="donutchart3" style="width: 900px; height: 500px;"></div>      
-    </div>
+    <div id="test_dataview" style="width: 900px; height: 500px;"></div>      
 
 
 @endsection
