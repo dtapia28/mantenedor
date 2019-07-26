@@ -66,36 +66,41 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+<?php
+foreach ($equipos2 as $valor) {
+  echo "google.charts.setOnLoadCallback(drawChart".$valor['id'].");\n";
+}
+?>
+<?php
+foreach ($equipos2 as $valor) {
+  echo "function drawChart".$valor['id']."(){
+    var data = new google.visualization.arrayToDataTable([
+    ['Segmento','Cantidad'],
+    ['Al día',".$valor['verde']."],
+    ['Por vencer',".$valor['amarillo']."],
+    ['Vencido',".$valor['rojo']."]
+    ]);
 
-      function drawChart() {
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'nombre');
-        data.addColumn('date', 'numero');
-        data.addRows(6);
-        data.setCell(0, 0, 'Mike');
-        data.setCell(0, 1, 4);
-        data.setCell(1, 0, 'Bob');
-        data.setCell(1, 1, 7);
-        data.setCell(2, 0, 'Alice');
-        data.setCell(2, 1, 16);
+    var options = {
+      title: 'Equipo ".$valor['nombre']."',
+      pieHole:0.3,
+      colors: ['#35A41D', '#CBA20B', '#BB3125'],
+    };
 
-
-        // Create a view that shows everyone hired since 2007.
-        var options = {
-          title: 'My Daily Activities',
-          pieHole: 0.4,
-        };
-        var view = new google.visualization.DataView(data);
-        //view.setRows(view.getFilteredRows([{column: 1, minValue: new Date(2007, 0, 1)}]));
-        var table = new google.visualization.PieChart(document.getElementById('table_div'));
-        table.draw(view,options);
-      }
+    var chart".$valor['id']." = new google.visualization.PieChart(document.getElementById('".$valor['id']."_chart_div'));
+    chart".$valor['id'].".draw(data, options);
+  }\n";
+}
+?>
 </script>
 
 
     <!--Div that will hold the pie chart-->
-    <div id="table_div"></div>
+    <?php
+    foreach ($equipos2 as $valor) {
+      echo "<div id='".$valor['id']."_chart_div' style='width: 500px; height: 300px;'></div>\n";
+    }  
+    ?>
     <div id="graficos">
     <div id="test_dataview" style="width: 900px; height: 500px;"></div>      
 

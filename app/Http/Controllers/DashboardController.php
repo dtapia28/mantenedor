@@ -96,7 +96,7 @@ class DashboardController extends Controller
                 }
             }
 
-            array_push($equipos2, array('id'=>$equipo['id'], 'verde'=>$everde, 'amarillo'=>$eamarillo, 'rojo'=>$erojo));
+            array_push($equipos2, array('id'=>$equipo['id'], 'nombre'=>$equipo['nameTeam'], 'verde'=>$everde, 'amarillo'=>$eamarillo, 'rojo'=>$erojo));
             $everde = 0;
             $eamarillo = 0;
             $erojo = 0;
