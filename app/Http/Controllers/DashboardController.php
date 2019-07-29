@@ -107,27 +107,6 @@ class DashboardController extends Controller
     	return view('dashboard.index', compact("verde", "amarillo", "rojo", "teams", "equipos2"));
     }
 
-    public function teams()
-    {
-
-        $paraGraficoTeams = [];
-
-        $requerimientos = Requerimientos::where([
-            ['estado', 1],
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-        ])->get();
-
-        $resolutores = Resolutor::where([
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-        ])->get();
-
-
-        foreach ($variable as $key => $value) {
-            # code...
-        }
-
-    }
-
     public function green(){
 
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();

@@ -13,67 +13,59 @@
                     <th>Requerimiento</th>
                     <th>Fecha Solicitud</th>
                     <th>Fecha Cierre</th>
-                    <th>Solicitante</th>
                     <th>Resolutor</th>
                     <th>Team</th>
                   </tr>
                 </thead>
-                <tfoot>
-                  <tr>
-                    <th>Id</th>
-                    <th>Requerimiento</th>
-                    <th>Fecha Solicitud</th>
-                    <th>Fecha Cierre</th>
-                    <th>Solicitante </th>
-                    <th>Resolutor</th>
-                    <th>Team</th>
-                  </tr>
-                </tfoot>
                 <tbody>
-					@forelse ($requerimientosGreen as $requerimiento)
-						<tr>
-						<th id="tabla" scope="row">
-							<a href="../requerimientos/{{ $requerimiento->id }}">					
-								{{ $requerimiento->id }}
-							</a>						
-						</th>
-						<td style="text-align:left;">	
-							{{ $requerimiento->textoRequerimiento }}
-						</td>				
-						<td style="text-align: center;">	
-							{{ date('d-m-Y', strtotime($requerimiento->fechaSolicitud)) }}
-						</td>
-						<td style="text-align: center;">	
-							{{ date('d-m-Y', strtotime($requerimiento->fechaCierre)) }}
-						</td>
-            @forelse ($solicitantes as $solicitante)
-              @if($requerimiento->idSolicitante == $solicitante->id)
-                <td style="text-align: center">{{ $solicitante->nombreSolicitante }}</td>
-              @endif  
-            @empty
-            @endforelse
-						@forelse ($resolutors as $resolutor)
-							@if ($requerimiento->resolutor == $resolutor->id)
-						<td style="text-align: center">				
-							{{ $resolutor->nombreResolutor }}
-							@endif
-						</td>
-						@empty
-						@endforelse	
-						@forelse ($teams as $team)
-							@if ($resolutor->idTeam == $team->id)
-							<td style="text-align: center">				
-							{{ $team->nameTeam }}
-							@endif
-						</td>
-						@empty
-						@endforelse						                  
-          @empty
-          @endforelse
+            @forelse ($requerimientosGreen as $requerimiento)
+              <tr>
+              <th id="tabla" scope="row">
+                <a href="../public/requerimientos/{{ $requerimiento->id }}">
+                  {{ $requerimiento->id }}
+                </a>            
+              </th>
+              <td width="350px" style="text-align:left;"> 
+                {{ $requerimiento->textoRequerimiento }}
+              </td>       
+              <td style="text-align: center;">  
+                {{ date('d-m-Y', strtotime($requerimiento->fechaSolicitud)) }}
+              </td>
+              @if($requerimiento->fechaRealCierre != "")
+              <td width="100px" style="text-align: center;">  
+                {{ date('d-m-Y', strtotime($requerimiento->fechaRealCierre)) }}
+              </td>
+              @else             
+              <td width="100px" style="text-align: center;">  
+                {{ date('d-m-Y', strtotime($requerimiento->fechaCierre)) }}
+              </td>
+              @endif
+              <td width="100px" style="text-align: center">               
+              @forelse ($resolutors as $resolutor)
+                @if ($requerimiento->resolutor == $resolutor->id)     
+                {{ $resolutor->nombreResolutor }}
+                @endif
+              @empty
+              @endforelse 
+              </td>
+              @forelse($resolutors as $resolutor)
+                @if($requerimiento->resolutor == $resolutor->id)  
+                  @forelse ($teams as $team)
+                    @if ($resolutor->idTeam == $team->id)
+                    <td style="text-align: center">       
+                    {{ $team->nameTeam }}
+                    @endif
+                  @empty
+                  @endforelse
+                @endif  
+              @empty
+              @endforelse 
+              </td>
+              @empty
+              @endforelse                  
                 </tbody>
               </table>
             </div>
           </div>
-          <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
         </div>
 @endsection

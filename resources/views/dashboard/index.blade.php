@@ -83,7 +83,7 @@ foreach ($equipos2 as $valor) {
 
     var options = {
       title: 'Equipo ".$valor['nombre']."',
-      pieHole:0.3,
+      pieHole:0.2,
       colors: ['#35A41D', '#CBA20B', '#BB3125'],
     };
 
