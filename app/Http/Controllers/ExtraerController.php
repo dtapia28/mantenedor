@@ -79,11 +79,25 @@ class ExtraerController extends Controller
 
     public function solicitantes(Request $request)
     {
-    	return (new SolicitantesExport($request['idSolicitante']))->download('porSolicitante.xlsx');
+        if ($request['idSolicitante'] != "") {
+            $requerimientos = Requerimiento::where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+                ['idSolicitante', $request['idSolicitante']],
+            ])->get(['id', 'textoRequerimiento', 'fechaEmail', 'fechaCierre', 'porcentajeEjecutado'])->toArray();
+        }
+
+        return view('Extraer.index', compact('requerimientos'));
     }
 
     public function resolutors(Request $request)
     {
-        return (new ResolutorsExport($request['idResolutor']))->download('porResolutor.xlsx');
+        if ($request['idResolutor'] != "") {
+            $requerimientos = Requerimiento::where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+                ['resolutor', $request['idResolutor']],
+            ])->get(['id', 'textoRequerimiento', 'fechaEmail', 'fechaCierre', 'porcentajeEjecutado'])->toArray();            
+        }
+
+        return view('Extraer.index', compact('requerimientos'));        
     }
 }
