@@ -76,11 +76,7 @@
     </footer>    
 </main>
 
-<footer class="footer">
-    <div class="container">
-        <span class="text-muted">Mantenedor</span>
-    </div>
-</footer>
+
 
 
 <!-- Bootstrap core JavaScript
