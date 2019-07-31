@@ -1,131 +1,271 @@
-thead{
-	background-color: #5599df;
-}
-
-tbody tr:nth-child(odd){
-	background-color: #e8fff7 !important;
-}
-
-tbody tr:nth-child(even){
-	/*background-color: #52ff7f;*/
-}
-
-tbody tr:hover{
-	background-color: #b4e9ff !important;
-}
-
-h1{
-	color: blue !important;
-}
-
-.sidebar{
-	background-color:#0660d0 !important;
-} 
-.navbar{
-	background-color:#004080 !important;
-	color: 	#f6f6f6;
-	font-weight: 600;
-}
-nav ul li a{
-		color: 	#f5f5f5 !important;
-}
-
-nav ul li .dropdown-menu a{
-	color: black !important;
-}
-
-nav ul li a:hover{
-		color: white !important;
-}
-
-nav ul li .dropdown-menu a:hover{
-	color: gray !important;
-}
-
-
-.card{
-	/*background-color: #00adff10 !important;*/
-}
-
-/*#content-wrapper{
-	background-color: #e0fff0aa !important;
-}*/
-#navbarCollapse{
-	display: block;
-}
-@media only screen and (max-width: 400px) {
-#navbarCollapse{
-	display: none !important;
-}
-.sidebar{
-	width: 75px !important;
-}
-
-.sidebar li a{
-	padding-left: 5px !important;
-	padding-right: 5px !important;
-	width: 60px !important;
-}
-ul.pagination{
-	justify-content: left !important;
-}
-
-}
-
-@media only screen and (max-width: 550px) {
-#navbarCollapse{
-	display: none !important;
-}
-.sidebar{
-	width: 75px !important;
-}
-
-.sidebar li a{
-	padding-left: 5px !important;
-	padding-right: 5px !important;
-	width: 60px !important;
-}
-ul.pagination{
-	justify-content: left !important;
-}
-
-}
-
-@media only screen and (max-width: 650px) {
-#navbarCollapse{
-	display: none !important;
-}
-.sidebar{
-	width: 75px !important;
-}
-
-.sidebar li a{
-	padding-left: 5px !important;
-	padding-right: 5px !important;
-	width: 60px !important;
-}
-ul.pagination{
-	justify-content: left !important;
-}
-
-}
-
-@media only screen and (max-width: 800px) {
-#navbarCollapse{
-	display: none !important;
-}
-.sidebar{
-	width: 75px !important;
-}
-
-.sidebar li a{
-	padding-left: 5px !important;
-	padding-right: 5px !important;
-	width: 60px !important;
-}
-ul.pagination{
-	justify-content: left !important;
-}
-
-}
-
+thead{
+
+	background-color: #5599df;
+
+}
+
+
+
+tbody tr:nth-child(odd){
+
+	background-color: #e8fff7 !important;
+
+}
+
+
+
+tbody tr:nth-child(even){
+
+	/*background-color: #52ff7f;*/
+
+}
+
+
+
+tbody tr:hover{
+
+	background-color: #b4e9ff !important;
+
+}
+
+
+
+h1{
+
+	color: blue !important;
+
+}
+
+
+
+.sidebar{
+
+	background-color:#0660d0 !important;
+
+} 
+
+.navbar{
+
+	background-color:#004080 !important;
+
+	color: 	#f6f6f6;
+
+	font-weight: 600;
+
+}
+
+nav ul li a{
+
+		color: 	#f5f5f5 !important;
+
+}
+
+
+
+nav ul li .dropdown-menu a{
+
+	color: black !important;
+
+}
+
+
+
+nav ul li a:hover{
+
+		color: white !important;
+
+}
+
+
+
+nav ul li .dropdown-menu a:hover{
+
+	color: gray !important;
+
+}
+
+
+
+
+
+.card{
+
+	/*background-color: #00adff10 !important;*/
+
+}
+
+
+
+/*#content-wrapper{
+
+	background-color: #e0fff0aa !important;
+
+}*/
+
+#navbarCollapse{
+
+	display: block;
+
+}
+
+@media only screen and (max-width: 400px) {
+
+#navbarCollapse{
+
+	display: none !important;
+
+}
+
+.sidebar{
+
+	width: 75px !important;
+
+}
+
+
+
+.sidebar li a{
+
+	padding-left: 5px !important;
+
+	padding-right: 5px !important;
+
+	width: 60px !important;
+
+}
+
+ul.pagination{
+
+	justify-content: left !important;
+
+}
+
+
+
+}
+
+
+
+@media only screen and (max-width: 550px) {
+
+#navbarCollapse{
+
+	display: none !important;
+
+}
+
+.sidebar{
+
+	width: 75px !important;
+
+}
+
+
+
+.sidebar li a{
+
+	padding-left: 5px !important;
+
+	padding-right: 5px !important;
+
+	width: 60px !important;
+
+}
+
+ul.pagination{
+
+	justify-content: left !important;
+
+}
+
+
+
+}
+
+
+
+@media only screen and (max-width: 650px) {
+
+#navbarCollapse{
+
+	display: none !important;
+
+}
+
+.sidebar{
+
+	width: 75px !important;
+
+}
+
+
+
+.sidebar li a{
+
+	padding-left: 5px !important;
+
+	padding-right: 5px !important;
+
+	width: 60px !important;
+
+}
+
+ul.pagination{
+
+	justify-content: left !important;
+
+}
+
+
+
+}
+
+
+
+@media only screen and (max-width: 800px) {
+
+#navbarCollapse{
+
+	display: none !important;
+
+}
+
+.sidebar{
+
+	width: 75px !important;
+
+}
+
+
+
+.sidebar li a{
+
+	padding-left: 5px !important;
+
+	padding-right: 5px !important;
+
+	width: 60px !important;
+
+}
+
+ul.pagination{
+
+	justify-content: left !important;
+
+}
+
+
+
+}
+
+
+#graficosTeam div {
+	float: left;
+	margin: 0px;
+	padding: 0px;
+
+}
+
+footer {
+	position: down;
+}

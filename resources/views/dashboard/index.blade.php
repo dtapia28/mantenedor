@@ -96,13 +96,13 @@ foreach ($equipos2 as $valor) {
 
 
     <!--Div that will hold the pie chart-->
+    <div id="graficosTeam">
     <?php
     foreach ($equipos2 as $valor) {
-      echo "<div id='".$valor['id']."_chart_div' style='width: 500px; height: 300px;'></div>\n";
+      echo "<div id='".$valor['id']."_chart_div' style='width: 300px; height: 300px;'></div>\n";
     }  
     ?>
-    <div id="graficos">
-    <div id="test_dataview" style="width: 900px; height: 500px;"></div>      
+    </div>    
 
 
 @endsection

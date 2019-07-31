@@ -27,10 +27,6 @@ class RequerimientoController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function exportar()
-    {
-        return (new RequerimientosExport(1))->download('requerimientos.xlsx');
-    }
     public function index(Request $request)
     {
 
@@ -97,6 +93,10 @@ class RequerimientoController extends Controller
             ['fechaSolicitud' => 'La fecha de solicitud es obligatoria'],
             ['fechaCierre' => 'La fecha de cierre es obligatoria']);
 
+        $fechaSoli = new DateTime($data['fechaSolicitud']);
+        $fechaCie = new DateTime($data['fechaCierre']);
+
+        if ($fechaCie->getTimestamp() > $fechaSoli->getTimestamp()) {
 
         Requerimiento::create([
             'textoRequerimiento' => $data['textoRequerimiento'],            
@@ -109,7 +109,11 @@ class RequerimientoController extends Controller
             'rutEmpresa' => auth()->user()->rutEmpresa,
         ]);
 
-        return redirect('requerimientos');        
+        return redirect('requerimientos');
+
+        }else {
+            return back()->with('msj', 'La fecha de cierre del requerimiento debe ser mayor a la fecha de solicitud');
+        }      
     }
 
     /**

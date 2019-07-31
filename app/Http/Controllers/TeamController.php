@@ -42,6 +42,16 @@ class TeamController extends Controller
             'nameTeam' => 'required'],
             [ 'nameTeam.required' => 'El campo nombre es obligatorio']);
 
+        $prueba = str_split($data['nameTeam']);
+        $cadena = [];
+        for ($i=0; $i < strlen($data['nameTeam']) ; $i++) { 
+            if (ctype_upper($prueba[$i])) {
+                array_push($cadena, $prueba[$i]);
+            }
+        }
+
+        dd($cadena);
+
         Team::create([
             'nameTeam' => $data['nameTeam'],
             'rutEmpresa' => auth()->user()->rutEmpresa,

@@ -96,10 +96,14 @@ class DashboardController extends Controller
                 }
             }
 
-            array_push($equipos2, array('id'=>$equipo['id'], 'nombre'=>$equipo['nameTeam'], 'verde'=>$everde, 'amarillo'=>$eamarillo, 'rojo'=>$erojo));
-            $everde = 0;
-            $eamarillo = 0;
-            $erojo = 0;
+            if ($everde != 0 or $eamarillo != 0 or $erojo != 0) {
+
+                array_push($equipos2, array('id'=>$equipo['id'], 'nombre'=>$equipo['nameTeam'], 'verde'=>$everde, 'amarillo'=>$eamarillo, 'rojo'=>$erojo));
+                $everde = 0;
+                $eamarillo = 0;
+                $erojo = 0;
+                
+            }
         }
  
         // Termino de prueba        
