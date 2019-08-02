@@ -98,6 +98,43 @@ class RequerimientoController extends Controller
 
         if ($fechaCie->getTimestamp() > $fechaSoli->getTimestamp()) {
 
+            $resolutor = Resolutor::where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+                ['id', $data['idResolutor']],
+            ])->get();
+
+            $team = Team::where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+                ['id',$resolutor[0]->idTeam],
+            ])->get(); 
+
+            $resolutors = Resolutor::where([
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+            ])->get();
+
+            $requerimientos = Requerimiento::where([
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+            ])->get();
+            
+            $conteo = 0;
+            foreach ($resolutors as $resolutor) {
+                if ($resolutor->idTeam == $team[0]->id) {
+                    foreach ($requerimientos as $requerimiento) {
+                        if ($requerimiento->resolutor == $resolutor->id) {
+                            $conteo++;
+                        }
+                    }
+                }
+            }
+
+            if ($conteo < 10) {
+                $conteoA = "00".$conteo;
+            } elseif ($conteo >= 10 and $conteo <= 99){
+                $conteoA = "0".$conteo;
+            } else {
+                $conteoA = $conteo;
+            }
+
         Requerimiento::create([
             'textoRequerimiento' => $data['textoRequerimiento'],            
             'fechaEmail' => $data['fechaEmail'],
@@ -107,7 +144,10 @@ class RequerimientoController extends Controller
             'idPrioridad' => $data['idPrioridad'],
             'resolutor' => $data['idResolutor'],
             'rutEmpresa' => auth()->user()->rutEmpresa,
+            'id2' => "RQ".$team[0]->id2.$conteoA,
         ]);
+
+        $conteo = 0;
 
         return redirect('requerimientos');
 

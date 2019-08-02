@@ -41,20 +41,33 @@ class TeamController extends Controller
         $data = request()->validate([
             'nameTeam' => 'required'],
             [ 'nameTeam.required' => 'El campo nombre es obligatorio']);
-
+        //Transforma en array el string nameTeam
         $prueba = str_split($data['nameTeam']);
         $cadena = [];
-        for ($i=0; $i < strlen($data['nameTeam']) ; $i++) { 
-            if (ctype_upper($prueba[$i])) {
-                array_push($cadena, $prueba[$i]);
+        $numero = [];
+        for ($a=0; $a < count($prueba) ; $a++) { 
+            if (is_numeric($prueba[$a])) {
+            array_push($numero, $prueba[$a]);
             }
         }
 
-        dd($cadena);
+        $numero = implode("", $numero);
+       
+        //Bucle que agrega al array cadena las 3 primeras letras
+        for ($i=0; $i < 3 ; $i++) { 
+            $a = strtoupper($prueba[$i]);
+            array_push($cadena, $a);
+        }
+
+        $nombre = implode("", $cadena);
+
+        $completo = $nombre.$numero;
+
 
         Team::create([
             'nameTeam' => $data['nameTeam'],
             'rutEmpresa' => auth()->user()->rutEmpresa,
+            'id2' => $completo,
         ]);
 
         return redirect('teams');
