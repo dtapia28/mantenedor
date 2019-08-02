@@ -19,9 +19,7 @@ class ExtraerController extends Controller
     public function index()
     {
 
-    	$solicitantes = Solicitante::where([
-    		['rutEmpresa', auth()->user()->rutEmpresa],
-    	])->get();
+        $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->orderBy('nombreSolicitante')->get();
 
         $resolutors = Resolutor::where([
             ['rutEmpresa', auth()->user()->rutEmpresa],
