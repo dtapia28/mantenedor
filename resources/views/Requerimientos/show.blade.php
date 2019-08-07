@@ -5,7 +5,7 @@
 @endsection
 @section('requerimiento')
 	<br>
-	<h2>Requerimiento n° {{ $requerimiento->id }}</h2>
+	<h2>Requerimiento {{ $requerimiento->id2 }}</h2>
 	<br>
 	<p><strong>Texto del requerimiento: </strong>{{ $requerimiento->textoRequerimiento }}</p>
 	<p>

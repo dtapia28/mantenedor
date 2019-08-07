@@ -62,7 +62,7 @@
 						@forelse ($requerimientos as $requerimiento)
 							<tr>
 							<th id="tabla" scope="row">
-								<a href="../public/requerimientos/{{ $requerimiento->id }}">
+								<a href="/requerimientos/{{ $requerimiento->id }}">
 									{{ $requerimiento->id2 }}
 								</a>					
 							</th>
@@ -112,7 +112,7 @@
 					</form>
 				</td>																
 				<td>									
-					<form method='HEAD' action="../public/requerimientos/{{$requerimiento->id}}/editar">
+					<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/editar">
 						{{ csrf_field() }}
 						<input type="image" align="center" src="{{ asset('img/edit.png') }}" width="30" height="30">
 					</form>

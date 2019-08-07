@@ -27,29 +27,34 @@ class DashboardController extends Controller
             ['estado', 1],
             ['rutEmpresa', auth()->user()->rutEmpresa],
         ])->get();
-    	foreach ($requerimientos as $requerimiento) {
-    		$hoy = new DateTime();
-    		$fechaCierre = new DateTime($requerimiento->fechaCierre);
-    		if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
-    			$variable = 0;
-    			while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
+    	foreach ($requerimientos as $requerimiento) 
+        {
+            if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") 
+            {
+            } else
+            {
+        		$hoy = new DateTime();
+        		$fechaCierre = new DateTime($requerimiento->fechaCierre);
+        		if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
+        			$variable = 0;
+        			while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
 
-		           if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
-		                $hoy->modify("+1 days");               
-		            }else{
-		                $variable++;
-		                $hoy->modify("+1 days");                       
-		            }    				
-    			}
-    		if ($variable >= 3) {
-    			$verde++;    			
-    		} else {
-    			$amarillo++;
-    		}    			
-    		} else {
-    			$rojo++;
-    		}
-
+    		           if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+    		                $hoy->modify("+1 days");               
+    		            }else{
+    		                $variable++;
+    		                $hoy->modify("+1 days");                       
+    		            }    				
+        			}
+        		if ($variable >= 3) {
+        			$verde++;    			
+        		} else {
+        			$amarillo++;
+        		}    			
+        		} else {
+        			$rojo++;
+        		}
+            }    
     	}
 
         $equipos2 = [];
@@ -66,32 +71,38 @@ class DashboardController extends Controller
         foreach ($equipos as $equipo) 
         {
             //Busca los resolutores por equipo
-            foreach ($resolutores as $resolutor) {
+            foreach ($resolutores as $resolutor) 
+            {
                 if ($resolutor->idTeam == $equipo['id']) {
-                    foreach ($requerimientos as $requerimiento) {
-                        if ($requerimiento->resolutor == $resolutor->id) {
-                            $hoy = new DateTime();
-                            $fechaCierre = new DateTime($requerimiento->fechaCierre);
-                            if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
-                                $variable = 0;
-                                while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
+                    foreach ($requerimientos as $requerimiento) 
+                    {
+                        if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
+                        } else 
+                        {
+                            if ($requerimiento->resolutor == $resolutor->id) {
+                                $hoy = new DateTime();
+                                $fechaCierre = new DateTime($requerimiento->fechaCierre);
+                                if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
+                                    $variable = 0;
+                                    while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
 
-                                   if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
-                                        $hoy->modify("+1 days");               
-                                    }else{
-                                        $variable++;
-                                        $hoy->modify("+1 days");                       
-                                    }                   
-                                }
-                            if ($variable >= 3) {
-                                $everde++;               
-                            } else {
-                                $eamarillo++;
-                            }               
-                            } else {
-                                $erojo++;
-                            }                            
-                        }
+                                       if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                            $hoy->modify("+1 days");               
+                                        }else{
+                                            $variable++;
+                                            $hoy->modify("+1 days");                       
+                                        }                   
+                                    }
+                                if ($variable >= 3) {
+                                    $everde++;               
+                                } else {
+                                    $eamarillo++;
+                                }               
+                                } else {
+                                    $erojo++;
+                                }                            
+                            }
+                        }    
                     }
                 }
             }
@@ -121,25 +132,30 @@ class DashboardController extends Controller
             ['rutEmpresa', '=', auth()->user()->rutEmpresa],
         ])->get();
     	$requerimientosGreen = [];
-    	foreach ($requerimientos as $requerimiento) {
-    		$hoy = new DateTime();
-    		$fechaCierre = new DateTime($requerimiento->fechaCierre);
-    		if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
-    			$variable = 0;
-    			while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
+    	foreach ($requerimientos as $requerimiento) 
+        {
+            if ($requerimiento->fechaCierre == "9999-12-31 00:00:00")
+            {  
+            } else 
+            {
+        		$hoy = new DateTime();
+        		$fechaCierre = new DateTime($requerimiento->fechaCierre);
+        		if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
+        			$variable = 0;
+        			while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
 
-		           if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
-		                $hoy->modify("+1 days");               
-		            }else{
-		                $variable++;
-		                $hoy->modify("+1 days");                       
-		            }    				
-    			}
-    		if ($variable >= 3) {
-    			$requerimientosGreen[] = $requerimiento;    			
-    		}
-    		}
-
+    		           if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+    		                $hoy->modify("+1 days");               
+    		            }else{
+    		                $variable++;
+    		                $hoy->modify("+1 days");                       
+    		            }    				
+        			}
+        		if ($variable >= 3) {
+        			$requerimientosGreen[] = $requerimiento;    			
+        		}
+        		}
+            }
     	}	
     	
     	return view('dashboard.green', compact('requerimientosGreen', 'resolutors', 'teams', 'solicitantes'));   	    	
@@ -152,24 +168,30 @@ class DashboardController extends Controller
         $requerimientos = Requerimiento::where('estado', 1)->get();
         $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $requerimientosYellow = [];
-        foreach ($requerimientos as $requerimiento) {
-            $hoy = new DateTime();
-            $fechaCierre = new DateTime($requerimiento->fechaCierre);
-            if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
-                $variable = 0;
-                while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
+        foreach ($requerimientos as $requerimiento) 
+        {
+            if ($requerimiento->fechaCierre == "9999-12-31 00:00:00")
+            {
+            }else
+            {    
+                $hoy = new DateTime();
+                $fechaCierre = new DateTime($requerimiento->fechaCierre);
+                if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
+                    $variable = 0;
+                    while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
 
-                   if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
-                        $hoy->modify("+1 days");               
-                    }else{
-                        $variable++;
-                        $hoy->modify("+1 days");                       
-                    }                   
+                       if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                            $hoy->modify("+1 days");               
+                        }else{
+                            $variable++;
+                            $hoy->modify("+1 days");                       
+                        }                   
+                    }
+                if ($variable <= 2 and $variable >=0) {
+                    $requerimientosYellow[] = $requerimiento;                
                 }
-            if ($variable <= 2 and $variable >=0) {
-                $requerimientosYellow[] = $requerimiento;                
-            }
-            }
+                }
+            }    
         }   
         
         return view('dashboard.yellow', compact('requerimientosYellow', 'resolutors', 'teams', 'solicitantes'));              
@@ -185,7 +207,8 @@ class DashboardController extends Controller
             ])->get();
         $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $requerimientosRed = [];
-        foreach ($requerimientos as $requerimiento) {
+        foreach ($requerimientos as $requerimiento) 
+        {
             $hoy = new DateTime();
             $fechaCierre = new DateTime($requerimiento->fechaCierre);
             if ($requerimiento->fechaRealCierre != "" or ($hoy->getTimestamp() > $fechaCierre->getTimestamp())) {
