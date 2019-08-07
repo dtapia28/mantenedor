@@ -316,12 +316,19 @@ class RequerimientoController extends Controller
      */
     public function edit(Requerimiento $requerimiento)
     {
+        $fechita = str_split($requerimiento->fechaCierre);
+        $fechota = [];
+        for ($i=0; $i < 10; $i++) { 
+            $b = strtoupper($fechita[$i]);
+            array_push($fechota, $b);
+        }
+        $fecha = implode("", $fechota);
         $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $priorities = Priority::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $fechaCierre = new DateTime($requerimiento->fechaCierre);
 
-        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'fechaCierre'));        
+        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'fechaCierre', 'fecha'));        
     }
 
     /**
@@ -333,6 +340,7 @@ class RequerimientoController extends Controller
      */
     public function update(Request $request, Requerimiento $requerimiento)
     {
+        dd($request);
         $data = request()->validate([
             'textoRequerimiento' => 'nullable',
             'idSolicitante' => 'nullable',

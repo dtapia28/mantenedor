@@ -22,11 +22,11 @@
 
             <label for="textoRequerimiento">Texto del requerimiento:</label>
             <br>
-            <textarea class="form-control col-md-7" name="textoRequerimiento" value='{{ old('textoRequerimiento', $requerimiento->textoRequerimiento) }}' placeholder="Texto del requerimiento" rows="5" cols="50"></textarea>
+            <textarea class="form-control col-md-7" name="textoRequerimiento" value="{{ $requerimiento->textoRequerimiento }}" placeholder="Texto del requerimiento" rows="5" cols="50"></textarea>
             <label>Texto de requerimiento: {{ $requerimiento->textoRequerimiento }}</label>
             <br>
             <label for='fechaCierre'>Fecha de Cierre:</label>
-            <input value="" class="form-control col-md-3" type="date" name="fechaCierre">
+            <input value="{{ $fecha }}" class="form-control col-md-3" type="date" name="fechaCierre">
             <br>            
             <label for="idSolicitante">Solicitante:</label> 
             <br>       
