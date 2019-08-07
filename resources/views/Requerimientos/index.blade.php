@@ -48,9 +48,9 @@
 	                    <th>Requerimiento</th>
 	                    <th>Fecha Solicitud</th>
 	                    <th>Fecha Cierre</th>
-	                    <th>Ejecutado (%)</th>
 	                    <th>Resolutor</th>
-	                    <th>Team</th>
+	                    <th>Status</th>
+	                    <th>Ejecutado (%)</th>	                    
 	                    <th></th>
 	                    <th></th>
 	                    <th></th>
@@ -77,13 +77,10 @@
 								{{ date('d-m-Y', strtotime($requerimiento->fechaRealCierre)) }}
 							</td>
 							@else							
-							<td width="100px" style="text-align: center;">	
+							<td width="200px" style="text-align: center;">	
 								{{ date('d-m-Y', strtotime($requerimiento->fechaCierre)) }}
 							</td>
 							@endif
-							<td style="text-align: center;">
-								{{ $requerimiento->porcentajeEjecutado }}
-							</td>
 							<td width="100px" style="text-align: center">								
 							@forelse ($resolutors as $resolutor)
 								@if ($requerimiento->resolutor == $resolutor->id)			
@@ -92,18 +89,10 @@
 							@empty
 							@endforelse	
 							</td>
-							@forelse($resolutors as $resolutor)
-								@if($requerimiento->resolutor == $resolutor->id)	
-									@forelse ($teams as $team)
-										@if ($resolutor->idTeam == $team->id)
-										<td style="text-align: center">				
-										{{ $team->nameTeam }}
-										@endif
-									@empty
-									@endforelse
-								@endif	
-							@empty
-							@endforelse	
+							<td>
+							</td>
+							<td style="text-align: center">
+								{{ $requerimiento->porcentajeEjecutado }}
 							</td>							
 							<td>
 					<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/terminado") }}">

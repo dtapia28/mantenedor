@@ -96,7 +96,7 @@ class RequerimientoController extends Controller
         $fechaSoli = new DateTime($data['fechaSolicitud']);
         $fechaCie = new DateTime($data['fechaCierre']);
 
-        if ($fechaCie->getTimestamp() > $fechaSoli->getTimestamp()) {
+        if ($fechaCie->getTimestamp() >= $fechaSoli->getTimestamp()) {
 
             $resolutor = Resolutor::where([
                 ['rutEmpresa', auth()->user()->rutEmpresa],
@@ -184,7 +184,7 @@ class RequerimientoController extends Controller
             define("FECHAREALCIERRE", "$requerimiento->fechaRealCierre");
             $fechaCierre = new DateTime(FECHACIERRE);                   
 
-        if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
+        if ($requerimiento->fechaCierre == "9999-12-31 00:00:00" or $requerimiento->fechaSolicitud == $requerimiento->fechaCierre) {
             $hastaCierre = 1;
             $hastaHoy = 0;
             $restantes = 0;
