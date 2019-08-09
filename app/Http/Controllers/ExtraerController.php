@@ -31,10 +31,16 @@ class ExtraerController extends Controller
     public function porEstado(Request $request)
     {
 
-        $requerimientos = Requerimiento::where([
+        $base = DB::table('porestado_view')->where([
             ['estado', $request['estado']],
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-        ])->get(['id', 'textoRequerimiento', 'fechaEmail', 'fechaCierre'])->toArray();
+            //['rutEmpresa', auth()->user()->rutEmpresa],
+        ])->get(['id', 'textoRequerimiento AS Texto del requerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad'])->toArray();
+        $base2 = [];
+        $requerimientos = [];
+        for ($i=0; $i < count($base); $i++) {
+            $base2 = (array) $base[$i];
+            array_push($requerimientos, $base2);
+        }
 
 
         return view('Extraer.index', compact('requerimientos'));
@@ -54,6 +60,8 @@ class ExtraerController extends Controller
                 ['rutEmpresa', auth()->user()->rutEmpresa],                
             ])->get(['id', 'textoRequerimiento', 'fechaEmail', 'fechaCierre', 'porcentajeEjecutado'])->toArray();
         }
+
+        dd($requerimientos);
     	
         return view('Extraer.index', compact('requerimientos'));
     }
