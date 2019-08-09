@@ -324,11 +324,23 @@ class RequerimientoController extends Controller
         }
         $fecha = implode("", $fechota);
         $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $solicitanteEspecifico = Solicitante::where([
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+            ['id', $requerimiento->idSolicitante],
+        ])->get();
+        $prioridadEspecifica = Priority::where([
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+            ['id', $requerimiento->idPrioridad],
+        ])->get();
+        $resolutorEspecifico = Resolutor::where([
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+            ['id', $requerimiento->resolutor],
+        ])->get();
         $priorities = Priority::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $fechaCierre = new DateTime($requerimiento->fechaCierre);
 
-        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'fechaCierre', 'fecha'));        
+        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'fechaCierre', 'fecha', 'solicitanteEspecifico', 'prioridadEspecifica', 'resolutorEspecifico'));        
     }
 
     /**
@@ -340,7 +352,6 @@ class RequerimientoController extends Controller
      */
     public function update(Request $request, Requerimiento $requerimiento)
     {
-        dd($request);
         $data = request()->validate([
             'textoRequerimiento' => 'nullable',
             'idSolicitante' => 'nullable',
@@ -350,7 +361,6 @@ class RequerimientoController extends Controller
         ]);
 
         $data['idEmpresa'] = auth()->user()->rutEmpresa;
-        dd($requerimiento);
         $requerimiento->update($data);
         return redirect('requerimientos');         
     }

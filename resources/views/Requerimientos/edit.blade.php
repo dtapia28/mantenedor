@@ -33,7 +33,7 @@
             <select class="form-control col-md-3" name="idSolicitante">
                 @foreach($solicitantes as $solicitante)
                     <optgroup>
-                        <option value="{{ old('idSolicitante', $solicitante->id) }}">{{ $solicitante->nombreSolicitante }}</option>
+                        <option value="{{$solicitante->id}}" @if($solicitanteEspecifico['0']->id == $solicitante->id){{ 'selected' }}@endif>{{ $solicitante->nombreSolicitante }}</option>
                     </optgroup>
                 @endforeach
             </select>
@@ -43,7 +43,7 @@
             <select class="form-control col-md-3" name="idPrioridad">
                 @foreach($priorities as $priority)
                     <optgroup>
-                        <option value="{{ old('idPrioridad', $priority->id) }}">{{ $priority->namePriority }}</option>
+                        <option value="{{$priority->id}}" @if($prioridadEspecifica['0']->id == $priority->id){{'selected'}}@endif>{{ $priority->namePriority }}</option>
                     </optgroup>
                 @endforeach
             </select>
@@ -53,7 +53,7 @@
             <select class="form-control col-md-3" name="idResolutor">
                 @foreach($resolutors as $resolutor)
                     <optgroup>
-                        <option value="{{ old('idResolutor', $resolutor->id) }}">{{ $resolutor->nombreResolutor }}</option>
+                        <option value="{{$resolutor->id}}" @if($resolutorEspecifico['0']->id == $resolutor->id){{'selected'}}@endif>{{ $resolutor->nombreResolutor }}</option>
                     </optgroup>
                 @endforeach
             </select>                      
