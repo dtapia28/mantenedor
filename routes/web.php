@@ -47,6 +47,8 @@ Route::get('/extracciones/solicitantes', 'ExtraerController@solicitantes');
 
 Route::get('/extracciones/resolutores', 'ExtraerController@resolutors');
 
+Route::get('/extracciones/teams', 'ExtraerController@teams');
+
 
 
 //Rutas para los create

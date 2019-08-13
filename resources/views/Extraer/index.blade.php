@@ -24,6 +24,14 @@ if (! empty($requerimientos)) {
 }
 
 ?>
+@if(session()->has('msj'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ session('msj') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+@endif
 @extends('Bases.dashboard')
 @section('titulo', "Extracciones")
 @section('contenido')
@@ -34,47 +42,47 @@ if (! empty($requerimientos)) {
 <link rel="stylesheet" type="text/css" href="{{ asset('css/index_style.css') }}">
 <h1 style="padding-bottom: 40px" align="center">Exportar requerimientos</h1>
 <div id="body" class="row">
-<div id="porEstado" class="from-row col-md-4">
-	<h5>Por estado:</h5>
-	<form method="GET" action="{{ url('/extracciones/estado') }}">
-		<select id="porEstado" class="form-control col-md-8" name="estado">
-			<option selected="selected" disabled="disabled">Escoge una opción</option>
-			<option value="0">Inactivo</option>
-			<option value="1">Activo</option>
-	    </select>	
-		<button id="btn1" class="btn btn-primary" type="submit">Extraer</button>	    	
-	</form>
-</div>
-<div id="porEjecutado" class="from-row col-md-4">
-	<h5>Por porcentaje ejecutado:</h5>
-	<form method="GET" action="{{ url('/extracciones/ejecutado') }}">
-		<select id="comparacion" class="form-control col-md-7" name="comparacion">
-			<option selected="selected" disabled="disabled">Escoger una opción</option>
-			<option value="1">Menor o igual que</option>
-			<option value="2">Mayor que</option>
-	    </select>
-	    <div>
-	    <label for="porcentaje">Ingresa porcentaje de requerimiento(s):</label>
-	    <input class="form-control col-md-3" type="number" name="porcentaje">	
-	    </div>
-		<button class="btn btn-primary" type="submit">Extraer</button>	    	
-	</form>
-</div>
-<div id="porEjecutado" class="from-row col-md-4">
-	<h5>Por número de cambios:</h5>
-	<form method="GET" action="{{ url('/extracciones/cambios') }}">
-		<select id="comparacion" class="form-control col-md-7" name="comparacion">
-			<option selected="selected" disabled="disabled">Escoge una opción</option>
-			<option value="1">Menor o igual que</option>
-			<option value="2">Mayor que</option>
-	    </select>
-	    <div>
-	    <label for="porcentaje">Ingresa n° de cambios:</label>
-	    <input class="form-control col-md-2" type="number" name="cambios">	
-	    </div>
-		<button class="btn btn-primary" type="submit">Extraer</button>	    	
-	</form>
-</div>
+	<div id="porEstado" class="from-row col-md-4">
+		<h5>Por estado:</h5>
+		<form method="GET" action="{{ url('/extracciones/estado') }}">
+			<select id="porEstado" class="form-control col-md-8" name="estado">
+				<option selected="selected" disabled="disabled">Escoge una opción</option>
+				<option value="0">Inactivo</option>
+				<option value="1">Activo</option>
+		    </select>	
+			<button id="btn1" class="btn btn-primary" type="submit">Extraer</button>	    	
+		</form>
+	</div>
+	<div id="porEjecutado" class="from-row col-md-4">
+		<h5>Por porcentaje ejecutado:</h5>
+		<form method="GET" action="{{ url('/extracciones/ejecutado') }}">
+			<select id="comparacion" class="form-control col-md-7" name="comparacion">
+				<option selected="selected" disabled="disabled">Escoger una opción</option>
+				<option value="1">Menor o igual que</option>
+				<option value="2">Mayor que</option>
+		    </select>
+		    <div>
+		    <label for="porcentaje">Ingresa porcentaje de requerimiento(s):</label>
+		    <input class="form-control col-md-3" type="number" name="porcentaje">	
+		    </div>
+			<button class="btn btn-primary" type="submit">Extraer</button>	    	
+		</form>
+	</div>
+	<div id="porCambios" class="from-row col-md-4">
+		<h5>Por número de cambios:</h5>
+		<form method="GET" action="{{ url('/extracciones/cambios') }}">
+			<select id="comparacion" class="form-control col-md-7" name="comparacion">
+				<option selected="selected" disabled="disabled">Escoge una opción</option>
+				<option value="1">Menor o igual que</option>
+				<option value="2">Mayor que</option>
+		    </select>
+		    <div>
+		    <label for="porcentaje">Ingresa n° de cambios:</label>
+		    <input class="form-control col-md-2" type="number" name="cambios">	
+		    </div>
+			<button class="btn btn-primary" type="submit">Extraer</button>	    	
+		</form>
+	</div>
 </div>
 <div id="body2" class="row">
 	<div id="porSolicitante" class="from-row col-md-4">
@@ -105,5 +113,19 @@ if (! empty($requerimientos)) {
 			<button class="btn btn-primary" type="submit">Extraer</button>
 		</form>
 	</div>
+	<div id="porTeam" class="from-row col-md-4">
+		<h5>Por Equipo:</h5>
+		<form method="GET" action="{{ url('/extracciones/teams') }}">
+			<select class="form-control col-md-8" name="idTeam">
+				<option selected="selected" disabled="disabled">Escoge una opción</option>
+				@foreach($teams as $team)
+					<optgroup>
+						<option value="{{ $team->id }}">{{ $team->nameTeam }}</option>
+					</optgroup>
+				@endforeach
+			</select>
+			<button class="btn btn-primary" type="submit">Extraer</button>
+		</form>
+	</div>	
 </div>
 @endsection
