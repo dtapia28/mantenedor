@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Role;
 use App\Empresa;
+use Bouncer;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -79,7 +80,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        //Bouncer::assign('usuario')->to($user);
+        Bouncer::assign('usuario')->to($user);
         return $user;
 
         } else {
@@ -95,7 +96,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        //Bouncer::assign('administrador')->to($user);
+        Bouncer::assign('administrador')->to($user);
         return $user; 
 
         }

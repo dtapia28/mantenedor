@@ -17,6 +17,7 @@ class CreateTeamsTable extends Migration
             $table->bigIncrements('id');
             $table->string('nameTeam', 50)->unique();
             $table->string('rutEmpresa', 10);
+            $table->string('id2', 20);
             $table->foreign('rutEmpresa')->references('rut')->on('empresas');
             $table->timestamps();
         });

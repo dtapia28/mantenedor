@@ -34,20 +34,28 @@ Route::get('/downloadReq', 'RequerimientoController@exportar');
 
 
 
-Route::get('/extracciones', 'ExtraerController@index');
-Route::get('extracciones/ver', 'ExtraerController@porEstado');
+Route::get('/extracciones', 'ExtraerController@index')
+		->middleware('auth');
+Route::get('extracciones/ver', 'ExtraerController@porEstado')
+		->middleware('auth');
 
-Route::get('/extracciones/estado', 'ExtraerController@porEstado');
+Route::get('/extracciones/estado', 'ExtraerController@porEstado')
+		->middleware('auth');
 
-Route::get('/extracciones/ejecutado', 'ExtraerController@porEjecutado');
+Route::get('/extracciones/ejecutado', 'ExtraerController@porEjecutado')
+		->middleware('auth');
 
-Route::get('/extracciones/cambios', 'ExtraerController@cambios');
+Route::get('/extracciones/cambios', 'ExtraerController@cambios')
+		->middleware('auth');
 
-Route::get('/extracciones/solicitantes', 'ExtraerController@solicitantes');
+Route::get('/extracciones/solicitantes', 'ExtraerController@solicitantes')
+		->middleware('auth');
 
-Route::get('/extracciones/resolutores', 'ExtraerController@resolutors');
+Route::get('/extracciones/resolutores', 'ExtraerController@resolutors')
+		->middleware('auth');
 
-Route::get('/extracciones/teams', 'ExtraerController@teams');
+Route::get('/extracciones/teams', 'ExtraerController@teams')
+		->middleware('auth');
 
 
 
@@ -455,11 +463,8 @@ Route::delete('/requerimientos/{requerimiento}', 'RequerimientoController@destro
 
 
 
-Route::delete('/requerimientos/{requerimiento}/avances/{avance}', 'AvanceController@destroy')->name('Avances.destroy');	
-
-
-
-
+Route::delete('/requerimientos/{requerimiento}/avances/{avance}', 'AvanceController@destroy')->name('Avances.destroy')
+	->middleware('auth');
 
 
 
@@ -479,6 +484,22 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 

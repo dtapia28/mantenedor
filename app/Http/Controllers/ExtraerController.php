@@ -46,9 +46,11 @@ class ExtraerController extends Controller
             $base2 = (array) $base[$i];
             array_push($requerimientos, $base2);
         }
-
-
-        return view('Extraer.index', compact('requerimientos'));
+        if (empty($requerimientos)) {
+            return back()->with('msj', 'No existen requerimientos que cumplan con su solicitud.');                
+        } else {         
+            return view('Extraer.index', compact('requerimientos'));
+        } 
     } 
 
     public function porEjecutado(Request $request)

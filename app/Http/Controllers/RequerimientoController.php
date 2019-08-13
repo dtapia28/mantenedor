@@ -10,6 +10,8 @@ use App\Solicitante;
 use App\Avance;
 use App\Team;
 use App\Anidado;
+use App\User;
+use App\LogRequerimientos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
@@ -149,11 +151,25 @@ class RequerimientoController extends Controller
 
         $conteo = 0;
 
+        $req = Requerimiento::where('textoRequerimiento', $data['textoRequerimiento'])->get();
+
+        $user = User::where([
+            ['name', auth()->user()->name],
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+        ])->get();
+
+        LogRequerimientos::create([
+            'idRequerimiento' => $req[0]->id,
+            'idUsuario' => $user[0]->id,
+            'tipo' => 'Creación',
+        ]);                
+
         return redirect('requerimientos');
 
         }else {
             return back()->with('msj', 'La fecha de cierre del requerimiento debe ser mayor a la fecha de solicitud');
-        }      
+        }
+           
     }
 
     /**
@@ -322,7 +338,16 @@ class RequerimientoController extends Controller
             $b = strtoupper($fechita[$i]);
             array_push($fechota, $b);
         }
-        $fecha = implode("", $fechota);
+        $cierre = implode("", $fechota);
+
+        $fechita = str_split($requerimiento->fechaSolicitud);
+        $fechota = [];
+        for ($i=0; $i < 10; $i++) { 
+            $b = strtoupper($fechita[$i]);
+            array_push($fechota, $b);
+        }
+        $solicitud = implode("", $fechota);
+
         $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $solicitanteEspecifico = Solicitante::where([
             ['rutEmpresa', auth()->user()->rutEmpresa],
@@ -338,9 +363,9 @@ class RequerimientoController extends Controller
         ])->get();
         $priorities = Priority::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
-        $fechaCierre = new DateTime($requerimiento->fechaCierre);
+        $fechaCierre = new DateTime($requerimiento->fechaCierre);          
 
-        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'fechaCierre', 'fecha', 'solicitanteEspecifico', 'prioridadEspecifica', 'resolutorEspecifico'));        
+        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'fechaCierre', 'cierre', 'solicitud', 'solicitanteEspecifico', 'prioridadEspecifica', 'resolutorEspecifico'));        
     }
 
     /**
@@ -358,9 +383,87 @@ class RequerimientoController extends Controller
             'idPrioridad' => 'nullable',
             'idResolutor' => 'nullable',
             'fechaCierre' => 'nullable',
+            'fechaSolicitud' => 'nullable',
         ]);
 
         $data['idEmpresa'] = auth()->user()->rutEmpresa;
+
+        $user = User::where([
+            ['name', auth()->user()->name],
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+        ])->get();
+
+        if ($data['textoRequerimiento'] != $requerimiento->textoRequerimiento) {
+            LogRequerimientos::create([
+                'idRequerimiento' => $requerimiento->id,
+                'idUsuario' => $user[0]->id,
+                'tipo' => 'Edición',
+                'campo' => 'texto Requerimiento',
+            ]);             
+        }
+
+        if ($data['idSolicitante'] != $requerimiento->idSolicitante) {
+            LogRequerimientos::create([
+                'idRequerimiento' => $requerimiento->id,
+                'idUsuario' => $user[0]->id,
+                'tipo' => 'Edición',
+                'campo' => 'id solicitante',
+            ]);              
+        }
+
+        if ($data['idPrioridad'] != $requerimiento->idPrioridad) {
+            LogRequerimientos::create([
+                'idRequerimiento' => $requerimiento->id,
+                'idUsuario' => $user[0]->id,
+                'tipo' => 'Edición',
+                'campo' => 'id prioridad',
+            ]);             
+        }
+
+        if ($data['idResolutor'] != $requerimiento->resolutor) {
+            dd($data['idResolutor']. " y ". $requerimiento->resolutor);
+            LogRequerimientos::create([
+                'idRequerimiento' => $requerimiento->id,
+                'idUsuario' => $user[0]->id,
+                'tipo' => 'Edición',
+                'campo' => 'id resolutor',
+            ]);
+        } 
+
+        $fechita = str_split($requerimiento->fechaCierre);
+        $fechota = [];
+        for ($i=0; $i < 10; $i++) { 
+            $b = strtoupper($fechita[$i]);
+            array_push($fechota, $b);
+        }
+        $cierre = implode("", $fechota);                
+
+        if ($data['fechaCierre'] != $cierre) {
+            LogRequerimientos::create([
+                'idRequerimiento' => $requerimiento->id,
+                'idUsuario' => $user[0]->id,
+                'tipo' => 'Edición',
+                'campo' => 'fecha cierre',
+            ]);
+        }  
+
+        $fechita = str_split($requerimiento->fechaSolicitud);
+        $fechota = [];
+        for ($i=0; $i < 10; $i++) { 
+            $b = strtoupper($fechita[$i]);
+            array_push($fechota, $b);
+        }
+        $solicitud = implode("", $fechota);        
+
+        if ($data['fechaSolicitud'] != $solicitud) {
+            LogRequerimientos::create([
+                'idRequerimiento' => $requerimiento->id,
+                'idUsuario' => $user[0]->id,
+                'tipo' => 'Edición',
+                'campo' => 'fecha solicitud',
+            ]);
+        }                          
+              
         $requerimiento->update($data);
         return redirect('requerimientos');         
     }

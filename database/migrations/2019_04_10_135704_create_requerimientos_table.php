@@ -15,6 +15,7 @@ class CreateRequerimientosTable extends Migration
     {
         Schema::create('requerimientos', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('id2', 10);
             $table->string('textoRequerimiento', 200);
             $table->datetime('fechaEmail');
             $table->datetime('fechaSolicitud');
@@ -28,8 +29,8 @@ class CreateRequerimientosTable extends Migration
             $table->foreign('idSolicitante')->references('id')->on('solicitantes');
             $table->bigInteger('idPrioridad')->unsigned();
             $table->foreign('idPrioridad')->references('id')->on('priorities');
-            $table->bigInteger('idResolutor')->unsigned();
-            $table->foreign('idResolutor')->references('id')->on('resolutors');
+            $table->bigInteger('resolutor')->unsigned();
+            $table->foreign('resolutor')->references('id')->on('resolutors');
             $table->string('rutEmpresa', 10);
             $table->foreign('rutEmpresa')->references('rut')->on('empresas');
             $table->timestamps();
