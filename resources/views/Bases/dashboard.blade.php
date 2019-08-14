@@ -56,8 +56,7 @@
                 </li>
                 <li>
                      <a class="nav-link" href="{{ url('/teams') }}">Teams</a>                 
-                </li>
-                                                             
+                </li>                                        
             </ul>
         </div>    
 

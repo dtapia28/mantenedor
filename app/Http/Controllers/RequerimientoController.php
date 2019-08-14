@@ -31,6 +31,9 @@ class RequerimientoController extends Controller
 
     public function index(Request $request)
     {
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+
+        $request->user()->authorizeRoles(['usuario', 'administrador', 'supervisor', 'resolutor']);
 
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
@@ -51,7 +54,7 @@ class RequerimientoController extends Controller
             $valor = 0;
         }
 
-        return view('Requerimientos.index', compact('requerimientos', 'resolutors', 'teams', 'valor'));
+        return view('Requerimientos.index', compact('requerimientos', 'resolutors', 'teams', 'valor', 'user'));
 
     }
 
@@ -541,7 +544,8 @@ class RequerimientoController extends Controller
                 return redirect()->route('Requerimientos.show', ['requerimiento' => $requerimiento]);                
             }
         }
-        else {
+        else 
+        {
 
                 $user = User::where([
                     ['name', auth()->user()->name],
