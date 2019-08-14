@@ -476,10 +476,6 @@ class RequerimientoController extends Controller
      */
     public function destroy(Requerimiento $requerimiento)
     {
-        $avances = Avance::where('idRequerimiento', $requerimiento->id)->get();
-        foreach ($avances as $avance) {
-            $avance->delete();
-        }
         $user = User::where([
             ['name', auth()->user()->name],
             ['rutEmpresa', auth()->user()->rutEmpresa],
@@ -489,8 +485,12 @@ class RequerimientoController extends Controller
             'idUsuario' => $user[0]->id,
             'tipo' => 'Eliminación',
             'campo' => '',
-        ]);          
-        $requerimiento->delete();
+        ]);       
+        $data = [
+            'estado' => 2,
+        ];
+        DB::table('requerimientos')->where('id', $requerimiento->id)->update($data);
+
         return redirect('requerimientos');   
     }
 
@@ -526,12 +526,34 @@ class RequerimientoController extends Controller
                     'cierre' => 'nullable'
                 ]);
 
+                $user = User::where([
+                    ['name', auth()->user()->name],
+                    ['rutEmpresa', auth()->user()->rutEmpresa],
+                ])->get();        
+                LogRequerimientos::create([
+                    'idRequerimiento' => $requerimiento->id,
+                    'idUsuario' => $user[0]->id,
+                    'tipo' => 'Crea',
+                    'campo' => 'Avance',
+                ]);  
 
                 $requerimiento->update($data);
                 return redirect()->route('Requerimientos.show', ['requerimiento' => $requerimiento]);                
             }
         }
         else {
+
+                $user = User::where([
+                    ['name', auth()->user()->name],
+                    ['rutEmpresa', auth()->user()->rutEmpresa],
+                ])->get();        
+                LogRequerimientos::create([
+                    'idRequerimiento' => $requerimiento->id,
+                    'idUsuario' => $user[0]->id,
+                    'tipo' => 'Crea',
+                    'campo' => 'Avance',
+                ]);  
+
                 $data = request()->validate([
                     'fechaRealCierre' => 'nullable',
                     'numeroCambios' => 'nullable',

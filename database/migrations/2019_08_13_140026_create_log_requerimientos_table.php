@@ -19,7 +19,7 @@ class CreateLogRequerimientosTable extends Migration
             $table->foreign('idRequerimiento')->references('id')->on('requerimientos');
             $table->bigInteger('idUsuario')->unsigned();
             $table->foreign('idUsuario')->references('id')->on('users');
-            $table->string('campo', 50);
+            $table->string('campo', 50)->nullable();
             $table->string('tipo', 20);
             $table->timestamps();
         });
