@@ -480,6 +480,16 @@ class RequerimientoController extends Controller
         foreach ($avances as $avance) {
             $avance->delete();
         }
+        $user = User::where([
+            ['name', auth()->user()->name],
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+        ])->get();        
+        LogRequerimientos::create([
+            'idRequerimiento' => $requerimiento->id,
+            'idUsuario' => $user[0]->id,
+            'tipo' => 'Eliminación',
+            'campo' => '',
+        ]);          
         $requerimiento->delete();
         return redirect('requerimientos');   
     }

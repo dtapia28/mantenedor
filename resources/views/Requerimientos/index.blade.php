@@ -107,7 +107,7 @@
 					</form>
 				</td>
 				<td>									
-					<form method='POST' action="../public/requerimientos/{{$requerimiento->id}}">
+					<form method='POST' action="/requerimientos/{{$requerimiento->id}}">
 						{{ csrf_field() }}
 						{{ method_field('DELETE') }}						
 						<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="30" height="30">
