@@ -19,6 +19,9 @@ class ExtraerController extends Controller
 
     public function index()
     {
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+
+        auth()->user()->authorizeRoles(['administrador', 'supervisor']);        
 
         $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->orderBy('nombreSolicitante')->get();
 
@@ -30,7 +33,7 @@ class ExtraerController extends Controller
             ['rutEmpresa', auth()->user()->rutEmpresa],
         ])->orderBy('nameTeam')->get();
     
-        return view('Extraer.index', compact('solicitantes', 'resolutors', 'teams'));
+        return view('Extraer.index', compact('solicitantes', 'resolutors', 'teams', 'user'));
     }   
 
     public function porEstado(Request $request)

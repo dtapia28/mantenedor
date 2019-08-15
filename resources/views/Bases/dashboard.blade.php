@@ -119,11 +119,13 @@
           <a class="dropdown-item" href="../public/teams">Teams</a>
         </div>
       </li>
+      @if($user[0]->nombre == "supervisor" or $user[0]->nombre == "administrador")
       <li class="nav-item">
         <a class="nav-link" href="/extracciones">
           <i class="fas fa-fw fa-table"></i>
           <span>Exportar</span></a>
-      </li>      
+      </li>
+      @endif      
     </ul>
 
     <div id="content-wrapper">

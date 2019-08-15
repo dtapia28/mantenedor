@@ -65,12 +65,15 @@ class RequerimientoController extends Controller
      */
     public function create()
     {
-    
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+
+        auth()->user()->authorizeRoles(['administrador', 'supervisor', 'usuario']);    
+
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->orderBy('nombreResolutor')->get();
         $priorities = Priority::where('rutEmpresa', auth()->user()->rutEmpresa)->orderBy('namePriority')->get();
         $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->orderBy('nombreSolicitante')->get();
 
-        return view('Requerimientos.create', compact('resolutors', 'priorities', 'solicitantes'));        
+        return view('Requerimientos.create', compact('resolutors', 'priorities', 'solicitantes', 'user'));        
     }
 
     /**

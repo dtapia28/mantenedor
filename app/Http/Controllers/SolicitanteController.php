@@ -15,9 +15,11 @@ class SolicitanteController extends Controller
      */
     public function index()
     {
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+
         $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
 
-        return view('Solicitantes.index', compact('solicitantes'));
+        return view('Solicitantes.index', compact('solicitantes', 'user'));
     }
 
     /**
