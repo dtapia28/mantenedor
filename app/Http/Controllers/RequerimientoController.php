@@ -124,7 +124,7 @@ class RequerimientoController extends Controller
             ['rutEmpresa', auth()->user()->rutEmpresa],
             ])->get();
             
-            $conteo = 0;
+            $conteo = 1;
             foreach ($resolutors as $resolutor) {
                 if ($resolutor->idTeam == $team[0]->id) {
                     foreach ($requerimientos as $requerimiento) {
