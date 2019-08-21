@@ -35,7 +35,8 @@
             <select class="form-control col-md-3" name="idSolicitante">
                 @foreach($solicitantes as $solicitante)
                     <optgroup>
-                        <option value="{{$solicitante->id}}" @if($solicitanteEspecifico['0']->id == $solicitante->id){{ 'selected' }}@endif>{{ $solicitante->nombreSolicitante }}</option>
+                        <option value="{{$solicitante->id}}" @if($solicitanteEspecifico['0']->id == $solicitante->id){{ 'selected' }}@endif>{{ $solicitante->nombreSolicitante }}
+                        </option>
                     </optgroup>
                 @endforeach
             </select>

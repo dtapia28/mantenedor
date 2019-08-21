@@ -15,9 +15,11 @@ class TeamController extends Controller
      */
     public function index()
     {
+
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
 
-        return view('Teams.index', compact('teams'));
+        return view('Teams.index', compact('teams', 'user'));
     }
 
     /**
@@ -27,7 +29,9 @@ class TeamController extends Controller
      */
     public function create()
     {
-        return view('Teams.create');
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
+
+        return view('Teams.create', compact('user'));
     }
 
     /**
@@ -81,11 +85,13 @@ class TeamController extends Controller
      */
     public function show(Team $team)
     {
+
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
         if ($team == null) {
             return view('errors.404');
         }
 
-        return view('Teams.show', compact('team'));    
+        return view('Teams.show', compact('team', 'user'));    
     }
 
     /**
@@ -96,7 +102,9 @@ class TeamController extends Controller
      */
     public function edit(Team $team)
     {
-        return view('Teams.edit', ['team' => $team]); 
+
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
+        return view('Teams.edit', compact('team', 'user')); 
     }
 
     /**

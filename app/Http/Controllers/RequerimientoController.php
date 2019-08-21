@@ -155,7 +155,7 @@ class RequerimientoController extends Controller
             'id2' => "RQ".$team[0]->id2.$conteoA,
         ]);
 
-        $conteo = 0;
+        $conteo = 1;
 
         $req = Requerimiento::where('textoRequerimiento', $data['textoRequerimiento'])->get();
 

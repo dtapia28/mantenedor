@@ -34,13 +34,13 @@
 							{{ $team->nameTeam }}
 					</th>
 					<th scope="row">									
-						<form method='HEAD' action="../public/teams/{{$team->id}}/editar">
+						<form method='HEAD' action="../teams/{{$team->id}}/editar">
 							{{ csrf_field() }}
 							<input style="text-align: center;" type="image" align="center" src="{{ asset('img/edit.png') }}" width="30" height="30">
 						</form>
 					</th>
 					<th scope="row">
-						<form method='post' action="../public/teams/{{$team->id}}">
+						<form method='post' action="../teams/{{$team->id}}">
 							{{ csrf_field() }}
 							{{ method_field('DELETE') }}					
 							<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="30" height="30">

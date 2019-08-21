@@ -182,9 +182,6 @@ Route::put('/requerimientos/{requerimiento}/avances/{avance}', 'AvanceController
 //{
 
 
-
-	Route::get('/empresas', 'EmpresaController@index');
-
 	Route::get('/dashboard', 'DashboardController@index');
 
 	Route::get('/dashboard/green', 'DashboardController@green');
@@ -228,8 +225,10 @@ Route::get('/solicitantes', 'SolicitanteController@index')
 
 
 Route::get('/teams', 'TeamController@index')
-
 	->middleware('auth');
+
+Route::get('/users', 'UserController@index')
+	->middleware('auth');	
 
 
 

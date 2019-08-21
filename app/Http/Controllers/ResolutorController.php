@@ -33,9 +33,10 @@ class ResolutorController extends Controller
     public function create()
     {
 
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();  
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
 
-        return view('Resolutors.create', compact('teams'));
+        return view('Resolutors.create', compact('teams', 'user'));
     }
 
     /**
@@ -87,8 +88,10 @@ class ResolutorController extends Controller
      */
     public function edit(Resolutor $resolutor)
     {
+
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
-        return view('Resolutors.edit', compact('empresas', 'teams', 'resolutor')); 
+        return view('Resolutors.edit', compact('empresas', 'teams', 'resolutor', 'user')); 
     }
 
     /**

@@ -15,6 +15,8 @@ class CreateRolesTable extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('rutEmpresa', 10);
+            $table->foreign('rutEmpresa')->references('rut')->on('empresas');            
             $table->string('nombre');
             $table->string('descripcion');
             $table->timestamps();

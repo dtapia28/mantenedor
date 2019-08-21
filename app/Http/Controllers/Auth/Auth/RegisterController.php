@@ -85,6 +85,18 @@ class RegisterController extends Controller
             'rut' => $data['rut'],
             'nombreEmpresa' => $data['nombre']]);
 
+        Role::create([
+            'nombre' => "administrador",
+            'descripcion' => "Administrador",
+            'rutEmpresa' => $data['rut'],            
+        ]);
+
+        Role::create([
+            'nombre' => "usuario",
+            'descripcion' => "Usuario",
+            'rutEmpresa' => $data['rut'],            
+        ]);        
+
         $user = User::create([
             'name' => $data['name'],
             'rutEmpresa' => $data['rut'],
