@@ -31,8 +31,23 @@ class UserController extends Controller
         return view('Users.index', compact('users', 'user', 'roles', 'relaciones'));
 
     }	
-    public function exportar()
+    public function store(Request $request)
     {
-    	return Excel::download(new UsersExport, 'usuarios.xlsx');
+
+        $data = request()->validate([
+            'idRole' => 'required',
+            'idUsers' => 'required',
+        ],
+            [ 'idRole.required' => 'El campo nombre es obligatorio']);
+
+        settype($data['idRole'], "integer");
+
+        $numero = $data['idRole'];
+
+        DB::table('role_user')->where('user_id',$data['idUsers'])
+        ->update('role_id', $numero);
+
+
+        return redirect('users');
     }
 }

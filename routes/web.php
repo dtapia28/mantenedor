@@ -228,7 +228,10 @@ Route::get('/teams', 'TeamController@index')
 	->middleware('auth');
 
 Route::get('/users', 'UserController@index')
-	->middleware('auth');	
+	->middleware('auth');
+
+Route::post('/users/modificar', 'UserController@store')
+	->middleware('auth');		
 
 
 
