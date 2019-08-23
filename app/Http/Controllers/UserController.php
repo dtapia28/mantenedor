@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Excel;
 use App\Role;
 use App\User;
+use App\Role_User;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
@@ -35,18 +36,18 @@ class UserController extends Controller
     {
 
         $data = request()->validate([
-            'idRole' => 'required',
-            'idUsers' => 'required',
+            'role_id' => 'required',
         ],
             [ 'idRole.required' => 'El campo nombre es obligatorio']);
 
-        settype($data['idRole'], "integer");
+        $data2 = request()->validate([
+        	'user_id' => 'required',
+        ],
+    		['idUser.required' => 'El campo es obligatorio']);
 
-        $numero = $data['idRole'];
-
-        DB::table('role_user')->where('user_id',$data['idUsers'])
-        ->update('role_id', $numero);
-
+        $relacion = Role_User::where('user_id', $data2['user_id'])->first();
+        $relacion->role_id = $data['role_id'];
+        $relacion->save();
 
         return redirect('users');
     }
