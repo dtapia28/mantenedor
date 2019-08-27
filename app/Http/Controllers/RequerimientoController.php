@@ -31,6 +31,7 @@ class RequerimientoController extends Controller
 
     public function index(Request $request)
     {
+
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
 
         $request->user()->authorizeRoles(['usuario', 'administrador', 'supervisor', 'resolutor']);
@@ -40,13 +41,22 @@ class RequerimientoController extends Controller
         if ($request->state != "") {
             $request->session()->put('state', $request->state);
         } else {
-            $request->session()->put('state', 1);
+            $request->session()->put('state', "1");
         }
 
-        $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-            ['estado', '=', $request->session()->get('state')],
-            ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-        ])->get();
+        if ($request->session()->get('state') == 1)
+        {
+            $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                ['estado', '=', $request->session()->get('state')],
+                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+            ])->get();
+        } else
+        {
+            $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                ['estado', '<>', 1],
+                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+            ])->get();            
+        }
         $valor = 1;
         if ($request->session()->get('state') == 1) {
             $valor = 1;
@@ -79,7 +89,7 @@ class RequerimientoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -152,7 +162,7 @@ class RequerimientoController extends Controller
             'idPrioridad' => $data['idPrioridad'],
             'resolutor' => $data['idResolutor'],
             'rutEmpresa' => auth()->user()->rutEmpresa,
-            'id2' => "RQ".$team[0]->id2.$conteoA,
+            'id2' => "RQ-".$team[0]->id2."-".$conteoA,
         ]);
 
         $conteo = 1;
@@ -193,9 +203,12 @@ class RequerimientoController extends Controller
         $requerimientosAnidadosLista = Anidado::where('idRequerimientoBase', $requerimiento->id)->get();
         $requerimientos = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $requerimientosAnidados = [];
-        foreach ($requerimientosAnidadosLista as $requerimiento1) {
-            foreach ($requerimientos as $requerimientos1) {
-                if ($requerimientos1->id == $requerimiento1->idRequerimientoAnexo) {
+        foreach ($requerimientosAnidadosLista as $requerimiento1)
+        {
+            foreach ($requerimientos as $requerimientos1) 
+            {
+                if ($requerimientos1->id == $requerimiento1->idRequerimientoAnexo) 
+                {
                     $requerimientosAnidados[] = $requerimientos1;
                 }
             }
@@ -204,9 +217,11 @@ class RequerimientoController extends Controller
             define("FECHACIERRE", "$requerimiento->fechaCierre");
             define("FECHASOLICITUD", "$requerimiento->fechaSolicitud");
             define("FECHAREALCIERRE", "$requerimiento->fechaRealCierre");
-            $fechaCierre = new DateTime(FECHACIERRE);                   
+            $fechaCierre = new DateTime(FECHACIERRE);
+            $restantes = 0;                   
 
-        if ($requerimiento->fechaCierre == "9999-12-31 00:00:00" or $requerimiento->fechaSolicitud == $requerimiento->fechaCierre) {
+        if ($requerimiento->fechaCierre == "9999-12-31 00:00:00" or $requerimiento->fechaSolicitud == $requerimiento->fechaCierre) 
+        {
             $hastaCierre = 1;
             $hastaHoy = 0;
             $restantes = 0;
@@ -216,18 +231,22 @@ class RequerimientoController extends Controller
         } 
         else 
         {
-
+ 
             $hastaCierre = 0;
             $variable = new DateTime(FECHASOLICITUD);
 
-            while ($variable->getTimestamp() < $fechaCierre->getTimestamp()) {
-                if ($variable->format('l') == 'Saturday' or $variable->format('l') == 'Sunday') {
+            while ($variable->getTimestamp() < $fechaCierre->getTimestamp()) 
+            {
+                if ($variable->format('l') == 'Saturday' or $variable->format('l') == 'Sunday') 
+                {
                     $variable->modify("+1 days");               
-                }else{
+                }else
+                {
                     $hastaCierre++;
                     $variable->modify("+1 days");                       
                 }
-            }
+            }    
+
 
             $hastaHoy = -1;
             $hoy = new DateTime();
@@ -246,9 +265,11 @@ class RequerimientoController extends Controller
 
             } else 
             {
-                if ($requerimiento->fechaRealCierre != null) {
+                if ($requerimiento->fechaRealCierre != null) 
+                {
+                    $cierre = new DateTime(FECHAREALCIERRE);
                     $variable = new DateTime(FECHASOLICITUD);             
-                    while ($variable->getTimestamp() <= $fechaRealCierre->getTimestamp()) {
+                    while ($variable->getTimestamp() <= $cierre->getTimestamp()) {
                         if ($variable->format('l') == 'Saturday' or $variable->format('l') == 'Sunday') {
                             $variable->modify("+1 days");                    
                         } else {
@@ -274,12 +295,13 @@ class RequerimientoController extends Controller
             $comienzo = new DateTime();
             $fechaFinal = new DateTime(FECHACIERRE);
 
-            if ($comienzo>$fechaFinal) 
+            if ($comienzo>$fechaFinal or $requerimiento->cierre != null) 
             {
 
                 $restantes = 0;    
 
-            } else {
+            } else 
+            {
                 while ($comienzo->getTimestamp() < $fechaFinal->getTimestamp()){
 
                     if ($comienzo->format('l') == 'Saturday' or $comienzo->format('l') == 'Sunday'){
@@ -293,38 +315,54 @@ class RequerimientoController extends Controller
 
             $excedidos = -1;
 
-            if ($restantes>0) {
-                $excedidos = 0;
-            } else{
+            if ($requerimiento->estado == 1) 
+            {
+                if ($restantes>0) 
+                {
+                    $excedidos = 0;
+                } else
+                {
+                    
+                    $cierreReal = new DateTime(FECHAREALCIERRE);
+                    $cierre = new DateTime(FECHACIERRE);
+                    $ahora = new DateTime();
 
-                $cierreReal = new DateTime(FECHAREALCIERRE);
-                $cierre = new DateTime(FECHACIERRE);
-                $ahora = new DateTime();
-                if ($ahora->getTimestamp() < $cierreReal->getTimestamp()) {
-                    while ($cierre->getTimestamp() < $ahora->getTimestamp()) {
-
-                        if ($cierre->format('l') == 'Saturday' or $comienzo->format('l') == 'Sunday') {
-
+                        while ($cierre->getTimestamp() < $ahora->getTimestamp()) 
+                        {
+                            if ($cierre->format('l') == 'Saturday' or $cierre->format('l') == 'Sunday') 
+                            {
+                                $cierre->modify("+1 days");
+                            } else 
+                            {
+                                $excedidos++;
+                                $cierre->modify("+1 days");
+                            }
+                        }
+                }
+            } else
+            {
+                dd($requerimiento->fechaSolicitud." ".$requerimiento->fechaRealCierre);
+                if ($requerimiento->fechaSolicitud == $requerimiento->fechaRealCierre) 
+                {
+                    $excedidos = 0;
+                } else
+                {
+                    $cierreReal = new DateTime(FECHAREALCIERRE);
+                    $cierre = new DateTime(FECHACIERRE);                    
+                    while ($cierre->getTimestamp() < $cierreReal->getTimestamp()) 
+                    {
+                        if ($cierre->format('l') == 'Saturday' or $cierre->format('l') == 'Sunday') 
+                        {
                             $cierre->modify("+1 days");
-                        } else {
+                        } else 
+                        {
                             $excedidos++;
                             $cierre->modify("+1 days");
                         }
-                    }
-                } else {
-                    while ($cierre->getTimestamp() < $cierreReal->getTimestamp()) {
-
-                        if ($cierre->format('l') == 'Saturday' or $comienzo->format('l') == 'Sunday') {
-
-                            $cierre->modify("+1 days");
-                        } else {
-                            $excedidos++;
-                            $cierre->modify("+1 days");
-                        }
-                    }
+                    }                    
                 }
             }
-        }    
+        }        
 
 
         return view('Requerimientos.show', compact('requerimiento', 'resolutors', 'priorities', 'avances', 'teams', 'hastaCierre', 'hastaHoy', 'restantes', 'hoy', 'fechaCierre', 'excedidos', 'requerimientosAnidados'));        
@@ -574,21 +612,25 @@ class RequerimientoController extends Controller
 
     public function terminado(Requerimiento $requerimiento)
     {
-        return view('Requerimientos.terminado', compact('requerimiento'));        
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
+        return view('Requerimientos.terminado', compact('requerimiento', 'user'));        
     } 
 
     public function guardar(Request $request, Requerimiento $requerimiento)
     {
         $data = request()->validate([
-            'cierre'=>'required'],
+            'cierre'=>'required',
+            'fechaRealCierre' => 'nullable'],
             ['cierre.required' => 'El texto de cierre es obligatorio']);
-
-        $requerimiento->update($data);
+       
         $data = [
-            'estado' => 0,
+            'estado' => 2,
             'porcentajeEjecutado' => 100,
         ];
-        DB::table('requerimientos')->where('id', $requerimiento->id)->update($data);        
+
+        $requerimiento->update($data);        
+
+        //DB::table('requerimientos')->where('id', $requerimiento->id)->update($data);        
 
         return redirect('requerimientos');   
     }              

@@ -1,13 +1,10 @@
 @extends('Bases.detalles2')
 @section('titulo', "Detalle de Requerimientos")
-@section('tituloRequerimiento')
-	<h1>Detalle de requerimiento:</h1>
-@endsection
 @section('requerimiento')
 	<br>
-	<h2>Requerimiento {{ $requerimiento->id2 }}</h2>
+	<h2>{{ $requerimiento->id2 }}</h2>
 	<br>
-	<p><strong>Texto del requerimiento: </strong>{{ $requerimiento->textoRequerimiento }}</p>
+	<p><strong>Solicitud: </strong>{{ $requerimiento->textoRequerimiento }}</p>
 	<p>
 		@forelse ($priorities as $priority)
 			@if ($priority->id == $requerimiento->idPrioridad)
@@ -84,7 +81,7 @@
     <br>
 @endsection 
 @section('avances')
-	<header><h1>Avances del requerimiento:</h1></header>
+	<header><h2>Avances:</h2></header>
 		<form method='HEAD' action="../requerimientos/{{$requerimiento->id}}/avances/nuevo">
 			<button type="submit" value="Ingresar avance" class="btn btn-primary" name="">Ingresar avance</button>
 		</form>		
@@ -125,7 +122,7 @@
 		</table>
 @endsection
 @section('anidado')
-	<header><h2>Requerimientos anidados:</h2></header>
+	<header><h2>Anidados:</h2></header>
 	<br>
 	@forelse($requerimientosAnidados as $requerimiento)
 		<th>

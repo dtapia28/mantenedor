@@ -40,7 +40,7 @@
 						<td>	
 						<form method="POST" action="{{ url('users/modificar') }}">
 						{{ csrf_field() }}								
-			                <select class="form-control col-md-5" name="role_id">
+			                <select class="form-control col-md-5" name="idRole">
 			                @foreach($relaciones as $relacion)
 				                @if($us->id == $relacion->user_id)
 				                	@foreach($roles as $role)
@@ -54,7 +54,7 @@
 				            @endforeach
 			                </select>
 						<td>
-						<input type="hidden" value="{{ $us->id }}" name="user_id">	
+						<input type="hidden" value="{{ $us->id }}" name="idUsers">	
 						<button type="submit" class="btn btn-success">Modificar</button>
 						</form>
 						</td>								

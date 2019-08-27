@@ -29,7 +29,9 @@ main {
 }
 
 #articulos #requerimiento {
-	width: 600px;
+	width: 1000px;
+	height: 100px;
+	border: blue 2px solid;
 	display: inline-block;
 	vertical-align: top;
 }
@@ -39,6 +41,7 @@ main {
 	height: 500px;
 	display: inline-table;
 	vertical-align: top;
+	border: red solid 2px;
 	margin: 0px;
 	padding: 0px;
 	font-size: 100%

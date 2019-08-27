@@ -38,11 +38,20 @@ class ExtraerController extends Controller
 
     public function porEstado(Request $request)
     {
-
-        $base = DB::table('vista1_view')->where([
-            ['estado', $request['estado']],
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-        ])->get(['id', 'textoRequerimiento AS Texto del requerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad'])->toArray();
+        
+        if ($request['estado'] == 1) 
+        {
+            $base = DB::table('vista1_view')->where([
+                ['estado', $request['estado']],
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+            ])->get(['id', 'textoRequerimiento AS Texto del requerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad'])->toArray();
+        } else 
+        {
+            $base = DB::table('vista1_view')->where([
+                ['estado', '<>' ,1],
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+            ])->get(['id', 'textoRequerimiento AS Texto del requerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad'])->toArray();            
+        }
         $base2 = [];
         $requerimientos = [];
         for ($i=0; $i < count($base); $i++) {

@@ -29,6 +29,7 @@ class PriorityController extends Controller
      */
     public function create()
     {
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
         return view('Priorities.create');
     }
 

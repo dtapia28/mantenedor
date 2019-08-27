@@ -22,10 +22,10 @@
 		              <table class="table table-bordered table-striped table-hover" id="dataTable" width="100%"  cellspacing="0">
 		                <thead>
 		                	<tr>
-							    <th scope="col"><strong>ID</strong></th>
-							    <th scope="col"><strong>Nombre</strong></th>
-							    <th scope="col"><strong></strong></th>
-							    <th scope="col"><strong></strong></th>
+							    <th scope="col">ID</th>
+							    <th scope="col">Nombre</th>
+							    <th scope="col"></th>
+							    <th scope="col"></th>
 							</tr>
 						</thead>
 			<tbody>
