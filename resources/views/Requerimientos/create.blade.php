@@ -52,6 +52,10 @@
                         </optgroup>
                     @endforeach
                 </select>
+                <form method='HEAD' action="{{ url('solicitantes/nuevo') }}">
+                    <input type="hidden" name="volver" value="1">
+                    <a href="{{ url('/solicitantes/nuevo') }}?volver=1">Crear Solicitante</a>
+                </form>
                 <br>
                 <label for="idResolutor">Resolutor:</label>        
                 <br>                 

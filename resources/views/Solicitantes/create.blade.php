@@ -21,6 +21,7 @@
 
                 <label for="name">Nombre:</label>
                 <input class="form-control col-md-7" type="text" name="nombreSolicitante" id="name" value="{{ old('nombreSolicitante') }}">
+                <input type="hidden" name="volver" value="{{  $volver }}">
                 <br>
                 <button class="btn btn-primary" type="submit">Crear Solicitante</button>
             </form>

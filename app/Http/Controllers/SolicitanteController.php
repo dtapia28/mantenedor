@@ -29,7 +29,13 @@ class SolicitanteController extends Controller
      */
     public function create()
     {
-        return view('Solicitantes.create');
+        $volver = 0;
+        if (isset($_GET['volver'])) {
+            $volver = $_GET['volver'];
+        }
+
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
+        return view('Solicitantes.create', compact('user', 'volver'));
     }
 
     /**
@@ -41,7 +47,8 @@ class SolicitanteController extends Controller
     public function store(Request $request)
     {
         $data = request()->validate([
-            'nombreSolicitante' => 'required'],
+            'nombreSolicitante' => 'required',
+            'volver' => 'required'],
             [ 'nombreSolicitante.required' => 'El campo nombre es obligatorio']);
 
         Solicitante::create([
@@ -49,7 +56,13 @@ class SolicitanteController extends Controller
             'rutEmpresa' => auth()->user()->rutEmpresa,
         ]);
 
-        return redirect('solicitantes');        
+        if ($data['volver'] == 1) {
+            return redirect()->action('RequerimientoController@create');
+
+        } else {
+
+        return redirect('solicitantes'); 
+        }       
     }
 
     /**
