@@ -21,6 +21,7 @@
 
                 <label for="name">Nombre:</label>
                 <input class="form-control col-md-7" type="text" name="namePriority" id="name" value="{{ old('namePriority') }}">
+                <input type="hidden" name="volver" value="{{  $volver }}">                
                 <br>
                 <button class="btn btn-primary" type="submit">Crear Prioridad</button>
             </form>

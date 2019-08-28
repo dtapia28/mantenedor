@@ -29,8 +29,12 @@ class PriorityController extends Controller
      */
     public function create()
     {
+        $volver = 0;
+        if (isset($_GET['volver'])) {
+            $volver = $_GET['volver'];
+        }        
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
-        return view('Priorities.create');
+        return view('Priorities.create', compact('user', 'volver'));
     }
 
     /**
@@ -42,7 +46,8 @@ class PriorityController extends Controller
     public function store(Request $request)
     {
         $data = request()->validate([
-            'namePriority' => 'required'],
+            'namePriority' => 'required',
+            'volver' => 'required'],            
             [ 'namePriority.required' => 'El campo nombre es obligatorio']);
 
         Priority::create([
@@ -50,7 +55,11 @@ class PriorityController extends Controller
             'rutEmpresa' => auth()->user()->rutEmpresa,
         ]);
 
+        if ($data['volver'] == 1) {
+            return redirect()->action('RequerimientoController@create');
+        } else {
         return redirect('priorities');
+        }
     }
 
     /**

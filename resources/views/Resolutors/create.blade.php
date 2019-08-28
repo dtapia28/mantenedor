@@ -31,6 +31,7 @@
                     @endforeach
                 </select>
                 <br>
+                <input type="hidden" name="volver" value="{{  $volver }}">                
                 <input type="checkbox" name="lider" value=1> Lider de Equipo
                 <br>        
                 <button class="btn btn-primary" type="submit">Crear Resolutor</button>

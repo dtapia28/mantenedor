@@ -52,10 +52,7 @@
                         </optgroup>
                     @endforeach
                 </select>
-                <form method='HEAD' action="{{ url('solicitantes/nuevo') }}">
-                    <input type="hidden" name="volver" value="1">
-                    <a href="{{ url('/solicitantes/nuevo') }}?volver=1">Crear Solicitante</a>
-                </form>
+                <a href="{{ url('/solicitantes/nuevo') }}?volver=1">Crear Solicitante</a>
                 <br>
                 <label for="idResolutor">Resolutor:</label>        
                 <br>                 
@@ -66,6 +63,7 @@
                         </optgroup>
                     @endforeach
                 </select>
+                <a href="{{ url('/resolutors/nuevo') }}?volver=1">Crear Resolutor</a>             
                 <br>
                 <label for="idPrioridad">Prioridad:</label>        
                 <br>                 
@@ -75,7 +73,8 @@
                             <option value={{ $priority->id }}>{{ $priority->namePriority }}</option>
                         </optgroup>
                     @endforeach
-                </select>             
+                </select>
+                <a href="{{ url('/priorities/nueva') }}?volver=1">Crear Prioridad</a>                            
                 <br>
                 <br>
                 <button class="btn btn-primary" type="submit">Crear Requerimiento</button>        

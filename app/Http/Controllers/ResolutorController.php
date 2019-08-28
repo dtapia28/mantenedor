@@ -32,11 +32,15 @@ class ResolutorController extends Controller
      */
     public function create()
     {
+        $volver = 0;
+        if (isset($_GET['volver'])) {
+            $volver = $_GET['volver'];
+        }        
 
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();  
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
 
-        return view('Resolutors.create', compact('teams', 'user'));
+        return view('Resolutors.create', compact('teams', 'user', 'volver'));
     }
 
     /**
@@ -49,7 +53,8 @@ class ResolutorController extends Controller
     {
         $data = request()->validate([
             'nombreResolutor' => 'required',
-            'idTeam' => 'required'],
+            'idTeam' => 'required',
+            'volver' => 'required'],            
             ['nombreResolutor.required' => 'El campo nombre es obligatorio']);
 
 
@@ -65,8 +70,13 @@ class ResolutorController extends Controller
                 'lider' => 1];
             DB::table('resolutors')->where('id', $resolutor->id)->update($data);
         }
-        $resolutor = null;    
+        $resolutor = null;
+        if ($data['volver'] == 1) {
+            return redirect()->action('RequerimientoController@create');
+
+        } else {          
         return redirect('resolutors');
+        }
     }
 
     /**
