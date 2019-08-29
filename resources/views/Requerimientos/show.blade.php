@@ -83,7 +83,7 @@
 @section('avances')
 	<header><h2>Avances:</h2></header>
 		<form method='HEAD' action="../requerimientos/{{$requerimiento->id}}/avances/nuevo">
-			<button type="submit" value="Ingresar avance" class="btn btn-primary" name="">Ingresar avance</button>
+			<button type="submit" value="Ingresar" class="btn btn-primary" name="">Ingresar</button>
 		</form>		
 		<br>
 		<table>
@@ -130,8 +130,14 @@
 		</th>
 		<br>
 	@empty
-	@endforelse	
-
-@endsection   
+	@endforelse
+@endsection
+@section('tareas')
+<header><h2>Tareas:</h2></header>
+<br>
+<form method='HEAD' action="../requerimientos/{{$requerimiento->id}}/tareas/nueva">
+	<button type="submit" value="Ingresar" class="btn btn-primary" name="">Ingresar</button>
+</form>	
+@endsection 
     @section('footerMain')
     @endsection

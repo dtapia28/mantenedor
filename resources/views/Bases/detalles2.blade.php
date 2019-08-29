@@ -142,8 +142,10 @@
       </div>
       <div id="anidado">
         @yield('anidado')
-      </section>
-      </div>              
+      </div>
+      <div id="tareas">
+        @yield('tareas')
+      </div>                      
     </div>
     <footer>
       @yield('footerMain')

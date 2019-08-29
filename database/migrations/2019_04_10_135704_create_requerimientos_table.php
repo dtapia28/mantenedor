@@ -15,7 +15,7 @@ class CreateRequerimientosTable extends Migration
     {
         Schema::create('requerimientos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('id2', 10);
+            $table->string('id2', 15);
             $table->string('textoRequerimiento', 200);
             $table->datetime('fechaEmail');
             $table->datetime('fechaSolicitud');
