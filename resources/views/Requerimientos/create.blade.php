@@ -32,7 +32,7 @@
 
                 <label class="" for="textoRequerimiento">Texto del requerimiento:</label>
                 <br>
-                <textarea class="form-control col-md-7" name="textoRequerimiento" placeholder="Texto del requerimiento" rows="5" cols="50"></textarea>
+                <textarea id="texto" class="form-control col-md-7" name="textoRequerimiento" placeholder="Texto del requerimiento" rows="5" cols="50"></textarea>
                 <br>
                 <label for='fechaEmail'>Fecha de Email:</label>
                 <input class="form-control col-md-3" type="date" name="fechaEmail">
@@ -63,7 +63,7 @@
                         </optgroup>
                     @endforeach
                 </select>
-                <a href="{{ url('/resolutors/nuevo') }}?volver=1">Crear Resolutor</a>             
+                <a href="{{ url('/resolutors/nuevo') }}?volver=1">Crear Resolutor</a>
                 <br>
                 <label for="idPrioridad">Prioridad:</label>        
                 <br>                 
@@ -74,7 +74,8 @@
                         </optgroup>
                     @endforeach
                 </select>
-                <a href="{{ url('/priorities/nueva') }}?volver=1">Crear Prioridad</a>                            
+                <a href="{{ url('/priorities/nueva') }}?volver=1">Crear Prioridad</a>
+
                 <br>
                 <br>
                 <button class="btn btn-primary" type="submit">Crear Requerimiento</button>        

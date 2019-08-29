@@ -633,5 +633,10 @@ class RequerimientoController extends Controller
         //DB::table('requerimientos')->where('id', $requerimiento->id)->update($data);        
 
         return redirect('requerimientos');   
+    }
+
+    public function prueba(){
+        $variable = $_POST['texto'];
+        dd($variable);
     }              
 }

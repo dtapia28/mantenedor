@@ -239,6 +239,7 @@ Route::get('/requerimientos/{requerimiento}/avances', 'AvanceController@index')
 
 	->middleware('auth');
 
+Route::any('prueba/', 'RequerimientoController@prueba');
 
 
 //Rutas para los show
