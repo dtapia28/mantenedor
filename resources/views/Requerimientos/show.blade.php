@@ -137,7 +137,58 @@
 <br>
 <form method='HEAD' action="../requerimientos/{{$requerimiento->id}}/tareas/nueva">
 	<button type="submit" value="Ingresar" class="btn btn-primary" name="">Ingresar</button>
-</form>	
+</form>
+<table>
+	<thead>
+		<tr>
+			<th></th>
+			<th style="text-align: center;">Tarea</th>
+			<th style="text-align: center;">Solicitud</th>
+			<th style="text-align: center;">Cierre</th>
+			<th></th>
+			<th></th>
+		</tr>		
+	</thead>
+	<tbody>
+		@forelse ($tareas as $tarea)	
+			<tr>
+				<th style="padding-right: 12px;">
+					{{ $tarea->id2 }}
+				</th>	
+				<th style="padding-right: 12px;">
+				{{ $tarea->textoTarea }}
+				</th>
+				<td style="padding-right: 12px;">
+					{{date('d-m-Y', strtotime($tarea->fechaSolicitud)) }}
+				</td>
+				<td style="padding-right: 8px;">
+					{{date('d-m-Y', strtotime($tarea->fechaCierre)) }}							
+				</td>
+				<td style="padding-right: 8px;">
+					<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/tareas/{{ $tarea->id }}/terminar">
+						{{ csrf_field() }}
+						<input type="image" align="center" src="{{ asset('img/correcta-marca.png') }}" width="15" height="15">
+					</form>
+				</td>				
+				<td style="padding-right: 8px;">									
+					<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/tareas/{{ $tarea->id }}/editar">
+						{{ csrf_field() }}
+						<input type="image" align="center" src="{{ asset('img/edit.png') }}" width="15" height="15">
+					</form>
+				</td>
+				<td>									
+					<form method='POST' action="/requerimientos/{{$requerimiento->id}}/tareas/{{ $tarea->id }}/eliminar">
+						{{ csrf_field() }}
+						{{ method_field('DELETE') }}						
+						<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="15" height="15">
+					</form>
+				</td>								
+			</tr>						
+   		 </p>
+		@empty
+		@endforelse 
+		</tbody>	
+</table>
 @endsection 
     @section('footerMain')
     @endsection

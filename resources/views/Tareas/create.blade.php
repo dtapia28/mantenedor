@@ -1,5 +1,5 @@
 @extends('Bases.dashboard')
-@section('titulo', "Ingresar Avance")
+@section('titulo', "Tarea en requerimiento")
 
 @section('contenido')
     <h1>Crear tarea para requerimiento {{$requerimiento->id2}}</h1>
@@ -16,20 +16,19 @@
     @endif
     <div class="form-row align-items-center">
         <div class="form-group col-md-8">    
-            <form method="POST" action="{{ url('avances/ingresar') }}">                
+            <form method="POST" action="{{ url('tareas/ingresar') }}">                
                 {{ csrf_field() }}
-                 <input type="hidden" id="idRequerimiento" name="idRequerimiento" value="{{$requerimiento->id}}">
-                <label for='fechaCierre'>Fecha real de Cierre (no obligatoria):</label>
-                <input class="form-control col-md-3" value="{{ old('fechaRealCierre', $requerimiento->fechaRealCierre) }}" type="date" name="fechaRealCierre">
+                <label for='fechaSolicitud'>Fecha de Solicitud:</label>
+                <input class="form-control col-md-3" type="date" name="fechaSolicitud">
                 <br>
-                <label for="porcentajeEjecutado">Porcentaje ejecutado:</label>
-                <input class="form-control col-md-2" value="{{ old('porcentajeEjecutado', $requerimiento->porcentajeEjecutado) }}" type="number" name="porcentajeEjecutado">
-                <br>                 
-                <label class="" for="textAvance">Texto del avance:</label>
+                <label for='fechaCierre'>Fecha de Cierre:</label>
+                <input class="form-control col-md-3" type="date" name="fechaCierre"> 
                 <br>
-                <textarea class="form-control col-md-10" name="textAvance" placeholder="Texto del avance" rows="5" cols="50"></textarea>
-                <br>
-                <button class="btn btn-primary" type="submit">Guardar avance</button>
+                <label class="" for="textoRequerimiento">Tarea:</label>
+                <textarea id="texto" class="form-control col-md-7" name="texto" placeholder="Tarea" rows="5" cols="50"></textarea>
+                <input type="hidden" id="idRequerimiento" name="idRequerimiento" value="{{$requerimiento->id}}">  
+                <br>                                       
+                <button class="btn btn-primary" type="submit">Guardar</button>
             </form>
          </div>
     </div>        

@@ -486,6 +486,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/requerimientos/{requerimiento}/tareas/nueva', 'TareaController@create')
 
-	->name('tareas.create')
+	->name('Tareas.create')
 
 	->middleware('auth');
+
+Route::post('/tareas/ingresar', 'TareaController@store')
+
+	->middleware('auth');
+
+Route::get('/requerimientos/{requerimiento}/tareas/{tarea}/editar', 'TareaController@edit');		
+
+Route::get('/requerimientos/{requerimiento}/tareas/{tarea}/terminar', 'TareaController@terminar');

@@ -12,6 +12,7 @@ use App\Team;
 use App\Anidado;
 use App\User;
 use App\LogRequerimientos;
+use App\Tarea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
@@ -196,6 +197,7 @@ class RequerimientoController extends Controller
      */
     public function show(Requerimiento $requerimiento)
     {
+        $tareas = Tarea::where('idRequerimiento', $requerimiento->id)->get();
         $avances = Avance::where('idRequerimiento', $requerimiento->id)->latest('created_at')->paginate(5);
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $priorities = Priority::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
@@ -365,7 +367,7 @@ class RequerimientoController extends Controller
         }        
 
 
-        return view('Requerimientos.show', compact('requerimiento', 'resolutors', 'priorities', 'avances', 'teams', 'hastaCierre', 'hastaHoy', 'restantes', 'hoy', 'fechaCierre', 'excedidos', 'requerimientosAnidados'));        
+        return view('Requerimientos.show', compact('requerimiento', 'resolutors', 'priorities', 'avances', 'teams', 'hastaCierre', 'hastaHoy', 'restantes', 'hoy', 'fechaCierre', 'excedidos', 'requerimientosAnidados', 'tareas'));        
     }
 
     /**

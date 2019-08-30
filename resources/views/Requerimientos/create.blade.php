@@ -30,9 +30,8 @@
             <form method="POST" action="{{ url('requerimientos/crear') }}">
                 {{ csrf_field() }}
 
-                <label class="" for="textoRequerimiento">Texto del requerimiento:</label>
-                <br>
-                <textarea id="texto" class="form-control col-md-7" name="textoRequerimiento" placeholder="Texto del requerimiento" rows="5" cols="50"></textarea>
+                <label class="" for="textoRequerimiento">Solicitud:</label>
+                <textarea id="texto" class="form-control col-md-7" name="textoRequerimiento" placeholder="Solicitud" rows="5" cols="50"></textarea>
                 <br>
                 <label for='fechaEmail'>Fecha de Email:</label>
                 <input class="form-control col-md-3" type="date" name="fechaEmail">

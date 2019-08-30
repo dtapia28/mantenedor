@@ -6,6 +6,7 @@ use App\Tarea;
 use App\Requerimiento;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use DateTime;
 
 class TareaController extends Controller
 {
@@ -38,7 +39,38 @@ class TareaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = request()->validate([
+            'fechaSolicitud' => 'required',
+            'fechaCierre' => 'required',
+            'texto' => 'required',
+            'idRequerimiento' => 'required'],
+            ['fechaSolicitud.required' => 'La fecha de solicitud es obligatoria'],
+            ['fechaCierre.required' => 'La fecha de cierre es obligatoria'],
+            ['texto.required' => 'El texto de la tarea es obligatorio']);            
+
+        $fechaSoli = new DateTime($data['fechaSolicitud']);
+        $fechaCie = new DateTime($data['fechaCierre']);
+        if ($fechaCie->getTimestamp() >= $fechaSoli->getTimestamp()) 
+        {
+            $formato = "0";
+            $requerimiento = Requerimiento::where('id', $data['idRequerimiento'])->get();
+            $tareasReq = Tarea::where('idRequerimiento', $data['idRequerimiento'])->count();
+            if ($tareasReq >= 0) {
+                $tareasReq++;
+            }
+            if ($tareasReq < 10) {
+                $formato = $formato.$tareasReq;
+            }
+            Tarea::create([
+                'textoTarea' => $data['texto'],
+                'fechaSolicitud' => $data['fechaSolicitud'],
+                'fechaCierre' => $data['fechaCierre'],
+                'idRequerimiento' => $data['idRequerimiento'],
+                'id2' => $requerimiento['0']->id2."-".$formato,
+            ]);
+        }
+
+        return redirect(url("requerimientos/$request->idRequerimiento"));        
     }
 
     /**
@@ -58,9 +90,9 @@ class TareaController extends Controller
      * @param  \App\Tarea  $tarea
      * @return \Illuminate\Http\Response
      */
-    public function edit(Tarea $tarea)
+    public function edit(Requerimiento $requerimiento, Tarea $tarea)
     {
-        //
+        dd($tarea);
     }
 
     /**
