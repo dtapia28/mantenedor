@@ -92,8 +92,23 @@ class TareaController extends Controller
      */
     public function edit(Requerimiento $requerimiento, Tarea $tarea)
     {
-        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
-        return view('Tareas.edit', compact('tarea', 'requerimiento', 'user')); 
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        $fechita = str_split($tarea->fechaCierre);
+        $fechota = [];
+        for ($i=0; $i < 10; $i++) { 
+            $b = strtoupper($fechita[$i]);
+            array_push($fechota, $b);
+        }
+        $cierre = implode("", $fechota);
+
+        $fechita = str_split($tarea->fechaSolicitud);
+        $fechota = [];
+        for ($i=0; $i < 10; $i++) { 
+            $b = strtoupper($fechita[$i]);
+            array_push($fechota, $b);
+        }
+        $solicitud = implode("", $fechota);               
+        return view('Tareas.edit', compact('cierre', 'solicitud', 'tarea', 'requerimiento', 'user')); 
     }
 
     /**
@@ -103,9 +118,18 @@ class TareaController extends Controller
      * @param  \App\Tarea  $tarea
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tarea $tarea)
+    public function update(Request $request)
     {
-        //
+        $tarea = Tarea::where('id', $request->tarea)->first();
+        $data = [
+            'fechaSolicitud' => $request->fechaSolicitud,
+            'fechaCierre' => $request->fechaCierre,
+            'textoTarea' => $request->texto,
+        ];
+
+        $tarea->update($data);
+
+        return redirect(url("requerimientos/$request->req"));
     }
 
     public function terminar(Request $request)

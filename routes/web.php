@@ -499,3 +499,5 @@ Route::get('/requerimientos/{requerimiento}/tareas/{tarea}/editar', 'TareaContro
 Route::get('/requerimientos/{requerimiento}/tareas/{tarea}/terminar', 'TareaController@terminar');
 
 Route::get('/requerimientos/{requerimiento}/tareas/{tarea}/editar', 'TareaController@edit');
+
+Route::put('/requerimientos/{requerimiento}/tareas/{tarea}', 'TareaController@update');	
