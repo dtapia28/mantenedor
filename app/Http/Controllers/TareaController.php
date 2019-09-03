@@ -92,7 +92,8 @@ class TareaController extends Controller
      */
     public function edit(Requerimiento $requerimiento, Tarea $tarea)
     {
-        dd($tarea);
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
+        return view('Tareas.edit', compact('tarea', 'requerimiento', 'user')); 
     }
 
     /**
@@ -105,6 +106,17 @@ class TareaController extends Controller
     public function update(Request $request, Tarea $tarea)
     {
         //
+    }
+
+    public function terminar(Request $request)
+    {
+
+        $tarea = Tarea::where('id', $request->tarea)->first();
+        $data = [
+            'estado' => 2];   
+        $tarea->update($data);
+
+        return redirect(url("requerimientos/$request->req"));
     }
 
     /**

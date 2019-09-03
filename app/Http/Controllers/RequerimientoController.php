@@ -343,7 +343,6 @@ class RequerimientoController extends Controller
                 }
             } else
             {
-                dd($requerimiento->fechaSolicitud." ".$requerimiento->fechaRealCierre);
                 if ($requerimiento->fechaSolicitud == $requerimiento->fechaRealCierre) 
                 {
                     $excedidos = 0;
@@ -467,7 +466,6 @@ class RequerimientoController extends Controller
         }
 
         if ($data['idResolutor'] != $requerimiento->resolutor) {
-            dd($data['idResolutor']. " y ". $requerimiento->resolutor);
             LogRequerimientos::create([
                 'idRequerimiento' => $requerimiento->id,
                 'idUsuario' => $user[0]->id,
@@ -639,6 +637,5 @@ class RequerimientoController extends Controller
 
     public function prueba(){
         $variable = $_POST['texto'];
-        dd($variable);
     }              
 }

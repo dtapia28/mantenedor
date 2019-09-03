@@ -57,7 +57,12 @@
                 </li>
                 <li>
                      <a class="nav-link" href="{{ url('/teams') }}">Teams</a>                 
-                </li>                                        
+                </li>
+                @if($user[0]->nombre == "administrador")
+                <li>
+                     <a class="nav-link" href="{{ url('/users') }}">Usuarios</a>                 
+                </li>
+                @endif                                                                   
             </ul>
         </div>    
 

@@ -164,18 +164,33 @@
 				<td style="padding-right: 8px;">
 					{{date('d-m-Y', strtotime($tarea->fechaCierre)) }}							
 				</td>
-				<td style="padding-right: 8px;">
-					<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/tareas/{{ $tarea->id }}/terminar">
+				<td>
+				@if($tarea->estado == 1)
+					Pendiente
+				@else
+					Completada	
+				@endif	
+				</td>	
+				<td style="padding: 8px;">
+					<form method='GET' action="{{ url("/requerimientos/{$requerimiento->id}/tareas/{$tarea->id}/terminar")}}">					
 						{{ csrf_field() }}
 						<input type="image" align="center" src="{{ asset('img/correcta-marca.png') }}" width="15" height="15">
+						<input type="hidden" name="tarea" value={{$tarea->id}}>
+						<input type="hidden" name="req" value="{{ $requerimiento->id }}">
 					</form>
-				</td>				
+				</td>
+				@if($tarea->estado == 1)			
 				<td style="padding-right: 8px;">									
 					<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/tareas/{{ $tarea->id }}/editar">
 						{{ csrf_field() }}
 						<input type="image" align="center" src="{{ asset('img/edit.png') }}" width="15" height="15">
+
 					</form>
 				</td>
+				@else
+				<td>
+				</td>
+				@endif
 				<td>									
 					<form method='POST' action="/requerimientos/{{$requerimiento->id}}/tareas/{{ $tarea->id }}/eliminar">
 						{{ csrf_field() }}

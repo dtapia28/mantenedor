@@ -497,3 +497,5 @@ Route::post('/tareas/ingresar', 'TareaController@store')
 Route::get('/requerimientos/{requerimiento}/tareas/{tarea}/editar', 'TareaController@edit');		
 
 Route::get('/requerimientos/{requerimiento}/tareas/{tarea}/terminar', 'TareaController@terminar');
+
+Route::get('/requerimientos/{requerimiento}/tareas/{tarea}/editar', 'TareaController@edit');
