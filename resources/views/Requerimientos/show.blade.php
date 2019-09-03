@@ -152,6 +152,7 @@
 	<tbody>
 		@forelse ($tareas as $tarea)	
 			<tr>
+				@if($tarea->estado == 1 or $tarea->estado == 2)
 				<th style="padding-right: 12px;">
 					{{ $tarea->id2 }}
 				</th>	
@@ -170,7 +171,8 @@
 				@else
 					Completada	
 				@endif	
-				</td>	
+				</td>
+				@if($tarea->estado == 1)	
 				<td style="padding: 8px;">
 					<form method='GET' action="{{ url("/requerimientos/{$requerimiento->id}/tareas/{$tarea->id}/terminar")}}">					
 						{{ csrf_field() }}
@@ -179,6 +181,10 @@
 						<input type="hidden" name="req" value="{{ $requerimiento->id }}">
 					</form>
 				</td>
+				@else
+				<td>
+				</td>
+				@endif
 				@if($tarea->estado == 1)			
 				<td style="padding-right: 8px;">									
 					<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/tareas/{{ $tarea->id }}/editar">
@@ -191,13 +197,21 @@
 				<td>
 				</td>
 				@endif
+				@if($tarea->estado == 1)
 				<td>									
 					<form method='POST' action="/requerimientos/{{$requerimiento->id}}/tareas/{{ $tarea->id }}/eliminar">
 						{{ csrf_field() }}
 						{{ method_field('DELETE') }}						
 						<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="15" height="15">
+						<input type="hidden" name="tarea" value={{$tarea->id}}>
+						<input type="hidden" name="req" value={{$requerimiento->id}}>
 					</form>
-				</td>								
+				</td>					
+				@else
+				<td>
+				</td>
+				@endif	
+				@endif	
 			</tr>						
    		 </p>
 		@empty

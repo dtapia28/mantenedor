@@ -494,10 +494,11 @@ Route::post('/tareas/ingresar', 'TareaController@store')
 
 	->middleware('auth');
 
-Route::get('/requerimientos/{requerimiento}/tareas/{tarea}/editar', 'TareaController@edit');		
 
 Route::get('/requerimientos/{requerimiento}/tareas/{tarea}/terminar', 'TareaController@terminar');
 
 Route::get('/requerimientos/{requerimiento}/tareas/{tarea}/editar', 'TareaController@edit');
 
-Route::put('/requerimientos/{requerimiento}/tareas/{tarea}', 'TareaController@update');	
+Route::put('/requerimientos/{requerimiento}/tareas/{tarea}', 'TareaController@update');
+
+Route::delete('/requerimientos/{requerimiento}/tareas/{tarea}/eliminar', 'TareaController@destroy');
