@@ -32,6 +32,7 @@ class RequerimientoController extends Controller
 
     public function index(Request $request)
     {
+       
 
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
 

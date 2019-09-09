@@ -8,6 +8,7 @@ use App\Role;
 use App\User;
 use App\Role_User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Http\Request;
 
@@ -50,5 +51,33 @@ class UserController extends Controller
         $relacion->save();
 
         return redirect('users');
+    }
+
+    public function nuevo(){
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        auth()->user()->authorizeRoles(['administrador']);
+
+        return view('Users.create', compact('user'));                         
+    }
+
+    public function guardar (Request $request)
+    {
+
+        $data = request()->validate([
+            'name' => 'required',
+            'email' => 'required'],
+            ['name.required' => 'El nombre es obligatorio'],
+            ['email.required' => 'El mail es obligatorio']);        
+
+            $user = User::create([
+            'name' => $data['name'],
+            'rutEmpresa' => auth()->user()->rutEmpresa,
+            'email' => $data['email'],
+            'password' => Hash::make('secreto'),
+            ]);
+
+        $user->roles()->attach(Role::where('nombre', 'usuario')->first());            
+
+            return redirect('users');            
     }
 }

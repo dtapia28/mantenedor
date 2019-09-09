@@ -10,6 +10,13 @@
 	<p>
 	</p>
 	<br>
+	<div class="form-check form-check-inline">
+		<form method='GET' action="{{ url('users/nuevo') }}">
+			<button type="submit" value="Nuevo Usuario" class="btn btn-primary" name="">Nuevo</button>
+		</form>
+	</div>
+	<br>
+	<br>	
 	<tr>
 		<div class="card mb-3">
 	    	<div class="card-header">

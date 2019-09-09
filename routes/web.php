@@ -230,6 +230,13 @@ Route::get('/teams', 'TeamController@index')
 Route::get('/users', 'UserController@index')
 	->middleware('auth');
 
+Route::get('/users/nuevo', 'UserController@nuevo')
+	->middleware('auth');
+
+
+Route::post('/users/guardar', 'UserController@guardar')
+	->middleware('auth');	
+
 Route::post('/users/modificar', 'UserController@store')
 	->middleware('auth');		
 
