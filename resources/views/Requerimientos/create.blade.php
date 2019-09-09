@@ -53,16 +53,18 @@
                 </select>
                 <a href="{{ url('/solicitantes/nuevo') }}?volver=1">Crear Solicitante</a>
                 <br>
-                <label for="idResolutor">Resolutor:</label>        
+                <div id="recargar">
+                <label for='idResolutor'>Resolutor:</label>        
                 <br>                 
-                <select class="form-control col-md-3" name="idResolutor">
+                <select class='form-control col-md-3' name='idResolutor'>
                     @foreach($resolutors as $resolutor)
                         <optgroup>
-                            <option value={{ $resolutor->id }}>{{ $resolutor->nombreResolutor }}</option>
+                            <option value={{$resolutor->id}}>{{$resolutor->nombreResolutor}}</option>
                         </optgroup>
                     @endforeach
                 </select>
-                <a href="{{ url('/resolutors/nuevo') }}?volver=1">Crear Resolutor</a>
+                <a onclick="window.open(this.href, this.target, 'width=300,height=400'); return false;" href='{{ url('/resolutors/nuevo') }}?volver=1'>Crear Resolutor</a>                    
+                </div>
                 <br>
                 <label for="idPrioridad">Prioridad:</label>        
                 <br>                 
@@ -85,4 +87,14 @@
     <p>
         <a href="../requerimientos">Regresar al listado de requerimientos</a>
     </p>
+   <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>   
+    <script type="text/javascript">
+        $(document).ready(function(){
+            setInterval(
+                function(){
+                    $('#recargar').load('{{ asset('js/resolutores.php') }}');
+                }, 2000
+            );
+        });
+    </script>
 @endsection

@@ -30,9 +30,8 @@ class AvanceController extends Controller
      */
     public function create(Requerimiento $requerimiento)
     {
-
-
-        return view('Avances.create', compact('requerimiento'));
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        return view('Avances.create', compact('requerimiento', 'user'));
     }
 
     /**

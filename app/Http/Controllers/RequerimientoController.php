@@ -377,6 +377,8 @@ class RequerimientoController extends Controller
      */
     public function edit(Requerimiento $requerimiento)
     {
+
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
         $fechita = str_split($requerimiento->fechaCierre);
         $fechota = [];
         for ($i=0; $i < 10; $i++) { 
@@ -410,7 +412,7 @@ class RequerimientoController extends Controller
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $fechaCierre = new DateTime($requerimiento->fechaCierre);          
 
-        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'fechaCierre', 'cierre', 'solicitud', 'solicitanteEspecifico', 'prioridadEspecifica', 'resolutorEspecifico'));        
+        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'fechaCierre', 'cierre', 'solicitud', 'solicitanteEspecifico', 'prioridadEspecifica', 'resolutorEspecifico', 'user'));        
     }
 
     /**
