@@ -30,6 +30,7 @@ class AvanceController extends Controller
      */
     public function create(Requerimiento $requerimiento)
     {
+
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
         return view('Avances.create', compact('requerimiento', 'user'));
     }
@@ -77,7 +78,7 @@ class AvanceController extends Controller
         if ($request->input("porcentajeEjecutado") != null) {
             $porcentaje = $request->input("porcentajeEjecutado"); 
             } else {
-                $requerimiento = DB::table('requerimientos')->select('numeroCambios')->where('id', $request->input("idRequerimiento"))->first();
+                $requerimiento = DB::table('requerimientos')->select('porcentajeEjecutado')->where('id', $request->input("idRequerimiento"))->first();
                 $porcentaje = $requerimiento->porcentajeEjecutado;               
             }
 
@@ -110,7 +111,8 @@ class AvanceController extends Controller
      */
     public function edit(Requerimiento $requerimiento, Avance $avance)
     {
-        return view('Avances.edit', compact('requerimiento', 'avance'));
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
+        return view('Avances.edit', compact('requerimiento', 'avance', 'user'));
     }
 
     /**

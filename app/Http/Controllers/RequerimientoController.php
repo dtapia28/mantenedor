@@ -18,9 +18,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
 use DateTime;
 use DateInterval;
-use App\Exports\RequerimientosExport;
 use App\Http\Controllers\Controller;
 use Excel;
+use Carbon\Carbon;
 
 class RequerimientoController extends Controller
 {
@@ -54,7 +54,7 @@ class RequerimientoController extends Controller
         } else
         {
             $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-                ['estado', '<>', 1],
+                ['estado', 2],
                 ['rutEmpresa', '=', auth()->user()->rutEmpresa],
             ])->get();            
         }
@@ -106,6 +106,7 @@ class RequerimientoController extends Controller
             'cierre' => 'nullable',
             'idSolicitante' => 'required',
             'idPrioridad' => 'required',
+            'textAvance' => 'nullable',
             'idResolutor' => 'required'],
             ['nombreResolutor.required' => 'El campo nombre es obligatorio'],
             ['fechaEmail.required' => 'La fecha de email es obligatoria'],
@@ -115,75 +116,90 @@ class RequerimientoController extends Controller
         $fechaSoli = new DateTime($data['fechaSolicitud']);
         $fechaCie = new DateTime($data['fechaCierre']);
 
-        if ($fechaCie->getTimestamp() >= $fechaSoli->getTimestamp()) {
+        if ($fechaCie->getTimestamp() >= $fechaSoli->getTimestamp()) 
+        {
+                $resolutor = Resolutor::where([
+                    ['rutEmpresa', auth()->user()->rutEmpresa],
+                    ['id', $data['idResolutor']],
+                ])->get();
 
-            $resolutor = Resolutor::where([
+                $team = Team::where([
+                    ['rutEmpresa', auth()->user()->rutEmpresa],
+                    ['id',$resolutor[0]->idTeam],
+                ])->get(); 
+
+                $resolutors = Resolutor::where([
                 ['rutEmpresa', auth()->user()->rutEmpresa],
-                ['id', $data['idResolutor']],
-            ])->get();
+                ])->get();
 
-            $team = Team::where([
+                $requerimientos = Requerimiento::where([
                 ['rutEmpresa', auth()->user()->rutEmpresa],
-                ['id',$resolutor[0]->idTeam],
-            ])->get(); 
-
-            $resolutors = Resolutor::where([
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-            ])->get();
-
-            $requerimientos = Requerimiento::where([
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-            ])->get();
-            
-            $conteo = 1;
-            foreach ($resolutors as $resolutor) {
-                if ($resolutor->idTeam == $team[0]->id) {
-                    foreach ($requerimientos as $requerimiento) {
-                        if ($requerimiento->resolutor == $resolutor->id) {
-                            $conteo++;
+                ])->get();
+                
+                $conteo = 1;
+                foreach ($resolutors as $resolutor) {
+                    if ($resolutor->idTeam == $team[0]->id) {
+                        foreach ($requerimientos as $requerimiento) {
+                            if ($requerimiento->resolutor == $resolutor->id) {
+                                $conteo++;
+                            }
                         }
                     }
                 }
-            }
 
-            if ($conteo < 10) {
-                $conteoA = "00".$conteo;
-            } elseif ($conteo >= 10 and $conteo <= 99){
-                $conteoA = "0".$conteo;
-            } else {
-                $conteoA = $conteo;
-            }
+                if ($conteo < 10) {
+                    $conteoA = "00".$conteo;
+                } elseif ($conteo >= 10 and $conteo <= 99){
+                    $conteoA = "0".$conteo;
+                } else {
+                    $conteoA = $conteo;
+                }
 
-        Requerimiento::create([
-            'textoRequerimiento' => $data['textoRequerimiento'],            
-            'fechaEmail' => $data['fechaEmail'],
-            'fechaSolicitud' => $data['fechaSolicitud'],
-            'fechaCierre' => $data['fechaCierre'],
-            'idSolicitante' => $data['idSolicitante'],
-            'idPrioridad' => $data['idPrioridad'],
-            'resolutor' => $data['idResolutor'],
-            'rutEmpresa' => auth()->user()->rutEmpresa,
-            'id2' => "RQ-".$team[0]->id2."-".$conteoA,
-        ]);
+            Requerimiento::create([
+                'textoRequerimiento' => $data['textoRequerimiento'],            
+                'fechaEmail' => $data['fechaEmail'],
+                'fechaSolicitud' => $data['fechaSolicitud'],
+                'fechaCierre' => $data['fechaCierre'],
+                'idSolicitante' => $data['idSolicitante'],
+                'idPrioridad' => $data['idPrioridad'],
+                'resolutor' => $data['idResolutor'],
+                'rutEmpresa' => auth()->user()->rutEmpresa,
+                'id2' => "RQ-".$team[0]->id2."-".$conteoA,
+            ]);
 
-        $conteo = 1;
+            $conteo = 1;
 
-        $req = Requerimiento::where('textoRequerimiento', $data['textoRequerimiento'])->get();
+            $req = Requerimiento::where('textoRequerimiento', $data['textoRequerimiento'])->get();
 
-        $user = User::where([
-            ['name', auth()->user()->name],
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-        ])->get();
+            $user = User::where([
+                ['name', auth()->user()->name],
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+            ])->get();
 
-        LogRequerimientos::create([
-            'idRequerimiento' => $req[0]->id,
-            'idUsuario' => $user[0]->id,
-            'tipo' => 'Creación',
-        ]);                
+            LogRequerimientos::create([
+                'idRequerimiento' => $req[0]->id,
+                'idUsuario' => $user[0]->id,
+                'tipo' => 'Creación',
+            ]);
 
-        return redirect('requerimientos');
+            if ($data['textAvance'] != null) {
+                $guardado = Requerimiento::where([
+                    ['textoRequerimiento', $data['textoRequerimiento']],
+                    ['fechaEmail', $data['fechaEmail']],
+                    ['fechaSolicitud', $data['fechaSolicitud']],
+                ])->first();
 
-        }else {
+                Avance::create([
+                    'textAvance' => $data['textAvance'],
+                    'fechaAvance' => Carbon::now(),
+                    'idRequerimiento' => $guardado->id
+                ]);
+            }  
+
+            return redirect('requerimientos');
+
+        }else 
+        {
             return back()->with('msj', 'La fecha de cierre del requerimiento debe ser mayor a la fecha de solicitud');
         }
            
@@ -197,6 +213,7 @@ class RequerimientoController extends Controller
      */
     public function show(Requerimiento $requerimiento)
     {
+
         $tareas = Tarea::where('idRequerimiento', $requerimiento->id)->get();
         $avances = Avance::where('idRequerimiento', $requerimiento->id)->latest('created_at')->paginate(5);
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
@@ -533,7 +550,7 @@ class RequerimientoController extends Controller
             'campo' => '',
         ]);       
         $data = [
-            'estado' => 2,
+            'estado' => 0,
         ];
         DB::table('requerimientos')->where('id', $requerimiento->id)->update($data);
 
@@ -628,6 +645,7 @@ class RequerimientoController extends Controller
         $data = [
             'estado' => 2,
             'porcentajeEjecutado' => 100,
+            'cierre' => $data['cierre'],
         ];
 
         $requerimiento->update($data);        

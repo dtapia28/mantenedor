@@ -21,8 +21,7 @@
                  <input type="hidden" id="idAvance" name="idAvance" value="{{$avance->id}}">               
                 <label class="" for="textAvance">Texto del avance:</label>
                 <br>
-                <textarea class="form-control col-md-10" name="textAvance" placeholder="Texto del avance" rows="5" cols="50"></textarea>
-            	<label>Texto del avance: {{ $avance->textAvance }}</label>                
+                <textarea class="form-control col-md-10" name="textAvance" placeholder="Texto del avance" rows="5" cols="50">{{ $avance->textAvance }}</textarea>              
                 <br>
                 <button class="btn btn-primary" type="submit">Actualizar avance</button>
             </form>

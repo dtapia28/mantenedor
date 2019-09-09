@@ -77,6 +77,9 @@
     		<p><strong>Avance esperado: </strong>{{ (100/$hastaCierre)*$hastaHoy }}%</p>
     	@endif		      
     <p><strong>Porcentaje ejecutado: </strong> {{ $requerimiento->porcentajeEjecutado }}%</p>
+    @if($requerimiento->cierre != "")
+    <p><strong>Cierre: </strong>{{ $requerimiento->cierre }}</p>
+    @endif    
 
     <br>
 @endsection 
@@ -99,7 +102,7 @@
 			<tr>
 			@if ($avance->idRequerimiento == $requerimiento->id)
 				<th style="padding-right: 12px;">
-				<strong>{{ $avance->created_at->format('d-m-Y') }}: </strong>{{ $avance->textAvance }}
+				{{ $avance->created_at->format('d-m-Y') }}:{{ $avance->textAvance }}
 				</th>
 				<td style="padding-right: 12px;">
 					<form method='HEAD' action="../requerimientos/{{$requerimiento->id}}/avances/{{ $avance->id }}/editar">

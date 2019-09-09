@@ -63,7 +63,7 @@
                         </optgroup>
                     @endforeach
                 </select>
-                <a onclick="window.open(this.href, this.target, 'width=300,height=400'); return false;" href='{{ url('/resolutors/nuevo') }}?volver=1'>Crear Resolutor</a>                    
+                <a href='{{ url('/resolutors/nuevo') }}?volver=1'>Crear Resolutor</a>                    
                 </div>
                 <br>
                 <label for="idPrioridad">Prioridad:</label>        
@@ -78,6 +78,11 @@
                 <a href="{{ url('/priorities/nueva') }}?volver=1">Crear Prioridad</a>
 
                 <br>
+                <br>
+                <div id="creaAvance">
+                    <label for="textAvance">Ingresar avance al requerimiento:</label>
+                   <textarea class="form-control col-md-10" name="textAvance" placeholder="Texto del avance" rows="5" cols="50"></textarea>                    
+                </div>
                 <br>
                 <button class="btn btn-primary" type="submit">Crear Requerimiento</button>        
             </form>

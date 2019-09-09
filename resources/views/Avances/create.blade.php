@@ -2,7 +2,7 @@
 @section('titulo', "Ingresar Avance")
 
 @section('contenido')
-    <h1>Crear avance para requerimiento n° {{$requerimiento->id}}</h1>
+    <h1>Avance requerimiento {{$requerimiento->id2}}</h1>
     <br>
     @if ($errors->any())
     <div class="alert alert-danger">
