@@ -71,12 +71,16 @@ class ResolutorController extends Controller
             DB::table('resolutors')->where('id', $resolutor->id)->update($data);
         }
         $resolutor = null;
+        if (isset($_GET['volver'])) {
         if ($data['volver'] == 1) {
             return redirect()->action('RequerimientoController@create');
 
         } else {          
         return redirect('resolutors');
         }
+    } else {
+        return redirect('resolutors');        
+    }
     }
 
     /**

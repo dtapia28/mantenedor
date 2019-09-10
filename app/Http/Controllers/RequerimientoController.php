@@ -32,7 +32,7 @@ class RequerimientoController extends Controller
 
     public function index(Request $request)
     {
-       
+        $anidados = Anidado::all();
 
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
 
@@ -66,7 +66,7 @@ class RequerimientoController extends Controller
             $valor = 0;
         }
 
-        return view('Requerimientos.index', compact('requerimientos', 'resolutors', 'teams', 'valor', 'user'));
+        return view('Requerimientos.index', compact('requerimientos', 'resolutors', 'teams', 'valor', 'user', 'anidados'));
 
     }
 
@@ -113,6 +113,21 @@ class RequerimientoController extends Controller
             ['fechaEmail.required' => 'La fecha de email es obligatoria'],
             ['fechaSolicitud' => 'La fecha de solicitud es obligatoria'],
             ['fechaCierre' => 'La fecha de cierre es obligatoria']);
+
+        $variable = new DateTime($data['fechaSolicitud']);
+        $data['fechaSolicitud'] = $variable->format('Y-m-d');
+
+        $variable = new DateTime($data['fechaEmail']);
+        $data['fechaEmail'] = $variable->format('Y-m-d');
+
+        $variable = new DateTime($data['fechaCierre']);
+        $data['fechaCierre'] = $variable->format('Y-m-d');
+
+        if (isset($data['fechaRealCierre'])) {
+        $variable = new DateTime($data['fechaRealCierre']);
+        $data['fechaRealCierre'] = $variable->format('Y-m-d'); 
+        }
+                       
 
         $fechaSoli = new DateTime($data['fechaSolicitud']);
         $fechaCie = new DateTime($data['fechaCierre']);
@@ -448,6 +463,7 @@ class RequerimientoController extends Controller
             'idPrioridad' => 'nullable',
             'idResolutor' => 'nullable',
             'fechaCierre' => 'nullable',
+            'textAvance' => 'nullable',            
             'fechaSolicitud' => 'nullable',
         ]);
 
@@ -529,6 +545,16 @@ class RequerimientoController extends Controller
         }                          
               
         $requerimiento->update($data);
+
+        if ($data['textAvance'] != "") {
+
+                Avance::create([
+                    'textAvance' => $data['textAvance'],
+                    'fechaAvance' => Carbon::now(),
+                    'idRequerimiento' => $requerimiento->id
+                ]);            
+            
+        }
         return redirect('requerimientos');         
     }
 
@@ -643,17 +669,27 @@ class RequerimientoController extends Controller
             'fechaRealCierre' => 'nullable'],
             ['cierre.required' => 'El texto de cierre es obligatorio']);
        
+       if (empty($data['fechaRealCierre'])) {
         $data = [
             'estado' => 2,
             'porcentajeEjecutado' => 100,
             'cierre' => $data['cierre'],
-        ];
+        ];           
+       } else {
+        $data = [
+            'estado' => 2,
+            'porcentajeEjecutado' => 100,
+            'cierre' => $data['cierre'],
+            'fechaRealCierre' => $data['fechaRealCierre'],
+        ];         
+       }
+
 
         $requerimiento->update($data);        
 
         //DB::table('requerimientos')->where('id', $requerimiento->id)->update($data);        
 
-        return redirect('requerimientos');   
+        return redirect('requerimientos');  
     }
 
     public function prueba(){

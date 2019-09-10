@@ -17,7 +17,7 @@
 		<strong>Fecha de email: </strong>{{date('d-m-Y', strtotime($requerimiento->fechaEmail)) }}
     </p>
 	<p>
-		<strong>Fecha de solicitud: </strong>{{date('d-m-Y', strtotime($requerimiento->fechaSolicitud)) }}
+		<strong>Fecha de solicitud: </strong>{{$requerimiento->fechaSolicitud}}
     </p>
 	<p>
 		@forelse ($teams as $team)

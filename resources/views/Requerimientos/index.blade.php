@@ -52,11 +52,10 @@
 	                    <th>Fecha Cierre</th>
 	                    <th>Resolutor</th>
 	                    <th>Status</th>
-	                    <th>Ejecutado (%)</th>	                    
+	                    <th>Ejecutado (%)</th>
+	                    <th>Anidados</th>	                    
 	                    <th></th>
 	                    <th></th>
-	                    <th></th>
-	                    <th>Anidar</th>
 	                    <th></th>
 	                  </tr>
 	                </thead>
@@ -64,7 +63,7 @@
 						@forelse ($requerimientos as $requerimiento)
 							<tr>
 							<th id="tabla" scope="row">
-								<a href="/requerimientos/{{ $requerimiento->id }}">
+								<a href="{{ url("requerimientos/{$requerimiento->id}") }}">
 									{{ $requerimiento->id2 }}
 								</a>					
 							</th>
@@ -72,15 +71,15 @@
 								{{ $requerimiento->textoRequerimiento }}
 							</td>				
 							<td style="text-align: center;">	
-								{{ date('d-m-Y', strtotime($requerimiento->fechaSolicitud)) }}
+								{{ date('Y-m-d', strtotime($requerimiento->fechaSolicitud)) }}
 							</td>
 							@if($requerimiento->fechaRealCierre != "")
 							<td width="100px" style="text-align: center;">	
-								{{ date('d-m-Y', strtotime($requerimiento->fechaRealCierre)) }}
+								{{ date('Y-m-d', strtotime($requerimiento->fechaRealCierre)) }}
 							</td>
 							@else							
 							<td width="200px" style="text-align: center;">	
-								{{ date('d-m-Y', strtotime($requerimiento->fechaCierre)) }}
+								{{ date('Y-m-d', strtotime($requerimiento->fechaCierre)) }}
 							</td>
 							@endif
 							<td width="100px" style="text-align: center">								
@@ -95,36 +94,36 @@
 							</td>
 							<td style="text-align: center">
 								{{ $requerimiento->porcentajeEjecutado }}
+							</td>
+							<td style="text-align: center">
+							@forelse ($anidados as $anidado)
+								@if ($requerimiento->id == $anidado->idRequerimientoBase)
+									Si
+								@else
+									No	
+								@endif
+							@empty
+							@endforelse	
 							</td>							
 							<td>
-					<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/terminado") }}">
-						{{ csrf_field() }}
-						<input type="image" align="center" src="{{ asset('img/correcta-marca.png') }}" width="30" height="30">
-					</form>
-				</td>																
-				<td>									
-					<form method='HEAD' action="/requerimientos/{{$requerimiento->id}}/editar">
-						{{ csrf_field() }}
-						<input type="image" align="center" src="{{ asset('img/edit.png') }}" width="30" height="30">
-					</form>
-				</td>
-				<td>									
-					<form method='POST' action="/requerimientos/{{$requerimiento->id}}">
-						{{ csrf_field() }}
-						{{ method_field('DELETE') }}						
-						<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="30" height="30">
-					</form>
-				</td>
-				<td>
-					<form method="POST" action="{{ url('requerimientos/anidar') }}">
-						{{ csrf_field() }}						
-	               	 	<input type="number" name="anidar" class="form-control">
-	               	 	<input type="hidden" name="requerimiento" value={{ $requerimiento->id }}>				
-				</td>
-				<td>
-						<button type="submit" class="btn btn-success">Anidar</button>
-					</form>
-				</td>																                  
+								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/terminado") }}">
+									{{ csrf_field() }}
+									<input type="image" align="center" src="{{ asset('img/correcta-marca.png') }}" width="30" height="30">
+								</form>
+							</td>																
+							<td>									
+								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/editar") }}">
+									{{ csrf_field() }}
+									<input type="image" align="center" src="{{ asset('img/edit.png') }}" width="30" height="30">
+								</form>
+							</td>
+							<td>									
+								<form method='POST' action="/requerimientos/{{$requerimiento->id}}">
+									{{ csrf_field() }}
+									{{ method_field('DELETE') }}						
+									<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="30" height="30">
+								</form>
+							</td>											                  
 	                    @empty
 	                    @endforelse
 	                </tbody>

@@ -60,7 +60,12 @@
                     </optgroup>
                 @endforeach
             </select>                      
-            <br>            
+            <br>
+            <div id="creaAvance">
+                <label for="textAvance">Ingresar avance al requerimiento:</label>
+                <textarea class="form-control col-md-10" name="textAvance" placeholder="Texto del avance" rows="5" cols="50"></textarea>                    
+            </div>  
+            <br>                      
             <button class="btn btn-primary" type="submit">Actualizar requerimiento</button>
             <br>
         </form>
