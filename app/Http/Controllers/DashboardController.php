@@ -126,6 +126,7 @@ class DashboardController extends Controller
 
     public function green(){
 
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();  
         $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();        	
@@ -160,11 +161,12 @@ class DashboardController extends Controller
             }
     	}	
     	
-    	return view('dashboard.green', compact('requerimientosGreen', 'resolutors', 'teams', 'solicitantes'));   	    	
+    	return view('dashboard.green', compact('requerimientosGreen', 'resolutors', 'teams', 'solicitantes', 'user'));   	    	
     }
 
     public function yellow(){
 
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();  
         $resolutors = Resolutor::all();  
         $teams = Team::all();           
         $requerimientos = Requerimiento::where('estado', 1)->get();
@@ -196,11 +198,12 @@ class DashboardController extends Controller
             }    
         }   
         
-        return view('dashboard.yellow', compact('requerimientosYellow', 'resolutors', 'teams', 'solicitantes'));              
+        return view('dashboard.yellow', compact('requerimientosYellow', 'resolutors', 'teams', 'solicitantes', 'user'));              
     }
 
     public function red(){
 
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();  
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();  
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();           
         $requerimientos = Requerimiento::where([
@@ -218,6 +221,6 @@ class DashboardController extends Controller
             }
         }   
         
-        return view('dashboard.red', compact('requerimientosRed', 'resolutors', 'teams', 'solicitantes'));              
+        return view('dashboard.red', compact('requerimientosRed', 'resolutors', 'teams', 'solicitantes', 'user'));              
     }        
 }

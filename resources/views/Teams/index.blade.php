@@ -1,16 +1,16 @@
 @extends('Bases.dashboard')
-@section('titulo', 'Teams')
+@section('titulo', 'Equipos')
 @section('contenido')
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
  <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
-		<h1>Listado de Teams</h1>
+		<h1>Listado de equipos</h1>
 		<p>
 		</p>
 		<form method='HEAD' action="{{ url('teams/nuevo') }}">
-		<button type="submit" value="Nuevo Teams" class="btn btn-primary" name="">Nuevo</button>
+		<button type="submit" value="Nuevo Equipo" class="btn btn-primary" name="">Nuevo</button>
 		</form>
 		<br>
 		              <table class="table table-bordered table-striped table-hover" id="dataTable" width="100%"  cellspacing="0">

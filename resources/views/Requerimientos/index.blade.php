@@ -96,14 +96,19 @@
 								{{ $requerimiento->porcentajeEjecutado }}
 							</td>
 							<td style="text-align: center">
-							@forelse ($anidados as $anidado)
-								@if ($requerimiento->id == $anidado->idRequerimientoBase)
-									Si
-								@else
-									No	
-								@endif
-							@empty
-							@endforelse	
+								<?php
+									$conteo = 0;
+								 foreach ($anidados as $anidado) {
+								 	if ($requerimiento->id == $anidado->idRequerimientoBase) {
+								 		$conteo++;
+								 	}
+								 }
+								 if ($conteo>0) {
+								 	echo "Si";
+								 } else {
+								 	echo "No";
+								 }
+								?>
 							</td>							
 							<td>
 								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/terminado") }}">

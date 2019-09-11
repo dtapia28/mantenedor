@@ -486,8 +486,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 
-Route::post('/requerimientos/anidar', 'AnidadoController@store');
+//Route::post('/requerimientos/anidar', 'AnidadoController@store');
 
+Route::post('/requerimientos/{requerimiento}/anidar', 'AnidadoController@anidar');
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 

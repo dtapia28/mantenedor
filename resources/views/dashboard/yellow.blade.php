@@ -22,7 +22,7 @@
               <tr>
               <th id="tabla" scope="row">
                 <a href="../public/requerimientos/{{ $requerimiento->id }}">
-                  {{ $requerimiento->id }}
+                  {{ $requerimiento->id2 }}
                 </a>            
               </th>
               <td width="350px" style="text-align:left;"> 

@@ -47,6 +47,14 @@ class AnidadoController extends Controller
         return redirect(url("requerimientos/$request->requerimiento"));
     }
 
+    public function anidar(Request $request)
+    {
+        dd("holanda");
+        if (Input::get('requerimiento1')) {
+            dd("Si se puede");
+        }
+    }
+
     /**
      * Display the specified resource.
      *

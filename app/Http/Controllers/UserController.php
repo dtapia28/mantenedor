@@ -37,17 +37,18 @@ class UserController extends Controller
     {
 
         $data = request()->validate([
-            'role_id' => 'required',
+            'idRole' => 'required',
         ],
             [ 'idRole.required' => 'El campo nombre es obligatorio']);
 
+
         $data2 = request()->validate([
-        	'user_id' => 'required',
+        	'idUsers' => 'required',
         ],
     		['idUser.required' => 'El campo es obligatorio']);
 
-        $relacion = Role_User::where('user_id', $data2['user_id'])->first();
-        $relacion->role_id = $data['role_id'];
+        $relacion = Role_User::where('user_id', $data2['idUsers'])->first();
+        $relacion->role_id = $data['idRole'];
         $relacion->save();
 
         return redirect('users');

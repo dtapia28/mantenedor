@@ -33,13 +33,13 @@
                 <label class="" for="textoRequerimiento">Solicitud:</label>
                 <textarea id="texto" class="form-control col-md-7" name="textoRequerimiento" placeholder="Solicitud" rows="5" cols="50"></textarea>
                 <br>
-                <label for='fechaEmail'>Fecha de Email:</label>
+                <label for='fechaEmail'>Fecha original de requerimiento:</label>
                 <input class="form-control col-md-3" type="date" name="fechaEmail">
                 <br>
-                <label for='fechaSolicitud'>Fecha de Solicitud:</label>
+                <label for='fechaSolicitud'>Fecha inicio de seguimiento:</label>
                 <input class="form-control col-md-3" type="date" name="fechaSolicitud">
                 <br>
-                <label for='fechaCierre'>Fecha de Cierre:</label>
+                <label for='fechaCierre'>Fecha solicitada de cierre:</label>
                 <input class="form-control col-md-3" type="date" name="fechaCierre">
                 <br>
                 <label for="idSolicitante">Solicitante:</label>

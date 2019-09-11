@@ -22,7 +22,7 @@
                 <label for="name">Nombre:</label>
                 <input class="form-control col-md-7" type="text" name="nombreResolutor" id="name" value="{{ old('nombreResolutor') }}">
                 <br>
-                <label for="idTeam">Team:</label>                
+                <label for="idTeam">Equipo:</label>                
                 <select class="form-control col-md-6" name="idTeam">
                     @foreach($teams as $team)
                         <optgroup>

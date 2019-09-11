@@ -1,9 +1,9 @@
 @extends('Bases.dashboard')
 
-@section('titulo', "Editar Team")
+@section('titulo', "Editar equipo")
 
 @section('contenido')
-    <h1>Editar team</h1>
+    <h1>Editar equipo</h1>
     <br>
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -24,12 +24,12 @@
                 <label for="name">Nombre:</label>
                 <input class="form-control col-md-7" type="text" name="nameTeam" id="nameTeam" value="{{ old('nameTeam', $team->nameTeam) }}">
                 <br>
-                <button class="btn btn-primary" type="submit">Actualizar team</button>
+                <button class="btn btn-primary" type="submit">Actualizar equipo</button>
             </form>
         </div>
     </div>    
 
 	<p>
-		<a href="{{url('teams')}}">Volver al listado de Teams</a>
+		<a href="{{url('teams')}}">Volver al listado de equipos</a>
     </p>
 @endsection    
