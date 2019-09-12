@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Anidado;
+use App\Requerimiento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class AnidadoController extends Controller
 {
@@ -49,10 +51,28 @@ class AnidadoController extends Controller
 
     public function anidar(Request $request)
     {
-        dd("holanda");
-        if (Input::get('requerimiento1')) {
-            dd("Si se puede");
+
+        $idReq = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)->get('id');
+        $nReq = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)->count();
+        $nReq++;
+
+        for ($i=1; $i < $nReq; $i++) {
+            foreach ($idReq as $id)
+            {
+                if ($i = $id->id) 
+                {
+                    if (Input::get('requerimiento'.$id->id)) 
+                    {
+                        Anidado::create([
+                            'idRequerimientoAnexo' => $id->id,
+                            'idRequerimientoBase' => $request->requerimiento,
+                        ]);
+                    }
+                }
+            }          
         }
+
+        return redirect(url("requerimientos/$request->requerimiento"));        
     }
 
     /**
