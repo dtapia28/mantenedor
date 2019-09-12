@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Notifications;
+
+
+use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Notifications\Messages\MailMessage;
+
+class MyResetPassword extends ResetPassword
+{
+
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->subject('Recuperar contraseña')
+                    ->greeting('Hola')
+                    ->line('Estás recibiendo este correo porque hiciste una solicitud de recuperación de contraseña para tu cuenta.')
+                    ->action('Recuperar contraseña', route('password.reset', $this->token))
+                    ->salutation('Saludos, '. config('app.name'));
+    }
+}
