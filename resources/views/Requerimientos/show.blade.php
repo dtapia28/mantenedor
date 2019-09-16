@@ -14,10 +14,10 @@
 		@endforelse
     </p>
 	<p>
-		<strong>Fecha de email: </strong>{{date('d-m-Y', strtotime($requerimiento->fechaEmail)) }}
+		<strong>Fecha original de requerimiento: </strong>{{date('d-m-Y', strtotime($requerimiento->fechaEmail)) }}
     </p>
 	<p>
-		<strong>Fecha de solicitud: </strong>{{$requerimiento->fechaSolicitud}}
+		<strong>Fecha de inicio seguimiento: </strong>{{date('d-m-Y', strtotime($requerimiento->fechaSolicitud))}}
     </p>
 	<p>
 		@forelse ($teams as $team)
@@ -40,7 +40,7 @@
 		@empty
 		@endforelse
     </p>
-    <p><strong>Fecha de cierre: </strong> {{date('d-m-Y', strtotime($requerimiento->fechaCierre)) }}</p>
+    <p><strong>Fecha solicitada de cierre: </strong> {{date('d-m-Y', strtotime($requerimiento->fechaCierre)) }}</p>
     <p>
     	@if ($requerimiento->fechaRealCierre != null)
     		<strong>Fecha real cierre: </strong> {{date('d-m-Y', strtotime($requerimiento->fechaRealCierre)) }}
@@ -212,6 +212,8 @@
 </form>
 @endsection
 @section('tareas')
+<br>
+<br>
 <header><h2>Tareas:</h2></header>
 <br>
 <form method='HEAD' action="../requerimientos/{{$requerimiento->id}}/tareas/nueva">
