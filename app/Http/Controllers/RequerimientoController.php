@@ -100,7 +100,7 @@ class RequerimientoController extends Controller
             'textoRequerimiento' => 'required',
             'fechaEmail' => 'required',
             'fechaSolicitud' => 'required',
-            'fechaCierre' => 'required',
+            'fechaCierre' => 'nullable',
             'fechaRealCierre' => 'nullable',
             'numeroCambios' => 'nullable',
             'porcentajeEjecutado' => 'nullable',
@@ -114,21 +114,28 @@ class RequerimientoController extends Controller
             ['fechaSolicitud' => 'La fecha de solicitud es obligatoria'],
             ['fechaCierre' => 'La fecha de cierre es obligatoria']);
 
+
+        if ($data['fechaCierre'] == null) {
+            $variable = new DateTime($data['fechaSolicitud']);
+            $intervalo = new DateInterval('P1M');
+            $variable->add($intervalo);
+            $data['fechaCierre'] = $variable->format('Y-m-d');
+        } else {
+            $variable = new DateTime($data['fechaCierre']);
+            $data['fechaCierre'] = $variable->format('Y-m-d');
+        }
+
         $variable = new DateTime($data['fechaSolicitud']);
         $data['fechaSolicitud'] = $variable->format('Y-m-d');
 
         $variable = new DateTime($data['fechaEmail']);
         $data['fechaEmail'] = $variable->format('Y-m-d');
 
-        $variable = new DateTime($data['fechaCierre']);
-        $data['fechaCierre'] = $variable->format('Y-m-d');
-
         if (isset($data['fechaRealCierre'])) {
         $variable = new DateTime($data['fechaRealCierre']);
         $data['fechaRealCierre'] = $variable->format('Y-m-d'); 
         }
-                       
-
+        
         $fechaSoli = new DateTime($data['fechaSolicitud']);
         $fechaCie = new DateTime($data['fechaCierre']);
 
