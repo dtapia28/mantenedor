@@ -70,6 +70,19 @@ class RequerimientoController extends Controller
 
     }
 
+    public function getResolutors(Request $request)
+    {
+        if ($request->ajax()) {
+            $resolutors = Resolutor::where('idTeam', $request->id_team)->get();
+            foreach ($resolutors as $resolutor) {
+                $resolutorArray[$resolutor->id] = $resolutor->nombreResolutor;
+            }
+
+            return response()->json($resolutorArray);
+        }
+    }
+
+
     /**
      * Show the form for creating a new resource.
      *
@@ -85,7 +98,9 @@ class RequerimientoController extends Controller
         $priorities = Priority::where('rutEmpresa', auth()->user()->rutEmpresa)->orderBy('namePriority')->get();
         $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->orderBy('nombreSolicitante')->get();
 
-        return view('Requerimientos.create', compact('resolutors', 'priorities', 'solicitantes', 'user'));        
+        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+
+        return view('Requerimientos.create', compact('resolutors', 'priorities', 'solicitantes', 'user', 'teams'));        
     }
 
     /**

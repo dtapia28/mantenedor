@@ -8,7 +8,6 @@
 @endif
 @extends('Bases.dashboard')
 @section('titulo', "Crear Requerimiento")
-
 @section('contenido')
     <header>
     <h1>Crear Requerimiento</h1>
@@ -53,18 +52,23 @@
                 </select>
                 <a href="{{ url('/solicitantes/nuevo') }}?volver=1">Crear Solicitante</a>
                 <br>
-                <div id="recargar">
-                <label for='idResolutor'>Resolutor:</label>        
-                <br>                 
-                <select class='form-control col-md-3' name='idResolutor'>
-                    @foreach($resolutors as $resolutor)
+                <br>
+                <label for="team">Equipo Resolutores:</label>
+                <br>
+                <select class="form-control col-md-4" id="team" name="team">
+                    <option value="">Seleccione un Equipo</option>                    
+                    @foreach($teams as $team)
                         <optgroup>
-                            <option value={{$resolutor->id}}>{{$resolutor->nombreResolutor}}</option>
+                            <option value={{ $team->id }}>{{ $team->nameTeam }}</option>
                         </optgroup>
                     @endforeach
                 </select>
+                <br>
+                <label for='idResolutor'>Resolutor:</label>        
+                <br>                 
+                <select class='form-control col-md-3' id="resolutor" name='idResolutor'>
+                </select>
                 <a href='{{ url('/resolutors/nuevo') }}?volver=1'>Crear Resolutor</a>                    
-                </div>
                 <br>
                 <label for="idPrioridad">Prioridad:</label>        
                 <br>                 
@@ -92,4 +96,20 @@
     <p>
         <a href="../requerimientos">Regresar al listado de requerimientos</a>
     </p>
+@endsection
+@section('script')
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#team').on('change', function(){
+            var id_team = $(this).val();
+            $.get('/requerimientos/script', {id_team: id_team}, function(resolutors){
+                $('#resolutor').empty();
+                $('#resolutor').append("<option value=''>Selecciona un resolutor</opcion>");
+                $.each(resolutors, function(index, value){
+                    $('#resolutor').append("<option value='"+index+"'>"+value+"</opcion>");
+                });
+            });
+        });
+    });
+</script>
 @endsection

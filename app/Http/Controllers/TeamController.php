@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Team;
+use App\Resolutor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -20,7 +21,7 @@ class TeamController extends Controller
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
 
         return view('Teams.index', compact('teams', 'user'));
-    }
+    }    
 
     /**
      * Show the form for creating a new resource.

@@ -203,6 +203,9 @@
   <script src="{{ asset('js/datatables-demo.js') }}"></script>
   <script src="{{ asset('js/chart-area-demo.js') }}"></script>
 
+  @yield('script')
+  @yield('script2')
+
 </body>
 
 </html>

@@ -98,7 +98,6 @@ Route::get('/requerimientos/nuevo', 'RequerimientoController@create')
 	->middleware('auth');
 
 
-
 Route::post('/requerimientos/crear', 'RequerimientoController@store')
 
 	->middleware('auth');
@@ -152,6 +151,8 @@ Route::get('/requerimientos/{requerimiento}/avances/nuevo', 'AvanceController@cr
 	->name('Avances.create')
 
 	->middleware('auth');
+
+Route::get('/requerimientos/script', 'RequerimientoController@getResolutors');	
 
 
 
