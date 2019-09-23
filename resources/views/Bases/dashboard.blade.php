@@ -13,6 +13,8 @@
 
   <title>@yield('titulo')- EasyTask</title>
 
+    @yield('script')
+
   <!-- Custom fonts for this template-->
   <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
 
@@ -23,6 +25,7 @@
   <link href="{{ asset('css/sb-admin.css')}}  " rel="stylesheet">
 
   <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/main.css') }}">
   
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -57,7 +60,7 @@
                      <a class="nav-link" href="{{ url('/solicitantes') }}">Solicitantes</a>                 
                 </li>
                 <li>
-                     <a class="nav-link" href="{{ url('/teams') }}">Teams</a>                 
+                     <a class="nav-link" href="{{ url('/teams') }}">Equipos</a>                 
                 </li>
                 @if($user[0]->nombre == "administrador")
                 <li>
@@ -123,7 +126,7 @@
           <a class="dropdown-item" href="../public/priorities">Prioridades</a>
           <a class="dropdown-item" href="../public/resolutors">Resolutores</a>
           <a class="dropdown-item" href="../public/solicitantes">Solicitantes</a>
-          <a class="dropdown-item" href="../public/teams">Teams</a>
+          <a class="dropdown-item" href="../public/teams">Equipos</a>
         </div>
       </li>
       @if($user[0]->nombre == "supervisor" or $user[0]->nombre == "administrador")
@@ -203,8 +206,7 @@
   <script src="{{ asset('js/datatables-demo.js') }}"></script>
   <script src="{{ asset('js/chart-area-demo.js') }}"></script>
 
-  @yield('script')
-  @yield('script2')
+
 
 </body>
 

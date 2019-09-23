@@ -9,57 +9,22 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <div class="row">
-          <div class="col-xl-4 col-sm-6 mb-3">
-            <div class="card text-white bg-success o-hidden h-100">
-              <div class="card-body">
-                <div class="card-body-icon">
-
+    <div id="panel">
+        <div id="panel-admin">
+            <div class="panel-admin-box">
+                <div id="tootlbar_colors">
+                    <button class="color" style="background-color:#1abac8;" onclick="changeDisplay1()">1</button>
+                    <button class="color" style="background-color:#ff8a00;" onclick="changeDisplay2()"> </button>
+                    <button class="color" style="background-color:#b4de50;" onclick="mytheme(2)"> </button>
+                    <button class="color" style="background-color:#e54e53;" onclick="mytheme(3)"> </button>
+                    <button class="color" style="background-color:#1abc9c;" onclick="mytheme(4)"> </button>
+                    <button class="color" style="background-color:#159eee;" onclick="mytheme(5)"> </button>
                 </div>
-                <div class="mr-5">{{ $verde}} requerimiento(s)</div>
-              </div>
-              <a class="card-footer text-white clearfix small z-1" href="dashboard/green">
-                <span class="float-left">Ver Detalle</span>
-                <span class="float-right">
-                  <i class="fas fa-angle-right"></i>
-                </span>
-              </a>
             </div>
-          </div>          
-          <div class="col-xl-4 col-sm-6 mb-3">
-            <div class="card text-white bg-warning o-hidden h-100">
-              <div class="card-body">
-                <div class="card-body-icon">
 
-                </div>
-                <div class="mr-5">{{ $amarillo }} requerimiento(s)</div>
-              </div>
-              <a class="card-footer text-white clearfix small z-1" href="dashboard/yellow">
-                <span class="float-left">Ver Detalle</span>
-                <span class="float-right">
-                  <i class="fas fa-angle-right"></i>
-                </span>
-              </a>
-            </div>
-          </div>
-
-          <div class="col-xl-4 col-sm-6 mb-3">
-            <div class="card text-white bg-danger o-hidden h-100">
-              <div class="card-body">
-                <div class="card-body-icon">
-
-                </div>
-                <div class="mr-5">{{ $rojo }} requerimiento(s)</div>
-              </div>
-              <a class="card-footer text-white clearfix small z-1" href="dashboard/red">
-                <span class="float-left">Ver Detalle</span>
-                <span class="float-right">
-                  <i class="fas fa-angle-right"></i>
-                </span>
-              </a>
-            </div>
-          </div>
         </div>
+        <a class="open" href="#"><span><i class="fa fa-gear fa-spin"></i></span></a>
+    </div>        
 
 <!-- Prueba de graficos con Chart.js-->
 <link rel="stylesheet" type="text/css" href="{{ asset('css/index_style.css') }}">
@@ -130,7 +95,19 @@ foreach ($equipos2 as $valor) {
       echo "<div id='".$valor['id']."_chart_div' style='width: 300px; height: 300px;'></div>\n";
     }  
     ?>
-    </div>    
+    </div>
+<script>
+function changeDisplay1() {
+    document.getElementById("donutchart3").style.display = "none";
+    document.getElementById("graficosTeam").style.display = "block";    
+}
 
+function changeDisplay2() {
+    document.getElementById("donutchart3").style.display = "block";
+    document.getElementById("graficosTeam").style.display = "none";    
+}
+</script>      
+@endsection
+@section('script')
 
 @endsection

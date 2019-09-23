@@ -152,7 +152,7 @@ Route::get('/requerimientos/{requerimiento}/avances/nuevo', 'AvanceController@cr
 
 	->middleware('auth');
 
-Route::get('/requerimientos/script', 'RequerimientoController@getResolutors');	
+Route::get('/requerimientos/script', 'RequerimientoController@getResolutors');
 
 
 
