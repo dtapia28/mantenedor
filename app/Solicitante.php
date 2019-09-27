@@ -14,5 +14,5 @@ class Solicitante extends Model
      *
      * @var array
      */
-    protected $fillable = ['nombreSolicitante', 'rutEmpresa'];
+    protected $fillable = ['nombreSolicitante', 'rutEmpresa', 'idUser', 'email'];
 }

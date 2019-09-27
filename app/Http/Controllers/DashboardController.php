@@ -68,7 +68,7 @@ class DashboardController extends Controller
         $everde = 0;
         $eamarillo = 0;
         $erojo = 0;
-
+        $econteo = 0;
 
         foreach ($equipos as $equipo) 
         {
@@ -81,7 +81,9 @@ class DashboardController extends Controller
                         if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
                         } else 
                         {
+                            
                             if ($requerimiento->resolutor == $resolutor->id) {
+                                $econteo++;
                                 $hoy = new DateTime();
                                 $fechaCierre = new DateTime($requerimiento->fechaCierre);
                                 if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
@@ -111,10 +113,11 @@ class DashboardController extends Controller
 
             if ($everde != 0 or $eamarillo != 0 or $erojo != 0) {
 
-                array_push($equipos2, array('id'=>$equipo['id'], 'nombre'=>$equipo['nameTeam'], 'verde'=>$everde, 'amarillo'=>$eamarillo, 'rojo'=>$erojo));
+                array_push($equipos2, array('id'=>$equipo['id'], 'nombre'=>$equipo['nameTeam'], 'verde'=>$everde, 'amarillo'=>$eamarillo, 'rojo'=>$erojo, 'conteo' =>$econteo));
                 $everde = 0;
                 $eamarillo = 0;
                 $erojo = 0;
+                $econteo = 0;
                 
             }
         }

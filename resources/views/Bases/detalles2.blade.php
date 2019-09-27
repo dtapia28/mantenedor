@@ -96,25 +96,34 @@
 
     <!-- Sidebar -->
     <ul class="sidebar navbar-nav">
+      @if($user[0]->nombre == "supervisor" or $user[0]->nombre == "administrador")      
       <li class="nav-item active">
-        <a class="nav-link" href="{{url('dashboard')}}">
+        <a class="nav-link" href="{{url('/dashboard')}}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Tablero</span>
         </a>
       </li>
+      @endif
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-folder"></i>
           <span>Páginas</span>
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-          <a class="dropdown-item" href="{{url('/requerimientos')}}">Requerimientos</a>
-          <a class="dropdown-item" href="/priorities">Prioridades</a>
-          <a class="dropdown-item" href="/resolutors">Resolutores</a>
-          <a class="dropdown-item" href="/solicitantes">Solicitantes</a>
-          <a class="dropdown-item" href="/teams">Teams</a>
+          <a class="dropdown-item" href="{{ url('requerimientos') }}">Requerimientos</a>
+          <a class="dropdown-item" href="{{ url('priorities') }}">Prioridades</a>
+          <a class="dropdown-item" href="{{ url('resolutors') }}">Resolutores</a>
+          <a class="dropdown-item" href="{{ url('solicitantes') }}">Solicitantes</a>
+          <a class="dropdown-item" href="{{ url('teams') }}">Teams</a>
         </div>
       </li>
+      @if($user[0]->nombre == "supervisor" or $user[0]->nombre == "administrador")
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url('/extracciones') }}">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Exportar</span></a>
+      </li>
+      @endif      
     </ul>
 
     <div id="content-wrapper">

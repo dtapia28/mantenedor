@@ -10,7 +10,7 @@
 		<h1>Listado de Requerimientos</h1>	
 		</header>
 		<main>
-			@if($user[0]->nombre == "usuario" or $user[0]->nombre == "administrador")
+			@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
 			<div class="form-check form-check-inline">
 				<form method='HEAD' action="{{ url('requerimientos/nuevo') }}">
 					<button type="submit" value="Nuevo Requerimiento" class="btn btn-primary" name="">Nuevo</button>
@@ -19,11 +19,14 @@
 			@endif
 			<div class="form-check form-check-inline">
 				<form class="navbar-form navbar-left pull-right" method='GET' action="{{ url('requerimientos/') }}">
-					<select class="custom-select" name="state">
-						<option value="">Escoja una opción</option>
+					<select id="state" class="custom-select" name="state">
+						<option selected="true" disabled="disabled" value="">Escoja una opción</option>
 						<option value="0">Inactivo</option>
-						<option value="1">Activo</option>			      	
+						<option value="1">Activo</option>
+						<option value="2">% mayor o igual que</option>
+						<option value="3">% menor o igual que</option>			      	
 					</select>
+					<input class="form-control col-md-12" type="number" id="valor" style="display: none" name="valorN" placeholder="porcentaje avance">
 					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Filtrar</button>
 				</form>
 			</div>
@@ -53,10 +56,16 @@
 	                    <th>Resolutor</th>
 	                    <th>Status</th>
 	                    <th>Ejecutado (%)</th>
-	                    <th>Anidados</th>	                    
+	                    <th>Anidados</th>
+	                    @if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
 	                    <th></th>
+	                    @endif
+	                    @if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
 	                    <th></th>
+	                    @endif
+	                    @if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
 	                    <th></th>
+	                    @endif
 	                  </tr>
 	                </thead>
 	                <tbody>
@@ -109,26 +118,32 @@
 								 	echo "No";
 								 }
 								?>
-							</td>							
-							<td>
-								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/terminado") }}">
-									{{ csrf_field() }}
-									<input type="image" align="center" src="{{ asset('img/correcta-marca.png') }}" width="30" height="30">
-								</form>
-							</td>																
-							<td>									
-								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/editar") }}">
-									{{ csrf_field() }}
-									<input type="image" align="center" src="{{ asset('img/edit.png') }}" width="30" height="30">
-								</form>
 							</td>
-							<td>									
-								<form method='POST' action="/requerimientos/{{$requerimiento->id}}">
-									{{ csrf_field() }}
-									{{ method_field('DELETE') }}						
-									<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="30" height="30">
-								</form>
-							</td>											                  
+					@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")	
+					<td>
+					<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/terminado") }}">
+						{{ csrf_field() }}
+						<input type="image" align="center" src="{{ asset('img/correcta-marca.png') }}" width="30" height="30">
+					</form>
+					</td>
+					@endif
+					@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
+				<td>									
+					<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/editar") }}">
+						{{ csrf_field() }}
+						<input type="image" align="center" src="{{ asset('img/edit.png') }}" width="30" height="30">
+					</form>
+				</td>
+				@endif
+				@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
+				<td>									
+					<form method='POST' action="../public/requerimientos/{{$requerimiento->id}}">
+						{{ csrf_field() }}
+						{{ method_field('DELETE') }}						
+						<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="30" height="30">
+					</form>
+				</td>
+				@endif									                  
 	                    @empty
 	                    @endforelse
 	                </tbody>
@@ -137,4 +152,16 @@
 	          </div>
 	        </div>												
 		</main>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#state').on('change', function(){
+			var role = $(this).val();
+			if(role == 2 || role ==3){
+				document.getElementById("valor").style.display = "block";
+			} else {
+				document.getElementById("valor").style.display = "none";	
+			}
+		});
+	});
+</script>		
 	@endsection	

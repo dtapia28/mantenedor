@@ -105,7 +105,7 @@ class ResolutorController extends Controller
 
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
-        return view('Resolutors.edit', compact('empresas', 'teams', 'resolutor', 'user')); 
+        return view('Resolutors.edit', compact('teams', 'resolutor', 'user')); 
     }
 
     /**

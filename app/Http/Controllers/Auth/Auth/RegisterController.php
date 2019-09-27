@@ -77,7 +77,10 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        $user->roles()->attach(Role::where('nombre', 'usuario')->first());
+        $user->roles()->attach(Role::where([
+            ['nombre', 'solicitante'],
+            ['rutEmpresa', $data['rut']],
+        ])->first());
 
         } else {
 
@@ -92,8 +95,8 @@ class RegisterController extends Controller
         ]);
 
         Role::create([
-            'nombre' => "usuario",
-            'descripcion' => "Usuario",
+            'nombre' => "solicitante",
+            'descripcion' => "Solicitante",
             'rutEmpresa' => $data['rut'],            
         ]);
 
@@ -101,7 +104,19 @@ class RegisterController extends Controller
             'nombre' => "supervisor",
             'descripcion' => "Supervisor",
             'rutEmpresa' => $data['rut'],            
-        ]);                
+        ]);
+
+        Role::create([
+            'nombre' => "resolutor",
+            'descripcion' => "Resolutor",
+            'rutEmpresa' => $data['rut'],            
+        ]);
+
+        Role::create([
+            'nombre' => "usuario",
+            'descripcion' => "Usuario",
+            'rutEmpresa' => $data['rut'],            
+        ]);                                 
 
         $user = User::create([
             'name' => $data['name'],
@@ -110,7 +125,10 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        $user->roles()->attach(Role::where('nombre', 'administrador')->first());
+        $user->roles()->attach(Role::where([
+            ['nombre', 'administrador'],
+            ['rutEmpresa', $data['rut']],
+        ])->first());
 
         }
 

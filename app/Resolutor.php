@@ -11,7 +11,7 @@ class Resolutor extends Model
      *
      * @var array
      */
-    protected $fillable = ['nombreResolutor', 'rutEmpresa', 'idTeam'];
+    protected $fillable = ['nombreResolutor', 'rutEmpresa', 'idTeam', 'idUser', 'email'];
 
     public static function resolutor($id){
     	return Resolutor::where('idTeam','=',$id)->get();

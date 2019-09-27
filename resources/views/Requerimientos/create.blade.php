@@ -41,7 +41,9 @@
                 <label for='fechaCierre'>Fecha solicitada de cierre:</label>
                 <input class="form-control col-md-3" type="date" name="fechaCierre">
                 <br>
+                @if($user[0]->nombre != "solicitante")
                 <label for="idSolicitante">Solicitante:</label>
+                
                 <br>
                 <select class="form-control col-md-3" name="idSolicitante">
                     @foreach($solicitantes as $solicitante)
@@ -53,6 +55,7 @@
                 <a href="{{ url('/solicitantes/nuevo') }}?volver=1">Crear Solicitante</a>
                 <br>
                 <br>
+                @endif
                 <label for="team">Equipo Resolutores:</label>
                 <br>
                 <select class="form-control col-md-4" id="team" name="team">
@@ -97,7 +100,7 @@
         <a href="../requerimientos">Regresar al listado de requerimientos</a>
     </p>
 @endsection
-@section('script')
+@section('script2')
 <script type="text/javascript">
     $(document).ready(function(){
         $('#team').on('change', function(){

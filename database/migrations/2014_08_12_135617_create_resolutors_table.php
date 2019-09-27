@@ -21,6 +21,9 @@ class CreateResolutorsTable extends Migration
             $table->bigInteger('idTeam')->unsigned();
             $table->foreign('idTeam')->references('id')->on('teams');
             $table->boolean('lider')->default(0);
+            $table->bigInteger('idUser')->unsigned();
+            $table->foreign('idUser')->references('id')->on('users');
+            $table->string('email', 50);            
             $table->timestamps();
         });
     }

@@ -1,7 +1,6 @@
 @extends('Bases.detalles2')
 @section('titulo', "Detalle de Requerimientos")
 @section('requerimiento')
-	<br>
 	<h2>{{ $requerimiento->id2 }}</h2>
 	<br>
 	<p><strong>Solicitud: </strong>{{ $requerimiento->textoRequerimiento }}</p>
@@ -83,6 +82,7 @@
 
     <br>
 @endsection 
+@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
 @section('avances')
 	<header><h2>Avances:</h2></header>
 		<form method='HEAD' action="../requerimientos/{{$requerimiento->id}}/avances/nuevo">
@@ -124,6 +124,8 @@
 		</tbody>
 		</table>
 @endsection
+@endif
+@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
 @section('anidado')
 	<header><h2>Anidados:</h2></header>
 	<br>
@@ -211,6 +213,8 @@
 	<button style="text-align: right;" type="submit" value="Ingresar" class="btn btn-primary" name="">Anidar</button>
 </form>
 @endsection
+@endif
+@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
 @section('tareas')
 <br>
 <br>
@@ -299,6 +303,7 @@
 		@endforelse 
 		</tbody>	
 </table>
-@endsection 
+@endsection
+@endif
     @section('footerMain')
     @endsection

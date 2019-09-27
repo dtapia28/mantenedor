@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use Excel;
 use App\Role;
 use App\User;
+use App\Team;
 use App\Role_User;
+use App\Resolutor;
+use App\Solicitante;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -32,15 +35,46 @@ class UserController extends Controller
 
         return view('Users.index', compact('users', 'user', 'roles', 'relaciones'));
 
+    }
+
+    public function getTeams(){
+        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        foreach ($teams as $team) {
+            $teamArray[$team->id] = $team->nameTeam;
+        }
+
+        return response()->json($teamArray);        
     }	
     public function store(Request $request)
     {
 
         $data = request()->validate([
             'idRole' => 'required',
+            'idTeam' => 'nullable',
         ],
             [ 'idRole.required' => 'El campo nombre es obligatorio']);
 
+
+        if (isset($data['idTeam'])) {
+            $usuario = User::where('id', $request->idUsers)->first();
+            Resolutor::create([
+                'nombreResolutor' => $usuario->name,          
+                'rutEmpresa' => auth()->user()->rutEmpresa,
+                'idTeam' => $data['idTeam'],
+                'idUser' => $usuario->id,
+                'email' => $usuario->email,
+            ]);            
+        }
+
+        if ($data['idRole'] == 2) {
+           $usuario = User::where('id', $request->idUsers)->first(); 
+           Solicitante::create([
+                'nombreSolicitante' => $usuario->name,
+                'rutEmpresa' => auth()->user()->rutEmpresa,
+                'idUser' => $usuario->id,
+                'email' => $usuario->email,
+           ]); 
+        }
 
         $data2 = request()->validate([
         	'idUsers' => 'required',
@@ -77,7 +111,10 @@ class UserController extends Controller
             'password' => Hash::make('secreto'),
             ]);
 
-        $user->roles()->attach(Role::where('nombre', 'usuario')->first());            
+        $user->roles()->attach(Role::where([
+            ['nombre', 'usuario'],
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+        ])->first());           
 
             return redirect('users');            
     }

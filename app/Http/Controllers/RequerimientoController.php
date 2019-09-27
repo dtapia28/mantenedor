@@ -13,6 +13,8 @@ use App\Anidado;
 use App\User;
 use App\LogRequerimientos;
 use App\Tarea;
+use App\Notifications\NewReqResolutor;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
@@ -32,11 +34,12 @@ class RequerimientoController extends Controller
 
     public function index(Request $request)
     {
+
         $anidados = Anidado::all();
 
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
-
-        $request->user()->authorizeRoles(['usuario', 'administrador', 'supervisor', 'resolutor']);
+        
+        $request->user()->authorizeRoles(['solicitante', 'administrador', 'supervisor', 'resolutor']);
 
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
@@ -46,19 +49,160 @@ class RequerimientoController extends Controller
             $request->session()->put('state', "1");
         }
 
-        if ($request->session()->get('state') == 1)
+        if ($user[0]->nombre == "resolutor") {
+            $res = Resolutor::where('idUser', $user[0]->idUser)->first();
+
+            switch ($request->session()->get('state')) 
+            {
+
+                case '1':
+                $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                    ['estado', '=', $request->session()->get('state')],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                    ['resolutor', $res->id],
+                ])->get();
+                    break;
+                case '0':
+                $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                    ['estado', '=', 2],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                    ['resolutor', $res->id],
+                ])->get();
+                    break;  
+                case '2':
+                $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                    ['estado', '=', 1],
+                    ['porcentajeEjecutado', '>=', $request->valorN],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                    ['resolutor', $res->id],
+                ])->get();
+                    break;
+                case '3':
+                $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                    ['estado', '=', 1],
+                    ['porcentajeEjecutado', '<=', $request->valorN],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                    ['resolutor', $res->id],
+                ])->get();
+                    break;
+            }
+        }elseif ($user[0]->nombre == "solicitante") {
+            $sol = Solicitante::where('idUser', $user[0]->idUser)->first();
+            switch ($request->session()->get('state')) 
+            {
+
+                case '1':
+                $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                    ['estado', '=', $request->session()->get('state')],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                    ['idSolicitante', $sol->id],
+                ])->get();
+                    break;
+                case '0':
+                $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                    ['estado', '=', 2],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                    ['idSolicitante', $sol->id],
+                ])->get();
+                    break;  
+                case '2':
+                $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                    ['estado', '=', 1],
+                    ['porcentajeEjecutado', '>=', $request->valorN],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                ])->get();
+                    break;
+                case '3':
+                $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                    ['estado', '=', 1],
+                    ['porcentajeEjecutado', '<=', $request->valorN],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                ])->get();
+                    break;
+            }
+        } else {
+            switch ($request->session()->get('state')) 
+            {
+
+                case '1':
+                $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                    ['estado', '=', $request->session()->get('state')],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                ])->get();
+                    break;
+                case '0':
+                $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                    ['estado', '=', 2],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                ])->get();
+                    break;  
+                case '2':
+                $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                    ['estado', '=', 1],
+                    ['porcentajeEjecutado', '>=', $request->valorN],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                ])->get();
+                    break;
+                case '3':
+                $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                    ['estado', '=', 1],
+                    ['porcentajeEjecutado', '<=', $request->valorN],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                ])->get();
+                    break;
+            }            
+        }          
+
+/*        if ($request->session()->get('state') == 1)
         {
-            $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-                ['estado', '=', $request->session()->get('state')],
-                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-            ])->get();
+        	switch ($user[0]->nombre) {
+        		case 'solicitante':
+		            $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+		                ['estado', '=', $request->session()->get('state')],
+		                ['idSolicitante', $user[0]->idUser],
+		                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+		            ])->get();        			
+        			break;
+        		case 'resolutor':		
+		            $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+		                ['estado', '=', $request->session()->get('state')],
+		                ['resolutor', $user[0]->idUser],
+		                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+		            ])->get(); 
+		            break;        		
+        		default:
+		            $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+		                ['estado', '=', $request->session()->get('state')],
+		                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+		            ])->get(); 
+        			break;
+        	}
+
         } else
         {
-            $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-                ['estado', 2],
-                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-            ])->get();            
-        }
+        	switch ($user[0]->nombre) {
+        		case 'solicitante':
+		            $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+		                ['estado', '=', 2],
+		                ['idSolicitante', $user[0]->idUser],
+		                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+		            ])->get();        			
+        			break;
+        		case 'resolutor':		
+		            $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+		                ['estado', '=', 2],
+		                ['resolutor', $user[0]->idUser],
+		                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+		            ])->get(); 
+		            break;        		
+        		default:
+		            $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+		                ['estado', '=', 2],
+		                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+		            ])->get(); 
+        			break;
+        	}           
+        }*/
         $valor = 1;
         if ($request->session()->get('state') == 1) {
             $valor = 1;
@@ -92,7 +236,7 @@ class RequerimientoController extends Controller
     {
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
 
-        auth()->user()->authorizeRoles(['administrador', 'supervisor', 'usuario']);    
+        auth()->user()->authorizeRoles(['administrador', 'solicitante']);    
 
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->orderBy('nombreResolutor')->get();
         $priorities = Priority::where('rutEmpresa', auth()->user()->rutEmpresa)->orderBy('namePriority')->get();
@@ -111,24 +255,31 @@ class RequerimientoController extends Controller
      */
     public function store(Request $request)
     {
-        $data = request()->validate([
-            'textoRequerimiento' => 'required',
-            'fechaEmail' => 'required',
-            'fechaSolicitud' => 'required',
-            'fechaCierre' => 'nullable',
-            'fechaRealCierre' => 'nullable',
-            'numeroCambios' => 'nullable',
-            'porcentajeEjecutado' => 'nullable',
-            'cierre' => 'nullable',
-            'idSolicitante' => 'required',
-            'idPrioridad' => 'required',
-            'textAvance' => 'nullable',
-            'idResolutor' => 'required'],
-            ['nombreResolutor.required' => 'El campo nombre es obligatorio'],
-            ['fechaEmail.required' => 'La fecha de email es obligatoria'],
-            ['fechaSolicitud' => 'La fecha de solicitud es obligatoria'],
-            ['fechaCierre' => 'La fecha de cierre es obligatoria']);
+        auth()->user()->authorizeRoles(['administrador', 'solicitante']);
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        $sol = Solicitante::where('idUser', $user[0]->idUser)->first();
 
+            $data = request()->validate([
+                'textoRequerimiento' => 'required',
+                'fechaEmail' => 'required',
+                'fechaSolicitud' => 'required',
+                'fechaCierre' => 'nullable',
+                'fechaRealCierre' => 'nullable',
+                'numeroCambios' => 'nullable',
+                'porcentajeEjecutado' => 'nullable',
+                'cierre' => 'nullable',
+                'idPrioridad' => 'required',
+                'textAvance' => 'nullable',
+                'idSolicitante' => 'nullable',
+                'idResolutor' => 'required'],
+                ['nombreResolutor.required' => 'El campo nombre es obligatorio'],
+                ['fechaEmail.required' => 'La fecha de email es obligatoria'],
+                ['fechaSolicitud' => 'La fecha de solicitud es obligatoria'],
+                ['fechaCierre' => 'La fecha de cierre es obligatoria']);
+
+        if ($user[0]->nombre == 'solicitante') {
+            $data['idSolicitante'] = $sol->id;
+        }
 
         if ($data['fechaCierre'] == null) {
             $variable = new DateTime($data['fechaSolicitud']);
@@ -193,6 +344,9 @@ class RequerimientoController extends Controller
                     $conteoA = $conteo;
                 }
 
+                $var = "RQ-".$team[0]->id2."-".$conteoA;
+              
+
             Requerimiento::create([
                 'textoRequerimiento' => $data['textoRequerimiento'],            
                 'fechaEmail' => $data['fechaEmail'],
@@ -204,6 +358,19 @@ class RequerimientoController extends Controller
                 'rutEmpresa' => auth()->user()->rutEmpresa,
                 'id2' => "RQ-".$team[0]->id2."-".$conteoA,
             ]);
+
+            $requerimiento = Requerimiento::where('id2', $var)->first();
+            $resolutor = Resolutor::where('id', $requerimiento->resolutor)->first();
+            $obj = new \stdClass();
+            $obj->idReq = $requerimiento->id2;
+            $obj->id = $requerimiento->id;
+            $obj->sol = $requerimiento->textoRequerimiento;
+            $obj->nombre = $resolutor->nombreResolutor;
+
+            $recep = $resolutor->email;
+        
+            Notification::route('mail','dtapia1025@gmail.com')->notify(new NewReqResolutor($obj));         
+
 
             $conteo = 1;
 
@@ -232,7 +399,9 @@ class RequerimientoController extends Controller
                     'fechaAvance' => Carbon::now(),
                     'idRequerimiento' => $guardado->id
                 ]);
-            }  
+            }
+
+
 
             return redirect('requerimientos');
 
@@ -240,7 +409,10 @@ class RequerimientoController extends Controller
         {
             return back()->with('msj', 'La fecha de cierre del requerimiento debe ser mayor a la fecha de solicitud');
         }
-           
+
+        $requerimiento = Requerimiento::where('id2', '"RQ-".$team[0]->id2."-".$conteoA')->get();
+
+        Mail::to($receivers)->send(new NewReqMail());   
     }
 
     /**
@@ -252,6 +424,8 @@ class RequerimientoController extends Controller
     public function show(Requerimiento $requerimiento)
     {
 
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        auth()->user()->authorizeRoles(['administrador', 'solicitante', 'resolutor', 'supervisor']);          
         $tareas = Tarea::where('idRequerimiento', $requerimiento->id)->get();
         $avances = Avance::where('idRequerimiento', $requerimiento->id)->latest('created_at')->paginate(5);
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
@@ -302,7 +476,7 @@ class RequerimientoController extends Controller
                     $hastaCierre++;
                     $variable->modify("+1 days");                       
                 }
-            }    
+            }  
 
 
             $hastaHoy = -1;
@@ -421,7 +595,7 @@ class RequerimientoController extends Controller
         }        
 
 
-        return view('Requerimientos.show', compact('requerimiento', 'resolutors', 'priorities', 'avances', 'teams', 'hastaCierre', 'hastaHoy', 'restantes', 'hoy', 'fechaCierre', 'excedidos', 'requerimientosAnidados', 'tareas', 'requerimientos'));        
+        return view('Requerimientos.show', compact('user','requerimiento', 'resolutors', 'priorities', 'avances', 'teams', 'hastaCierre', 'hastaHoy', 'restantes', 'hoy', 'fechaCierre', 'excedidos', 'requerimientosAnidados', 'tareas', 'requerimientos'));        
     }
 
     /**

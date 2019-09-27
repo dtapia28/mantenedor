@@ -15,7 +15,7 @@
                 <div id="tootlbar_colors">
                     <button class="color" style="background-color:#1abac8;" onclick="changeDisplay1()">1</button>
                     <button class="color" style="background-color:#ff8a00;" onclick="changeDisplay2()"> </button>
-                    <button class="color" style="background-color:#b4de50;" onclick="mytheme(2)"> </button>
+                    <button class="color" style="background-color:#b4de50;" onclick="changeDisplay3()"> </button>
                     <button class="color" style="background-color:#e54e53;" onclick="mytheme(3)"> </button>
                     <button class="color" style="background-color:#1abc9c;" onclick="mytheme(4)"> </button>
                     <button class="color" style="background-color:#159eee;" onclick="mytheme(5)"> </button>
@@ -85,26 +85,55 @@ foreach ($equipos2 as $valor) {
 }
 ?>
 </script>
+<script type="text/javascript">
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(equipos);
+function equipos(){
+  var data = new google.visualization.arrayToDataTable([
+    ['Segmento','Cantidad'],
+<?php
+  foreach ($equipos2 as $equipo) {
+    echo "['".$equipo['nombre']."',".$equipo['conteo']."],";
+  }
+
+?>
+  ]);
+    var options = {
+      title: 'Requerimientos por area',
+      pieHole:0.2
+    };
+    var equi = new google.visualization.PieChart(document.getElementById('reqEquipos'));
+    equi.draw(data, options);     
+}
+</script>
 
 
     <!--Div that will hold the pie chart-->
     <div id="donutchart3" style="width: 900px; height: 500px;"></div>     
-    <div id="graficosTeam">
+    <div id="graficosTeam"> 
     <?php
     foreach ($equipos2 as $valor) {
       echo "<div id='".$valor['id']."_chart_div' style='width: 300px; height: 300px;'></div>\n";
     }  
     ?>
     </div>
+    <div id="reqEquipos" style="width: 900px; height: 500px;"></div>
 <script>
 function changeDisplay1() {
     document.getElementById("donutchart3").style.display = "none";
-    document.getElementById("graficosTeam").style.display = "block";    
+    document.getElementById("graficosTeam").style.display = "block";
+    document.getElementById('reqEquipos').style.display = "none";   
 }
 
 function changeDisplay2() {
     document.getElementById("donutchart3").style.display = "block";
-    document.getElementById("graficosTeam").style.display = "none";    
+    document.getElementById("graficosTeam").style.display = "none";
+    document.getElementById('reqEquipos').style.display = "none";  
+}
+function changeDisplay3() {
+    document.getElementById("donutchart3").style.display = "none";
+    document.getElementById("graficosTeam").style.display = "none";
+    document.getElementById('reqEquipos').style.display = "block";  
 }
 </script>      
 @endsection

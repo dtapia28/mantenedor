@@ -9,9 +9,11 @@
 	<h1>Listado de Prioridades</h1>
 	<p>
 	</p>
+	@if($user[0]->nombre == "administrador")
 	<form method='HEAD' action="{{ url('priorities/nueva') }}">
 	<button type="submit" value="Nueva Prioridad" class="btn btn-primary" name="">Nueva</button>
 	</form>
+	@endif
 	<br>
         <div class="card mb-3">
           <div class="card-header">
@@ -24,18 +26,14 @@
                   <tr>
                     <th>Id</th>
                     <th>Nombre</th>
+                    @if($user[0]->nombre == "administrador")
                     <th></th>
+                    @endif
+                    @if($user[0]->nombre == "administrador")
                     <th></th>
+                    @endif
                   </tr>
                 </thead>
-                <tfoot>
-                  <tr>
-                    <th>Id</th>
-                    <th>Nombre</th>
-                    <th></th>
-                    <th></th>                    
-                  </tr>
-                </tfoot>
                 <tbody>
 					@forelse ($priorities as $priority)
 						<tr>
@@ -46,20 +44,24 @@
 						</th>
 						<td style="text-align:left;">	
 							{{ $priority->namePriority }}
-						</td>																				
+						</td>
+						@if($user[0]->nombre == "administrador")			
 						<td>									
 							<form method='HEAD' action="../public/priorities/{{$priority->id}}/editar">
 								{{ csrf_field() }}
 								<input type="image" align="center" src="{{ asset('img/edit.png') }}" width="30" height="30">
 							</form>
 						</td>
+						@endif
+						@if($user[0]->nombre == "administrador")
 						<td>									
 							<form method='POST' action="../public/priorities/{{$priority->id}}">
 								{{ csrf_field() }}
 								{{ method_field('DELETE') }}						
 								<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="30" height="30">
 							</form>
-						</td>														                  
+						</td>
+						@endif					                  
 					@empty
 					@endforelse
 					</tbody>

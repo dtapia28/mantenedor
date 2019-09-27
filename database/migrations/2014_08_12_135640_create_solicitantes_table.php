@@ -17,7 +17,10 @@ class CreateSolicitantesTable extends Migration
             $table->bigIncrements('id');
             $table->string('nombreSolicitante', 50)->unique();
             $table->string('rutEmpresa', 10);
-            $table->foreign('rutEmpresa')->references('rut')->on('empresas');            
+            $table->foreign('rutEmpresa')->references('rut')->on('empresas');
+            $table->bigInteger('idUser')->unsigned();
+            $table->foreign('idUser')->references('id')->on('users');
+            $table->string('email', 50);                        
             $table->timestamps();
         });
     }

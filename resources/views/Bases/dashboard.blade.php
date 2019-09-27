@@ -13,8 +13,6 @@
 
   <title>@yield('titulo')- EasyTask</title>
 
-    @yield('script')
-
   <!-- Custom fonts for this template-->
   <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
 
@@ -25,7 +23,7 @@
   <link href="{{ asset('css/sb-admin.css')}}  " rel="stylesheet">
 
   <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
-  <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
   
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -60,7 +58,7 @@
                      <a class="nav-link" href="{{ url('/solicitantes') }}">Solicitantes</a>                 
                 </li>
                 <li>
-                     <a class="nav-link" href="{{ url('/teams') }}">Equipos</a>                 
+                     <a class="nav-link" href="{{ url('/teams') }}">Teams</a>                 
                 </li>
                 @if($user[0]->nombre == "administrador")
                 <li>
@@ -110,12 +108,14 @@
 
     <!-- Sidebar -->
     <ul class="sidebar navbar-nav">
+      @if($user[0]->nombre == "supervisor" or $user[0]->nombre == "administrador")      
       <li class="nav-item active">
         <a class="nav-link" href="{{url('/dashboard')}}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Tablero</span>
         </a>
       </li>
+      @endif
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-fw fa-folder"></i>
@@ -126,12 +126,12 @@
           <a class="dropdown-item" href="../public/priorities">Prioridades</a>
           <a class="dropdown-item" href="../public/resolutors">Resolutores</a>
           <a class="dropdown-item" href="../public/solicitantes">Solicitantes</a>
-          <a class="dropdown-item" href="../public/teams">Equipos</a>
+          <a class="dropdown-item" href="../public/teams">Teams</a>
         </div>
       </li>
       @if($user[0]->nombre == "supervisor" or $user[0]->nombre == "administrador")
       <li class="nav-item">
-        <a class="nav-link" href="/extracciones">
+        <a class="nav-link" href="{{ url('/extracciones') }}">
           <i class="fas fa-fw fa-table"></i>
           <span>Exportar</span></a>
       </li>
@@ -206,7 +206,8 @@
   <script src="{{ asset('js/datatables-demo.js') }}"></script>
   <script src="{{ asset('js/chart-area-demo.js') }}"></script>
 
-
+  @yield('script')
+  @yield('script2')
 
 </body>
 

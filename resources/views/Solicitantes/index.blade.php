@@ -9,9 +9,11 @@
 		<h1>Listado de Solicitantes</h1>
 		<p>
 		</p>
+		@if($user[0]->nombre == "administrador")
 		<form method='HEAD' action="{{ url('solicitantes/nuevo') }}">
 		<button type="submit" value="Nuevo Solicitante" class="btn btn-primary" name="">Nuevo</button>
 		</form>
+		@endif
 		<br>
 			<div class="card mb-3">
 		    	<div class="card-header">
@@ -22,10 +24,14 @@
 		              <table class="table table-bordered table-striped table-hover" id="dataTable" width="100%"  cellspacing="0">
 		                <thead>
 		                	<tr>
-							    <th scope="col">ID</th>
-							    <th scope="col">Nombre</th>
-							    <th scope="col"></th>
-							    <th scope="col"></th>
+							    <th scope="col"><strong>ID</strong></th>
+							    <th scope="col"><strong>Nombre</strong></th>
+							    @if($user[0]->nombre == "administrador")
+							    <th scope="col"><strong></strong></th>
+							    @endif
+							    @if($user[0]->nombre == "administrador")
+							    <th scope="col"><strong></strong></th>
+							    @endif
 							</tr>
 						</thead>
 			<tbody>
@@ -39,19 +45,23 @@
 					<th scope="row">
 							{{ $solicitante->nombreSolicitante }}
 					</th>
+					@if($user[0]->nombre == "administrador")
 					<th scope="row">									
 						<form method='HEAD' action="../public/solicitantes/{{$solicitante->id}}/editar">
 							{{ csrf_field() }}						
 							<input style="text-align: center;" type="image" align="center" src="{{ asset('img/edit.png') }}" width="30" height="30">
 						</form>
 					</th>
+					@endif
+					@if($user[0]->nombre == "administrador")
 					<th scope="row">
 						<form method='post' action="../public/solicitantes/{{$solicitante->id}}">
 							{{ csrf_field() }}
 							{{ method_field('DELETE') }}						
 							<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="30" height="30">
 						</form>
-					</th>								
+					</th>
+					@endif
 				@empty	
 				@endforelse
 					</tr>
