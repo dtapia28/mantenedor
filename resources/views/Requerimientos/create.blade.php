@@ -52,7 +52,7 @@
                         </optgroup>
                     @endforeach
                 </select>
-                <a href="{{ url('/solicitantes/nuevo') }}?volver=1">Crear Solicitante</a>
+                <a href="{{ url('/users/nuevo') }}?volver=1">Crear Solicitante</a>
                 <br>
                 <br>
                 @endif
@@ -71,7 +71,7 @@
                 <br>                 
                 <select class='form-control col-md-3' id="resolutor" name='idResolutor'>
                 </select>
-                <a href='{{ url('/resolutors/nuevo') }}?volver=1'>Crear Resolutor</a>                    
+                <a href='{{ url('/users/nuevo') }}?volver=1'>Crear Resolutor</a>                    
                 <br>
                 <label for="idPrioridad">Prioridad:</label>        
                 <br>                 

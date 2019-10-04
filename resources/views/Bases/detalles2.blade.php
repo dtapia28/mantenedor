@@ -35,24 +35,36 @@
       <i class="fas fa-bars"></i>
     </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav bd-navbar-nav flex-row">
-                @can('ver')
-                @endcan
+            <ul class="navbar-nav bd-navbar-nav flex-row" style="color:#f5f5f5;">
+
                 <li>
                      <a class="nav-link" href="{{ url('/requerimientos') }}">Requerimientos</a>                 
                 </li>
+                @if($user[0]->nombre == "administrador")                
                 <li>
                      <a class="nav-link" href="{{ url('/priorities') }}">Prioridades</a>                  
                 </li>
+                @endif
+                @if($user[0]->nombre == "administrador")
                 <li>
                      <a class="nav-link" href="{{ url('/resolutors') }}">Resolutores</a>                
-                </li>                                               
+                </li>
+                @endif                                              
+                @if($user[0]->nombre == "administrador")
                 <li>
                      <a class="nav-link" href="{{ url('/solicitantes') }}">Solicitantes</a>                 
                 </li>
+                @endif
+                @if($user[0]->nombre == "administrador")
                 <li>
-                     <a class="nav-link" href="{{ url('/teams') }}">Teams</a>                 
+                     <a class="nav-link" href="{{ url('/teams') }}">Equipos</a>                 
                 </li>
+                @endif
+                @if($user[0]->nombre == "administrador")
+                <li>
+                     <a class="nav-link" href="{{ url('/users') }}">Usuarios</a>                 
+                </li>
+                @endif                                                                   
             </ul>
         </div>    
 
@@ -114,7 +126,7 @@
           <a class="dropdown-item" href="{{ url('priorities') }}">Prioridades</a>
           <a class="dropdown-item" href="{{ url('resolutors') }}">Resolutores</a>
           <a class="dropdown-item" href="{{ url('solicitantes') }}">Solicitantes</a>
-          <a class="dropdown-item" href="{{ url('teams') }}">Teams</a>
+          <a class="dropdown-item" href="{{ url('teams') }}">Equipos</a>
         </div>
       </li>
       @if($user[0]->nombre == "supervisor" or $user[0]->nombre == "administrador")

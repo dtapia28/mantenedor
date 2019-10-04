@@ -14,11 +14,11 @@
             <div class="panel-admin-box">
                 <div id="tootlbar_colors">
                     <button class="color" style="background-color:#1abac8;" onclick="changeDisplay1()">1</button>
-                    <button class="color" style="background-color:#ff8a00;" onclick="changeDisplay2()"> </button>
-                    <button class="color" style="background-color:#b4de50;" onclick="changeDisplay3()"> </button>
-                    <button class="color" style="background-color:#e54e53;" onclick="changeDisplay4()"> </button>
-                    <button class="color" style="background-color:#1abc9c;" onclick="mytheme(4)"> </button>
-                    <button class="color" style="background-color:#159eee;" onclick="mytheme(5)"> </button>
+                    <button class="color" style="background-color:#ff8a00;" onclick="changeDisplay2()">2</button>
+                    <button class="color" style="background-color:#b4de50;" onclick="changeDisplay3()">3</button>
+                    <button class="color" style="background-color:#e54e53;" onclick="changeDisplay4()">4</button>
+                    <button class="color" style="background-color:#1abc9c;" onclick="mytheme(4)">5</button>
+                    <button class="color" style="background-color:#159eee;" onclick="mytheme(5)">6</button>
                 </div>
             </div>
 
@@ -40,7 +40,7 @@
           ['Vencido',  {{ $rojo }}]
         ]);
         var options = {
-          title: 'Todos los teams',
+          title: 'Todos los equipos',
           pieHole: 0.3,
           colors: ['#35A41D', '#CBA20B', '#BB3125'],
         };
@@ -99,7 +99,7 @@ function equipos(){
 ?>
   ]);
     var options = {
-      title: 'Requerimientos por area',
+      title: 'Requerimientos por equipo',
       pieHole:0.2
     };
     var equi = new google.visualization.PieChart(document.getElementById('reqEquipos'));
@@ -120,14 +120,14 @@ function equiposBarra(){
 ?>
   ]);
     var options = {
-      title: 'Requerimientos por area',
+      title: 'Requerimientos por equipo',
       width: 700,
       legend: {position: 'none'},
-      chart: {title: 'Cantidad de requerimientos por area'},
+      chart: {title: 'Cantidad de requerimientos por equipo'},
       bars: 'vertical',        
       axes: {
         x: {
-          0: {side:'bottom', label: 'Cantidad'}
+          0: {side:'bottom', label: 'Equipos'}
         }
       },
       bar: {groupWidth: "90%"}
@@ -139,27 +139,29 @@ function equiposBarra(){
 
 
     <!--Div that will hold the pie chart-->
-    <div id="donutchart3" style="width: 900px; height: 500px;"></div>     
-    <div id="graficosTeam"> 
-    <?php
-    foreach ($equipos2 as $valor) {
-      echo "<div id='".$valor['id']."_chart_div' style='width: 300px; height: 300px;'></div>\n";
-    }  
-    ?>
+    <div>
+      <div id="donutchart3" style="width: 900px; height: 500px;"></div>     
+      <div id="graficosTeam" style="display: none;"> 
+      <?php
+      foreach ($equipos2 as $valor) {
+        echo "<div id='".$valor['id']."_chart_div' style='width: 300px; height: 300px;'></div>\n";
+      }  
+      ?>
+      </div>
+      <div id="reqEquipos" style="width: 900px; height: 500px;"></div>
+      <div id="barra" style="padding: 50px; border: 30px; width: 1500px; height: 700px;"></div>
     </div>
-    <div id="reqEquipos" style="width: 900px; height: 500px;"></div>
-    <div id="barra" style="width: 900px; height: 500px;"></div>
 <script>
 function changeDisplay1() {
-    document.getElementById("donutchart3").style.display = "none";
-    document.getElementById("graficosTeam").style.display = "block";
+    document.getElementById("donutchart3").style.display = "block";
+    document.getElementById("graficosTeam").style.display = "none";
     document.getElementById('reqEquipos').style.display = "none";
     document.getElementById('barra').style.display = "none";       
 }
 
 function changeDisplay2() {
-    document.getElementById("donutchart3").style.display = "block";
-    document.getElementById("graficosTeam").style.display = "none";
+    document.getElementById("donutchart3").style.display = "none";
+    document.getElementById("graficosTeam").style.display = "block";
     document.getElementById('reqEquipos').style.display = "none";
     document.getElementById('barra').style.display = "none"; 
 }

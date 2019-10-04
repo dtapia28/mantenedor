@@ -64,23 +64,25 @@ class ResolutorController extends Controller
             'idTeam' => $data['idTeam'],
         ]);
 
-        if (Input::get('lider')) {
+        if (Input::get('lider')) 
+        {
             $resolutor = DB::table('resolutors')->select('id')->where('nombreResolutor', $data['nombreResolutor'])->first();
             $data = [
                 'lider' => 1];
-            DB::table('resolutors')->where('id', $resolutor->id)->update($data);
+                DB::table('resolutors')->where('id', $resolutor->id)->update($data);
         }
-        $resolutor = null;
-        if (isset($_GET['volver'])) {
-        if ($data['volver'] == 1) {
-            return redirect()->action('RequerimientoController@create');
+            $resolutor = null;
+        if (isset($_GET['volver'])) 
+        {
+            if ($data['volver'] == 1) {
+                    return redirect()->action('RequerimientoController@create');
 
-        } else {          
-        return redirect('resolutors');
+            } else {          
+                return redirect('resolutors');
+            }
+        } else {
+            return redirect('resolutors');        
         }
-    } else {
-        return redirect('resolutors');        
-    }
     }
 
     /**

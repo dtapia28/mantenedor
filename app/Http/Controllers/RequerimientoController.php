@@ -39,7 +39,7 @@ class RequerimientoController extends Controller
 
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
         
-        $request->user()->authorizeRoles(['solicitante', 'administrador', 'supervisor', 'resolutor']);
+        $request->user()->authorizeRoles(['solicitante', 'administrador', 'supervisor', 'resolutor', 'usuario']);
 
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
@@ -153,56 +153,6 @@ class RequerimientoController extends Controller
             }            
         }          
 
-/*        if ($request->session()->get('state') == 1)
-        {
-        	switch ($user[0]->nombre) {
-        		case 'solicitante':
-		            $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-		                ['estado', '=', $request->session()->get('state')],
-		                ['idSolicitante', $user[0]->idUser],
-		                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-		            ])->get();        			
-        			break;
-        		case 'resolutor':		
-		            $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-		                ['estado', '=', $request->session()->get('state')],
-		                ['resolutor', $user[0]->idUser],
-		                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-		            ])->get(); 
-		            break;        		
-        		default:
-		            $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-		                ['estado', '=', $request->session()->get('state')],
-		                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-		            ])->get(); 
-        			break;
-        	}
-
-        } else
-        {
-        	switch ($user[0]->nombre) {
-        		case 'solicitante':
-		            $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-		                ['estado', '=', 2],
-		                ['idSolicitante', $user[0]->idUser],
-		                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-		            ])->get();        			
-        			break;
-        		case 'resolutor':		
-		            $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-		                ['estado', '=', 2],
-		                ['resolutor', $user[0]->idUser],
-		                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-		            ])->get(); 
-		            break;        		
-        		default:
-		            $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-		                ['estado', '=', 2],
-		                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-		            ])->get(); 
-        			break;
-        	}           
-        }*/
         $valor = 1;
         if ($request->session()->get('state') == 1) {
             $valor = 1;
@@ -261,6 +211,7 @@ class RequerimientoController extends Controller
 
             $data = request()->validate([
                 'textoRequerimiento' => 'required',
+                'comentario' => 'nullable',
                 'fechaEmail' => 'required',
                 'fechaSolicitud' => 'required',
                 'fechaCierre' => 'nullable',
@@ -348,7 +299,8 @@ class RequerimientoController extends Controller
               
 
             Requerimiento::create([
-                'textoRequerimiento' => $data['textoRequerimiento'],            
+                'textoRequerimiento' => $data['textoRequerimiento'],
+                'comentario' => $data['comentario'],            
                 'fechaEmail' => $data['fechaEmail'],
                 'fechaSolicitud' => $data['fechaSolicitud'],
                 'fechaCierre' => $data['fechaCierre'],
@@ -369,7 +321,7 @@ class RequerimientoController extends Controller
 
             $recep = $resolutor->email;
         
-            Notification::route('mail','dtapia1025@gmail.com')->notify(new NewReqResolutor($obj));         
+            Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));         
 
 
             $conteo = 1;
@@ -657,7 +609,7 @@ class RequerimientoController extends Controller
             'textoRequerimiento' => 'nullable',
             'idSolicitante' => 'nullable',
             'idPrioridad' => 'nullable',
-            'idResolutor' => 'nullable',
+            'resolutor' => 'nullable',
             'fechaCierre' => 'nullable',
             'textAvance' => 'nullable',            
             'fechaSolicitud' => 'nullable',
@@ -697,7 +649,7 @@ class RequerimientoController extends Controller
             ]);             
         }
 
-        if ($data['idResolutor'] != $requerimiento->resolutor) {
+        if ($data['resolutor'] != $requerimiento->resolutor) {
             LogRequerimientos::create([
                 'idRequerimiento' => $requerimiento->id,
                 'idUsuario' => $user[0]->id,

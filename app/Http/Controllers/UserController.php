@@ -37,6 +37,38 @@ class UserController extends Controller
 
     }
 
+    public function cambiarPassword()
+    {
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
+    
+        return view('Users.cambiar', compact('user'));
+    }
+
+    public function change(Request $request)
+    {
+        $user = User::where('id', $request->usuario)->first();
+
+        $oldPassword = Hash::make($request->oldPassword);
+
+        if (Hash::check($request->oldPassword, $user->password)) {
+            if ($request->newPassword == $request->newPassword2) {
+                if ($request->oldPassword != $request->newPassword) {
+                    $password =Hash::make($request->newPassword);
+                    $data = ([
+                        'password' => $password]);
+
+                    $user->update($data);
+
+                    return back()->with('msj', 'Contraseña modificada');                    
+                }
+            } else {
+                return back()->with('msj2', 'La confirmación y la nueva contraseña no son iguales');
+            }
+        } else {
+            return back()->with('msj3', 'Contraseña erronea');
+        }    
+    }
+
     public function getTeams(){
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         foreach ($teams as $team) {
@@ -66,7 +98,7 @@ class UserController extends Controller
             ]);            
         }
 
-        if ($data['idRole'] == 2) {
+        if ($data['idRole'] == 24) {
            $usuario = User::where('id', $request->idUsers)->first(); 
            Solicitante::create([
                 'nombreSolicitante' => $usuario->name,
@@ -100,12 +132,13 @@ class UserController extends Controller
 
         $data = request()->validate([
             'name' => 'required',
+            'apellido' => 'required',
             'email' => 'required'],
             ['name.required' => 'El nombre es obligatorio'],
             ['email.required' => 'El mail es obligatorio']);        
 
             $user = User::create([
-            'name' => $data['name'],
+            'name' => $data['apellido']." ".$data['name'],
             'rutEmpresa' => auth()->user()->rutEmpresa,
             'email' => $data['email'],
             'password' => Hash::make('secreto'),
@@ -117,5 +150,26 @@ class UserController extends Controller
         ])->first());           
 
             return redirect('users');            
+    }
+
+    public function cambiar (Request $request)
+    {
+        $data = request()->validate([
+            'cambiar' => 'required',
+            'usuario' => 'required'],
+            ['cambiar.required' => 'La contraseña es necesaria']);
+
+        $usuario = User::where('id', $data['usuario'])->first();
+
+        $password = Hash::make($data['cambiar']);
+
+        $data2 = ([
+            'password' => $password]);
+
+        $usuario->update($data2);
+
+        return back()->with('msj', 'Contraseña de usuario '.$usuario->name.' modificada');
+
+        return redirect('users');
     }
 }

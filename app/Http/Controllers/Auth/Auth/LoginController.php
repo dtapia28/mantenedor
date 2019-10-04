@@ -87,6 +87,8 @@ class LoginController extends Controller
                                 $obj->id = $requerimiento->id;
                                 $obj->dias = $hastaCierre;
                                 $obj->nombre = $resolutor->nombreResolutor;
+                                $obj->fecha = $requerimiento->fechaRealCierre;
+                                $obj->porcentaje = $requerimiento->porcentajeEjecutado;
 
                                 $recep = $resolutor->email;                        
 
@@ -121,6 +123,8 @@ class LoginController extends Controller
                                     $obj->id = $requerimiento->id;
                                     $obj->dias = $hastaCierre;
                                     $obj->nombre = $resolutor->nombreResolutor;
+                                    $obj->fecha = $requerimiento->fechaRealCierre;
+                                    $obj->porcentaje = $requerimiento->porcentajeEjecutado;                                    
 
                                     $recep = $resolutor->email;                        
 

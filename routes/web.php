@@ -153,7 +153,8 @@ Route::get('/requerimientos/{requerimiento}/avances/nuevo', 'AvanceController@cr
 	->middleware('auth');
 
 Route::get('/requerimientos/script', 'RequerimientoController@getResolutors');
-Route::get('/users/script', 'UserController@getTeams');
+Route::get('/users/script', 'UserController@getTeams');	
+
 
 
 Route::get('/requerimientos/{requerimiento}/avances/{avance}/editar', 'AvanceController@edit')->name('Avances.edit');	
@@ -239,7 +240,16 @@ Route::post('/users/guardar', 'UserController@guardar')
 	->middleware('auth');	
 
 Route::post('/users/modificar', 'UserController@store')
-	->middleware('auth');		
+	->middleware('auth');
+
+Route::post('/users/cambiar', 'UserController@cambiar')
+	->middleware('auth');
+
+Route::get('/user/changepassword', 'UserController@cambiarPassword')
+	->middleware('auth');
+
+Route::post('/user/change', 'UserController@change')
+	->middleware('auth');					
 
 
 

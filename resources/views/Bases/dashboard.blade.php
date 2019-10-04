@@ -47,19 +47,26 @@
                 <li>
                      <a class="nav-link" href="{{ url('/requerimientos') }}">Requerimientos</a>                 
                 </li>
+                @if($user[0]->nombre == "administrador")                
                 <li>
                      <a class="nav-link" href="{{ url('/priorities') }}">Prioridades</a>                  
                 </li>
+                @endif
+                @if($user[0]->nombre == "administrador")
                 <li>
                      <a class="nav-link" href="{{ url('/resolutors') }}">Resolutores</a>                
-                </li>                                               
-
+                </li>
+                @endif                                              
+                @if($user[0]->nombre == "administrador")
                 <li>
                      <a class="nav-link" href="{{ url('/solicitantes') }}">Solicitantes</a>                 
                 </li>
+                @endif
+                @if($user[0]->nombre == "administrador")
                 <li>
-                     <a class="nav-link" href="{{ url('/teams') }}">Teams</a>                 
+                     <a class="nav-link" href="{{ url('/teams') }}">Equipos</a>                 
                 </li>
+                @endif
                 @if($user[0]->nombre == "administrador")
                 <li>
                      <a class="nav-link" href="{{ url('/users') }}">Usuarios</a>                 
@@ -93,6 +100,7 @@
           document.getElementById('logout-form').submit();">
           {{ __('Logout') }}
         </a>
+        <a class="dropdown-item" href="{{ url('user/changepassword') }}">Cambiar contraseña</a>
 
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
           @csrf
@@ -123,10 +131,12 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
           <a class="dropdown-item" href="../public/requerimientos">Requerimientos</a>
+          @if($user[0]->nombre == "administrador")
           <a class="dropdown-item" href="../public/priorities">Prioridades</a>
           <a class="dropdown-item" href="../public/resolutors">Resolutores</a>
           <a class="dropdown-item" href="../public/solicitantes">Solicitantes</a>
           <a class="dropdown-item" href="../public/teams">Teams</a>
+          @endif
         </div>
       </li>
       @if($user[0]->nombre == "supervisor" or $user[0]->nombre == "administrador")
