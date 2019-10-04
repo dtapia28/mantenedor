@@ -3,6 +3,9 @@
 @section('requerimiento')
 	<h2>{{ $requerimiento->id2 }}</h2>
 	<br>
+	@if($user[0]->nombre == "resolutor")
+	<p><strong>Comentario: </strong>{{ $requerimiento->comentario }}</p>
+	@endif
 	<p><strong>Solicitud: </strong>{{ $requerimiento->textoRequerimiento }}</p>
 	<p>
 		@forelse ($priorities as $priority)

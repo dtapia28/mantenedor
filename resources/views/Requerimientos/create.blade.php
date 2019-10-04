@@ -86,6 +86,11 @@
 
                 <br>
                 <br>
+                <div id="creaComentario">
+                    <label for="textComentario">Ingresar comentario para resolutor:</label>
+                   <textarea class="form-control col-md-10" name="comentario" placeholder="Comentario para resolutor" rows="5" cols="50"></textarea>                     
+                </div>
+                <br>
                 <div id="creaAvance">
                     <label for="textAvance">Ingresar avance al requerimiento:</label>
                    <textarea class="form-control col-md-10" name="textAvance" placeholder="Texto del avance" rows="5" cols="50"></textarea>                    
