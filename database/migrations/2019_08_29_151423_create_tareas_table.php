@@ -22,6 +22,8 @@ class CreateTareasTable extends Migration
             $table->boolean('estado')->default(1); 
             $table->bigInteger('idRequerimiento')->unsigned();
             $table->foreign('idRequerimiento')->references('id')->on('requerimientos');
+            $table->bigInteger('resolutor')->unsigned();
+            $table->foreign('resolutor')->references('id')->on('resolutors');            
             $table->timestamps();
         });
     }

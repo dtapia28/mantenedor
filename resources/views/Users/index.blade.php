@@ -72,7 +72,7 @@
 									<input type="hidden" value="{{ $us->id }}" name="idUsers">	
 									<button type="submit" class="btn btn-success">Modificar</button>
 								</form>
-							</td>
+							</td>	
 							<td>
 								<form method="POST" action="{{ url('users/cambiar') }}">
 									{{ csrf_field() }}
@@ -93,7 +93,7 @@
 		foreach ($users as $us) {
 			echo "<script type='text/javascript'>\n$(document).ready(function(){\n";
 
-			echo "$('#role".$us->id."').on('change', function(){\nvar role = $(this).val();\nif(role == 25){\ndocument.getElementById('team".$us->id."').style.display = 'block';\n$.get('../public/users/script', function(teams){\n$('#team".$us->id."').empty();\n$('#team".$us->id."').append(\"<option value=''>Seleccione un equipo</option>\");\n$.each(teams, function(index, value){\n $('#team".$us->id."').append(\"<option value='\"+index+\"'>\"+value+\"</option>\");\n});\n});\n} else {\ndocument.getElementById('team".$us->id."').style.display = 'none';\n}\n});\n});\n</script>\n";
+			echo "$('#role".$us->id."').on('change', function(){\nvar combo = document.getElementById('role".$us->id."');\nvar selected = combo.options[combo.selectedIndex].text;\nif(selected == 'resolutor' || selected == 'gestor'){\ndocument.getElementById('team".$us->id."').style.display = 'block';\n$.get('/users/script', function(teams){\n$('#team".$us->id."').empty();\n$('#team".$us->id."').append(\"<option value=''>Seleccione un equipo</option>\");\n$.each(teams, function(index, value){\n $('#team".$us->id."').append(\"<option value='\"+index+\"'>\"+value+\"</option>\");\n});\n});\n} else {\ndocument.getElementById('team".$us->id."').style.display = 'none';\n}\n});\n});\n</script>\n";
 		}
 		?>	
 @endsection

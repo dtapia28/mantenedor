@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Requerimiento;
 use App\Avance;
+use App\Resolutor;
+use App\Solicitante;
+use App\Team;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\FinalizadoNotifi;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use DB;
-
 
 class AvanceController extends Controller
 {
@@ -65,8 +69,8 @@ class AvanceController extends Controller
             if ($cambios == null) {
                 $cambios = 1;                       
             }                      
-        else {
-            $cambios +=1;             
+            else {
+                $cambios +=1;             
             }
         } else {
             $requerimiento = DB::table('requerimientos')->select('fechaRealCierre')->where('id', $request->input("idRequerimiento"))->first();
@@ -76,16 +80,51 @@ class AvanceController extends Controller
         }                               
           
         if ($request->input("porcentajeEjecutado") != null) {
-            $porcentaje = $request->input("porcentajeEjecutado"); 
-            } else {
-                $requerimiento = DB::table('requerimientos')->select('porcentajeEjecutado')->where('id', $request->input("idRequerimiento"))->first();
-                $porcentaje = $requerimiento->porcentajeEjecutado;               
-            }
+            $porcentaje = $request->input("porcentajeEjecutado");
+            if ($porcentaje == 100) 
+            {
+                $data = [
+                    'estado' => 3,
+                    'porcentajeEjecutado' => 100,
+                    'cierre' => $data['textAvance'],
+                    'aprobacion' => 4,
+                ];
+                $requerimiento = Requerimiento::where('id', $request->input('idRequerimiento'))->first();
+                $resolutor = Resolutor::where('id', $requerimiento->resolutor)->first();
+                $solicitante = Solicitante::where('id', $requerimiento->idSolicitante)->first();
+                $resolutores = Resolutor::where('idTeam',Team::where('id',$resolutor->idTeam)->first()->id)->get();
+                foreach ($resolutores as $resol) {
+                    if ($resol->lider == 1) {
+                        $lider = $resol;
+                    }
+                }            
+                $obj = new \stdClass();
+                $obj->idReq = $requerimiento->id2;
+                $obj->id = $requerimiento->id;
+                $obj->sol = $requerimiento->textoRequerimiento;
+                $obj->nombre = $resolutor->nombreResolutor;
+                $obj->solicitante = $solicitante->nombreSolicitante;
 
+                $recep = $lider->email;
+
+                Notification::route('mail', $recep)->notify(new FinalizadoNotifi($obj));
+            } else 
+            {
+                $data = [
+                    'fechaRealCierre' => $fechaRealCierre,
+                    'porcentajeEjecutado' => $porcentaje,
+                    'numeroCambios' => $cambios,
+                ];                
+            }
+        } else {
+            $requerimiento = DB::table('requerimientos')->select('porcentajeEjecutado')->where('id', $request->input("idRequerimiento"))->first();
+            $porcentaje = $requerimiento->porcentajeEjecutado; 
             $data = [
                 'fechaRealCierre' => $fechaRealCierre,
                 'porcentajeEjecutado' => $porcentaje,
-                'numeroCambios' => $cambios];
+                'numeroCambios' => $cambios,
+            ];                   
+        }
 
         DB::table('requerimientos')->where('id', $request->input('idRequerimiento'))->update($data);            
                                 

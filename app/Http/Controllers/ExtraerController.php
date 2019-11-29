@@ -36,16 +36,29 @@ class ExtraerController extends Controller
 
     public function porEstado(Request $request)
     {
-        $base = DB::table('requ_view')->where([
-            ['estado', $request['estado']],
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-        ])->get(['id2 as id', 'textoRequerimiento AS Texto del requerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad'])->toArray();
+        if ($request['estado'] == 3) {
+            $base = DB::table('requ_view')->where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+        } else 
+        {
+            $base = DB::table('requ_view')->where([
+                ['estado', $request['estado']],
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+        }
         $base2 = [];
         $requerimientos = [];
         for ($i=0; $i < count($base); $i++) {
+            $base[$i]->textoRequerimiento = utf8_decode($base[$i]->textoRequerimiento);
+            $base[$i]->Solicitante = utf8_decode($base[$i]->Solicitante);
+            $base[$i]->Resolutor = utf8_decode($base[$i]->Resolutor);
+            $base[$i]->Equipo = utf8_decode($base[$i]->Equipo);
+            $base[$i]->Avance = utf8_decode($base[$i]->Avance);
             $base2 = (array) $base[$i];
             array_push($requerimientos, $base2);
         }
+        
         if (empty($requerimientos)) {
             return back()->with('msj', 'No existen requerimientos que cumplan con su solicitud.');                
         } else {         
@@ -61,17 +74,22 @@ class ExtraerController extends Controller
                 ['porcentajeEjecutado', '<=', $request['porcentaje']],
                 ['rutEmpresa', auth()->user()->rutEmpresa],
                 ['estado', 1],              
-            ])->get(['id2 as id', 'textoRequerimiento AS Texto del requerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad'])->toArray();
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
         } else {
             $base = DB::table('requ_view')->where([
                 ['porcentajeEjecutado', '>', $request['porcentaje']],
                 ['rutEmpresa', auth()->user()->rutEmpresa],
                 ['estado', 1],                
-            ])->get(['id2 as id', 'textoRequerimiento AS Texto del requerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad'])->toArray();
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
         }
         $base2 = [];
         $requerimientos = [];
         for ($i=0; $i < count($base); $i++) {
+            $base[$i]->textoRequerimiento = utf8_decode($base[$i]->textoRequerimiento);
+            $base[$i]->Solicitante = utf8_decode($base[$i]->Solicitante);
+            $base[$i]->Resolutor = utf8_decode($base[$i]->Resolutor);            
+            $base[$i]->Equipo = utf8_decode($base[$i]->Equipo);
+            $base[$i]->Avance = utf8_decode($base[$i]->Avance);                              
             $base2 = (array) $base[$i];
             array_push($requerimientos, $base2);
         }        
@@ -89,18 +107,23 @@ class ExtraerController extends Controller
                 ['numeroCambios', '<=', $request['cambios']],
                 ['rutEmpresa', auth()->user()->rutEmpresa],
                 ['estado', 1],               
-            ])->get(['id2 as id', 'textoRequerimiento AS Texto del requerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad'])->toArray();
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
         } else {
             $base = DB::table('requ_view')->where([
                 ['numeroCambios', '>', $request['cambios']],
                 ['rutEmpresa', auth()->user()->rutEmpresa],
                 ['estado', 1],                
-            ])->get(['id2 as id', 'textoRequerimiento AS Texto del requerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad'])->toArray();
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
         }
 
         $base2 = [];
         $requerimientos = [];
         for ($i=0; $i < count($base); $i++) {
+            $base[$i]->textoRequerimiento = utf8_decode($base[$i]->textoRequerimiento);
+            $base[$i]->Solicitante = utf8_decode($base[$i]->Solicitante);
+            $base[$i]->Resolutor = utf8_decode($base[$i]->Resolutor);            
+            $base[$i]->Equipo = utf8_decode($base[$i]->Equipo);
+            $base[$i]->Avance = utf8_decode($base[$i]->Avance);                                
             $base2 = (array) $base[$i];
             array_push($requerimientos, $base2);
         }
@@ -119,12 +142,17 @@ class ExtraerController extends Controller
                 ['rutEmpresa', auth()->user()->rutEmpresa],
                 ['idSolicitante', $request['idSolicitante']],
                 ['estado', 1],
-            ])->get(['id2 as id', 'textoRequerimiento AS Texto del requerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad'])->toArray();
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
         }
 
         $base2 = [];
         $requerimientos = [];
         for ($i=0; $i < count($base); $i++) {
+            $base[$i]->textoRequerimiento = utf8_decode($base[$i]->textoRequerimiento);
+            $base[$i]->Solicitante = utf8_decode($base[$i]->Solicitante);
+            $base[$i]->Resolutor = utf8_decode($base[$i]->Resolutor);            
+            $base[$i]->Equipo = utf8_decode($base[$i]->Equipo);
+            $base[$i]->Avance = utf8_decode($base[$i]->Avance);                        
             $base2 = (array) $base[$i];
             array_push($requerimientos, $base2);
         }          
@@ -142,11 +170,16 @@ class ExtraerController extends Controller
                 ['rutEmpresa', auth()->user()->rutEmpresa],
                 ['resolutor', $request['idResolutor']],
                 ['estado', 1],
-            ])->get(['id2 as id', 'textoRequerimiento AS Texto del requerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad'])->toArray();
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
         }
         $base2 = [];
         $requerimientos = [];
         for ($i=0; $i < count($base); $i++) {
+            $base[$i]->textoRequerimiento = utf8_decode($base[$i]->textoRequerimiento);
+            $base[$i]->Solicitante = utf8_decode($base[$i]->Solicitante);
+            $base[$i]->Resolutor = utf8_decode($base[$i]->Resolutor);            
+            $base[$i]->Equipo = utf8_decode($base[$i]->Equipo);
+            $base[$i]->Avance = utf8_decode($base[$i]->Avance);                        
             $base2 = (array) $base[$i];
             array_push($requerimientos, $base2);
         }                      
@@ -164,11 +197,16 @@ class ExtraerController extends Controller
                 ['rutEmpresa', auth()->user()->rutEmpresa],
                 ['teamId', $request['idTeam']],
                 ['estado', 1],
-            ])->get(['id2 as id', 'textoRequerimiento AS Texto del requerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad'])->toArray();
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
         }
         $base2 = [];
         $requerimientos = [];
         for ($i=0; $i < count($base); $i++) {
+            $base[$i]->textoRequerimiento = utf8_decode($base[$i]->textoRequerimiento);
+            $base[$i]->Solicitante = utf8_decode($base[$i]->Solicitante);
+            $base[$i]->Resolutor = utf8_decode($base[$i]->Resolutor);            
+            $base[$i]->Equipo = utf8_decode($base[$i]->Equipo);
+            $base[$i]->Avance = utf8_decode($base[$i]->Avance);                        
             $base2 = (array) $base[$i];
             array_push($requerimientos, $base2);
         }                      

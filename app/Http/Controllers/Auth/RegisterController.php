@@ -95,8 +95,8 @@ class RegisterController extends Controller
         ]);
 
         Role::create([
-            'nombre' => "usuario",
-            'descripcion' => "Usuario",
+            'nombre' => "solicitante",
+            'descripcion' => "Solicitante",
             'rutEmpresa' => $data['rut'],            
         ]);
 
@@ -107,16 +107,16 @@ class RegisterController extends Controller
         ]);
 
         Role::create([
+            'nombre' => "usuario",
+            'descripcion' => "Usuario",
+            'rutEmpresa' => $data['rut'],            
+        ]);        
+
+        Role::create([
             'nombre' => "resolutor",
             'descripcion' => "Resolutor",
             'rutEmpresa' => $data['rut'],            
-        ]); 
-
-        Role::create([
-            'nombre' => "solicitante",
-            'descripcion' => "Solicitante",
-            'rutEmpresa' => $data['rut'],            
-        ]);                                
+        ]);                         
 
         $user = User::create([
             'name' => $data['name'],

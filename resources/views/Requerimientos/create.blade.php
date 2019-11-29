@@ -41,15 +41,20 @@
                 <label for='fechaCierre'>Fecha solicitada de cierre:</label>
                 <input class="form-control col-md-3" type="date" name="fechaCierre">
                 <br>
+                <label for='idGestor'>Gestor:</label>        
+                <br>                 
+                <select class="form-control col-md-3" name="idGestor">
+                    @foreach($gestores as $gestor)
+                            <option value={{ $gestor->id }}>{{ $gestor->nombreResolutor }}</option>
+                    @endforeach
+                </select>
+                <br>              
                 @if($user[0]->nombre != "solicitante")
                 <label for="idSolicitante">Solicitante:</label>
-                
                 <br>
                 <select class="form-control col-md-3" name="idSolicitante">
                     @foreach($solicitantes as $solicitante)
-                        <optgroup>
                             <option value={{ $solicitante->id }}>{{ $solicitante->nombreSolicitante }}</option>
-                        </optgroup>
                     @endforeach
                 </select>
                 <a href="{{ url('/users/nuevo') }}?volver=1">Crear Solicitante</a>
@@ -61,9 +66,7 @@
                 <select class="form-control col-md-4" id="team" name="team">
                     <option value="">Seleccione un Equipo</option>                    
                     @foreach($teams as $team)
-                        <optgroup>
                             <option value={{ $team->id }}>{{ $team->nameTeam }}</option>
-                        </optgroup>
                     @endforeach
                 </select>
                 <br>
@@ -102,7 +105,7 @@
     </div>    
     <br>
     <p>
-        <a href="../requerimientos">Regresar al listado de requerimientos</a>
+        <a href="{{ url('requerimientos') }}">Regresar al listado de requerimientos</a>
     </p>
 @endsection
 @section('script2')
@@ -110,7 +113,7 @@
     $(document).ready(function(){
         $('#team').on('change', function(){
             var id_team = $(this).val();
-            $.get('/requerimientos/script', {id_team: id_team}, function(resolutors){
+            $.get('../requerimientos/script', {id_team: id_team}, function(resolutors){
                 $('#resolutor').empty();
                 $('#resolutor').append("<option value=''>Selecciona un resolutor</opcion>");
                 $.each(resolutors, function(index, value){

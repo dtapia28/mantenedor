@@ -10,6 +10,7 @@ use App\Team;
 use App\Role_User;
 use App\Resolutor;
 use App\Solicitante;
+use App\Parametros;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -35,7 +36,7 @@ class UserController extends Controller
 
         return view('Users.index', compact('users', 'user', 'roles', 'relaciones'));
 
-    }
+    }  
 
     public function cambiarPassword()
     {
@@ -88,17 +89,32 @@ class UserController extends Controller
 
 
         if (isset($data['idTeam'])) {
-            $usuario = User::where('id', $request->idUsers)->first();
-            Resolutor::create([
-                'nombreResolutor' => $usuario->name,          
-                'rutEmpresa' => auth()->user()->rutEmpresa,
-                'idTeam' => $data['idTeam'],
-                'idUser' => $usuario->id,
-                'email' => $usuario->email,
-            ]);            
+            $role = Role::where('id', $data['idRole'])->first();
+            if ($role->nombre == 'resolutor') {
+                $usuario = User::where('id', $request->idUsers)->first();
+                Resolutor::create([
+                    'nombreResolutor' => $usuario->name,          
+                    'rutEmpresa' => auth()->user()->rutEmpresa,
+                    'idTeam' => $data['idTeam'],
+                    'idUser' => $usuario->id,
+                    'email' => $usuario->email,
+                ]);
+            } else {
+                $usuario = User::where('id', $request->idUsers)->first();
+                Resolutor::create([
+                    'nombreResolutor' => $usuario->name,          
+                    'rutEmpresa' => auth()->user()->rutEmpresa,
+                    'idTeam' => $data['idTeam'],
+                    'idUser' => $usuario->id,
+                    'email' => $usuario->email,
+                    'lider' => 1,
+                ]);                
+
+            }            
         }
 
-        if ($data['idRole'] == 24) {
+        $role = Role::where('id', $data['idRole'])->first();
+        if ($role->nombre == 'solicitante') {
            $usuario = User::where('id', $request->idUsers)->first(); 
            Solicitante::create([
                 'nombreSolicitante' => $usuario->name,
@@ -171,5 +187,14 @@ class UserController extends Controller
         return back()->with('msj', 'Contraseña de usuario '.$usuario->name.' modificada');
 
         return redirect('users');
+    }
+
+    public function parametros ()
+    {
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        $parametros = Parametros::where('rutEmpresa', auth()->user()->rutEmpresa)->first();
+        $email = $parametros->emailSupervisor;
+        $color = $parametros->idColor;
+        return view('Users.parametros', compact('email', 'color', 'user'));
     }
 }

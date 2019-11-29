@@ -47,8 +47,9 @@ if (! empty($requerimientos)) {
 		<form method="GET" action="{{ url('/extracciones/estado') }}">
 			<select id="porEstado" class="form-control col-md-8" name="estado">
 				<option selected="selected" disabled="disabled">Escoge una opción</option>
-				<option value="0">Inactivo</option>
+				<option value="2">Inactivo</option>
 				<option value="1">Activo</option>
+				<option value="3">Todos</option>
 		    </select>	
 			<button id="btn1" class="btn btn-primary" type="submit">Extraer</button>	    	
 		</form>
@@ -91,9 +92,7 @@ if (! empty($requerimientos)) {
         	<select class="form-control col-md-8" name="idSolicitante">
 				<option selected="selected" disabled="disabled">Escoge una opción</option>
             	@foreach($solicitantes as $solicitante)
-                	<optgroup>
                     	<option value={{ $solicitante->id }}>{{ $solicitante->nombreSolicitante }}</option>
-                    </optgroup>
                 @endforeach
             </select>
 			<button class="btn btn-primary" type="submit">Extraer</button>            			
@@ -105,9 +104,7 @@ if (! empty($requerimientos)) {
 			<select class="form-control col-md-8" name="idResolutor">
 				<option selected="selected" disabled="disabled">Escoge una opción</option>
 				@foreach($resolutors as $resolutor)
-					<optgroup>
 						<option value="{{ $resolutor->id }}">{{ $resolutor->nombreResolutor }}</option>
-					</optgroup>
 				@endforeach
 			</select>
 			<button class="btn btn-primary" type="submit">Extraer</button>
@@ -119,9 +116,7 @@ if (! empty($requerimientos)) {
 			<select class="form-control col-md-8" name="idTeam">
 				<option selected="selected" disabled="disabled">Escoge una opción</option>
 				@foreach($teams as $team)
-					<optgroup>
 						<option value="{{ $team->id }}">{{ $team->nameTeam }}</option>
-					</optgroup>
 				@endforeach
 			</select>
 			<button class="btn btn-primary" type="submit">Extraer</button>

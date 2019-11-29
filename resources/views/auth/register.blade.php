@@ -41,7 +41,7 @@
                         <div class="form-group row">
                             <label for="rut" class="col-md-4 col-form-label text-md-right">{{ __('Rut Empresa') }}</label>
                             <div class="col-md-6">
-                            <input id="rut" type="text" class="form-control @error('rut') no es valido @enderror" name="rut" value="{{ old('rut') }}">
+                            <input placeholder="11111111-1" maxlength="12" max="12" id="rut" type="text" class="form-control @error('rut') no es valido @enderror" name="rut" value="{{ old('rut') }}">
                             </div>                       
                         </div>
                         <div class="form-group row">

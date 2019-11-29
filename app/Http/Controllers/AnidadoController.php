@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Anidado;
 use App\Requerimiento;
+use App\Resolutor;
+use App\Team;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 class AnidadoController extends Controller
@@ -49,7 +52,29 @@ class AnidadoController extends Controller
         return redirect(url("requerimientos/$request->requerimiento"));
     }
 
-    public function anidar(Request $request)
+    public function anidar (Requerimiento $requerimiento)
+    {
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $requerimientosAnidadosLista = Anidado::where('idRequerimientoBase', $requerimiento->id)->get();
+        $requerimientos = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $requerimientosAnidados = [];
+        foreach ($requerimientosAnidadosLista as $requerimiento1)
+        {
+            foreach ($requerimientos as $requerimientos1) 
+            {
+                if ($requerimientos1->id == $requerimiento1->idRequerimientoAnexo) 
+                {
+                    $requerimientosAnidados[] = $requerimientos1;
+                }
+            }
+        }     
+        
+        return view('Anidar.create', compact('user', 'requerimientosAnidados', 'requerimientos', 'requerimiento', 'resolutors', 'teams'));
+    }
+
+    public function anidara (Request $request)
     {
 
         $idReq = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)->get('id');
@@ -73,7 +98,7 @@ class AnidadoController extends Controller
         }
 
         return redirect(url("requerimientos/$request->requerimiento"));        
-    }
+    }    
 
     /**
      * Display the specified resource.

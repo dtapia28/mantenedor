@@ -14,5 +14,5 @@ class Requerimiento extends Model
     protected $fillable = ['textoRequerimiento', 'fechaEmail', 'fechaSolicitud',
 							'fechaCierre', 'fechaRealCierre', 'numeroCambios',
 							'porcentajeEjecutado', 'cierre', 'idSolicitante',
-							'idPrioridad', 'resolutor', 'rutEmpresa', 'estado', 'id2', 'comentario'];
+							'idPrioridad', 'resolutor', 'rutEmpresa', 'estado', 'id2', 'comentario', 'gestor', 'aprobacion'];
 }

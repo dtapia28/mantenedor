@@ -70,7 +70,8 @@ class PriorityController extends Controller
      */
     public function show(Priority $priority)
     {
-        return view('Priorities.show', compact('priority'));        
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
+        return view('Priorities.show', compact('priority', 'user'));        
     }
 
     /**
@@ -81,7 +82,8 @@ class PriorityController extends Controller
      */
     public function edit(Priority $priority)
     {
-        return view('Priorities.edit', ['priority' => $priority]); 
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        return view('Priorities.edit', compact('priority', 'user')); 
     }
 
     /**

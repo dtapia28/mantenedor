@@ -17,6 +17,7 @@ class CreateRequerimientosTable extends Migration
             $table->bigIncrements('id');
             $table->string('id2', 15);
             $table->string('textoRequerimiento', 200);
+            $table->string('comentario', 200)->nullable();
             $table->datetime('fechaEmail');
             $table->datetime('fechaSolicitud');
             $table->datetime('fechaCierre');

@@ -153,8 +153,8 @@ Route::get('/requerimientos/{requerimiento}/avances/nuevo', 'AvanceController@cr
 	->middleware('auth');
 
 Route::get('/requerimientos/script', 'RequerimientoController@getResolutors');
-Route::get('/users/script', 'UserController@getTeams');	
-
+Route::get('/users/script', 'UserController@getTeams');
+Route::get('/requerimientos/script2', 'UserController@getTeams');
 
 
 Route::get('/requerimientos/{requerimiento}/avances/{avance}/editar', 'AvanceController@edit')->name('Avances.edit');	
@@ -167,7 +167,13 @@ Route::post('/avances/ingresar', 'AvanceController@store')
 
 
 
-Route::put('/requerimientos/{requerimiento}/avances/{avance}', 'AvanceController@update');	
+Route::put('/requerimientos/{requerimiento}/avances/{avance}', 'AvanceController@update')
+	->middleware('auth');
+Route::post('/requerimientos/{requerimiento}/activar', 'RequerimientoController@activar')
+	->middleware('auth');
+
+Route::post('/requerimientos/{requerimiento}/autorizar', 'RequerimientoController@autorizar')
+	->middleware('auth');		
 
 
 
@@ -184,13 +190,17 @@ Route::put('/requerimientos/{requerimiento}/avances/{avance}', 'AvanceController
 //{
 
 
-	Route::get('/dashboard', 'DashboardController@index');
+	Route::get('/dashboard', 'DashboardController@index')
+		->middleware('auth');
 
-	Route::get('/dashboard/green', 'DashboardController@green');
+	Route::get('/dashboard/green', 'DashboardController@green')
+	->middleware('auth');
 
-	Route::get('/dashboard/yellow', 'DashboardController@yellow');
+	Route::get('/dashboard/yellow', 'DashboardController@yellow')
+		->middleware('auth');
 
-	Route::get('/dashboard/red', 'DashboardController@red');		
+	Route::get('/dashboard/red', 'DashboardController@red')
+		->middleware('auth');;		
 
 	
 
@@ -231,6 +241,12 @@ Route::get('/teams', 'TeamController@index')
 
 Route::get('/users', 'UserController@index')
 	->middleware('auth');
+
+Route::get('/user/parametros', 'UserController@parametros')
+	->middleware('auth');
+
+Route::post('/user/parametros/guardar', 'ParametrosController@store')
+	->middleware('auth');		
 
 Route::get('/users/nuevo', 'UserController@nuevo')
 	->middleware('auth');
@@ -499,7 +515,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //Route::post('/requerimientos/anidar', 'AnidadoController@store');
 
-Route::post('/requerimientos/{requerimiento}/anidar', 'AnidadoController@anidar');
+Route::get('/requerimientos/{requerimiento}/anidar', 'AnidadoController@anidar');
+Route::post('/requerimientos/{requerimiento}/anidar', 'AnidadoController@anidara');
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 

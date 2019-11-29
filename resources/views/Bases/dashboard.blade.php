@@ -45,7 +45,7 @@
             <ul class="navbar-nav bd-navbar-nav flex-row" style="color:#f5f5f5;">
 
                 <li>
-                     <a class="nav-link" href="{{ url('/requerimientos') }}">Requerimientos</a>                 
+                     <a id="req" class="nav-link" href="{{ url('/requerimientos') }}">Requerimientos</a>                 
                 </li>
                 @if($user[0]->nombre == "administrador")                
                 <li>
@@ -100,6 +100,9 @@
           document.getElementById('logout-form').submit();">
           {{ __('Logout') }}
         </a>
+        @if($user[0]->nombre == "administrador")
+        <a class="dropdown-item" href="{{ url('user/parametros') }}">Parametros</a>
+        @endif
         <a class="dropdown-item" href="{{ url('user/changepassword') }}">Cambiar contraseña</a>
 
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

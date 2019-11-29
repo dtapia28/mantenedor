@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Resolutor;
 use App\Empresa;
 use App\Team;
+use App\Role;
+use App\User;
+use App\Requerimiento;
+use App\Role_User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -21,6 +25,8 @@ class ResolutorController extends Controller
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
 
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+
+        $contador = count($resolutors);
 
         return view('Resolutors.index', compact('resolutors', 'user'));
     }
@@ -93,7 +99,8 @@ class ResolutorController extends Controller
      */
     public function show(Resolutor $resolutor)
     {
-        return view('Resolutors.show', compact('resolutor'));
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
+        return view('Resolutors.show', compact('resolutor', 'user'));
     }
 
     /**
@@ -107,7 +114,13 @@ class ResolutorController extends Controller
 
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
-        return view('Resolutors.edit', compact('teams', 'resolutor', 'user')); 
+        $equipo = Team::where([
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+            ['id', $resolutor->idTeam],
+        ])->first('id');
+        $equipo = $equipo->id;
+       
+        return view('Resolutors.edit', compact('teams', 'resolutor', 'user', 'equipo'));
     }
 
     /**
@@ -120,12 +133,13 @@ class ResolutorController extends Controller
     public function update(Request $request, Resolutor $resolutor)
     {
         $data = request()->validate([
-            'nombreResolutor' => 'required',
             'idTeam' => 'required'
         ]);
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();        
 
         $resolutor->update($data);
-        return redirect()->route('Resolutors.show', ['resolutor' => $resolutor]);         
+        return view('Resolutors.index', compact('resolutors', 'user'));        
     }
 
     /**
@@ -136,7 +150,26 @@ class ResolutorController extends Controller
      */
     public function destroy(Resolutor $resolutor)
     {
-        $resolutor->delete();
-        return redirect('resolutors'); 
+        $req = Requerimiento::where([
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+            ['resolutor', $resolutor->id]
+        ])->first();
+
+        if (isset($req)) {
+            return redirect('resolutors')->with('msj', 'No es posible eliminar al resolutor, ya que tiene requerimientos a su cargo');            
+        } else {
+            $roles = Role::where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+                ['nombre', 'usuario']
+            ])->first();
+
+            $usuario = User::where('id', $resolutor->idUser)->first();
+            $relacion = Role_User::where('user_id', $usuario->id)->first();
+            $relacion->role_id = $roles->id;
+            $relacion->save();              
+
+            $resolutor->delete();
+            return redirect('resolutors');
+        } 
     }
 }

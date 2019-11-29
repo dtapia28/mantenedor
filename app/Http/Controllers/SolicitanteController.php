@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Solicitante;
+use App\Role;
+use App\User;
+use App\Role_User;
+use App\Requerimiento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -115,7 +119,25 @@ class SolicitanteController extends Controller
      */
     public function destroy(Solicitante $solicitante)
     {
-        $solicitante->delete();
-        return redirect('solicitantes');   
+        $req = Requerimiento::where([
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+            ['idSolicitante', $solicitante->id]
+        ])->first();
+
+        if (isset($req)) {
+            return redirect('solicitantes')->with('msj', 'No es posible eliminar al solicitante, ya que tiene requerimientos solicitados');
+        } else {    
+            $roles = Role::where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+                ['nombre', 'usuario']
+            ])->first();
+
+            $usuario = User::where('id', $solicitante->idUser)->first();
+            $relacion = Role_User::where('user_id', $usuario->id)->first();
+            $relacion->role_id = $roles->id;
+            $relacion->save();         
+            $solicitante->delete();
+            return redirect('solicitantes');
+        }   
     }
 }

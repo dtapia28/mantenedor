@@ -1,6 +1,6 @@
 @extends('Bases.dashboard')
 
-@section('titulo', "Editar empresa")
+@section('titulo', "Editar resolutor")
 
 @section('contenido')
     <h1>Editar resolutor</h1>
@@ -21,15 +21,10 @@
                 {{ method_field('PUT') }}
                 {{ csrf_field() }}
 
-                <label for="name">Nombre:</label>
-                <input class="form-control col-md-6" type="text" name="nombreResolutor" id="nombreResolutor" value="{{ old('nombreResolutor', $resolutor->nombreResolutor) }}">
-                <br>
                 <label for="idTeam">Team:</label>                
                 <select class="form-control col-md-6" name="idTeam">
                     @foreach($teams as $team)
-                        <optgroup>
-                            <option value="{{ old('idTeam', $team->id) }}">{{ $team->nameTeam }}</option>
-                        </optgroup>
+                        <option value="{{$team->id}}" @if($equipo == $team->id){{ 'selected' }}@endif>{{ $team->nameTeam }}</option>
                     @endforeach
                 </select>
                 <br>                

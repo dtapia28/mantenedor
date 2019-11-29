@@ -34,6 +34,6 @@
          </div>
     </div>        
     <p>
-        <a href="/requerimientos/{{$requerimiento->id}}">Regresar al requerimiento</a>
+        <a href="{{ url('requerimientos/'.$requerimiento->id) }}">Regresar al requerimiento</a>
     </p>
 @endsection

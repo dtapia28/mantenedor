@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class RequerimientoEmail extends Notification
+class FinalizadoNotifi extends Notification
 {
     use Queueable;
 
@@ -19,7 +19,7 @@ class RequerimientoEmail extends Notification
     public function __construct($notifiable)
     {
         $this->notifiable = $notifiable;
-    }
+    }    
 
     /**
      * Get the notification's delivery channels.
@@ -41,13 +41,13 @@ class RequerimientoEmail extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Requerimiento por vencer')
-                    ->greeting('Hola, '.$this->notifiable->nombre)
-                    ->line('Te informamos que la fecha del siguiente requerimiento está por vencer pronto:')
+                    ->subject('Requerimiento terminado')
+                    ->greeting('Hola')
+                    ->line('Estás recibiendo este correo porque el siguiente requerimiento ha cambiado de estado a "Por autorizar":')
                     ->line('Requerimiento: '.$this->notifiable->idReq)
-                    ->line('Porcentaje avance: '.$this->notifiable->porcentaje.'%')
-                    ->line('Fecha de cierre: '.$this->notifiable->fecha)
-                    ->line('Si quieres ir al requerimiento indicado, por favor da clic en el siguiente botón:')
+                    ->line('Solicitante: '.$this->notifiable->solicitante)
+                    ->line('Resolutor: '.$this->notifiable->nombre)
+                    ->line('Solicitud: '.$this->notifiable->sol)
                     ->action('ver Requerimiento', url('/requerimientos/'.$this->notifiable->id.''))
                     ->salutation('Saludos, '. config('app.name'));
     }

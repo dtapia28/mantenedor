@@ -1,3 +1,11 @@
+@if(session()->has('msj'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ session('msj') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+@endif
 @extends('Bases.dashboard')
 @section('titulo', 'Solicitantes')
 @section('contenido')
@@ -10,7 +18,7 @@
 		<p>
 		</p>
 		@if($user[0]->nombre == "administrador")
-		<form method='HEAD' action="{{ url('solicitantes/nuevo') }}">
+		<form method='HEAD' action="{{ url('users/nuevo') }}">
 		<button type="submit" value="Nuevo Solicitante" class="btn btn-primary" name="">Nuevo</button>
 		</form>
 		@endif
@@ -29,9 +37,6 @@
 							    @if($user[0]->nombre == "administrador")
 							    <th scope="col"><strong></strong></th>
 							    @endif
-							    @if($user[0]->nombre == "administrador")
-							    <th scope="col"><strong></strong></th>
-							    @endif
 							</tr>
 						</thead>
 			<tbody>
@@ -46,16 +51,8 @@
 							{{ $solicitante->nombreSolicitante }}
 					</th>
 					@if($user[0]->nombre == "administrador")
-					<th scope="row">									
-						<form method='HEAD' action="../public/solicitantes/{{$solicitante->id}}/editar">
-							{{ csrf_field() }}						
-							<input style="text-align: center;" type="image" align="center" src="{{ asset('img/edit.png') }}" width="30" height="30">
-						</form>
-					</th>
-					@endif
-					@if($user[0]->nombre == "administrador")
 					<th scope="row">
-						<form method='post' action="../public/solicitantes/{{$solicitante->id}}">
+						<form method='post' action="{{ url('solicitantes/'.$solicitante->id)}}">
 							{{ csrf_field() }}
 							{{ method_field('DELETE') }}						
 							<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="30" height="30">

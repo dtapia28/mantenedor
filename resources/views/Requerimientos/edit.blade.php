@@ -53,7 +53,7 @@
             <br>
             <label for="idResolutor">Resolutor:</label>
             <br>        
-            <select class="form-control col-md-3" name="idResolutor">
+            <select class="form-control col-md-3" name="resolutor">
                 @foreach($resolutors as $resolutor)
                     <optgroup>
                         <option value="{{$resolutor->id}}" @if($resolutorEspecifico['0']->id == $resolutor->id){{'selected'}}@endif>{{ $resolutor->nombreResolutor }}</option>

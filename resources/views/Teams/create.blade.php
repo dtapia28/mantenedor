@@ -2,7 +2,7 @@
 @section('titulo', "Crear Equipo")
 
 @section('contenido')
-    <h1>Crear equipo</h1>
+    <h1>Crear Equipo</h1>
 
     @if ($errors->any())
     <div class="alert alert-danger">

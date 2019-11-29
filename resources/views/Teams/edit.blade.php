@@ -1,6 +1,6 @@
 @extends('Bases.dashboard')
 
-@section('titulo', "Editar equipo")
+@section('titulo', "Editar Equipo")
 
 @section('contenido')
     <h1>Editar equipo</h1>

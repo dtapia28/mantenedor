@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Tarea;
 use App\Requerimiento;
+use App\Team;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Resolutor;
 use DateTime;
 
 class TareaController extends Controller
@@ -27,8 +29,9 @@ class TareaController extends Controller
      */
     public function create(Requerimiento $requerimiento)
     {
+        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get(); 
-        return view('Tareas.create', compact('requerimiento', 'user'));       
+        return view('Tareas.create', compact('requerimiento', 'user', 'teams'));       
     }
 
     /**
@@ -43,24 +46,22 @@ class TareaController extends Controller
             'fechaSolicitud' => 'required',
             'fechaCierre' => 'required',
             'texto' => 'required',
+            'idResolutor' => 'required',
             'idRequerimiento' => 'required'],
             ['fechaSolicitud.required' => 'La fecha de solicitud es obligatoria'],
             ['fechaCierre.required' => 'La fecha de cierre es obligatoria'],
-            ['texto.required' => 'El texto de la tarea es obligatorio']);
-             
+            ['texto.required' => 'El texto de la tarea es obligatorio']);            
 
         $fechaSoli = new DateTime($data['fechaSolicitud']);
         $fechaCie = new DateTime($data['fechaCierre']);
         if ($fechaCie->getTimestamp() >= $fechaSoli->getTimestamp()) 
         {
             $formato = "0";
-            $requerimiento = Requerimiento::where('id', $data['idRequerimiento'])->first();
+            $requerimiento = Requerimiento::where('id', $data['idRequerimiento'])->get();
             $tareasReq = Tarea::where('idRequerimiento', $data['idRequerimiento'])->count();
-            $tareasReq++;
-            $porcentajeTarea = (100-($requerimiento->porcentajeEjecutado))/$tareasReq;
-            dd($porcentajeTarea);
-
-
+            if ($tareasReq >= 0) {
+                $tareasReq++;
+            }
             if ($tareasReq < 10) {
                 $formato = $formato.$tareasReq;
             }
@@ -69,7 +70,8 @@ class TareaController extends Controller
                 'fechaSolicitud' => $data['fechaSolicitud'],
                 'fechaCierre' => $data['fechaCierre'],
                 'idRequerimiento' => $data['idRequerimiento'],
-                'id2' => $requerimiento->id2."-".$formato,
+                'resolutor' => $data['idResolutor'],
+                'id2' => $requerimiento['0']->id2."-".$formato,
             ]);
         }
 

@@ -1,8 +1,8 @@
 @extends('Bases.dashboard')
-@section('titulo', "Detalle equipo")
+@section('titulo', "Detalle team")
 @section('contenido')
-	<h1>Detalle de equipo:</h1>
-	<h2>Equipo {{ $team->id2 }}</h2>
+	<h1>Detalle de Equipo:</h1>
+	<h2>Equipo n° {{ $team->id }}</h2>
 
 	<p>Nombre del equipo: <strong>{{ $team->nameTeam }}</strong></p>
 	<p>Creado el: <strong>{{ $team->created_at->format('d-m-Y') }}</strong></p>
