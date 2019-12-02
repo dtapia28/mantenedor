@@ -49,7 +49,7 @@ class RequerimientoController extends Controller
 
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
-        if ($request->state != "") {
+        if (isset($request->state)) {
             $request->session()->put('state', $request->state);
         } else {
             $request->session()->put('state', "1");

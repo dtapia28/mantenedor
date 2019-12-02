@@ -26,7 +26,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
 <header><meta http-equiv="Content-Type" content="text/html; charset=gb18030">
-	<h1>Listado de Requerimientos</h1>	
+	<h1>Listado de Requerimientos {{ $state }}</h1>	
 </header>
 <main>
 	@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
@@ -87,6 +87,9 @@
 							@if($state == 0)
 							<th>Activar</th>
 							@endif
+							@if($state == 7)
+							<th>Activar</th>
+							@endif							
 							@if($state == 6)
 							@if($user[0]->nombre=="gestor" or $user[0]->nombre == "supervisor")
 							<th>Autorizar</th>
@@ -139,6 +142,14 @@
 								</form>
 							</th>
 							@endif
+							@if($state == 7)
+							<th id="tabla" scope="row">
+								<form method="POST" action="{{ url("requerimientos/{$requerimiento->id}/activar") }}">
+									{{ csrf_field() }}
+									<button onclick="return confirm('¿Estás seguro/a de activar el requerimiento?')" type="submit" value="Nuevo Requerimiento" class="btn btn-success" name="">Activar</button>
+								</form>
+							</th>
+							@endif							
 							<td>
 							<a href="{{ url("requerimientos/{$requerimiento->id}") }}">
 								{{ $requerimiento->id2 }}
