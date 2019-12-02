@@ -50,6 +50,7 @@ if (! empty($requerimientos)) {
 				<option value="2">Inactivo</option>
 				<option value="1">Activo</option>
 				<option value="3">Todos</option>
+				<option value="4">Vencidos</option>
 		    </select>	
 			<button id="btn1" class="btn btn-primary" type="submit">Extraer</button>	    	
 		</form>

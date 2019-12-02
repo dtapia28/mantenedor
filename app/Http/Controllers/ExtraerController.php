@@ -13,6 +13,7 @@ use App\Resolutor;
 use App\Requerimiento;
 use App\Team;
 use Illuminate\Support\Facades\DB;
+use DateTime;
 
 class ExtraerController extends Controller
 {
@@ -36,7 +37,32 @@ class ExtraerController extends Controller
 
     public function porEstado(Request $request)
     {
-        if ($request['estado'] == 3) {
+        if ($request['estado'] == 4) {
+            $base1 = DB::table('requ_view')->where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+
+            $base = [];
+            $requerimientos = [];
+            $hoy = new DateTime();
+            foreach ($base1 as $req2) 
+            {
+                $req2 = (array) $req2;
+                if ($req2['Fecha de cierre'] == "9999-12-31 00:00:00") {
+
+                } else
+                {
+                    $cierre = new DateTime($req2['Fecha de cierre']);
+                    if ($hoy->getTimestamp()>$cierre->getTimestamp()) 
+                    {
+                        $req2 = (object)$req2;
+
+                        $base [] = $req2;
+                    }
+                }       
+            }          
+        } elseif ($request['estado'] == 3) 
+        {
             $base = DB::table('requ_view')->where([
                 ['rutEmpresa', auth()->user()->rutEmpresa],
             ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
