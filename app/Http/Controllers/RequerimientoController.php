@@ -1520,7 +1520,7 @@ class RequerimientoController extends Controller
             ['id', $requerimiento->resolutor],
         ])->first();
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
-        auth()->user()->authorizeRoles(['administrador', 'solicitante', 'resolutor', 'supervisor']);          
+        auth()->user()->authorizeRoles(['administrador', 'solicitante', 'resolutor', 'supervisor', 'gestor']);          
         $tareas = Tarea::where('idRequerimiento', $requerimiento->id)->get();
         $resolutores = [];
         foreach ($tareas as $tarea) 
