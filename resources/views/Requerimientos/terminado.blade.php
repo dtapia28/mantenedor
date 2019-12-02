@@ -21,7 +21,7 @@
             {{ csrf_field() }}
             <label for="cierre">Cierre:</label>
             <br>
-            <textarea class="form-control col-md-7" name="cierre"  placeholder="Texto del cierre" rows="5" cols="50"></textarea>
+            <textarea minlength="20" class="form-control col-md-7" name="cierre"  placeholder="Texto del cierre" rows="5" cols="50"></textarea>
             <br>
             <label for='fechaCierre'>Fecha real de Cierre (no obligatoria):</label>
             <input class="form-control col-md-3" value="{{ old('fechaRealCierre', $requerimiento->fechaRealCierre) }}" type="date" name="fechaRealCierre">

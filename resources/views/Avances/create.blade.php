@@ -27,7 +27,7 @@
                 <br>                 
                 <label class="" for="textAvance">Texto del avance:</label>
                 <br>
-                <textarea class="form-control col-md-10" name="textAvance" placeholder="Texto del avance" rows="5" cols="50"></textarea>
+                <textarea minlength="20" class="form-control col-md-10" name="textAvance" placeholder="Texto del avance" rows="5" cols="50"></textarea>
                 <br>
                 <button class="btn btn-primary" type="submit">Guardar avance</button>
             </form>
