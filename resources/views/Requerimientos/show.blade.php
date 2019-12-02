@@ -69,7 +69,7 @@
 
 <br>
 @endsection 
-@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
+@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador" or $user[0]->nombre == "gestor")
 @section('avances')
 <header><h2>Avances:</h2></header>
 @if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
@@ -93,19 +93,23 @@
 			<th style="padding-right: 12px;">
 				{{ $avance->created_at->format('d-m-Y') }}:{{ $avance->textAvance }}
 			</th>
+			@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
 			<td style="padding-right: 12px;">
 				<form method='HEAD' action="{{ url('/requerimientos/'.$requerimiento->id.'/avances/'.$avance->id.'/editar') }}">
 					{{ csrf_field() }}
 					<input type="image" align="center" src="{{ asset('img/edit.png') }}" width="20" height="20">
 				</form>
 			</td>
+			@endif
+			@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
 			<td style="padding-right: 8px;">
 				<form method='POST' action="{{ url('/requerimientos/'.$requerimiento->id.'/avances/'.$avance->id) }}">
 					{{ csrf_field() }}
 					{{ method_field('DELETE') }}						
 					<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="20" height="20">
 				</form>					
-			</td>					
+			</td>
+			@endif					
 			@endif
 		</p>
 		@empty

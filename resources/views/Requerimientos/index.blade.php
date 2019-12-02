@@ -26,7 +26,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
 <header><meta http-equiv="Content-Type" content="text/html; charset=gb18030">
-	<h1>Listado de Requerimientos {{ $state }}</h1>	
+	<h1>Listado de Requerimientos</h1>	
 </header>
 <main>
 	@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
