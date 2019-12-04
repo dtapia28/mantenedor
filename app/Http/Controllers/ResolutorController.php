@@ -68,6 +68,8 @@ class ResolutorController extends Controller
             'nombreResolutor' => $data['nombreResolutor'],          
             'rutEmpresa' => auth()->user()->rutEmpresa,
             'idTeam' => $data['idTeam'],
+            'idUser' => auth()->user()->id,
+            'email' => auth()->user()->email,
         ]);
 
         if (Input::get('lider')) 

@@ -1,11 +1,4 @@
-// stylelint-disable declaration-no-important
-
-// Common values
-@each $position in $positions {
-  .position-#{$position} { position: $position !important; }
-}
-
-// Shorthand
+// Positioning
 
 .fixed-top {
   position: fixed;

@@ -137,10 +137,11 @@ class UserController extends Controller
     }
 
     public function nuevo(){
+        $roles = Role::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
         auth()->user()->authorizeRoles(['administrador']);
 
-        return view('Users.create', compact('user'));                         
+        return view('Users.create', compact('user', 'roles'));                         
     }
 
     public function guardar (Request $request)

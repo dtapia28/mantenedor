@@ -1493,7 +1493,7 @@ class RequerimientoController extends Controller
 
             $recep = $resolutor->email;
         
-            Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
+            //Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
 
             return redirect('requerimientos')->with('msj', 'Requerimiento '.$requerimiento->id2.' guardado correctamente');
 

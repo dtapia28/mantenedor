@@ -1,33 +1,88 @@
 @extends('Bases.dashboard')
+
 @section('titulo', 'Tablero')
-@section('script')
-<!-- Google Charts -->
 
-@endsection
 @section('contenido')
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<div id="panel">
-  <div id="panel-admin">
-    <div class="panel-admin-box">
-      <div id="tootlbar_colors">
-        <button class="color" style="background-color:#1abac8;" onclick="changeDisplay1()">1</button>
-        <button class="color" style="background-color:#ff8a00;" onclick="changeDisplay2()">2</button>
-        <button class="color" style="background-color:#b4de50;" onclick="changeDisplay3()">3</button>
-        <button class="color" style="background-color:#e54e53;" onclick="changeDisplay4()">4</button>
-        <button class="color" style="background-color:#1abc9c;" onclick="changeDisplay5()">5</button>
-        <button class="color" style="background-color:#159eee;" onclick="mytheme(5)">6</button>
-      </div>
+<div class="page-heading">
+  <h1 class="page-title"><i class="fa fa fa-th-large"></i> Tablero</h1>
+</div>
+<div class="page-content fade-in-up" id="g1">
+  <div class="ibox">
+    <div class="ibox-head">
+      <div class="ibox-title">Gráfico</div>
     </div>
-
+    <div class="ibox-body">
+      <div id="donutchart3" style="width: 900px; height: 500px;"></div>
+    </div>
   </div>
-  <a class="open" href="#"><span><i class="fa fa-gear fa-spin"></i></span></a>
-</div>        
+</div>
+<div class="page-content fade-in-up" id="g2">
+	<div class="ibox">
+		<div class="ibox-head">
+			<div class="ibox-title">Gráfico</div>
+		</div>
+		<div class="ibox-body">
+			<div id="graficosTeam" style="display: none;"> 
+				<?php
+				foreach ($equipos2 as $valor) {
+					echo "<div id='".$valor['id']."_chart_div' style='width: 300px; height: 300px;'></div>\n";
+				}  
+				?>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="page-content fade-in-up" id="g3">
+	<div class="ibox">
+		<div class="ibox-head">
+			<div class="ibox-title">Gráfico</div>
+		</div>
+		<div class="ibox-body">
+			<div id="reqEquipos" style="width: 900px; height: 500px;"></div>
+		</div>
+	</div>
+</div>
+<div class="page-content fade-in-up" id="g4">
+	<div class="ibox">
+		<div class="ibox-head">
+			<div class="ibox-title">Gráfico</div>
+		</div>
+		<div class="ibox-body">
+			<div id="barra" style="padding: 50px; border: 30px; width: 1500px; height: 700px;"></div>
+		</div>
+	</div>
+</div>
+<div class="page-content fade-in-up" id="g5">
+	<div class="ibox">
+		<div class="ibox-head">
+			<div class="ibox-title">Gráfico</div>
+		</div>
+		<div class="ibox-body">
+			<div id="barra2" style="padding: 50px; border: 30px; width: 1500px; height: 700px;"></div>
+		</div>
+	</div>
+</div>
 
-<!-- Prueba de graficos con Chart.js-->
-<link rel="stylesheet" type="text/css" href="{{ asset('css/index_style.css') }}">
+<div class="theme-config">
+  <div class="theme-config-toggle"><i class="fa fa-cog theme-config-show"></i><i class="ti-close theme-config-close"></i></div>
+  <div class="theme-config-box">
+      <div class="text-center font-18 m-b-20">GRÁFICOS</div>
+      <div class="font-strong">OPCIONES</div>
+      <div class="btn-group-vertical m-r-10">
+          <button class="btn btn-primary" onclick="changeDisplay1()"><i class="fa fa-pie-chart"></i> 1</button>
+            <button class="btn btn-success" onclick="changeDisplay2()"><i class="fa fa-pie-chart"></i> 2</button>
+            <button class="btn btn-warning" onclick="changeDisplay3()"><i class="fa fa-pie-chart"></i> 3</button>
+      </div>
+      <div class="btn-group-vertical">
+          <button class="btn btn-primary" onclick="changeDisplay4()"><i class="fa fa-bar-chart"></i> 4</button>
+          <button class="btn btn-success" onclick="changeDisplay5()"><i class="fa fa-bar-chart"></i> 5</button>
+          <button class="btn btn-warning" onclick="mytheme(5)"><i class="fa fa-bar-chart"></i> 6</button>
+      </div>
+  </div>
+</div>
+@endsection
+
+@section('script')
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   google.charts.load("current", {packages:["corechart"]});
@@ -166,29 +221,14 @@
     bar2.draw(data, options);      
   }
 </script>
-
-
-<!--Div that will hold the pie chart-->
-<div>
-  <div id="donutchart3" style="width: 900px; height: 500px;"></div>     
-  <div id="graficosTeam" style="display: none;"> 
-    <?php
-    foreach ($equipos2 as $valor) {
-      echo "<div id='".$valor['id']."_chart_div' style='width: 300px; height: 300px;'></div>\n";
-    }  
-    ?>
-  </div>
-  <div id="reqEquipos" style="width: 900px; height: 500px;"></div>
-  <div id="barra" style="padding: 50px; border: 30px; width: 1500px; height: 700px;"></div>
-  <div id="barra2" style="padding: 50px; border: 30px; width: 1500px; height: 700px;"></div>  
-</div>
-<script>
+<script type="text/javascript">
   function changeDisplay1() {
     document.getElementById("donutchart3").style.display = "block";
     document.getElementById("graficosTeam").style.display = "none";
     document.getElementById('reqEquipos').style.display = "none";
     document.getElementById('barra').style.display = "none";  
-    document.getElementById('barra2').style.display = "none";     
+    document.getElementById('barra2').style.display = "none";
+	$("#g1").show(); $("#g2").hide(); $("#g3").hide(); $("#g4").hide(); $("#g5").hide();
   }
 
   function changeDisplay2() {
@@ -196,14 +236,16 @@
     document.getElementById("graficosTeam").style.display = "block";
     document.getElementById('reqEquipos').style.display = "none";
     document.getElementById('barra').style.display = "none";
-    document.getElementById('barra2').style.display = "none"; 
+    document.getElementById('barra2').style.display = "none";
+	$("#g1").hide(); $("#g2").show(); $("#g3").hide(); $("#g4").hide(); $("#g5").hide();
   }
   function changeDisplay3() {
     document.getElementById("donutchart3").style.display = "none";
     document.getElementById("graficosTeam").style.display = "none";
     document.getElementById('reqEquipos').style.display = "block";
     document.getElementById('barra').style.display = "none"; 
-    document.getElementById('barra2').style.display = "none"; 
+    document.getElementById('barra2').style.display = "none";
+	$("#g1").hide(); $("#g2").hide(); $("#g3").show(); $("#g4").hide(); $("#g5").hide();
   }
 
   function changeDisplay4() {
@@ -211,7 +253,8 @@
     document.getElementById("graficosTeam").style.display = "none";
     document.getElementById('reqEquipos').style.display = "none";
     document.getElementById('barra').style.display = "block";
-    document.getElementById('barra2').style.display = "none";  
+    document.getElementById('barra2').style.display = "none";
+	$("#g1").hide(); $("#g2").hide(); $("#g3").hide(); $("#g4").show(); $("#g5").hide();
   }
 
   function changeDisplay5(){
@@ -220,9 +263,7 @@
     document.getElementById('reqEquipos').style.display = "none";
     document.getElementById('barra').style.display = "none";
     document.getElementById('barra2').style.display = "block";
+	$("#g1").hide(); $("#g2").hide(); $("#g3").hide(); $("#g4").hide(); $("#g5").show();
   }
-</script>      
-@endsection
-@section('script')
-
+</script>
 @endsection

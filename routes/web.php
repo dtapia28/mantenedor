@@ -24,8 +24,10 @@
 
 
 
-Route::get('/', 'WelcomeController@index');
-
+//Route::get('/', 'WelcomeController@index');
+Route::get('/', function () {
+    return redirect('/login');
+});
 
 
 Route::get('/download', 'UserController@exportar');
