@@ -49,6 +49,7 @@ class ExtraerController extends Controller
         if ($request['estado'] == 4) {
             $base1 = DB::table('requ_view')->where([
                 ['rutEmpresa', auth()->user()->rutEmpresa],
+                ['estado', 1],
             ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
 
             $base = [];

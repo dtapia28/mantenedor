@@ -194,17 +194,34 @@
 							<td>
 							<div scope="row" class="btn-group">
 							@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
+								@if($user[0]->nombre == "resolutor" and $res->id == $requerimiento->resolutor)
 								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/anidar") }}">
 									{{ csrf_field() }}
 									<button type="submit" class="btn btn-warning btn-sm" data-toggle="tooltip" data-original-title="Anidar" style="cursor:pointer"><i class="fa fa-compress"></i></button>
 								</form>
+								@endif
+								@if($user[0]->nombre == "administrador")
+								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/anidar") }}">
+									{{ csrf_field() }}
+									<button type="submit" class="btn btn-warning btn-sm" data-toggle="tooltip" data-original-title="Anidar" style="cursor:pointer"><i class="fa fa-compress"></i></button>
+								</form>
+								@endif								
 							@endif						
 							@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
+								@if($user[0]->nombre == "resolutor" and $res->id == $requerimiento->resolutor)
 								&nbsp;
 								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/terminado") }}">
 									{{ csrf_field() }}
 									<button type="submit" class="btn btn-success btn-sm" data-toggle="tooltip" data-original-title="Terminar" style="cursor:pointer"><i class="fa fa-check"></i></button>
 								</form>
+								@endif
+								@if( $user[0]->nombre == "administrador")
+								&nbsp;
+								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/terminado") }}">
+									{{ csrf_field() }}
+									<button type="submit" class="btn btn-success btn-sm" data-toggle="tooltip" data-original-title="Terminar" style="cursor:pointer"><i class="fa fa-check"></i></button>
+								</form>
+								@endif								
 							@endif
 							@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
 								&nbsp;
