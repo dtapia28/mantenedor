@@ -39,6 +39,9 @@ Route::get('/extracciones', 'ExtraerController@index')
 Route::get('extracciones/ver', 'ExtraerController@porEstado')
 		->middleware('auth');
 
+Route::get('extracciones/word', 'ExtraerController@word')
+		->middleware('auth');		
+
 Route::get('/extracciones/estado', 'ExtraerController@porEstado')
 		->middleware('auth');
 

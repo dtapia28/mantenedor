@@ -33,7 +33,16 @@ class ExtraerController extends Controller
         ])->orderBy('nameTeam')->get();
     
         return view('Extraer.index', compact('solicitantes', 'resolutors', 'teams', 'user'));
-    }   
+    }
+
+    public function word()
+    {
+        $word_body = "<h1>Este es una prueba para exportar word</h1>
+                        <p>
+                        <h3>Veamos que pasa</h3>
+                        </p>";
+        return view('Extraer.index', compact('word_body'));
+    }  
 
     public function porEstado(Request $request)
     {

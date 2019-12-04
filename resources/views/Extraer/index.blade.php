@@ -21,6 +21,14 @@ if (! empty($requerimientos)) {
 
 	exit();
 
+} elseif (! empty($word_body)) {
+	$filename = "exportacion.doc";
+	header("Content-Type: application/vnd.ms-word");
+	header("Content-Disposition: attachment; filename=\"$filename\"");
+	echo "<html>";
+	echo "$word_body";
+	echo "</html>";
+	exit();
 }
 
 ?>
@@ -96,7 +104,7 @@ if (! empty($requerimientos)) {
                     	<option value={{ $solicitante->id }}>{{ $solicitante->nombreSolicitante }}</option>
                 @endforeach
             </select>
-			<button class="btn btn-primary" type="submit">Extraer</button>            			
+			<button class="btn btn-primary" type="submit">Extraer</button>	
 		</form>
 	</div>
 	<div id="porResolutor" class="from-row col-md-4">
@@ -123,5 +131,13 @@ if (! empty($requerimientos)) {
 			<button class="btn btn-primary" type="submit">Extraer</button>
 		</form>
 	</div>	
+</div>
+<div id="body2" class="row">
+	<div id="word" class="from-row col-md-4">
+		<h5>Extraer Word</h5>
+		<form method="GET" action="{{ url('/extracciones/word') }}">
+			<button class="btn btn-primary" type="submit">Extraer</button>
+		</form>
+	</div>
 </div>
 @endsection
