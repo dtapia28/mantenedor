@@ -48,6 +48,7 @@ class ExtraerController extends Controller
     {
         if ($request['estado'] == 4) {
             $base1 = DB::table('requ_view')->where([
+<<<<<<< HEAD
                 ['rutEmpresa', auth()->user()->rutEmpresa],
             ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
 
@@ -73,9 +74,28 @@ class ExtraerController extends Controller
         } elseif ($request['estado'] == 3) 
         {
             $base = DB::table('requ_view')->where([
+=======
+>>>>>>> 7241bff38bca117169ea0bfe54e789cfa500bf22
                 ['rutEmpresa', auth()->user()->rutEmpresa],
             ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
-        } else 
+            $base = [];
+            $requerimientos = [];
+            $hoy = new DateTime();
+            foreach ($base1 as $req2) 
+            {
+                $req2 = (array) $req2;
+                if ($req2['Fecha de cierre'] == "9999-12-31 00:00:00") {
+                } else
+                {
+                    $cierre = new DateTime($req2['Fecha de cierre']);
+                    if ($hoy->getTimestamp()>$cierre->getTimestamp()) 
+                    {
+                        $req2 = (object)$req2;
+                        $base [] = $req2;
+                    }
+                }       
+            }          
+        } elseif ($request['estado'] == 3) 
         {
             $base = DB::table('requ_view')->where([
                 ['estado', $request['estado']],
