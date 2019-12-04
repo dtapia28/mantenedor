@@ -124,7 +124,6 @@
 								</form>
 							</td>
 							@endif
-<<<<<<< HEAD
 							@if($state == 7)
 							<th id="tabla" scope="row">
 								<form method="POST" action="{{ url("requerimientos/{$requerimiento->id}/activar") }}">
@@ -133,7 +132,6 @@
 								</form>
 							</th>
 							@endif							
-=======
 							<td style="white-space: nowrap;">
 								<a href="{{ url("requerimientos/{$requerimiento->id}") }}">
 									{{ $requerimiento->id2 }}
@@ -162,7 +160,6 @@
 								@empty
 								@endforelse	
 							</td>
->>>>>>> 7241bff38bca117169ea0bfe54e789cfa500bf22
 							<td>
 								{{ $requerimiento->porcentajeEjecutado }}
 							</td>
