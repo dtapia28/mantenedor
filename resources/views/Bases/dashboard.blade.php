@@ -1,223 +1,161 @@
-@yield('prueba')
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width initial-scale=1.0 shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>@yield('titulo')- EasyTask</title>
-
-  <!-- Custom fonts for this template-->
-  <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
-
-  <!-- Page level plugin CSS-->
-  <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
-
-  <!-- Custom styles for this template-->
-  <link href="{{ asset('css/sb-admin.css')}}  " rel="stylesheet">
-
-  <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
+  <title>@yield('titulo') - EasyTask</title>
   
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+  <link href="{{ asset('vendor/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" />
+  <link href="{{ asset('vendor/themify-icons/css/themify-icons.css') }}" rel="stylesheet" />
+  <link href="{{ asset('css/main.min.css') }}" rel="stylesheet" />
+  @yield('css')
 </head>
 
-<body id="page-top">
-
-  <nav class="navbar navbar-expand navbar-dark static-top" style="background:#004080;">
-
-    <a class="navbar-brand mr-1" href="/">EasyTask</a>
-
-    <button  class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
-      <i class="fas fa-bars"></i>
-    </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav bd-navbar-nav flex-row" style="color:#f5f5f5;">
-
-                <li>
-                     <a id="req" class="nav-link" href="{{ url('/requerimientos') }}">Requerimientos</a>                 
-                </li>
-                @if($user[0]->nombre == "administrador")                
-                <li>
-                     <a class="nav-link" href="{{ url('/priorities') }}">Prioridades</a>                  
-                </li>
-                @endif
-                @if($user[0]->nombre == "administrador")
-                <li>
-                     <a class="nav-link" href="{{ url('/resolutors') }}">Resolutores</a>                
-                </li>
-                @endif                                              
-                @if($user[0]->nombre == "administrador")
-                <li>
-                     <a class="nav-link" href="{{ url('/solicitantes') }}">Solicitantes</a>                 
-                </li>
-                @endif
-                @if($user[0]->nombre == "administrador")
-                <li>
-                     <a class="nav-link" href="{{ url('/teams') }}">Equipos</a>                 
-                </li>
-                @endif
-                @if($user[0]->nombre == "administrador")
-                <li>
-                     <a class="nav-link" href="{{ url('/users') }}">Usuarios</a>                 
-                </li>
-                @endif                                                                   
-            </ul>
-        </div>    
-
-
-    <!-- Navbar -->
-    <ul class="navbar-nav ml-auto">
-      <!-- Authentication Links -->
-      @guest
-      <li class="nav-item">
-        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-      </li>
-      @if (Route::has('register'))
-      <li class="nav-item">
-        <a class="nav-link" href="{{ route('register') }}">{{ __('Registrar') }}</a>
-      </li>
-      @endif
-      @else
-      <li class="nav-item dropdown">
-        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-          {{ Auth::user()->name }} <span class="caret"></span>
-        </a>
-
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{{ route('logout') }}"
-          onclick="event.preventDefault();
-          document.getElementById('logout-form').submit();">
-          {{ __('Logout') }}
-        </a>
-        @if($user[0]->nombre == "administrador")
-        <a class="dropdown-item" href="{{ url('user/parametros') }}">Parametros</a>
-        @endif
-        <a class="dropdown-item" href="{{ url('user/changepassword') }}">Cambiar contraseña</a>
-
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-          @csrf
-        </form>
-      </div>
-    </li>
-    @endguest
-  </ul>  
-
-  </nav>
-
-  <div id="wrapper">
-
-    <!-- Sidebar -->
-    <ul class="sidebar navbar-nav">
-      @if($user[0]->nombre == "supervisor" or $user[0]->nombre == "administrador")      
-      <li class="nav-item active">
-        <a class="nav-link" href="{{url('/dashboard')}}">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Tablero</span>
-        </a>
-      </li>
-      @endif
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Páginas</span>
-        </a>
-        <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-          <a class="dropdown-item" href="../public/requerimientos">Requerimientos</a>
-          @if($user[0]->nombre == "administrador")
-          <a class="dropdown-item" href="../public/priorities">Prioridades</a>
-          <a class="dropdown-item" href="../public/resolutors">Resolutores</a>
-          <a class="dropdown-item" href="../public/solicitantes">Solicitantes</a>
-          <a class="dropdown-item" href="../public/teams">Teams</a>
-          @endif
-        </div>
-      </li>
-      @if($user[0]->nombre == "supervisor" or $user[0]->nombre == "administrador")
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url('/extracciones') }}">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Exportar</span></a>
-      </li>
-      @endif      
-    </ul>
-
-    <div id="content-wrapper">
-
-      <div class="container-fluid">
-
-        <!-- Breadcrumbs-->
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            @yield("encabezado1")
-          </li>
-            @yield("encabezado2")
-        </ol>
-        @yield('contenido')
-        <!-- Icon Cards-->      
-
-      </div>
-      <!-- /.container-fluid -->
-
-      <!-- Sticky Footer -->
-
-    </div>
-    <!-- /.content-wrapper -->
-
+<body class="fixed-navbar">
+	<div class="page-wrapper">
+		{{-- CABECERA --}}
+        <header class="header">
+			<div class="page-brand">
+        <a class="link" href="{{ url('/requerimientos') }}">
+					<span class="brand">Easy
+						<span class="brand-tip">Task</span>
+          </span>
+					<span class="brand-mini">ET</span>
+				</a>
+			</div>
+			<div class="flexbox flex-1">
+				<ul class="nav navbar-toolbar">
+					<li>
+						<a class="nav-link sidebar-toggler js-sidebar-toggler"><i class="ti-menu"></i></a>
+					</li>
+				</ul>
+				<ul class="nav navbar-toolbar">
+					<li class="dropdown dropdown-user">
+						<a class="nav-link dropdown-toggle link" data-toggle="dropdown">
+						<img src="{{ asset('img/avatar.png') }}" />
+						<span></span>{{ Auth::user()->name }}<i class="fa fa-angle-down m-l-5"></i></a>
+						<ul class="dropdown-menu dropdown-menu-right">
+							@if($user[0]->nombre == "administrador")
+							<a class="dropdown-item" href="{{ url('user/parametros') }}"><i class="fa fa-cog"></i> Parámetros</a>
+							@endif
+							<a class="dropdown-item" href="{{ url('user/changepassword') }}"><i class="fa fa-lock"></i> Cambiar contraseña</a>
+							<li class="dropdown-divider"></li>
+							<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i> Cerrar Sesión</a>
+							<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+							@csrf
+							</form>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</header>
+		{{-- MENU --}}
+		<nav class="page-sidebar" id="sidebar">
+			<div id="sidebar-collapse">
+				<div class="admin-block d-flex">
+					<div>
+						<img src="{{ asset('img/avatar.png') }}" width="45px" />
+					</div>
+					<div class="admin-info">
+						<div class="font-strong">{{ Auth::user()->name }}</div><small>{{ ucfirst($user[0]->nombre) }}</small>
+					</div>
+				</div>
+				<ul class="side-menu metismenu">
+					@if($user[0]->nombre == "supervisor" or $user[0]->nombre == "administrador")
+					<li>
+						<a class="active" href="{{ url('/dashboard') }}"><i class="sidebar-item-icon fa fa-th-large"></i>
+							<span class="nav-label">Tablero</span>
+						</a>
+					</li>
+					@endif
+					<li class="heading">PÁGINAS</li>
+					<li>
+						<a href="{{ url('/requerimientos') }}"><i class="sidebar-item-icon fa fa-address-card"></i>
+							<span class="nav-label">Requerimientos</span>
+						</a>
+					</li>
+					@if($user[0]->nombre == "administrador") 
+					<li>
+						<a href="{{ url('/priorities') }}"><i class="sidebar-item-icon fa fa-sort-amount-desc"></i>
+							<span class="nav-label">Prioridades</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{ url('/resolutors') }}"><i class="sidebar-item-icon fa fa-address-book"></i>
+							<span class="nav-label">Resolutores</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{ url('/solicitantes') }}"><i class="sidebar-item-icon fa fa-address-book-o"></i>
+							<span class="nav-label">Solicitantes</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{ url('/teams') }}"><i class="sidebar-item-icon fa fa-users"></i>
+							<span class="nav-label">Equipos</span>
+						</a>
+					</li>
+					<li>
+						<a href="{{ url('/users') }}"><i class="sidebar-item-icon fa fa-user-circle"></i>
+							<span class="nav-label">Usuarios</span>
+						</a>
+					</li>
+					@endif
+					@if($user[0]->nombre == "supervisor" or $user[0]->nombre == "administrador")
+					<li>
+						<a href="{{ url('/extracciones') }}"><i class="sidebar-item-icon fa fa-table"></i>
+							<span class="nav-label">Exportar</span>
+						</a>
+					</li>
+					@endif
+				</ul>
+			</div>
+		</nav>
+		{{-- CONTENIDO --}}
+		<div class="content-wrapper">
+			<div class="page-content fade-in-up">
+				@yield('contenido')
+			</div>
+			<footer class="page-footer">
+        <div class="font-13">2019 © <b>EasyTask</b> - Todos los derechos reservados.</div>
+        <div class="to-top"><i class="fa fa-angle-double-up"></i></div>
+      </footer>
+		</div>
   </div>
-  <!-- /#wrapper -->
-
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
-
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
-        </div>
-      </div>
-    </div>
+  <div class="sidenav-backdrop backdrop"></div>
+  <div class="preloader-backdrop">
+      <div class="page-preloader">Cargando</div>
   </div>
 
   <!-- Bootstrap core JavaScript-->
+  {{-- <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script> --}}
   <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-  <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
+  <script src="{{ asset('vendor/popper.js/dist/umd/popper.min.js') }}"></script>
+  <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
   <!-- Core plugin JavaScript-->
   <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+  <script src="{{ asset('vendor/metisMenu/dist/metisMenu.min.js') }}"></script>
+  <script src="{{ asset('vendor/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
 
   <!-- Page level plugin JavaScript-->
   <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
-  <script src="{{ asset('vendor/datatables/jquery.dataTables.js') }}"></script>
-  <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.js') }}"></script>
+  {{-- <script src="{{ asset('vendor/datatables/jquery.dataTables.js') }}"></script>
+  <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.js') }}"></script> --}}
 
   <!-- Custom scripts for all pages-->
-  <script src="{{ asset('js/sb-admin.min.js') }}"></script>
+  <script src="{{ asset('js/app.min.js') }}" type="text/javascript"></script>
+  {{-- <script src="{{ asset('js/sb-admin.min.js') }}"></script> --}}
 
   <!-- Demo scripts for this page-->
-  <script src="{{ asset('js/datatables-demo.js') }}"></script>
-  <script src="{{ asset('js/chart-area-demo.js') }}"></script>
+  {{-- <script src="{{ asset('js/datatables-demo.js') }}"></script> --}}
+  {{-- <script src="{{ asset('js/chart-area-demo.js') }}"></script> --}}
 
   @yield('script')
   @yield('script2')

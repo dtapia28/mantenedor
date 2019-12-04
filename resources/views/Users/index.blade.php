@@ -1,3 +1,12 @@
+@extends('Bases.dashboard')
+
+@section('css')
+	<link href="{{ asset('vendor/DataTables/datatables.min.css') }}" rel="stylesheet" />
+@endsection
+
+@section('titulo', 'Usuarios')
+
+@section('contenido')
 @if(session()->has('msj'))
     <div class="alert alert-primary alert-dismissible fade show" role="alert">
     {{ session('msj') }}
@@ -6,39 +15,23 @@
     </button>
     </div>
 @endif
-@extends('Bases.dashboard')
-@section('titulo', 'Usuarios')
-@section('contenido')
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
-<h1>Usuarios</h1>
-<p>
-</p>
-<br>
-<div class="form-check form-check-inline">
-	<form method='GET' action="{{ url('users/nuevo') }}">
-		<button type="submit" value="Nuevo Usuario" class="btn btn-primary" name="">Nuevo</button>
-	</form>
+<div class="page-heading">
+	<h1 class="page-title"><i class="fa fa-user-circle"></i> Usuarios</h1>
 </div>
-<br>
-<br>	
-<tr>
-	<div class="card mb-3">
-		<div class="card-header">
-			<i class="fas fa-table"></i>
-		Usuarios</div>
-		<div class="card-body">
+<div class="page-content fade-in-up">
+	<div class="ibox">
+		<div class="ibox-head">
+			<div class="ibox-title">Listado de Usuarios</div>
+			<div class="d-flex align-content-end"><a class="btn btn-success" href="{{ url('users/nuevo') }}"><i class="fa fa-plus"></i> Nuevo Registro</a></div>
+		</div>
+		<div class="ibox-body">
 			<div class="table-responsive">
-				<table class="table table-bordered table-striped table-hover" id="dataTable"width="100%"  cellspacing="0">
+				<table class="table table-striped table-bordered table-hover" id="dataTable" cellspacing="0" width="100%">
 					<thead>
 						<tr>
-							<th scope="col-md-3"><strong>Usuario</strong></th>
-							<th scope="col-md-3"><strong></strong></th>
-							<th scope="col"><strong></strong></th>
-							<th scope="col-md-2"><strong></strong>
+							<th><strong>Usuario</strong></th>
+							<th><strong>Rol</strong></th>
+							<th><strong>Cambiar Contraseña</strong>
 						</tr>
 					</thead>
 					<tbody>
@@ -48,14 +41,14 @@
 								{{ $us->name }}
 							</td>
 							<td>	
-								<form method="POST" action="{{ url('users/modificar') }}">
+								<form method="POST" action="{{ url('users/modificar') }}" class="form-inline">
 									{{ csrf_field() }}
 									<?php
-									echo "<select id='role".$us->id."' class='form-control col-md-6' name='idRole'>";
+									echo "<select id='role".$us->id."' class='form-control col-md-7 mb-2 mr-sm-2 mb-sm-0' name='idRole'>";
 									?>
 										@foreach($relaciones as $relacion)
 										@if($us->id == $relacion->user_id)
-										@foreach($roles as $role)
+											@foreach($roles as $role)
 											<option value="{{ $role->id }}" @if($role->id == $relacion->role_id){{ 'selected' }}@endif>
 												{{ $role->nombre }}
 											</option>
@@ -67,33 +60,48 @@
 									echo "<select id='team".$us->id."' class='form-control col-md-8' name='idTeam' style='display: none;'>";
 									?>
 									</select>
-							</td>		
-							<td>
+							
 									<input type="hidden" value="{{ $us->id }}" name="idUsers">	
-									<button type="submit" class="btn btn-success">Modificar</button>
+									<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> Cambiar</button>
 								</form>
 							</td>	
 							<td>
-								<form method="POST" action="{{ url('users/cambiar') }}">
+								<form method="POST" action="{{ url('users/cambiar') }}" class="form-inline">
 									{{ csrf_field() }}
-									<input class="form-control col-md-4" type="password" name="cambiar">
+									<input class="form-control mb-2 mr-sm-2 mb-sm-0" type="password" name="cambiar">
 									<input type="hidden" value="{{ $us->id }}" name="usuario">
-									<button class="btn btn-primary" type="submit">Cambiar Contraseña</button>
+									<button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-check"></i> Aceptar</button>
 								</form>
 							</td>								
-							@empty	
-							@endforelse
+							@empty
 						</tr>
+						@endforelse
 					</tbody>		
 				</table>
 			</div>
 		</div>
 	</div>
-		<?php
-		foreach ($users as $us) {
-			echo "<script type='text/javascript'>\n$(document).ready(function(){\n";
+</div>
+<?php
+	foreach ($users as $us) {
+		echo "<script type='text/javascript'>\n$(document).ready(function(){\n";
 
-			echo "$('#role".$us->id."').on('change', function(){\nvar combo = document.getElementById('role".$us->id."');\nvar selected = combo.options[combo.selectedIndex].text;\nif(selected == 'resolutor' || selected == 'gestor'){\ndocument.getElementById('team".$us->id."').style.display = 'block';\n$.get('/users/script', function(teams){\n$('#team".$us->id."').empty();\n$('#team".$us->id."').append(\"<option value=''>Seleccione un equipo</option>\");\n$.each(teams, function(index, value){\n $('#team".$us->id."').append(\"<option value='\"+index+\"'>\"+value+\"</option>\");\n});\n});\n} else {\ndocument.getElementById('team".$us->id."').style.display = 'none';\n}\n});\n});\n</script>\n";
-		}
-		?>	
+		echo "$('#role".$us->id."').on('change', function(){\nvar combo = document.getElementById('role".$us->id."');\nvar selected = combo.options[combo.selectedIndex].text;\nif(selected == 'resolutor' || selected == 'gestor'){\ndocument.getElementById('team".$us->id."').style.display = 'block';\n$.get('/users/script', function(teams){\n$('#team".$us->id."').empty();\n$('#team".$us->id."').append(\"<option value=''>Seleccione un equipo</option>\");\n$.each(teams, function(index, value){\n $('#team".$us->id."').append(\"<option value='\"+index+\"'>\"+value+\"</option>\");\n});\n});\n} else {\ndocument.getElementById('team".$us->id."').style.display = 'none';\n}\n});\n});\n</script>\n";
+	}
+?>
+@endsection
+
+@section('script')
+<script src="{{ asset('vendor/DataTables/datatables.min.js') }}" type="text/javascript"></script>
+<script type="text/javascript">
+	$(function() {
+		$('#dataTable').DataTable({
+			"language": {
+				"url": "{{ asset('vendor/DataTables/lang/spanish.json') }}"
+			},
+			pageLength: 10,
+			
+		});
+	})
+</script>
 @endsection

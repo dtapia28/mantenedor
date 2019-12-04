@@ -1,3 +1,12 @@
+@extends('Bases.dashboard')
+
+@section('css')
+	<link href="{{ asset('vendor/DataTables/datatables.min.css') }}" rel="stylesheet" />
+@endsection
+
+@section('titulo', 'Resolutores')
+
+@section('contenido')
 @if(session()->has('msj'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
     {{ session('msj') }}
@@ -6,77 +15,76 @@
     </button>
     </div>
 @endif
-@extends('Bases.dashboard')
-@section('titulo', 'Resolutores')
-@section('contenido')
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
- <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
-	<h1>Listado de Resolutores</h1>
-	<p>
-	</p>
-	@if($user[0]->nombre == "administrador")
-	<form method='HEAD' action="{{ url('users/nuevo') }}">
-	<button type="submit" value="Nuevo Resolutor" class="btn btn-primary" name="">Nuevo</button>
-	</form>
-	@endif
-	<br>
-	<tr>
-		<div class="card mb-3">
-	    	<div class="card-header">
-	        	<i class="fas fa-table"></i>
-	            Resolutores</div>
-	          <div class="card-body">
-	            <div class="table-responsive">
-	              <table class="table table-bordered table-striped table-hover" id="dataTable"width="100%"  cellspacing="0">
-	                <thead>
-	                	<tr>
-						    <th scope="col"><strong>ID</strong></th>
-						    <th scope="col"><strong>Nombre</strong></th>
-						    @if($user[0]->nombre == "administrador")
-						    <th scope="col"><strong></strong></th>
-						    @endif
-						    @if($user[0]->nombre == "administrador")
-						    <th scope="col"><strong></strong></th>
-						    @endif
+<div class="page-heading">
+	<h1 class="page-title"><i class="fa fa fa-address-book"></i> Resolutores</h1>
+</div>
+<div class="page-content fade-in-up">
+	<div class="ibox">
+		<div class="ibox-head">
+			<div class="ibox-title">Listado de Resolutores</div>
+			@if($user[0]->nombre == "administrador")
+				<div class="d-flex align-content-end"><a class="btn btn-success" href="{{ url('resolutors/nuevo') }}"><i class="fa fa-plus"></i> Nuevo Registro</a></div>
+			@endif
+		</div>
+		<div class="ibox-body">
+			<div class="table-responsive">
+				<table class="table table-bordered table-striped table-hover" id="dataTable"width="100%"  cellspacing="0">
+					<thead>
+						<tr>
+							<th scope="col"><strong>ID</strong></th>
+							<th scope="col"><strong>Nombre</strong></th>
+							@if($user[0]->nombre == "administrador")
+							<th scope="col"><strong>Acciones</strong></th>
+							@endif
 						</tr>
 					</thead>
 					<tbody>
 						@forelse ($resolutors as $resolutor)
 						<tr>
-							<th scope="row">
-							    <a href="{{url('resolutors/'.$resolutor->id)}}">					    
+							<td scope="row">
+								<a href="{{url('resolutors/'.$resolutor->id)}}">					    
 								{{ $resolutor->id }}
 								</a>
-							</th>
-						<td>
-						{{ $resolutor->nombreResolutor }}
-						</td>
-						@if($user[0]->nombre == "administrador")
-						<td>									
-						<form method='HEAD' action="{{ url('resolutors/'.$resolutor->id.'/editar') }}">
-							{{ csrf_field() }}						
-						<input style="text-align: center;" type="image" align="center" src="{{ asset('img/edit.png') }}" width="30" height="30">
-						</form>
-						</td>
-						@endif
-						@if($user[0]->nombre == "administrador")
-						<td>
+							</td>
+							<td>
+							{{ $resolutor->nombreResolutor }}
+							</td>
+							@if($user[0]->nombre == "administrador")
+							<td scope="row" class="form-inline">									
+							<form method='HEAD' action="{{ url('resolutors/'.$resolutor->id.'/editar') }}">
+								{{ csrf_field() }}						
+								<button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
+							</form>
+							&nbsp;&nbsp;
 							<form method='post' action="{{url('resolutors/'.$resolutor->id)}}">
-							{{ csrf_field() }}
-							{{ method_field('DELETE') }}						
-						<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="30" height="30">
-						</form>
-						</td>
-						@endif
-			@empty	
-			@endforelse
-				</tr>
-		</tbody>		
-	</table>
+								{{ csrf_field() }}
+								{{ method_field('DELETE') }}						
+								<button type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Eliminar" style="cursor:pointer"><i class="fa fa-trash"></i></button>
+							</form>
+							</td>
+							@endif
+							@empty
+						</tr>
+						@endforelse
+					</tbody>		
+				</table>
+			</div>
+		</div>
+	</div>
 </div>
-</div>
-</div>
+@endsection
+
+@section('script')
+<script src="{{ asset('vendor/DataTables/datatables.min.js') }}" type="text/javascript"></script>
+<script type="text/javascript">
+	$(function() {
+		$('#dataTable').DataTable({
+			"language": {
+				"url": "{{ asset('vendor/DataTables/lang/spanish.json') }}"
+			},
+			pageLength: 10,
+			
+		});
+	})
+</script>
 @endsection

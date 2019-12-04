@@ -38,7 +38,7 @@ class SolicitanteController extends Controller
             $volver = $_GET['volver'];
         }
 
-        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();     
         return view('Solicitantes.create', compact('user', 'volver'));
     }
 
@@ -58,6 +58,8 @@ class SolicitanteController extends Controller
         Solicitante::create([
             'nombreSolicitante' => $data['nombreSolicitante'],
             'rutEmpresa' => auth()->user()->rutEmpresa,
+            'idUser' => auth()->user()->id,
+            'email' => auth()->user()->email,
         ]);
 
         if ($data['volver'] == 1) {
