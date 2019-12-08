@@ -16,14 +16,14 @@
     </div>
 @endif
 <div class="page-heading">
-	<h1 class="page-title"><i class="fa fa fa-address-book"></i> Resolutores</h1>
+	<h1 class="page-title"><i class="fa fa-address-book"></i> Resolutores</h1>
 </div>
 <div class="page-content fade-in-up">
 	<div class="ibox">
 		<div class="ibox-head">
 			<div class="ibox-title">Listado de Resolutores</div>
 			@if($user[0]->nombre == "administrador")
-				<div class="d-flex align-content-end"><a class="btn btn-success" href="{{ url('resolutors/nuevo') }}"><i class="fa fa-plus"></i> Nuevo Registro</a></div>
+				<div class="d-flex align-content-end"><a class="btn btn-success" href="{{ url('users/nuevo') }}"><i class="fa fa-plus"></i> Nuevo Registro</a></div>
 			@endif
 		</div>
 		<div class="ibox-body">

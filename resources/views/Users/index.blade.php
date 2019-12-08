@@ -62,7 +62,7 @@
 									</select>
 							
 									<input type="hidden" value="{{ $us->id }}" name="idUsers">	
-									<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i> Cambiar</button>
+									<button type="submit" class="btn btn-primary btn-sm" style="cursor:pointer"><i class="fa fa-pencil"></i> Cambiar</button>
 								</form>
 							</td>	
 							<td>
@@ -70,7 +70,7 @@
 									{{ csrf_field() }}
 									<input class="form-control mb-2 mr-sm-2 mb-sm-0" type="password" name="cambiar">
 									<input type="hidden" value="{{ $us->id }}" name="usuario">
-									<button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-check"></i> Aceptar</button>
+									<button class="btn btn-primary btn-sm" type="submit" style="cursor:pointer"><i class="fa fa-check"></i> Aceptar</button>
 								</form>
 							</td>								
 							@empty
@@ -86,7 +86,7 @@
 	foreach ($users as $us) {
 		echo "<script type='text/javascript'>\n$(document).ready(function(){\n";
 
-		echo "$('#role".$us->id."').on('change', function(){\nvar combo = document.getElementById('role".$us->id."');\nvar selected = combo.options[combo.selectedIndex].text;\nif(selected == 'resolutor' || selected == 'gestor'){\ndocument.getElementById('team".$us->id."').style.display = 'block';\n$.get('/users/script', function(teams){\n$('#team".$us->id."').empty();\n$('#team".$us->id."').append(\"<option value=''>Seleccione un equipo</option>\");\n$.each(teams, function(index, value){\n $('#team".$us->id."').append(\"<option value='\"+index+\"'>\"+value+\"</option>\");\n});\n});\n} else {\ndocument.getElementById('team".$us->id."').style.display = 'none';\n}\n});\n});\n</script>\n";
+		echo "$('#role".$us->id."').on('change', function(){\nvar combo = document.getElementById('role".$us->id."');\nvar selected = combo.options[combo.selectedIndex].text;\nif(selected == 'resolutor' || selected == 'gestor'){\ndocument.getElementById('team".$us->id."').style.display = 'block';\n$.get('users/script', function(teams){\n$('#team".$us->id."').empty();\n$('#team".$us->id."').append(\"<option value=''>Seleccione un equipo</option>\");\n$.each(teams, function(index, value){\n $('#team".$us->id."').append(\"<option value='\"+index+\"'>\"+value+\"</option>\");\n});\n});\n} else {\ndocument.getElementById('team".$us->id."').style.display = 'none';\n}\n});\n});\n</script>\n";
 	}
 ?>
 @endsection

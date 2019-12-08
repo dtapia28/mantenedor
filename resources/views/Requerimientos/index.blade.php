@@ -16,7 +16,7 @@
 </div>
 @endif
 <div class="page-heading">
-	<h1 class="page-title"><i class="fa fa fa-address-card"></i> Requerimientos</h1>
+	<h1 class="page-title"><i class="fa fa-address-card"></i> Requerimientos</h1>
 </div>
 <div class="form-check form-check-inline">
 	<form class="navbar-form navbar-left pull-right" method='GET' action="{{ url('requerimientos/') }}">

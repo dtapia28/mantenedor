@@ -1,8 +1,12 @@
 @extends('Bases.dashboard')
 @section('titulo', "Crear usuario")
+
 @section('contenido')
 <div class="page-heading">
     <h1 class="page-title"><i class="fa fa-user-circle"></i> Usuarios</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><i class="fa fa-arrow-circle-right"></i> Crear Usuario</li>
+    </ol>
 </div>
 <div class="page-content fade-in-up">
     <div class="row">
@@ -55,7 +59,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="idRole" class="col-md-2 col-form-label text-md-right">Role</label>
+                            <label for="idRole" class="col-md-2 col-form-label text-md-right">Rol</label>
                             <div class="col-md-4">
                                 <select id="idRole" class='form-control col-md-12' name='idRole'>
                                     @foreach($roles as $role)
@@ -75,11 +79,11 @@
                             <div class="col-md-4 form-inline">
                                 <div class="col-md-7">
                                 <button type="submit" class="btn btn-success btn-block mb-2 mr-sm-2 mb-sm-0" style="cursor:pointer">
-                                    <i class="fa fa-save"></i> Guardar Registro
+                                    <i class="fa fa-check-circle"></i> Guardar Registro
                                 </button>
                                 </div>
                                 <div class="col-md-5">
-                                <a href="{{url('users')}}" class="btn btn-outline-danger btn-block"><i class="fa fa-arrow-left"></i> Regresar</a>
+                                <a href="{{url('users')}}" class="btn btn-outline-primary btn-block"><i class="fa fa-arrow-left"></i> Regresar</a>
                                 </div>
                             </div>
                         </div>

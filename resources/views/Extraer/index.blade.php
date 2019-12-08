@@ -47,7 +47,8 @@ if (! empty($requerimientos)) {
 							<option value="1">Activo</option>
 							<option value="3">Todos</option>
 							<option value="4">Vencidos</option>
-						</select>	
+						</select>
+						<br>
 						<button id="btn1" class="btn btn-primary" type="submit">Extraer</button>	    	
 					</form>
 				</div>
@@ -59,10 +60,12 @@ if (! empty($requerimientos)) {
 							<option value="1">Menor o igual que</option>
 							<option value="2">Mayor que</option>
 						</select>
+						<br>
 						<div>
 						<label for="porcentaje">Ingresa porcentaje de requerimiento(s):</label>
 						<input class="form-control col-md-3" type="number" name="porcentaje">	
 						</div>
+						<br>
 						<button class="btn btn-primary" type="submit">Extraer</button>	    	
 					</form>
 				</div>
@@ -74,14 +77,17 @@ if (! empty($requerimientos)) {
 							<option value="1">Menor o igual que</option>
 							<option value="2">Mayor que</option>
 						</select>
+						<br>
 						<div>
 						<label for="porcentaje">Ingresa n° de cambios:</label>
 						<input class="form-control col-md-2" type="number" name="cambios">	
 						</div>
+						<br>
 						<button class="btn btn-primary" type="submit">Extraer</button>	    	
 					</form>
 				</div>
 			</div>
+			<br><br>
 			<div id="body2" class="row">
 				<div id="porSolicitante" class="from-row col-md-4">
 					<h5>Por solicitante:</h5>
@@ -92,6 +98,7 @@ if (! empty($requerimientos)) {
 									<option value={{ $solicitante->id }}>{{ $solicitante->nombreSolicitante }}</option>
 							@endforeach
 						</select>
+						<br>
 						<button class="btn btn-primary" type="submit">Extraer</button>            			
 					</form>
 				</div>
@@ -104,6 +111,7 @@ if (! empty($requerimientos)) {
 									<option value="{{ $resolutor->id }}">{{ $resolutor->nombreResolutor }}</option>
 							@endforeach
 						</select>
+						<br>
 						<button class="btn btn-primary" type="submit">Extraer</button>
 					</form>
 				</div>
@@ -116,6 +124,7 @@ if (! empty($requerimientos)) {
 									<option value="{{ $team->id }}">{{ $team->nameTeam }}</option>
 							@endforeach
 						</select>
+						<br>
 						<button class="btn btn-primary" type="submit">Extraer</button>
 					</form>
 				</div>	

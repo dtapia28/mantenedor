@@ -14,6 +14,7 @@
   <link href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('vendor/themify-icons/css/themify-icons.css') }}" rel="stylesheet" />
   <link href="{{ asset('css/main.min.css') }}" rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
   @yield('css')
 </head>
 
@@ -123,9 +124,9 @@
 				@yield('contenido')
 			</div>
 			<footer class="page-footer">
-        <div class="font-13">2019 © <b>EasyTask</b> - Todos los derechos reservados.</div>
-        <div class="to-top"><i class="fa fa-angle-double-up"></i></div>
-      </footer>
+				<div class="font-13">2019 © <b>EasyTask</b> - Todos los derechos reservados.</div>
+				<div class="to-top"><i class="fa fa-angle-double-up"></i></div>
+			</footer>
 		</div>
   </div>
   <div class="sidenav-backdrop backdrop"></div>
