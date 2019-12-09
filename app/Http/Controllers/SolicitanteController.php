@@ -82,8 +82,9 @@ class SolicitanteController extends Controller
         if ($solicitante == null) {
             return view('errors.404');
         }
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();  
 
-        return view('Solicitantes.show', compact('solicitante'));
+        return view('Solicitantes.show', compact('solicitante', 'user'));
     }
 
     /**

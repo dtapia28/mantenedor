@@ -540,3 +540,14 @@ Route::get('/requerimientos/{requerimiento}/tareas/{tarea}/editar', 'TareaContro
 Route::put('/requerimientos/{requerimiento}/tareas/{tarea}', 'TareaController@update');
 
 Route::delete('/requerimientos/{requerimiento}/tareas/{tarea}/eliminar', 'TareaController@destroy');
+
+Route::get('/clear_cache', function()
+{
+	Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:cache');
+    Artisan::call('config:clear');
+    Artisan::call('optimize:clear');
+    return "Caché limpiado";
+});

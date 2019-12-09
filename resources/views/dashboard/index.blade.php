@@ -222,6 +222,7 @@
   }
 </script>
 <script type="text/javascript">
+  menu_activo('mTablero');
   function changeDisplay1() {
     document.getElementById("donutchart3").style.display = "block";
     document.getElementById("graficosTeam").style.display = "none";

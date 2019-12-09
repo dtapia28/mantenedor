@@ -16,7 +16,7 @@
 </div>
 @endif
 <div class="page-heading">
-	<h1 class="page-title"><i class="fa fa fa-address-card"></i> Requerimientos</h1>
+	<h1 class="page-title"><i class="fa fa-address-card"></i> Requerimientos</h1>
 </div>
 <div class="form-check form-check-inline">
 	<form class="navbar-form navbar-left pull-right" method='GET' action="{{ url('requerimientos/') }}">
@@ -240,7 +240,7 @@
 @section('script')
 <script src="{{ asset('vendor/DataTables/datatables.min.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
-	$(document).ready(function(){
+	$(document).ready(function() {
 		$('#state').on('change', function(){
 			var role = $(this).val();
 			if(role == 2 || role ==3){
@@ -254,6 +254,7 @@
 				document.getElementById("solicitante").style.display = "none";	
 			}
 		});
+		menu_activo('mRequerimientos');
 	});
 	$(function() {
 		$('#dataTable').DataTable({
