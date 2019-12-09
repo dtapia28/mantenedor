@@ -16,7 +16,7 @@
     </div>
 @endif
 <div class="page-heading">
-	<h1 class="page-title"><i class="fa fa fa-address-book"></i> Resolutores</h1>
+	<h1 class="page-title"><i class="fa fa-address-book"></i> Resolutores</h1>
 </div>
 <div class="page-content fade-in-up">
 	<div class="ibox">
@@ -77,6 +77,7 @@
 @section('script')
 <script src="{{ asset('vendor/DataTables/datatables.min.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
+	menu_activo('mResolutores');
 	$(function() {
 		$('#dataTable').DataTable({
 			"language": {

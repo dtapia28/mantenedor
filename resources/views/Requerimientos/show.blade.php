@@ -1,72 +1,7 @@
-@extends('Bases.detalles2')
+@extends('Bases.dashboard')
 @section('titulo', "Detalle de Requerimientos")
-@section('requerimiento')
-<h2>{{ $requerimiento->id2 }}</h2>
-<br>
-<p><strong>Solicitante:</strong> {{ $solicitante->nombreSolicitante }}</p>
-<p><strong>Resolutor: </strong>{{ $resolutor->nombreResolutor }}</p>
-@if($user[0]->nombre == "resolutor")
-<p><strong>Comentario: </strong>{{ $requerimiento->comentario }}</p>
-@endif	
-<p><strong>Solicitud: </strong>{{ $requerimiento->textoRequerimiento }}</p>
-<p>
-	@forelse ($priorities as $priority)
-	@if ($priority->id == $requerimiento->idPrioridad)
-	<strong>Prioridad: </strong>{{ $priority->namePriority }}
-	@endif
-	@empty
-	@endforelse
-</p>
-<p>
-	<strong>Fecha original de requerimiento: </strong>{{date('d-m-Y', strtotime($requerimiento->fechaEmail)) }}
-</p>
-<p>
-	<strong>Fecha de inicio seguimiento: </strong>{{date('d-m-Y', strtotime($requerimiento->fechaSolicitud))}}
-</p>
-<p>
-	@forelse ($teams as $team)
-	@forelse ($resolutors as $resolutor)
-	@if ($resolutor->idTeam == $team->id)
-	@if ($resolutor->id == $requerimiento->idResolutor)
-	<strong>Equipo: </strong>{{ $team->nameTeam }}
-	@endif
-	@endif
-	@empty
-	@endforelse
-	@empty
-	@endforelse
-</p>           	
-<p>
-	@forelse ($resolutors as $resolutor)
-	@if ($resolutor->id == $requerimiento->idResolutor)
-	<strong>Resolutor: </strong>{{ $resolutor->nombreResolutor }}
-	@endif
-	@empty
-	@endforelse
-</p>
-<p><strong>Fecha solicitada de cierre: </strong> {{date('d-m-Y', strtotime($requerimiento->fechaCierre)) }}</p>
-<p>
-	@if ($requerimiento->fechaRealCierre != null)
-	<strong>Fecha real cierre: </strong> {{date('d-m-Y', strtotime($requerimiento->fechaRealCierre)) }}
-	@else
-	<strong>Fecha real cierre: </strong>
-	@endif
-</p>		    
-<p><strong>Número de cambios: </strong> {{ $requerimiento->numeroCambios }}</p>
-<p>
-	@if ($requerimiento->numeroCambios <=1)
-	<strong>Status de cambio: </strong>V
-	@elseif ($requerimiento->numeroCambios <=3)
-	<strong>Status de cambio: </strong>A
-	@else
-	<strong>Status de cambio: </strong>R		
-	@endif
-</p>	      
-<p><strong>Porcentaje ejecutado: </strong> {{ $requerimiento->porcentajeEjecutado }}%</p>
-@if($requerimiento->cierre != "")
-<p><strong>Cierre: </strong>{{ $requerimiento->cierre }}</p>
-@endif    
 
+<<<<<<< HEAD
 <br>
 @endsection 
 @if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador" or $user[0]->nombre == "gestor")
@@ -196,28 +131,268 @@
 				@else
 				<td>
 				</td>
+=======
+@section('contenido')
+<div class="page-heading">
+	<h1 class="page-title"><i class="fa fa-address-card"></i> Requerimientos</h1>
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item"><i class="fa fa-file-text-o"></i> Detalle del Requerimiento</li>
+	</ol>
+</div>
+<div class="page-content fade-in-up">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="ibox">
+				<div class="ibox-head">
+					<div class="ibox-title">Datos del Requerimiento</div>
+				</div>
+				<div class="ibox-body">
+					<div class="row">
+						<div class="col-md-6">
+							<h2>Requerimiento n° {{ $requerimiento->id2 }}</h2>
+							<br>
+							<table class="table table-condensed">
+								<tr>
+									<td width="40%"><strong>Solicitante</strong></td>
+									<td width="60%">{{ $solicitante->nombreSolicitante }}</td>
+								</tr>
+								<tr>
+									<td><strong>Resolutor</strong></td>
+									<td>{{ $resolutor->nombreResolutor }}</td>
+								</tr>
+								@if($user[0]->nombre == "resolutor")
+								<tr>
+									<td><strong>Comentario</strong></td>
+									<td>{{ $requerimiento->comentario }}</td>
+								</tr>
+								@endif
+								<tr>
+									<td><strong>Solicitud</strong></td>
+									<td>{{ $requerimiento->textoRequerimiento }}</td>
+								</tr>
+								@forelse ($priorities as $priority)
+								@if ($priority->id == $requerimiento->idPrioridad)
+								<tr>
+									<td><strong>Prioridad</strong></td>
+									<td>{{ $priority->namePriority }}</td>
+								</tr>
+								@endif
+								@empty
+								@endforelse
+								<tr>
+									<td><strong>Fecha original de requerimiento</strong></td>
+									<td>{{ date('d-m-Y', strtotime($requerimiento->fechaEmail)) }}</td>
+								</tr>
+								<tr>
+									<td><strong>Fecha de inicio seguimiento</strong></td>
+									<td>{{ date('d-m-Y', strtotime($requerimiento->fechaSolicitud)) }}</td>
+								</tr>
+								@forelse ($teams as $team)
+								@forelse ($resolutors as $resolutor)
+								@if ($resolutor->idTeam == $team->id)
+								@if ($resolutor->id == $requerimiento->idResolutor)
+								<tr>
+									<td><strong>Equipo</strong></td>
+									<td>{{ $team->nameTeam }}</td>
+								</tr>
+								@endif
+								@endif
+								@empty
+								@endforelse
+								@empty
+								@endforelse
+								@forelse ($resolutors as $resolutor)
+								@if ($resolutor->id == $requerimiento->idResolutor)
+								<tr>
+									<td><strong>Resolutor</strong></td>
+									<td>{{ $resolutor->nombreResolutor }}</td>
+								</tr>
+								@endif
+								@empty
+								@endforelse
+								<tr>
+									<td><strong>Fecha solicitada de cierre</strong></td>
+									<td>{{ date('d-m-Y', strtotime($requerimiento->fechaCierre)) }}</td>
+								</tr>
+								<tr>
+									<td><strong>Fecha real cierre</strong></td>
+									@if ($requerimiento->fechaRealCierre != null)
+									<td>{{date('d-m-Y', strtotime($requerimiento->fechaRealCierre)) }}</td>
+									@else
+									<td></td>
+									@endif
+								</tr>
+								<tr>
+									<td><strong>Número de cambios</strong></td>
+									<td>{{ $requerimiento->numeroCambios }}</td>
+								</tr>
+								<tr>
+									<td><strong>Status de cambio</strong></td>
+									@if ($requerimiento->numeroCambios <=1)
+									<td>V</td>
+									@elseif ($requerimiento->numeroCambios <=3)
+									<td>A</td>
+									@else
+									<td>R</td>
+									@endif
+								</tr>
+								<tr>
+									<td><strong>Porcentaje ejecutado</strong></td>
+									<td>{{ $requerimiento->porcentajeEjecutado }}%</td>
+								</tr>
+								@if($requerimiento->cierre != "")
+								<tr>
+									<td><strong>Cierre</strong></td>
+									<td>{{ $requerimiento->cierre }}%</td>
+								</tr>
+								@endif
+							</table>
+						</div>
+					</div>
+					{{-- AVANCES --}}
+					@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
+					<div class="row">
+						<div class="col-md-12">
+							<h2>Avances</h2>
+							@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
+								<form method='HEAD' action="{{ url('/requerimientos/'.$requerimiento->id.'/avances/nuevo') }}">
+									<button type="submit" value="Ingresar" class="btn btn-primary" name="" style="cursor:pointer"><i class="fa fa-plus"></i> Ingresar</button>
+								</form>
+							@endif
+							<table class="table table-borderless table-striped table-hover">
+								<thead>
+									<tr>
+										<th>Fecha Real de Cierre</th>
+										<th>Texto del Avance</th>
+										<th>Acciones</th>
+									</tr>		
+								</thead>
+								<tbody>
+								@forelse ($avances as $avance)	
+								<tr>
+									@if ($avance->idRequerimiento == $requerimiento->id)
+									<td>
+										{{ $avance->created_at->format('d-m-Y') }}
+									</td>
+									<td>{{ $avance->textAvance }}</td>
+									<td>
+										<div scope="row" class="btn-group">
+										<form method='HEAD' action="{{ url('/requerimientos/'.$requerimiento->id.'/avances/'.$avance->id.'/editar') }}">
+											{{ csrf_field() }}
+											<button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
+										</form>
+										&nbsp;&nbsp;&nbsp;
+										<form method='POST' action="{{ url('/requerimientos/'.$requerimiento->id.'/avances/'.$avance->id) }}">
+											{{ csrf_field() }}
+											{{ method_field('DELETE') }}
+											<button type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Eliminar" style="cursor:pointer"><i class="fa fa-trash"></i></button>
+										</form>	
+										</div>				
+									</td>			
+									@endif
+								</tr>
+								@empty
+								@endforelse 
+								</tbody>
+							</table>
+						</div>
+					</div>
+					@endif
+					{{-- TAREAS --}}
+					@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
+					<div class="row">
+						<div class="col-md-12">
+						<h2>Tareas</h2>
+						<form method='HEAD' action="{{ url('/requerimientos/'.$requerimiento->id.'/tareas/nueva') }}">
+							<button type="submit" value="Ingresar" class="btn btn-primary" name="" style="cursor:pointer"><i class="fa fa-plus"></i> Ingresar</button>
+						</form>
+						<table class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th>N°</th>
+									<th>Tarea</th>
+									<th>Solicitud</th>
+									<th>Cierre</th>
+									<th>Resolutor</th>
+									<th>Estado</th>
+									<th>Acciones</th>
+								</tr>		
+							</thead>
+							<tbody>
+								@forelse ($tareas as $tarea)	
+								<tr>
+									@if($tarea->estado == 1 or $tarea->estado == 2)
+										<td>{{ $tarea->id2 }}</td>	
+										<td>{{ $tarea->textoTarea }}</td>
+										<td>{{date('d-m-Y', strtotime($tarea->fechaSolicitud)) }}</td>
+										<td>{{date('d-m-Y', strtotime($tarea->fechaCierre)) }}</td>
+									@endif
+									@if($tarea->estado == 1 or $tarea->estado == 2)				
+										<td>
+										@forelse($resolutores as $resolutor)	
+											{{ $resolutor->nombreResolutor }}
+										@empty
+										@endforelse	
+										</td>
+										<td>			
+											@if($tarea->estado == 1)
+											<span class="badge badge-default">Pendiente <i class="fa fa-circle text-warning"></i></span>
+											@else
+											<span class="badge badge-default">Completada <i class="fa fa-circle text-success"></i></span>
+											@endif	
+										</td>
+										<td>
+										<div scope="row" class="btn-group">
+										@if($tarea->estado == 1)
+											<form method='GET' action="{{ url("/requerimientos/{$requerimiento->id}/tareas/{$tarea->id}/terminar")}}">					
+												{{ csrf_field() }}
+												<button type="submit" class="btn btn-success btn-sm" data-toggle="tooltip" data-original-title="Terminar" style="cursor:pointer"><i class="fa fa-check"></i></button>
+												<input type="hidden" name="tarea" value={{$tarea->id}}>
+												<input type="hidden" name="req" value="{{ $requerimiento->id }}">
+											</form>
+										@endif
+										&nbsp;&nbsp;
+										@if($tarea->estado == 1)									
+											<form method='HEAD' action="{{ url('/requerimientos/'.$requerimiento->id.'/tareas/'.$tarea->id.'/editar') }}">
+												{{ csrf_field() }}
+												<button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
+											</form>
+										@endif
+										&nbsp;&nbsp;
+										@if($tarea->estado == 1)							
+											<form method='POST' action="{{ url('/requerimientos/'.$requerimiento->id.'/tareas/'.$tarea->id.'/eliminar') }}">
+												{{ csrf_field() }}
+												{{ method_field('DELETE') }}						
+												<button type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Eliminar" style="cursor:pointer"><i class="fa fa-trash"></i></button>
+												<input type="hidden" name="tarea" value={{$tarea->id}}>
+												<input type="hidden" name="req" value={{$requerimiento->id}}>
+											</form>
+										@endif
+										</div>
+										</td>
+									@endif	
+								</tr>						
+								@empty
+								@endforelse 
+							</tbody>	
+						</table>
+					</div>
+				</div>
+>>>>>>> aea5e24a011df9482809d70b96b8afeb29d0ee72
 				@endif
-				@if($tarea->estado == 1)
-				<td>									
-					<form method='POST' action="{{ url('/requerimientos/'.$requerimiento->id.'/tareas/'.$tarea->id.'/eliminar') }}">
-						{{ csrf_field() }}
-						{{ method_field('DELETE') }}						
-						<input type="image" align="center" src="{{ asset('img/delete.png') }}" width="15" height="15">
-						<input type="hidden" name="tarea" value={{$tarea->id}}>
-						<input type="hidden" name="req" value={{$requerimiento->id}}>
-					</form>
-				</td>					
-				@else
-				<td>
-				</td>
-				@endif	
-			@endif	
-		</tr>						
-		@empty
-		@endforelse 
-	</tbody>	
-</table>
+				<br>
+				<p><a href="{{url('requerimientos')}}" class="btn btn-outline-primary"><i class="fa fa-arrow-left"></i> Regresar al listado</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>			
 @endsection
-@endif
-@section('footerMain')
+
+@section('script')
+<script type="text/javascript">
+    $(document).ready(function(){
+        menu_activo('mRequerimientos');
+    });
+</script>
 @endsection

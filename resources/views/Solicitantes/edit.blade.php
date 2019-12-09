@@ -29,4 +29,12 @@
 	<p>
 		<a href="{{url('solicitantes')}}">Volver al listado de solicitantes</a>
     </p>
-@endsection    
+@endsection
+
+@section('script')
+<script type="text/javascript">
+    $(document).ready(function(){
+        menu_activo('mSolicitantes');
+    });
+</script>
+@endsection
