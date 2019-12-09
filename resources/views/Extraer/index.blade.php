@@ -1,20 +1,31 @@
 @extends('Bases.dashboard')
 <?php
-if (! empty($requerimientos)) {
-	$pruebas = $requerimientos;
-	$filename = "exportacion.xls";
-	header("Content-Type: application/vnd.ms-excel");
-	header("Content-Disposition: attachment; filename=\"$filename\"");
-	$isPrintHeader = false;
-	foreach ($pruebas as $row) {
-		if (! $isPrintHeader) {
-			echo implode("\t", array_keys($row)) . "\n";
-			$isPrintHeader = true;
+if (isset($requerimientos)) {
+	if (! empty($requerimientos)) {
+		$pruebas = $requerimientos;
+		$filename = "exportacion.xls";
+		header("Content-Type: application/vnd.ms-excel");
+		header("Content-Disposition: attachment; filename=\"$filename\"");
+		$isPrintHeader = false;
+		foreach ($pruebas as $row) {
+			if (! $isPrintHeader) {
+				echo implode("\t", array_keys($row)) . "\n";
+				$isPrintHeader = true;
+			}
+			echo implode("\t", array_values($row)) . "\n";
 		}
-		echo implode("\t", array_values($row)) . "\n";
+		exit();
 	}
-	exit();
-}
+} elseif (isset($word_body)) {
+	if (! empty($word_body)) {	
+		$filename = "exportacion.doc";
+		header("Content-Type: application/vnd.ms-word");
+		header("Content-Disposition: attachment; filename=documento.doc");
+	}
+	echo "<html>";	
+	echo "$word_body";
+	echo "</html>";
+}	
 ?>
 @section('titulo', "Extracciones")
 
@@ -118,6 +129,14 @@ if (! empty($requerimientos)) {
 						<button class="btn btn-primary" type="submit">Extraer</button>
 					</form>
 				</div>	
+			</div>
+			<div id="body3" class="row">
+				<div>
+					<h5>Extraer word:</h5>
+					<form method="GET" action="{{ url('/extracciones/word') }}">
+						<button class="btn btn-primary" type="submit">Exportar Word</button>
+					</form>					
+				</div>
 			</div>
 		</div>
 	</div>

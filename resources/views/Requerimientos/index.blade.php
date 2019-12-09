@@ -22,8 +22,10 @@
 	<form class="navbar-form navbar-left pull-right" method='GET' action="{{ url('requerimientos/') }}">
 		<select id="state" class="custom-select" name="state">
 			<option selected="true" disabled="disabled" value="">Escoja una opción...</option>
-			@if($user[0]->nombre == "gestor")
+			@if($user[0]->nombre == "resolutor")
+			@if($user2->lider == 1)
 			<option value="6">Por autorizar</option>
+			@endif
 			@endif
 			@if($user[0]->nombre == "resolutor")
 			<option value="7">Esperando autorización</option>
@@ -107,13 +109,23 @@
 						@forelse ($requerimientos as $requerimiento)
 						<tr>
 							@if($state == 6)
-							@if($user[0]->nombre=="gestor" or $user[0]->nombre == "supervisor")
+							@if($user[0]->nombre == "supervisor")
 							<td id="tabla" scope="row">
 								<form method="POST" action="{{ url("requerimientos/{$requerimiento->id}/autorizar") }}">
 									{{ csrf_field() }}
 									<button onclick="return confirm('¿Estás seguro/a de autorizar el cierre del requerimiento?')" type="submit" value="Nuevo Requerimiento" class="btn btn-success" name="">Autorizar</button>
 								</form>
 							</td>							
+							@endif							
+							@if($user[0]->nombre=="resolutor")
+							@if($user2->lider == 1)
+							<td id="tabla" scope="row">
+								<form method="POST" action="{{ url("requerimientos/{$requerimiento->id}/autorizar") }}">
+									{{ csrf_field() }}
+									<button onclick="return confirm('¿Estás seguro/a de autorizar el cierre del requerimiento?')" type="submit" value="Nuevo Requerimiento" class="btn btn-success" name="">Autorizar</button>
+								</form>
+							</td>
+							@endif							
 							@endif
 							@endif
 							@if($state == 0)
