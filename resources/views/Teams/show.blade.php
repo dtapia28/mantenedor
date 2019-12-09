@@ -5,7 +5,7 @@
 <div class="page-heading">
 	<h1 class="page-title"><i class="fa fa-users"></i> Equipos</h1>
 	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><i class="fa fa-arrow-circle-right"></i> Detalle de Equipo</li>
+		<li class="breadcrumb-item"><i class="fa fa-file-text-o"></i> Detalle de Equipo</li>
 	</ol>
 </div>
 <div class="page-content fade-in-up">
@@ -37,5 +37,12 @@
 		</div>
 	</div>
 </div>
+@endsection
 
-@endsection	
+@section('script')
+<script type="text/javascript">
+    $(document).ready(function(){
+        menu_activo('mEquipos');
+    });
+</script>
+@endsection

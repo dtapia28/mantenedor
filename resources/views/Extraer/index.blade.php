@@ -133,3 +133,9 @@ if (! empty($requerimientos)) {
 	</div>
 </div>
 @endsection
+
+@section('script')
+	<script type="text/javascript">
+		menu_activo('mExportar');
+	</script>
+@endsection

@@ -72,6 +72,7 @@
 @section('script')
 <script src="{{ asset('vendor/DataTables/datatables.min.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
+	menu_activo('mSolicitantes');
 	$(function() {
 		$('#dataTable').DataTable({
 			"language": {

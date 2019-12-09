@@ -23,12 +23,12 @@
 		{{-- CABECERA --}}
         <header class="header">
 			<div class="page-brand">
-        <a class="link" href="{{ url('/requerimientos') }}">
-					<span class="brand">Easy
-						<span class="brand-tip">Task</span>
-          </span>
-					<span class="brand-mini">ET</span>
-				</a>
+        	<a class="link" href="{{ url('/requerimientos') }}">
+				<span class="brand">Easy
+					<span class="brand-tip">Task</span>
+          		</span>
+				<span class="brand-mini">ET</span>
+			</a>
 			</div>
 			<div class="flexbox flex-1">
 				<ul class="nav navbar-toolbar">
@@ -69,47 +69,47 @@
 				</div>
 				<ul class="side-menu metismenu">
 					@if($user[0]->nombre == "supervisor" or $user[0]->nombre == "administrador")
-					<li>
+					<li id="mTablero">
 						<a class="active" href="{{ url('/dashboard') }}"><i class="sidebar-item-icon fa fa-th-large"></i>
 							<span class="nav-label">Tablero</span>
 						</a>
 					</li>
 					@endif
 					<li class="heading">PÁGINAS</li>
-					<li>
+					<li id="mRequerimientos">
 						<a href="{{ url('/requerimientos') }}"><i class="sidebar-item-icon fa fa-address-card"></i>
 							<span class="nav-label">Requerimientos</span>
 						</a>
 					</li>
 					@if($user[0]->nombre == "administrador") 
-					<li>
+					<li id="mPrioridades">
 						<a href="{{ url('/priorities') }}"><i class="sidebar-item-icon fa fa-sort-amount-desc"></i>
 							<span class="nav-label">Prioridades</span>
 						</a>
 					</li>
-					<li>
+					<li id="mResolutores">
 						<a href="{{ url('/resolutors') }}"><i class="sidebar-item-icon fa fa-address-book"></i>
 							<span class="nav-label">Resolutores</span>
 						</a>
 					</li>
-					<li>
+					<li id="mSolicitantes">
 						<a href="{{ url('/solicitantes') }}"><i class="sidebar-item-icon fa fa-address-book-o"></i>
 							<span class="nav-label">Solicitantes</span>
 						</a>
 					</li>
-					<li>
+					<li id="mEquipos">
 						<a href="{{ url('/teams') }}"><i class="sidebar-item-icon fa fa-users"></i>
 							<span class="nav-label">Equipos</span>
 						</a>
 					</li>
-					<li>
+					<li id="mUsuarios">
 						<a href="{{ url('/users') }}"><i class="sidebar-item-icon fa fa-user-circle"></i>
 							<span class="nav-label">Usuarios</span>
 						</a>
 					</li>
 					@endif
 					@if($user[0]->nombre == "supervisor" or $user[0]->nombre == "administrador")
-					<li>
+					<li id="mExportar">
 						<a href="{{ url('/extracciones') }}"><i class="sidebar-item-icon fa fa-table"></i>
 							<span class="nav-label">Exportar</span>
 						</a>
@@ -152,6 +152,7 @@
 
   <!-- Custom scripts for all pages-->
   <script src="{{ asset('js/app.min.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('js/comunes.js') }}" type="text/javascript"></script>
   {{-- <script src="{{ asset('js/sb-admin.min.js') }}"></script> --}}
 
   <!-- Demo scripts for this page-->

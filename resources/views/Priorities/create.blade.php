@@ -15,7 +15,7 @@
 <div class="page-heading">
     <h1 class="page-title"><i class="fa fa-sort-amount-desc"></i> Prioridades</h1>
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><i class="fa fa-arrow-circle-right"></i> Crear Prioridad</li>
+        <li class="breadcrumb-item"><i class="fa fa-plus"></i> Crear Prioridad</li>
     </ol>
 </div>
 <div class="page-content fade-in-up">
@@ -52,4 +52,12 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script type="text/javascript">
+    $(document).ready(function(){
+        menu_activo('mPrioridades');
+    });
+</script>
 @endsection

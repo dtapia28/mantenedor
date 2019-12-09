@@ -101,8 +101,16 @@
 					</div>
 				</div>
 			</form>
+			@endif
 		</div>
 	</div>
 </div>
 @endsection
-@endif
+
+@section('script')
+<script type="text/javascript">
+    $(document).ready(function(){
+        menu_activo('mRequerimientos');
+    });
+</script>
+@endsection

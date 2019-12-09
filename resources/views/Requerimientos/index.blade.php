@@ -226,7 +226,7 @@
 @section('script')
 <script src="{{ asset('vendor/DataTables/datatables.min.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
-	$(document).ready(function(){
+	$(document).ready(function() {
 		$('#state').on('change', function(){
 			var role = $(this).val();
 			if(role == 2 || role ==3){
@@ -240,6 +240,7 @@
 				document.getElementById("solicitante").style.display = "none";	
 			}
 		});
+		menu_activo('mRequerimientos');
 	});
 	$(function() {
 		$('#dataTable').DataTable({

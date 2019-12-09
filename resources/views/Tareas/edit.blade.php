@@ -5,7 +5,7 @@
 <div class="page-heading">
 <h1 class="page-title"><i class="fa fa-address-card"></i> Editar Tarea Requerimiento {{$tarea->id2}}</h1>
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><i class="fa fa-arrow-circle-right"></i> Editar Tarea</li>
+        <li class="breadcrumb-item"><i class="fa fa-pencil"></i> Editar Tarea</li>
     </ol>
 </div>
 <div class="page-content fade-in-up">
@@ -49,4 +49,12 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script type="text/javascript">
+    $(document).ready(function(){
+        menu_activo('mRequerimientos');
+    });
+</script>
 @endsection

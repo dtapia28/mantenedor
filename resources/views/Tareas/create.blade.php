@@ -15,7 +15,7 @@
 <div class="page-heading">
     <h1 class="page-title"><i class="fa fa-address-card"></i> Crear tarea para Requerimiento {{$requerimiento->id2}}</h1>
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><i class="fa fa-arrow-circle-right"></i> Crear Tarea</li>
+        <li class="breadcrumb-item"><i class="fa fa-plus"></i> Crear Tarea</li>
     </ol>
 </div>
 <div class="page-content fade-in-up">
@@ -85,6 +85,7 @@
                 });
             });
         });
+        menu_activo('mRequerimientos');
     });
 </script>
 @endsection

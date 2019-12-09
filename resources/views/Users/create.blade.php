@@ -5,7 +5,7 @@
 <div class="page-heading">
     <h1 class="page-title"><i class="fa fa-user-circle"></i> Usuarios</h1>
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><i class="fa fa-arrow-circle-right"></i> Crear Usuario</li>
+        <li class="breadcrumb-item"><i class="fa fa-plus"></i> Crear Usuario</li>
     </ol>
 </div>
 <div class="page-content fade-in-up">
@@ -69,9 +69,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="idRole" id="lTeam" class="col-md-4 col-form-label text-md-right"style='display: none';>Equipo</label>
-                            <div class="col-md-5">
-                                <select style='display: none' id="idTeam" class='form-control col-md-7' name='idTeam'></select>
+                            <label for="idRole" id="lTeam" class="col-md-2 col-form-label text-md-right" style='display: none';>Equipo</label>
+                            <div class="col-md-4">
+                                <select style='display: none' id="idTeam" class='form-control' name='idTeam'></select>
                             </div>
                         </div>                                               
                         <div class="form-group row">
@@ -93,8 +93,8 @@
         </div>
     </div>
 </div>
-
-
+@endsection
+@section('script')
 <script type="text/javascript">
     $(document).ready(function(){
         $('#idRole').on('change', function(){
@@ -103,7 +103,7 @@
             if(selected == 'resolutor' || selected == 'gestor'){
                 document.getElementById('lTeam').style.display = 'block';
                 document.getElementById('idTeam').style.display = 'block';
-                $.get('/users/script', function(teams){
+                $.get('../users/script', function(teams){
                     $('#idTeam').empty();
                     $('#idTeam').append("<option value=''>Seleccione un equipo</option>");
                     $.each(teams, function(index, value){
@@ -116,6 +116,8 @@
             document.getElementById('lTeam').style.display = 'none';
             }
         });
+
+        menu_activo('mUsuarios');
     });    
 </script>                
 @endsection
