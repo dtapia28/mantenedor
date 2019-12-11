@@ -22,10 +22,13 @@
 	<form class="navbar-form navbar-left pull-right" method='GET' action="{{ url('requerimientos/') }}">
 		<select id="state" class="custom-select" name="state">
 			<option selected="true" disabled="disabled" value="">Escoja una opción...</option>
+			@if($user[0]->nombre == "administrador")
+			<option value="6">Por autorizar</option>
+			@endif
 			@if($user[0]->nombre == "resolutor")
 			@if($user2->lider == 1)
 			<option value="6">Por autorizar</option>
-			@endif
+			@endif			
 			@endif
 			@if($user[0]->nombre == "resolutor")
 			<option value="7">Esperando autorización</option>
@@ -74,7 +77,7 @@
 							<th>Activar</th>
 							@endif							
 							@if($state == 6)
-							@if($user[0]->nombre=="gestor" or $user[0]->nombre == "supervisor")
+							@if($user[0]->nombre=="resolutor" or $user[0]->nombre == "supervisor")
 							<th>Autorizar</th>
 							@endif
 							@endif							
@@ -90,7 +93,9 @@
 							@if($state != 6 and $state !=0)
 							<th>Anidados</th>
 							@endif
+							@if($state != 6 and $state != 7)
 							<th>Acciones</th>
+							@endif
 							{{-- @if($user[0]->nombre == "administrador" or $user[0]->nombre == "resolutor")
 							<th>Anidar</th>
 							@endif
@@ -203,6 +208,7 @@
 								?>
 							</td>
 							@endif
+							@if($state != 6 and $state != 7)							
 							<td>
 							<div scope="row" class="btn-group">
 							@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
@@ -252,6 +258,7 @@
 							@endif
 							</div>
 							</td>
+							@endif							
 						</tr>										               	
 						@empty
 						@endforelse

@@ -1317,7 +1317,66 @@ class RequerimientoController extends Controller
                 }
 
                 $requerimientos = (object)$requerimientos;                 
-                break;                  
+                break;
+                case '6':
+                $req = DB::table('requerimientos_equipos')->where([
+                    ['estado', '=', 3],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                    ['aprobacion','=',4],
+                ])->get();
+                $requerimientos = [];
+                $estado = true;
+                $estatus = [];
+                $hoy = new DateTime();
+                foreach ($req as $requerimiento) 
+                {
+                    $requerimiento = (array)$requerimiento;
+                    foreach ($anidados as $anidado) {
+                        if ($anidado->idRequerimientoAnexo == $requerimiento['id']) {
+                            $estado = false;
+                        }
+                    }
+                    if ($estado == true) 
+                    {
+                        if ($requerimiento['fechaCierre'] == "9999-12-31 00:00:00") {
+                            $requerimiento ['status'] = 1;  
+                        } else
+                        {
+                            $cierre = new DateTime($requerimiento['fechaCierre']);
+                            if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                                $requerimiento ['status'] = 3;
+                            } else 
+                            {
+                                $variable = 0;
+                                while ($hoy->getTimestamp() < $cierre->getTimestamp()) 
+                                {
+                                    if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') 
+                                    {
+                                        $hoy->modify("+1 days");               
+                                    }else
+                                    {
+                                        $variable++;
+                                        $hoy->modify("+1 days");                       
+                                    }                   
+                                }
+                                if ($variable<=3) 
+                                {
+                                    $requerimiento ['status'] = 2;
+                                } else {
+                                    $requerimiento ['status'] = 1;
+                                }
+                                $variable = 0;
+                                unset($hoy);
+                                $hoy = new DateTime();                           
+                            }
+                            $requerimiento = (object) $requerimiento;
+                            $requerimientos [] = $requerimiento;
+                        }                        
+                    }                    
+                    $estado = true;                    
+                }
+                $requerimientos = (object)$requerimientos;              
+                break;                                  
             }            
         }          
 
