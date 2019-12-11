@@ -1,6 +1,18 @@
 @extends('Bases.dashboard')
-
 @section('titulo', 'Tablero')
+
+@section('css')
+<style>
+.chart {
+  width: 100%; 
+  min-height: 445px;
+}
+.chart-bar {
+  width: 90%; 
+  min-height: 445px;
+}
+</style>
+@endsection
 
 @section('contenido')
 <div class="page-heading">
@@ -11,21 +23,22 @@
     <div class="ibox-head">
       <div class="ibox-title">Gráfico</div>
     </div>
-    <div class="ibox-body">
-      <div id="donutchart3" style="width: 900px; height: 500px;"></div>
+    <div class="ibox-body" align="center">
+        <div id="donutchart3" class="chart"></div>
+    </div>
     </div>
   </div>
 </div>
-<div class="page-content fade-in-up" id="g2">
+<div class="page-content fade-in-up" id="g2" style="display: none;">
 	<div class="ibox">
 		<div class="ibox-head">
 			<div class="ibox-title">Gráfico</div>
 		</div>
-		<div class="ibox-body">
-			<div id="graficosTeam" style="display: none;"> 
+		<div class="ibox-body" align="center">
+			<div id="graficosTeam" class="chart"> 
 				<?php
 				foreach ($equipos2 as $valor) {
-					echo "<div id='".$valor['id']."_chart_div' style='width: 300px; height: 300px;'></div>\n";
+					echo "<div id='".$valor['id']."_chart_div' class='chart'></div>\n";
 				}  
 				?>
 			</div>
@@ -37,8 +50,8 @@
 		<div class="ibox-head">
 			<div class="ibox-title">Gráfico</div>
 		</div>
-		<div class="ibox-body">
-			<div id="reqEquipos" style="width: 900px; height: 500px;"></div>
+		<div class="ibox-body" align="center">
+			<div id="reqEquipos" class="chart"></div>
 		</div>
 	</div>
 </div>
@@ -47,8 +60,8 @@
 		<div class="ibox-head">
 			<div class="ibox-title">Gráfico</div>
 		</div>
-		<div class="ibox-body">
-			<div id="barra" style="padding: 50px; border: 30px; width: 1500px; height: 700px;"></div>
+		<div class="ibox-body" align="center">
+			<div id="barra" class="chart-bar"></div>
 		</div>
 	</div>
 </div>
@@ -57,8 +70,8 @@
 		<div class="ibox-head">
 			<div class="ibox-title">Gráfico</div>
 		</div>
-		<div class="ibox-body">
-			<div id="barra2" style="padding: 50px; border: 30px; width: 1500px; height: 700px;"></div>
+		<div class="ibox-body" align="center">
+			<div id="barra2" class="chart-bar"></div>
 		</div>
 	</div>
 </div>
@@ -98,6 +111,8 @@
       title: 'Todos los equipos',
       pieHole: 0.3,
       colors: ['#35A41D', '#CBA20B', '#BB3125'],
+      width: '100%',
+      height: '445px',
     };
     var chart = new google.visualization.PieChart(document.getElementById('donutchart3'));
     function selectHandler() {
@@ -120,7 +135,7 @@
   ?>
   <?php
   foreach ($equipos2 as $valor) {
-    echo "function drawChart".$valor['id']."(){
+    echo "function drawChart".$valor['id']."() {
       var data = new google.visualization.arrayToDataTable([
       ['Segmento','Cantidad'],
       ['Al día',".$valor['verde']."],
@@ -130,7 +145,9 @@
 
       var options = {
         title: 'Equipo ".$valor['nombre']."',
-        pieHole:0.2,
+        pieHole: 0.3,
+        width: '100%',
+        height: '445px',
         colors: ['#35A41D', '#CBA20B', '#BB3125'],
       };
 
@@ -154,9 +171,10 @@
       ?>
       ]);
     var options = {
-      width: 1000,
+      width: '100%',
+      height: '445px',
       title: 'Requerimientos por equipo',
-      pieHole:0.2
+      pieHole: 0.3
     };
     var equi = new google.visualization.PieChart(document.getElementById('reqEquipos'));
     equi.draw(data, options);     
@@ -177,7 +195,8 @@
       ]);
     var options = {
       title: 'Requerimientos por equipo',
-      width: 700,
+      width: '90%',
+      height: '445px',
       legend: {position: 'none'},
       chart: {title: 'Cantidad de requerimientos por equipo'},
       bars: 'vertical',        
@@ -206,7 +225,8 @@
       ]);
 
     var options = {
-      width: 800,
+      width: '90%',
+      height: '445px',
       colors: ['#35A41D', '#CBA20B', '#BB3125'],
       chart: {
         title: 'Requerimientos por equipo'
