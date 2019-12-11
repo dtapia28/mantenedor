@@ -23,7 +23,7 @@ if (isset($requerimientos)) {
 		header("Content-Disposition: attachment; filename=documento.doc");
 	}
 	echo "<html>";	
-	echo "$word_body";
+	echo $word_body;
 	echo "</html>";
 }	
 ?>

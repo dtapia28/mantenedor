@@ -34,7 +34,7 @@
 						@forelse ($priorities as $priority)
 						<tr>
 							<td id="tabla" scope="row">
-								<a href="../public/priorities/{{ $priority->id }}">					
+								<a href="{{ url("priorities/{$priority->id}") }}">					
 									{{ $priority->id }}
 								</a>						
 							</td>
@@ -43,7 +43,7 @@
 							</td>
 							@if($user[0]->nombre == "administrador")			
 							<td scope="row" class="form-inline">									
-								<form method='HEAD' action="../public/priorities/{{$priority->id}}/editar">
+								<form method='HEAD' action="{{ url("priorities/{$priority->id}/editar") }}">
 									{{ csrf_field() }}
 									<button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
 								</form>

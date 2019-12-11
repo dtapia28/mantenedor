@@ -29,6 +29,12 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
+Route::get('/home', 'RequerimientoController@index')
+
+	->name('Requerimientos.index')
+
+	->middleware('auth');
+
 
 Route::get('/download', 'UserController@exportar');
 
@@ -511,12 +517,6 @@ Route::delete('/requerimientos/{requerimiento}/avances/{avance}', 'AvanceControl
 
 
 Auth::routes();
-
-
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-
 
 //Route::post('/requerimientos/anidar', 'AnidadoController@store');
 

@@ -42,7 +42,7 @@
 					@forelse ($solicitantes as $solicitante)
 					<tr>
 						<td scope="row">
-							<a href="../public/solicitantes/{{ $solicitante->id }}">														    
+							<a href="{{ url("solicitantes/{$solicitante->id}") }}">														    
 							{{ $solicitante->id }}
 							</a>
 						</td>

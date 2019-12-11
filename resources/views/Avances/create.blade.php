@@ -56,32 +56,6 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-    @endif
-    <div class="form-row align-items-center">
-        <div class="form-group col-md-8">    
-            <form method="POST" action="{{ url('avances/ingresar') }}">                
-                {{ csrf_field() }}
-                 <input type="hidden" id="idRequerimiento" name="idRequerimiento" value="{{$requerimiento->id}}">
-                <label for='fechaCierre'>Fecha real de Cierre (no obligatoria):</label>
-                <input class="form-control col-md-3" value="{{ old('fechaRealCierre', $requerimiento->fechaRealCierre) }}" type="date" name="fechaRealCierre">
-                <br>
-                <label for="porcentajeEjecutado">Porcentaje ejecutado:</label>
-                <input class="form-control col-md-2" value="{{ old('porcentajeEjecutado', $requerimiento->porcentajeEjecutado) }}" type="number" name="porcentajeEjecutado">
-                <br>                 
-                <label class="" for="textAvance">Texto del avance:</label>
-                <br>
-                <textarea minlength="20" class="form-control col-md-10" name="textAvance" placeholder="Texto del avance" rows="5" cols="50"></textarea>
-                <br>
-                <button class="btn btn-primary" type="submit">Guardar avance</button>
-            </form>
-         </div>
-    </div>        
-    <p>
-        <a href="{{ url('requerimientos/'.$requerimiento->id) }}">Regresar al requerimiento</a>
-    </p>
-@endsection
-=======
 </div>
 @endsection
 
@@ -92,4 +66,3 @@
     });
 </script>
 @endsection
->>>>>>> aea5e24a011df9482809d70b96b8afeb29d0ee72

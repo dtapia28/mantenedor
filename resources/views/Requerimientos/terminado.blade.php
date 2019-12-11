@@ -51,28 +51,9 @@
                 </div>
             </div>
         </div>
-<<<<<<< HEAD
-    @endif
-    <div class="p-4">
-        <div class="form-group col-md-8">
-        <form method="POST" action="{{ url("requerimientos/{$requerimiento->id}/guardar") }}">
-            {{ method_field('PUT') }}
-            {{ csrf_field() }}
-            <label for="cierre">Cierre:</label>
-            <br>
-            <textarea minlength="20" class="form-control col-md-7" name="cierre"  placeholder="Texto del cierre" rows="5" cols="50"></textarea>
-            <br>
-            <label for='fechaCierre'>Fecha real de Cierre (no obligatoria):</label>
-            <input class="form-control col-md-3" value="{{ old('fechaRealCierre', $requerimiento->fechaRealCierre) }}" type="date" name="fechaRealCierre">
-            <br>                       
-            <button class="btn btn-primary" type="submit">Terminar requerimiento</button>
-            <br>
-        </form>
-=======
     </div>
-</div>
+</div>    
 @endsection
->>>>>>> aea5e24a011df9482809d70b96b8afeb29d0ee72
 
 @section('script')
 <script type="text/javascript">
