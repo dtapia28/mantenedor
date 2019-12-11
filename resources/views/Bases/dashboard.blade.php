@@ -14,6 +14,23 @@
   <link href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('vendor/themify-icons/css/themify-icons.css') }}" rel="stylesheet" />
   <link href="{{ asset('css/main.min.css') }}" rel="stylesheet" />
+  <?php use \App\Http\Controllers\HomeController; $color = HomeController::colorSitio(); ?>
+  @switch($color)
+	  	@case(1)
+		  	<link href="{{ asset('css/themes/red.css') }}" rel="stylesheet" />
+		  	@break
+		@case(2)
+		  	<link href="{{ asset('css/themes/blue.css') }}" rel="stylesheet" />
+			@break
+		@case(3)
+			<link href="{{ asset('css/themes/green.css') }}" rel="stylesheet" />
+			@break
+		@case(4)
+			<link href="{{ asset('css/themes/yellow.css') }}" rel="stylesheet" />
+			@break
+		@default
+		  	@break
+  @endswitch
   <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
   @yield('css')
 </head>
