@@ -31,7 +31,7 @@
   background-color: #253544; }
 
 .header {
-  background-color: rgb(202, 53, 42); }
+  background-color: #e74c3c; }
   .header .page-brand {
     color: #fff;
     background-color: #912505; }
@@ -51,3 +51,53 @@
       color: #fff; }
   .header .navbar-toolbar .navbar-search .search-icon {
     color: #fff; }
+
+.btn-success {
+  background-color: #e74c3c !important;
+  border-color: #c44133 !important;
+}
+
+.btn-success:hover {
+  background-color: #912505 !important;
+  border-color: #c44133 !important;
+}
+
+.page-sidebar {
+  background-color: #e74c3c !important;
+}
+
+.nav-label {
+  color: #fff !important;
+}
+
+.sidebar-item-icon {
+  color: #fff !important;
+}
+
+small {
+  color: #fff !important;
+}
+
+.side-menu > li a {
+  color: #b4bcc8 !important;
+}
+
+.side-menu > li a:hover, .side-menu > li a:focus {
+    color: #fff !important;
+    background-color: #912505 !important;
+}
+
+.side-menu > li.active > a, .side-menu > li.active > a:hover, .side-menu > li.active > a:focus {
+  color: #fff;
+  background-color: #912505;
+}
+
+.btn-terminar {
+  background-color: #2ecc71 !important;
+  border-color: #27ad60 !important;
+}
+
+.btn-terminar:hover {
+  background-color: #2ecc71 !important;
+  border-color: #27ad60 !important;
+}
