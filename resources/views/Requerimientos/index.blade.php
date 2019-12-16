@@ -58,7 +58,7 @@
 				@endif
 			</div>
 			@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
-			<div class="d-flex align-content-end"><a class="btn btn-success" href="{{ url('requerimientos/nuevo') }}"><i class="fa fa-plus"></i> Nuevo Requerimiento</a></div>
+			<div class="pull-right"><a class="btn btn-success" href="{{ url('requerimientos/nuevo') }}" style="white-space: normal;"><i class="fa fa-plus"></i> Nuevo Requerimiento</a></div>
 			@endif
 		</div>
 		<div class="ibox-body">	
@@ -242,6 +242,10 @@
 			}
 		});
 		menu_activo('mRequerimientos');
+
+		if (window.innerWidth < 768) {
+        	$('.btn').addClass('btn-sm');
+	    }
 	});
 	$(function() {
 		$('#dataTable').DataTable({
