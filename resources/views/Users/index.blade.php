@@ -22,7 +22,7 @@
 	<div class="ibox">
 		<div class="ibox-head">
 			<div class="ibox-title">Listado de Usuarios</div>
-			<div class="d-flex align-content-end"><a class="btn btn-success" href="{{ url('users/nuevo') }}"><i class="fa fa-plus"></i> Nuevo Registro</a></div>
+			<div class="pull-right"><a class="btn btn-success" href="{{ url('users/nuevo') }}" style="white-space: normal;"><i class="fa fa-plus"></i> Nuevo Registro</a></div>
 		</div>
 		<div class="ibox-body">
 			<div class="table-responsive">
@@ -103,6 +103,11 @@
 			pageLength: 10,
 			
 		});
-	})
+	});
+	$(document).ready(function() {
+		if (window.innerWidth < 768) {
+			$('.btn').addClass('btn-sm');
+		}
+	});
 </script>
 @endsection

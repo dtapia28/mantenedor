@@ -15,7 +15,7 @@
 		<div class="ibox-head">
 			<div class="ibox-title">Listado de Prioridades</div>
 			@if($user[0]->nombre == "administrador")
-				<div class="d-flex align-content-end"><a class="btn btn-success" href="{{ url('priorities/nueva') }}"><i class="fa fa-plus"></i> Nuevo Registro</a></div>
+				<div class="pull-right"><a class="btn btn-success" href="{{ url('priorities/nueva') }}" style="white-space: normal;"><i class="fa fa-plus"></i> Nuevo Registro</a></div>
 			@endif
 		</div>
 		<div class="ibox-body">	
@@ -78,6 +78,11 @@
 			pageLength: 10,
 			
 		});
-	})
+	});
+	$(document).ready(function() {
+		if (window.innerWidth < 768) {
+			$('.btn').addClass('btn-sm');
+		}
+	});
 </script>
 @endsection
