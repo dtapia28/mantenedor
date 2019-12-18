@@ -54,7 +54,8 @@
 <div class="page-content fade-in-up">
 	<div class="ibox">
 		<div class="ibox-head">
-			<div class="ibox-title">Listado de Requerimientos
+			<div class="ibox-title">
+				Listado de Requerimientos
 				@if ($valor == 1)
 				<span class="badge badge-default"><i class="fa fa-circle text-success"></i> Activos</span>
 				@else
@@ -62,7 +63,7 @@
 				@endif
 			</div>
 			@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
-				<div class="d-flex align-content-end"><a class="btn btn-success" href="{{ url('requerimientos/nuevo') }}"><i class="fa fa-plus"></i> Nuevo Requerimiento</a></div>
+			<div class="pull-right"><a class="btn btn-success" href="{{ url('requerimientos/nuevo') }}" style="white-space: normal;"><i class="fa fa-plus"></i> Nuevo Requerimiento</a></div>
 			@endif
 		</div>
 		<div class="ibox-body">	
@@ -237,7 +238,7 @@
 								&nbsp;
 								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/terminado") }}">
 									{{ csrf_field() }}
-									<button type="submit" class="btn btn-success btn-sm" data-toggle="tooltip" data-original-title="Terminar" style="cursor:pointer"><i class="fa fa-check"></i></button>
+									<button type="submit" class="btn btn-success btn-sm btn-terminar" data-toggle="tooltip" data-original-title="Terminar" style="cursor:pointer"><i class="fa fa-check"></i></button>
 								</form>
 								@endif								
 							@endif
@@ -288,6 +289,10 @@
 			}
 		});
 		menu_activo('mRequerimientos');
+
+		if (window.innerWidth < 768) {
+        	$('.btn').addClass('btn-sm');
+	    }
 	});
 	$(function() {
 		$('#dataTable').DataTable({

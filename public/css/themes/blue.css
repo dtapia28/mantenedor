@@ -51,3 +51,35 @@
       color: #fff; }
   .header .navbar-toolbar .navbar-search .search-icon {
     color: #fff; }
+
+.btn-success {
+  background-color: #34495f !important;
+  border-color: #253544 !important;
+}
+
+.btn-success:hover {
+  background-color: #34495f !important;
+  border-color: #253544 !important;
+}
+
+.nav-label {
+  color: #fff !important;
+}
+
+.sidebar-item-icon {
+  color: #fff !important;
+}
+
+small {
+  color: #fff !important;
+}
+
+.btn-terminar {
+  background-color: #2ecc71 !important;
+  border-color: #27ad60 !important;
+}
+
+.btn-terminar:hover {
+  background-color: #2ecc71 !important;
+  border-color: #27ad60 !important;
+}

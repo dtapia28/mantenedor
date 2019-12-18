@@ -51,3 +51,43 @@
       color: #fff; }
   .header .navbar-toolbar .navbar-search .search-icon {
     color: #fff; }
+    
+.page-sidebar {
+  background-color: #2ecc71 !important;
+}
+
+.nav-label {
+  color: #fff !important;
+}
+
+.sidebar-item-icon {
+  color: #fff !important;
+}
+
+small {
+  color: #fff !important;
+}
+
+.side-menu > li a {
+  color: #b4bcc8 !important;
+}
+
+.side-menu > li a:hover, .side-menu > li a:focus {
+    color: #fff !important;
+    background-color: #25a25a !important;
+}
+
+.side-menu > li.active > a, .side-menu > li.active > a:hover, .side-menu > li.active > a:focus {
+  color: #fff;
+  background-color: #25a25a;
+}
+
+.btn-terminar {
+  background-color: #2ecc71 !important;
+  border-color: #27ad60 !important;
+}
+
+.btn-terminar:hover {
+  background-color: #2ecc71 !important;
+  border-color: #27ad60 !important;
+}

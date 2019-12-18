@@ -27,7 +27,6 @@
         <div id="donutchart3" class="chart"></div>
     </div>
     </div>
-  </div>
 </div>
 <div class="page-content fade-in-up" id="g2" style="display: none;">
 	<div class="ibox">
@@ -43,7 +42,6 @@
 				?>
 			</div>
 		</div>
-	</div>
 </div>
 <div class="page-content fade-in-up" id="g3">
 	<div class="ibox">
@@ -75,7 +73,6 @@
 		</div>
 	</div>
 </div>
-
 <div class="theme-config">
   <div class="theme-config-toggle"><i class="fa fa-cog theme-config-show"></i><i class="ti-close theme-config-close"></i></div>
   <div class="theme-config-box">
