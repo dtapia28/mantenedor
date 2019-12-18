@@ -22,7 +22,7 @@
 	<form class="navbar-form navbar-left pull-right" method='GET' action="{{ url('requerimientos/') }}">
 		<select id="state" class="custom-select" name="state">
 			<option selected="true" disabled="disabled" value="">Escoja una opción...</option>
-			@if($user[0]->nombre == "administrador")
+			@if($user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor")
 			<option value="6">Por autorizar</option>
 			@endif
 			@if($user[0]->nombre == "resolutor")

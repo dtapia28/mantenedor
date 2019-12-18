@@ -77,7 +77,29 @@ class UserController extends Controller
         }
 
         return response()->json($teamArray);        
-    }	
+    }
+
+    public function getLider(Request $request){
+        if ($request->ajax()) {
+            $lider = Resolutor::where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+                ['idTeam', $request->id_team],
+                ['lider', 1],
+            ])->get();
+            if (empty($lider)) {
+                $liderArray = "No hay nada";
+
+                return $liderArray;
+            } else 
+            {
+                foreach ($lider as $lid) {
+                    $liderArray[$lid->id] = $lid->nombreResolutor;
+                }
+                return response()->json($liderArray);                
+            }    
+        }        
+    }
+
     public function store(Request $request)
     {
 

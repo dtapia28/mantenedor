@@ -46,59 +46,49 @@ class ExtraerController extends Controller
 
     public function porEstado(Request $request)
     {
-        if ($request['estado'] == 4) {
-            $base1 = DB::table('requ_view')->where([
-                ['rutEmpresa', auth()->user()->rutEmpresa],
-                ['estado', 1],
-            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+        switch ($request['estado']) {
+            case '1':
+                $base = DB::table('requ_view')->where([
+                    ['rutEmpresa', auth()->user()->rutEmpresa],
+                    ['estado', 1],
+                ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+            break;
+            case '2':
+                $base = DB::table('requ_view')->where([
+                    ['rutEmpresa', auth()->user()->rutEmpresa],
+                    ['estado', 2],
+                ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+            break;
+            case '3':
+                $base = DB::table('requ_view')->where([
+                    ['rutEmpresa', auth()->user()->rutEmpresa],
+                ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+            break;
+            case '4':
+                $base1 = DB::table('requ_view')->where([
+                    ['rutEmpresa', auth()->user()->rutEmpresa],
+                    ['estado', 1],
+                ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
 
-            $base = [];
-            $requerimientos = [];
-            $hoy = new DateTime();
-            foreach ($base1 as $req2) 
-            {
-                $req2 = (array) $req2;
-                if ($req2['Fecha de cierre'] == "9999-12-31 00:00:00") {
-
-                } else
+                $base = [];
+                $hoy = new DateTime();
+                foreach ($base1 as $req2) 
                 {
-                    $cierre = new DateTime($req2['Fecha de cierre']);
-                    if ($hoy->getTimestamp()>$cierre->getTimestamp()) 
-                    {
-                        $req2 = (object)$req2;
+                    $req2 = (array) $req2;
+                    if ($req2['Fecha de cierre'] == "9999-12-31 00:00:00") {
 
-                        $base [] = $req2;
-                    }
-                }       
-            }          
-        } elseif ($request['estado'] == 3) 
-        {
-            $base = DB::table('requ_view')->where([
-                ['rutEmpresa', auth()->user()->rutEmpresa],
-            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
-            $base = [];
-            $requerimientos = [];
-            $hoy = new DateTime();
-            foreach ($base1 as $req2) 
-            {
-                $req2 = (array) $req2;
-                if ($req2['Fecha de cierre'] == "9999-12-31 00:00:00") {
-                } else
-                {
-                    $cierre = new DateTime($req2['Fecha de cierre']);
-                    if ($hoy->getTimestamp()>$cierre->getTimestamp()) 
+                    } else
                     {
-                        $req2 = (object)$req2;
-                        $base [] = $req2;
-                    }
-                }       
-            }          
-        } elseif ($request['estado'] == 3) 
-        {
-            $base = DB::table('requ_view')->where([
-                ['estado', $request['estado']],
-                ['rutEmpresa', auth()->user()->rutEmpresa],
-            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+                        $cierre = new DateTime($req2['Fecha de cierre']);
+                        if ($hoy->getTimestamp()>$cierre->getTimestamp()) 
+                        {
+                            $req2 = (object)$req2;
+
+                            $base [] = $req2;
+                        }
+                    }       
+                }
+            break;               
         }
         $base2 = [];
         $requerimientos = [];
@@ -127,13 +117,13 @@ class ExtraerController extends Controller
                 ['porcentajeEjecutado', '<=', $request['porcentaje']],
                 ['rutEmpresa', auth()->user()->rutEmpresa],
                 ['estado', 1],              
-            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
         } else {
             $base = DB::table('requ_view')->where([
                 ['porcentajeEjecutado', '>', $request['porcentaje']],
                 ['rutEmpresa', auth()->user()->rutEmpresa],
                 ['estado', 1],                
-            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
         }
         $base2 = [];
         $requerimientos = [];
@@ -160,13 +150,13 @@ class ExtraerController extends Controller
                 ['numeroCambios', '<=', $request['cambios']],
                 ['rutEmpresa', auth()->user()->rutEmpresa],
                 ['estado', 1],               
-            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
         } else {
             $base = DB::table('requ_view')->where([
                 ['numeroCambios', '>', $request['cambios']],
                 ['rutEmpresa', auth()->user()->rutEmpresa],
                 ['estado', 1],                
-            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
         }
 
         $base2 = [];
@@ -195,7 +185,7 @@ class ExtraerController extends Controller
                 ['rutEmpresa', auth()->user()->rutEmpresa],
                 ['idSolicitante', $request['idSolicitante']],
                 ['estado', 1],
-            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
         }
 
         $base2 = [];
@@ -223,7 +213,7 @@ class ExtraerController extends Controller
                 ['rutEmpresa', auth()->user()->rutEmpresa],
                 ['resolutor', $request['idResolutor']],
                 ['estado', 1],
-            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
         }
         $base2 = [];
         $requerimientos = [];
@@ -250,7 +240,7 @@ class ExtraerController extends Controller
                 ['rutEmpresa', auth()->user()->rutEmpresa],
                 ['teamId', $request['idTeam']],
                 ['estado', 1],
-            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
         }
         $base2 = [];
         $requerimientos = [];

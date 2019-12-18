@@ -785,9 +785,9 @@ class RequerimientoController extends Controller
                     break;
                 case '4':
                 $req = Requerimiento::where([
-                    ['id2', 'RQ-CPIT-027'],
                     ['estado', 1],
                     ['rutEmpresa', auth()->user()->rutEmpresa],
+                    ['resolutor', $res->id],
                 ])->get();
                 $arreglo = [];
                 $requerimientos = [];
@@ -1319,11 +1319,21 @@ class RequerimientoController extends Controller
                 $requerimientos = (object)$requerimientos;                 
                 break;
                 case '6':
-                $req = DB::table('requerimientos_equipos')->where([
-                    ['estado', '=', 3],
-                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-                    ['aprobacion','=',4],
-                ])->get();
+                if ($user[0]->nombre == "supervisor") {
+                    $req = DB::table('requerimientos_equipos')->where([
+                        ['estado', '=', 3],
+                        ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                        ['aprobacion','=',4],
+                        ['lider', 1],
+                    ])->get();
+                } else
+                {
+                    $req = DB::table('requerimientos_equipos')->where([
+                        ['estado', '=', 3],
+                        ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                        ['aprobacion','=',4],
+                    ])->get();
+                }
                 $requerimientos = [];
                 $estado = true;
                 $estatus = [];

@@ -166,6 +166,7 @@ Route::get('/requerimientos/{requerimiento}/avances/nuevo', 'AvanceController@cr
 Route::get('/requerimientos/script', 'RequerimientoController@getResolutors');
 Route::get('/users/script', 'UserController@getTeams');
 Route::get('/requerimientos/script2', 'UserController@getTeams');
+Route::get('/users/script3', 'UserController@getLider');
 
 
 Route::get('/requerimientos/{requerimiento}/avances/{avance}/editar', 'AvanceController@edit')->name('Avances.edit');	
