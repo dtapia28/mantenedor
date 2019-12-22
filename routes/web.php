@@ -541,6 +541,12 @@ Route::put('/requerimientos/{requerimiento}/tareas/{tarea}', 'TareaController@up
 
 Route::delete('/requerimientos/{requerimiento}/tareas/{tarea}/eliminar', 'TareaController@destroy');
 
+/* NUEVAS RUTAS - César Ramos */
+Route::get('/requerimientos/{requerimiento}/aceptar', 'RequerimientoController@aceptar');
+Route::get('/requerimientos/{requerimiento}/rechazar', 'RequerimientoController@rechazar');
+Route::post('/requerimientos/{requerimiento}/rechazar', 'RequerimientoController@RequerimientoRechazado');
+/* ************************** */
+
 Route::get('/clear_cache', function()
 {
 	Artisan::call('cache:clear');
