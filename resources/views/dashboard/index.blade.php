@@ -1,6 +1,5 @@
 @extends('Bases.dashboard')
 @section('titulo', 'Tablero')
-
 @section('css')
 <style>
 .chart {
@@ -13,7 +12,6 @@
 }
 </style>
 @endsection
-
 @section('contenido')
 <div class="page-heading">
   <h1 class="page-title"><i class="fa fa fa-th-large"></i> Tablero</h1>
@@ -24,17 +22,17 @@
       <div class="ibox-title">Gráfico</div>
     </div>
     <div class="ibox-body" align="center">
-        <div id="donutchart3" class="chart"></div>
+      <div id="donutchart3" class="chart"></div>
     </div>
-    </div>
+  </div>
 </div>
-<div class="page-content fade-in-up" id="g2" style="display: none;">
+<div class="page-content fade-in-up" id="g2">
 	<div class="ibox">
 		<div class="ibox-head">
 			<div class="ibox-title">Gráfico</div>
 		</div>
 		<div class="ibox-body" align="center">
-			<div id="graficosTeam" class="chart"> 
+			<div id="graficosTeam" class="chart" style="display: none;"> 
 				<?php
 				foreach ($equipos2 as $valor) {
 					echo "<div id='".$valor['id']."_chart_div' class='chart'></div>\n";
@@ -42,6 +40,7 @@
 				?>
 			</div>
 		</div>
+	</div>
 </div>
 <div class="page-content fade-in-up" id="g3">
 	<div class="ibox">
@@ -73,6 +72,7 @@
 		</div>
 	</div>
 </div>
+
 <div class="theme-config">
   <div class="theme-config-toggle"><i class="fa fa-cog theme-config-show"></i><i class="ti-close theme-config-close"></i></div>
   <div class="theme-config-box">
