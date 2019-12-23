@@ -170,7 +170,7 @@
   <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
   <script src="{{ asset('vendor/popper.js/dist/umd/popper.min.js') }}"></script>
   <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-  <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+  {{-- <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script> --}}
   <!-- Core plugin JavaScript-->
   <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
   <script src="{{ asset('vendor/metisMenu/dist/metisMenu.min.js') }}"></script>

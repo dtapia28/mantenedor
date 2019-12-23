@@ -1994,5 +1994,20 @@ class RequerimientoController extends Controller
         $requerimiento->update($data);
 
         return redirect('requerimientos');
-    }              
+    }
+
+    public function aceptar($requerimiento) {
+        /* se acepta el requerimiento por parte del supervisor del resolutor del requerimiento */
+        return "Requerimiento aceptado";
+    }
+
+    public function rechazar($requerimiento) {
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();   
+        return view('Requerimientos.rechazar', compact('requerimiento', 'user'));
+    }
+
+    public function RequerimientoRechazado(Request $request) {
+        /* se registra el rechazo del requerimiento */
+        return "Requerimiento rechazado por: ".$request->rechazo;
+    }
 }
