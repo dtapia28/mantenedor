@@ -85,6 +85,7 @@ class LoginController extends Controller
                                 $obj = new \stdClass();
                                 $obj->idReq = $requerimiento->id2;
                                 $obj->id = $requerimiento->id;
+                                $obj->sol = $requerimiento->textoRequerimiento;
                                 $obj->dias = $hastaCierre;
                                 $obj->nombre = $resolutor->nombreResolutor;
                                 $obj->fecha = $requerimiento->fechaRealCierre;

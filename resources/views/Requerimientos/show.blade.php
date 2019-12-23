@@ -18,7 +18,7 @@
 				<div class="ibox-body">
 					<div class="row">
 						<div class="col-md-6">
-							<h2>Requerimiento n° {{ $requerimiento->id2 }}</h2>
+							<h2>Requerimiento {{ $requerimiento->id2 }}</h2>
 							<br>
 							<table class="table table-condensed">
 								<tr>

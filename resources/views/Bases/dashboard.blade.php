@@ -92,6 +92,13 @@
 						</a>
 					</li>
 					@endif
+					@if($user[0]->nombre == "resolutor" and $lider == 1)
+					<li id="mTablero">
+						<a class="active" href="{{ url('/dashboard') }}"><i class="sidebar-item-icon fa fa-th-large"></i>
+							<span class="nav-label">Tablero</span>
+						</a>
+					</li>
+					@endif					
 					<li class="heading">PÁGINAS</li>
 					<li id="mRequerimientos">
 						<a href="{{ url('/requerimientos') }}"><i class="sidebar-item-icon fa fa-address-card"></i>
@@ -132,6 +139,13 @@
 						</a>
 					</li>
 					@endif
+					@if($user[0]->nombre == "resolutor" and $lider == 1)
+					<li id="mExportar">
+						<a href="{{ url('/extracciones') }}"><i class="sidebar-item-icon fa fa-table"></i>
+							<span class="nav-label">Exportar</span>
+						</a>
+					</li>
+					@endif					
 				</ul>
 			</div>
 		</nav>

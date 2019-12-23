@@ -16,17 +16,20 @@ if (isset($requerimientos)) {
 		}
 		exit();
 	}
-} elseif (isset($word_body)) {
-	if (! empty($word_body)) {	
-		$filename = "exportacion.doc";
-		header("Content-Type: application/vnd.ms-word");
-		header("Content-Disposition: attachment; filename=documento.doc");
-	}
-	echo "<html>";	
-	echo $word_body;
-	echo "</html>";
-}	
-?>
+} else if (isset($texto)) {
+		if (! empty($texto)) {
+			$pruebas = $texto;
+			$filename = "exportacion.doc";
+			header("Content-Type: application/vnd.ms-word");
+			header("Content-Disposition: attachment; filename=\"$filename\"");
+			echo "<html>";
+			echo "$pruebas";
+			echo "</html>";
+			exit();
+		}
+	}		
+?>	
+
 @section('titulo', "Extracciones")
 
 @section('contenido')
@@ -125,6 +128,7 @@ if (isset($requerimientos)) {
 						<button class="btn btn-primary" type="submit">Extraer</button>
 					</form>
 				</div>
+				@if($user[0]->nombre!="resolutor")
 				<div id="porTeam" class="from-row col-md-4">
 					<h5>Por Equipo:</h5>
 					<form method="GET" action="{{ url('/extracciones/teams') }}">
@@ -137,15 +141,24 @@ if (isset($requerimientos)) {
 						<br>
 						<button class="btn btn-primary" type="submit">Extraer</button>
 					</form>
-				</div>	
-			</div>
-			<div id="body3" class="row">
-				<div>
-					<h5>Extraer word:</h5>
-					<form method="GET" action="{{ url('/extracciones/word') }}">
-						<button class="btn btn-primary" type="submit">Exportar Word</button>
-					</form>					
 				</div>
+				@endif
+			</div>
+			<br>
+			<div id="body2" class="row">
+				<div id="word" class="from-row col-md-4">
+					<h5>Exportar word (por solicitante)</h5>
+					<form method="GET" action="{{ url('/extracciones/word') }}">
+						<select class="form-control col-md-8" name="idSolicitante">
+							<option selected="selected" disabled="disabled">Escoge una opción</option>
+							@foreach($solicitantes as $solicitante)
+									<option value={{ $solicitante->id }}>{{ $solicitante->nombreSolicitante }}</option>
+							@endforeach
+						</select>
+						<br>						
+						<button class="btn btn-primary" type="submit">Extraer</button>
+					</form>
+				</div>	
 			</div>
 		</div>
 	</div>

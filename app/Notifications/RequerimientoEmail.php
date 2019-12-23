@@ -45,6 +45,7 @@ class RequerimientoEmail extends Notification
                     ->greeting('Hola, '.$this->notifiable->nombre)
                     ->line('Te informamos que la fecha del siguiente requerimiento está por vencer pronto:')
                     ->line('Requerimiento: '.$this->notifiable->idReq)
+                    ->line('Solicitud: '.$this->notifiable->sol)
                     ->line('Porcentaje avance: '.$this->notifiable->porcentaje.'%')
                     ->line('Fecha de cierre: '.$this->notifiable->fecha)
                     ->line('Si quieres ir al requerimiento indicado, por favor da clic en el siguiente botón:')

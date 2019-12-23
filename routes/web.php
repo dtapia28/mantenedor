@@ -523,7 +523,6 @@ Auth::routes();
 
 Route::get('/requerimientos/{requerimiento}/anidar', 'AnidadoController@anidar');
 Route::post('/requerimientos/{requerimiento}/anidar', 'AnidadoController@anidara');
-Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/requerimientos/{requerimiento}/tareas/nueva', 'TareaController@create')

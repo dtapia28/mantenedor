@@ -44,6 +44,11 @@ class RequerimientoController extends Controller
         ])->get();
 
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        $lider = 0;
+        if ($user[0]->nombre == "resolutor") {
+            $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+            $lider = $resolutor->lider;           
+        }                 
         if ($user[0]->nombre == "resolutor") {
             $user2 = Resolutor::where('idUser', $user[0]->idUser)->first();
         } else {
@@ -93,6 +98,7 @@ class RequerimientoController extends Controller
                         {
                             if ($requerimiento['fechaCierre'] == "9999-12-31 00:00:00") {
                                 $requerimiento ['status'] = 1;
+                                $requerimiento = (object) $requerimiento;
                                 $requerimientos [] = $requerimiento;
                             } else
                             {
@@ -1319,21 +1325,11 @@ class RequerimientoController extends Controller
                 $requerimientos = (object)$requerimientos;                 
                 break;
                 case '6':
-                if ($user[0]->nombre == "supervisor") {
-                    $req = DB::table('requerimientos_equipos')->where([
-                        ['estado', '=', 3],
-                        ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-                        ['aprobacion','=',4],
-                        ['lider', 1],
-                    ])->get();
-                } else
-                {
-                    $req = DB::table('requerimientos_equipos')->where([
-                        ['estado', '=', 3],
-                        ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-                        ['aprobacion','=',4],
-                    ])->get();
-                }
+                $req = DB::table('requerimientos_equipos')->where([
+                    ['estado', '=', 3],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                    ['aprobacion','=',4],
+                ])->get();
                 $requerimientos = [];
                 $estado = true;
                 $estatus = [];
@@ -1397,7 +1393,7 @@ class RequerimientoController extends Controller
             $valor = 0;
         }
 
-        return view('Requerimientos.index', compact('requerimientos', 'resolutors', 'teams', 'valor', 'user', 'anidados', 'solicitantes', 'state', 'res', 'user2'));
+        return view('Requerimientos.index', compact('requerimientos', 'resolutors', 'teams', 'valor', 'user', 'anidados', 'solicitantes', 'state', 'res', 'user2', 'lider'));
 
     }
 

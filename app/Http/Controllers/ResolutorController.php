@@ -23,9 +23,7 @@ class ResolutorController extends Controller
     public function index()
     {
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
-
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
-
         $contador = count($resolutors);
 
         return view('Resolutors.index', compact('resolutors', 'user'));

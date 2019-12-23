@@ -15,7 +15,12 @@ class DashboardController extends Controller
     public function index(Request $request)
     {   
         //variable array para contener equipos. Linea 18
-        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        $lider = 0;
+        if ($user[0]->nombre == "resolutor") {
+            $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+            $lider = $resolutor->lider;           
+        }      
         $equipos = [];
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get(['id', 'nameTeam'])->toArray();
         $resolutores = Resolutor::where([
@@ -124,7 +129,7 @@ class DashboardController extends Controller
  
         // Termino de prueba        
 
-    	return view('dashboard.index', compact("verde", "amarillo", "rojo", "teams", "equipos2", 'user'));
+    	return view('dashboard.index', compact("verde", "amarillo", "rojo", "teams", "equipos2", 'user', 'lider'));
     }
 
     public function green(){
