@@ -56,8 +56,13 @@
 				<ul class="nav navbar-toolbar">
 					<li class="dropdown dropdown-user">
 						<a class="nav-link dropdown-toggle link" data-toggle="dropdown">
-						<img src="{{ asset('img/avatar.png') }}" />
-						<span></span>{{ Auth::user()->name }}<i class="fa fa-angle-down m-l-5"></i></a>
+							<img src="{{ asset('img/avatar.png') }}" />
+							<span></span>
+							<div class="admin-info">
+								<div class="font-strong">{{ Auth::user()->name }} <i class="fa fa-angle-down m-l-5"></i></div>
+								<small>{{ ucfirst($user[0]->nombre) }}</small>
+							</div>
+						</a>
 						<ul class="dropdown-menu dropdown-menu-right">
 							@if($user[0]->nombre == "administrador")
 							<a class="dropdown-item" href="{{ url('user/parametros') }}"><i class="fa fa-cog"></i> Parámetros</a>

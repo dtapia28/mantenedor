@@ -253,9 +253,9 @@
 				"url": "{{ asset('vendor/DataTables/lang/spanish.json') }}"
 			},
 			pageLength: 10,
-			
+			stateSave: true,
 		});
-	})
+	});
 	function confirmar(){
 		var respuesta = confirm("¿Estás seguro/a que desea activar el requerimiento?");
 

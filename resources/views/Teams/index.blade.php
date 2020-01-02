@@ -74,7 +74,7 @@
 				"url": "{{ asset('vendor/DataTables/lang/spanish.json') }}"
 			},
 			pageLength: 10,
-			
+			stateSave: true,
 		});
 	});
 	$(document).ready(function() {
