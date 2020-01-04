@@ -83,7 +83,11 @@
 			<div id="sidebar-collapse">
 				<div class="admin-block d-flex">
 					<div>
-						<img src="{{ asset($linkLogo) }}" width="45px" height=""/>
+						@if($linkLogo != "" && $linkLogo != null)
+							<img src="{{ asset($linkLogo) }}" width="45px" height="" alt="Logo"/>
+						@else
+							<i class="fa fa-refresh fa-2x text-white"></i>
+						@endif
 					</div>
 					<div class="admin-info">
 						<div class="font-strong">Nombre Empresa</div><small><?= date('d.m.Y') ?></small>
