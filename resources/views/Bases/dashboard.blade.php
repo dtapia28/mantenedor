@@ -8,13 +8,13 @@
   <meta name="author" content="">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>@yield('titulo') - EasyTask</title>
+  <title>@yield('titulo') - Kinchika</title>
   
   <link href="{{ asset('vendor/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('vendor/themify-icons/css/themify-icons.css') }}" rel="stylesheet" />
   <link href="{{ asset('css/main.min.css') }}" rel="stylesheet" />
-  <?php use \App\Http\Controllers\HomeController; $color = HomeController::colorSitio(); ?>
+  <?php use \App\Http\Controllers\HomeController; $color = HomeController::colorSitio(); $linkLogo = HomeController::logoEmpresa();?>
   @switch($color)
 	  	@case(1)
 		  	<link href="{{ asset('css/themes/red.css') }}" rel="stylesheet" />
@@ -41,10 +41,10 @@
         <header class="header">
 			<div class="page-brand">
         	<a class="link" href="{{ url('/requerimientos') }}">
-				<span class="brand">Easy
-					<span class="brand-tip">Task</span>
+				<span class="brand">Kinchika
+					<span class="brand-tip"></span>
           		</span>
-				<span class="brand-mini">ET</span>
+				<span class="brand-mini">KcK</span>
 			</a>
 			</div>
 			<div class="flexbox flex-1">
@@ -83,10 +83,10 @@
 			<div id="sidebar-collapse">
 				<div class="admin-block d-flex">
 					<div>
-						<img src="{{ asset('img/avatar.png') }}" width="45px" />
+						<img src="{{ asset($linkLogo) }}" width="45px" height=""/>
 					</div>
 					<div class="admin-info">
-						<div class="font-strong">{{ Auth::user()->name }}</div><small>{{ ucfirst($user[0]->nombre) }}</small>
+						<div class="font-strong">Nombre Empresa</div><small><?= date('d.m.Y') ?></small>
 					</div>
 				</div>
 				<ul class="side-menu metismenu">
@@ -146,44 +146,48 @@
 				@yield('contenido')
 			</div>
 			<footer class="page-footer">
-				<div class="font-13">2019 © <b>EasyTask</b> - Todos los derechos reservados.</div>
+				<div class="font-13">2020 © <b>Kinchika</b> - Todos los derechos reservados.</div>
 				<div class="to-top"><i class="fa fa-angle-double-up"></i></div>
 			</footer>
 		</div>
-  </div>
-  <div class="sidenav-backdrop backdrop"></div>
-  <div class="preloader-backdrop">
-      <div class="page-preloader">Cargando</div>
-  </div>
+  	</div>
+  	<div class="sidenav-backdrop backdrop"></div>
+  	<div class="preloader-backdrop">
+      	<div class="page-preloader">Cargando</>
+	</div>
+	
+	<!-- Bootstrap core JavaScript-->
+	{{-- <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script> --}}
+	<script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+	<script src="{{ asset('vendor/popper.js/dist/umd/popper.min.js') }}"></script>
+	<script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+	{{-- <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script> --}}
+	<!-- Core plugin JavaScript-->
+	<script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+	<script src="{{ asset('vendor/metisMenu/dist/metisMenu.min.js') }}"></script>
+	<script src="{{ asset('vendor/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
 
-  <!-- Bootstrap core JavaScript-->
-  {{-- <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script> --}}
-  <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-  <script src="{{ asset('vendor/popper.js/dist/umd/popper.min.js') }}"></script>
-  <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-  {{-- <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script> --}}
-  <!-- Core plugin JavaScript-->
-  <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
-  <script src="{{ asset('vendor/metisMenu/dist/metisMenu.min.js') }}"></script>
-  <script src="{{ asset('vendor/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
+	<!-- Page level plugin JavaScript-->
+	<script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
+	{{-- <script src="{{ asset('vendor/datatables/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('vendor/datatables/dataTables.bootstrap4.js') }}"></script> --}}
 
-  <!-- Page level plugin JavaScript-->
-  <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
-  {{-- <script src="{{ asset('vendor/datatables/jquery.dataTables.js') }}"></script>
-  <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.js') }}"></script> --}}
+	<!-- Custom scripts for all pages-->
+	<script src="{{ asset('js/app.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('js/comunes.js') }}" type="text/javascript"></script>
+	{{-- <script src="{{ asset('js/sb-admin.min.js') }}"></script> --}}
 
-  <!-- Custom scripts for all pages-->
-  <script src="{{ asset('js/app.min.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('js/comunes.js') }}" type="text/javascript"></script>
-  {{-- <script src="{{ asset('js/sb-admin.min.js') }}"></script> --}}
-
-  <!-- Demo scripts for this page-->
-  {{-- <script src="{{ asset('js/datatables-demo.js') }}"></script> --}}
-  {{-- <script src="{{ asset('js/chart-area-demo.js') }}"></script> --}}
-
-  @yield('script')
-  @yield('script2')
-
+	<!-- Demo scripts for this page-->
+	{{-- <script src="{{ asset('js/datatables-demo.js') }}"></script> --}}
+	{{-- <script src="{{ asset('js/chart-area-demo.js') }}"></script> --}}
+	<script type="text/javascript">
+		window.setTimeout(function() {
+			$(".alert").fadeTo(500, 0).slideUp(500, function(){
+				$(this).remove(); 
+			});
+		}, 5000);
+	</script>
+	@yield('script')
+	@yield('script2')
 </body>
-
 </html>
