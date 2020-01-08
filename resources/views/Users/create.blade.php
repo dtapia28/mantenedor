@@ -141,10 +141,8 @@
             {
                 if (resolutors != "No hay nada") {
                     $.each(resolutors, function(index, value){
-                        alert(index);
                     });
                 } else {
-                    alert("No hay nada");
                 }    
             });           
             if(selected == 'resolutor'){

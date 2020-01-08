@@ -14,7 +14,7 @@
 			@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
 			@forelse($requerimientosAnidados as $requerimientoB)
 				<th>
-					<a href="../requerimientos/{{ $requerimientoB->id }}"><strong>{{ $requerimientoB->id2 }}</strong></a> {{ $requerimientoB->textoRequerimiento }}
+					<a href="{{ url('requerimientos/'.$requerimientoB->id) }}"><strong>{{ $requerimientoB->id2 }}</strong></a> {{ $requerimientoB->textoRequerimiento }}
 				</th>
 				<br>
 			@empty

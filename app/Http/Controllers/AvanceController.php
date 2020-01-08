@@ -56,7 +56,7 @@ class AvanceController extends Controller
             'idRequerimiento' => 'required']);
 
         Avance::create([
-            'textAvance' => $data['textAvance'],
+            'textAvance' => preg_replace("/[\r\n|\n|\r|\t]+/", " ", $data['textAvance']),
             'fechaAvance' => Carbon::now(),
             'idRequerimiento' => $data['idRequerimiento']
         ]);
@@ -168,6 +168,9 @@ class AvanceController extends Controller
             'idAvance' => 'required',
             'textAvance' => 'required'
         ]);
+
+        $data['textAvance'] = preg_replace("/[\r\n|\n|\r|\t]+/", " ", $data['textAvance']);
+
         $avance->update($data);
         return redirect(url("requerimientos/$requerimiento->id"));        
 

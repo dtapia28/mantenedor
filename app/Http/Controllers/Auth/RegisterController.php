@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Empresa;
 use App\Role;
+use App\Parametros;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -116,7 +117,13 @@ class RegisterController extends Controller
             'nombre' => "resolutor",
             'descripcion' => "Resolutor",
             'rutEmpresa' => $data['rut'],            
-        ]);                         
+        ]);
+
+        Parametros::create([
+            'rutEmpresa' => $data['rut'],
+            'emailSupervisor' => $data['email'],
+            'idColor' => 1,
+        ]);      
 
         $user = User::create([
             'name' => $data['name'],

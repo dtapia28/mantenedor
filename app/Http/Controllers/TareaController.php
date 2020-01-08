@@ -31,7 +31,12 @@ class TareaController extends Controller
     {
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get(); 
-        return view('Tareas.create', compact('requerimiento', 'user', 'teams'));       
+        $lider = 0;
+        if ($user[0]->nombre == "resolutor") {
+            $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+            $lider = $resolutor->lider;           
+        }        
+        return view('Tareas.create', compact('requerimiento', 'user', 'teams', 'lider'));       
     }
 
     /**
@@ -98,6 +103,11 @@ class TareaController extends Controller
     public function edit(Requerimiento $requerimiento, Tarea $tarea)
     {
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        $lider = 0;
+        if ($user[0]->nombre == "resolutor") {
+            $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+            $lider = $resolutor->lider;           
+        }           
         $fechita = str_split($tarea->fechaCierre);
         $fechota = [];
         for ($i=0; $i < 10; $i++) { 
@@ -113,7 +123,7 @@ class TareaController extends Controller
             array_push($fechota, $b);
         }
         $solicitud = implode("", $fechota);               
-        return view('Tareas.edit', compact('cierre', 'solicitud', 'tarea', 'requerimiento', 'user')); 
+        return view('Tareas.edit', compact('cierre', 'solicitud', 'tarea', 'requerimiento', 'user', 'lider')); 
     }
 
     /**

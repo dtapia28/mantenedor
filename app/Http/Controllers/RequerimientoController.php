@@ -16,6 +16,7 @@ use App\Tarea;
 use App\Parametros;
 use App\Notifications\NewReqResolutor;
 use App\Notifications\FinalizadoNotifi;
+use App\Notifications\RechazadoNotifi;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -78,6 +79,7 @@ class RequerimientoController extends Controller
                     case '1':
                     $req = DB::table('requerimientos_equipos')->where([
                         ['estado', '=', 1],
+                        ['aprobacion', 3],
                         ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                         ['idEquipo', $equipo->id],
                     ])->get();
@@ -195,6 +197,7 @@ class RequerimientoController extends Controller
                     case '2':
                     $req = DB::table('requerimientos_equipos')->where([
                         ['estado', '=', 1],
+                        ['aprobacion', 3],
                         ['porcentajeEjecutado', '>=', $request->valorN],
                         ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                         ['idEquipo', $equipo->id],
@@ -263,6 +266,7 @@ class RequerimientoController extends Controller
                     case '3':
                     $req = DB::table('requerimientos_equipos')->where([
                         ['estado', '=', 1],
+                        ['aprobacion', 3],
                         ['porcentajeEjecutado', '<=', $request->valorN],
                         ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                         ['idEquipo', $equipo->id],
@@ -320,6 +324,7 @@ class RequerimientoController extends Controller
                     case '4':
                     $req = DB::table('requerimientos_equipos')->where([
                         ['estado', '=', 1],
+                        ['aprobacion', 3],
                         ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                         ['idEquipo', $equipo->id],
                     ])->get();                    
@@ -351,35 +356,14 @@ class RequerimientoController extends Controller
                         if ($req2['fechaRealCierre'] == null) 
                         {
                             if ($req2['fechaCierre'] == "9999-12-31 00:00:00") {
-                                $req2 ['status'] = 1;
+
+
                             } else
                             {
                                 $cierre = new DateTime($req2['fechaCierre']);
                                 if ($hoy->getTimestamp()>$cierre->getTimestamp()) 
                                 {
-                                    $cierre = new DateTime($req2['fechaCierre']);
-                                    if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
-                                        $req2 ['status'] = 3;
-                                    } else {
-                                        $variable = 0;
-                                        while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
-                                            if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') 
-                                            {
-                                                $hoy->modify("+1 days");               
-                                            } else
-                                            {
-                                                $variable++;
-                                                $hoy->modify("+1 days");                       
-                                            }                   
-                                        }
-                                        if ($variable<=3) 
-                                        {
-                                            $req2 ['status'] = 2;
-                                        } else {
-                                            $req2 ['status'] = 1;
-                                        }
-                                        $variable = 0;                            
-                                    }
+                                    $req2 ['status'] = 3;
                                     $req2 = (object) $req2;
                                     $requerimientos[] = $req2;                            
                                 }
@@ -389,6 +373,7 @@ class RequerimientoController extends Controller
                             $cierre = new DateTime($req2['fechaRealCierre']);
                             if ($hoy->getTimestamp()>$cierre->getTimestamp()) 
                             {
+                                $req2 ['status'] = 3;
                                 $req2 = (object) $req2;
                                 $requerimientos[] = $req2;
                             }                        
@@ -399,6 +384,7 @@ class RequerimientoController extends Controller
                     case '5':
                     $req = DB::table('requerimientos_equipos')->where([
                         ['estado', '=', 1],
+                        ['aprobacion', 3],  
                         ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                         ['idEquipo', $equipo->id],
                         ['idSolicitante', $request->solicitante],
@@ -452,10 +438,11 @@ class RequerimientoController extends Controller
                     break;
                     case '6':
                     $req = DB::table('requerimientos_equipos')->where([
-                        ['estado', '=', 3],
+                        ['estado', 1],
                         ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                         ['idEquipo', $equipo->id],
                         ['aprobacion','=',4],
+                        ['resolutor', '!=', $res->id],
                     ])->get();
                     $requerimientos = [];
                     $estado = true;
@@ -511,7 +498,8 @@ class RequerimientoController extends Controller
                     break;
                     case '7':
                     $req = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-                        ['estado', '=', 3],
+                        ['estado', 1],
+                        ['aprobacion', 4],
                         ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                         ['resolutor', $res->id],
                     ])->get();
@@ -563,7 +551,65 @@ class RequerimientoController extends Controller
                     }
 
                     $requerimientos = (object)$requerimientos; 
-                    break;                    
+                    break;
+                    case '8':
+                    $req = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                        ['estado', 1],
+                        ['aprobacion', 2],
+                        ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                        ['resolutor', $res->id],
+                    ])->get();
+                    $requerimientos = [];
+                    $estado = true;
+                    $estatus = [];
+                    $hoy = new DateTime();
+
+                    foreach ($req as $requerimiento) {
+                        foreach ($anidados as $anidado) {
+                            if ($anidado->idRequerimientoAnexo == $requerimiento->id) {
+                                $estado = false;
+                            }
+                        }
+                        if ($estado == true) {
+                            if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
+                                $requerimiento ['status'] = 1;
+                                $requerimiento = (object) $requerimiento;
+                                $requerimientos [] = $requerimiento;
+                            } else
+                            {
+                                $cierre = new DateTime($requerimiento->fechaCierre);
+                                if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                                    $requerimiento ['status'] = 3;
+                                } else {
+                                    $variable = 0;
+                                    while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+
+                                       if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                            $hoy->modify("+1 days");               
+                                        }else{
+                                            $variable++;
+                                            $hoy->modify("+1 days");                       
+                                        }                   
+                                    }
+
+                                    if ($variable<=3) {
+                                        $requerimiento ['status'] = 2;
+                                    } else {
+                                        $requerimiento ['status'] = 1;
+                                    }
+                                    $variable = 0;
+                                    unset($hoy);
+                                    $hoy = new DateTime();                           
+                                }
+                                $requerimiento = (object) $requerimiento;
+                                $requerimientos [] = $requerimiento;
+                            }                        
+                        }                    
+                        $estado = true;                    
+                    }
+
+                    $requerimientos = (object)$requerimientos; 
+                    break;                                       
                 }                
             } else 
             {
@@ -572,7 +618,8 @@ class RequerimientoController extends Controller
                 {
                     case '1':
                     $req = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-                        ['estado', '=', $request->session()->get('state')],
+                        ['estado', 1],
+                        ['aprobacion', 3],
                         ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                         ['resolutor', $res->id],
                     ])->get();
@@ -681,7 +728,8 @@ class RequerimientoController extends Controller
                     break;  
                     case '2':
                     $req = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-                        ['estado', '=', 1],
+                        ['estado', 1],
+                        ['aprobacion', 3],
                         ['porcentajeEjecutado', '>=', $request->valorN],
                         ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                         ['resolutor', $res->id],
@@ -736,7 +784,8 @@ class RequerimientoController extends Controller
                     break;
                     case '3':
                     $req = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-                        ['estado', '=', 1],
+                        ['estado', 1],
+                        ['aprobacion', 3],
                         ['porcentajeEjecutado', '<=', $request->valorN],
                         ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                         ['resolutor', $res->id],
@@ -792,6 +841,7 @@ class RequerimientoController extends Controller
                 case '4':
                 $req = Requerimiento::where([
                     ['estado', 1],
+                    ['aprobacion', 3],
                     ['rutEmpresa', auth()->user()->rutEmpresa],
                     ['resolutor', $res->id],
                 ])->get();
@@ -837,6 +887,7 @@ class RequerimientoController extends Controller
                     case '5':
                     $req = Requerimiento::where([
                         ['estado', 1],
+                        ['aprobacion', 3],
                         ['resolutor', $res->id],
                         ['rutEmpresa', auth()->user()->rutEmpresa],
                         ['idSolicitante', $request->solicitante],        
@@ -891,7 +942,8 @@ class RequerimientoController extends Controller
                     break;
                     case '7':
                     $req = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-                        ['estado', '=', 3],
+                        ['estado', 1],
+                        ['aprobacion', 4],
                         ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                         ['resolutor', $res->id],
                     ])->get();
@@ -943,7 +995,65 @@ class RequerimientoController extends Controller
                     }
 
                     $requerimientos = (object)$requerimientos; 
-                    break;                                       
+                    break;
+                    case '8':
+                    $req = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                        ['estado', 1],
+                        ['aprobacion', 2],
+                        ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                        ['resolutor', $res->id],
+                    ])->get();
+                    $requerimientos = [];
+                    $estado = true;
+                    $estatus = [];
+                    $hoy = new DateTime();
+
+                    foreach ($req as $requerimiento) {
+                        foreach ($anidados as $anidado) {
+                            if ($anidado->idRequerimientoAnexo == $requerimiento->id) {
+                                $estado = false;
+                            }
+                        }
+                        if ($estado == true) {
+                            if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
+                                $requerimiento ['status'] = 1;
+                                $requerimiento = (object) $requerimiento;
+                                $requerimientos [] = $requerimiento;
+                            } else
+                            {
+                                $cierre = new DateTime($requerimiento->fechaCierre);
+                                if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                                    $requerimiento ['status'] = 3;
+                                } else {
+                                    $variable = 0;
+                                    while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+
+                                       if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                            $hoy->modify("+1 days");               
+                                        }else{
+                                            $variable++;
+                                            $hoy->modify("+1 days");                       
+                                        }                   
+                                    }
+
+                                    if ($variable<=3) {
+                                        $requerimiento ['status'] = 2;
+                                    } else {
+                                        $requerimiento ['status'] = 1;
+                                    }
+                                    $variable = 0;
+                                    unset($hoy);
+                                    $hoy = new DateTime();                           
+                                }
+                                $requerimiento = (object) $requerimiento;
+                                $requerimientos [] = $requerimiento;
+                            }                        
+                        }                    
+                        $estado = true;                    
+                    }
+
+                    $requerimientos = (object)$requerimientos; 
+                    break;                                                            
                 } 
             }
    
@@ -955,7 +1065,8 @@ class RequerimientoController extends Controller
 
                 case '1':
                 $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-                    ['estado', '=', $request->session()->get('state')],
+                    ['estado', 1],
+                    ['aprobacion', 3],
                     ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                     ['idSolicitante', $sol->id],
                 ])->get();
@@ -969,26 +1080,448 @@ class RequerimientoController extends Controller
                     break;  
                 case '2':
                 $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-                    ['estado', '=', 1],
+                    ['estado', 1],
+                    ['aprobacion', 3],
                     ['porcentajeEjecutado', '>=', $request->valorN],
                     ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                 ])->get();
                     break;
                 case '3':
                 $requerimientos = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-                    ['estado', '=', 1],
+                    ['estado', 1],
+                    ['aprobacion', 3],
                     ['porcentajeEjecutado', '<=', $request->valorN],
                     ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                 ])->get();
                     break;
             }
-        } else {
+        } elseif ($user[0]->nombre == "supervisor") 
+        {
+            $res = Resolutor::where('idUser', $user[0]->idUser)->first();
+            switch ($request->session()->get('state'))
+            {
+                case '1':
+                $req = Requerimiento::where([
+                    ['estado', 1],
+                    ['aprobacion', 3],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                ])->get();
+                $requerimientos = [];
+                $estado = true;
+                $estatus = [];
+                $hoy = new DateTime();
+
+                foreach ($req as $requerimiento) {
+                    foreach ($anidados as $anidado) {
+                        if ($anidado->idRequerimientoAnexo == $requerimiento->id) {
+                            $estado = false;
+                        }
+                    }
+                    if ($estado == true) {
+                        if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
+                            $requerimiento ['status'] = 1;
+                            $requerimientos [] = $requerimiento;
+                        } else
+                        {
+                            $cierre = new DateTime($requerimiento->fechaCierre);
+                            if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                                $requerimiento ['status'] = 3;
+                            } else {
+                                $variable = 0;
+                                while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+
+                                   if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                        $hoy->modify("+1 days");               
+                                    }else{
+                                        $variable++;
+                                        $hoy->modify("+1 days");                       
+                                    }                   
+                                }
+
+                                if ($variable<=3) {
+                                    $requerimiento ['status'] = 2;
+                                } else {
+                                    $requerimiento ['status'] = 1;
+                                }
+                                $variable = 0;
+                                unset($hoy);
+                                $hoy = new DateTime();                           
+                            }
+                            $requerimientos [] = $requerimiento;
+                        }                        
+                    }                    
+                    $estado = true;                    
+                }
+
+                $requerimientos = (object)$requerimientos;                
+                break;
+
+                case '0':
+                $req = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                    ['estado', '=', 2],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                ])->get();
+                $requerimientos = [];
+                $estado = true;
+                $estatus = [];
+                $hoy = new DateTime();
+
+                foreach ($req as $requerimiento) {
+                    foreach ($anidados as $anidado) {
+                        if ($anidado->idRequerimientoAnexo == $requerimiento->id) {
+                            $estado = false;
+                        }
+                    }
+                    if ($estado == true) {
+                        if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
+                            $requerimiento ['status'] = 1;
+                            $requerimientos [] = $requerimiento;    
+                        } else
+                        {
+                            $cierre = new DateTime($requerimiento->fechaCierre);
+                            if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                                $requerimiento ['status'] = 3;
+                            } else {
+                                $variable = 0;
+                                while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+
+                                   if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                        $hoy->modify("+1 days");               
+                                    }else{
+                                        $variable++;
+                                        $hoy->modify("+1 days");                       
+                                    }                   
+                                }
+
+                                if ($variable<=3) {
+                                    $requerimiento ['status'] = 2;
+                                } else {
+                                    $requerimiento ['status'] = 1;
+                                }
+                                $variable = 0;
+                                unset($hoy);
+                                $hoy = new DateTime();                           
+                            }
+                            $requerimientos [] = $requerimiento;
+                        }                        
+                    }                    
+                    $estado = true;                    
+                }
+
+                $requerimientos = (object)$requerimientos;              
+                break;
+
+                case '2':
+                $req = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                    ['estado', 1],
+                    ['aprobacion', 3],
+                    ['porcentajeEjecutado', '>=', $request->valorN],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                ])->get();
+                $requerimientos = [];
+                $estado = true;
+                $estatus = [];
+                $hoy = new DateTime();
+
+                foreach ($req as $requerimiento) {
+                    foreach ($anidados as $anidado) {
+                        if ($anidado->idRequerimientoAnexo == $requerimiento->id) {
+                            $estado = false;
+                        }
+                    }
+                    if ($estado == true) {
+                        if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
+                            $requerimiento ['status'] = 1;  
+                        } else
+                        {
+                            $cierre = new DateTime($requerimiento->fechaCierre);
+                            if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                                $requerimiento ['status'] = 3;
+                            } else {
+                                $variable = 0;
+                                while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+
+                                   if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                        $hoy->modify("+1 days");               
+                                    }else{
+                                        $variable++;
+                                        $hoy->modify("+1 days");                       
+                                    }                   
+                                }
+
+                                if ($variable<=3) {
+                                    $requerimiento ['status'] = 2;
+                                } else {
+                                    $requerimiento ['status'] = 1;
+                                }
+                                $variable = 0;
+                                unset($hoy);
+                                $hoy = new DateTime();                           
+                            }
+                            $requerimientos [] = $requerimiento;
+                        }                        
+                    }                    
+                    $estado = true;                    
+                }
+
+                $requerimientos = (object)$requerimientos;               
+                break;
+
+                case '3':
+                $req = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                    ['estado', 1],
+                    ['aprobacion', 3],
+                    ['porcentajeEjecutado', '<=', $request->valorN],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                ])->get();
+                $requerimientos = [];
+                $estado = true;
+                $estatus = [];
+                $hoy = new DateTime();
+
+                foreach ($req as $requerimiento) {
+                    foreach ($anidados as $anidado) {
+                        if ($anidado->idRequerimientoAnexo == $requerimiento->id) {
+                            $estado = false;
+                        }
+                    }
+                    if ($estado == true) {
+                        if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
+                            $requerimiento ['status'] = 1;
+                            $requerimientos [] = $requerimiento;    
+                        } else
+                        {
+                            $cierre = new DateTime($requerimiento->fechaCierre);
+                            if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                                $requerimiento ['status'] = 3;
+                            } else {
+                                $variable = 0;
+                                while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+
+                                   if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                        $hoy->modify("+1 days");               
+                                    }else{
+                                        $variable++;
+                                        $hoy->modify("+1 days");                       
+                                    }                   
+                                }
+
+                                if ($variable<=3) {
+                                    $requerimiento ['status'] = 2;
+                                } else {
+                                    $requerimiento ['status'] = 1;
+                                }
+                                $variable = 0;
+                                unset($hoy);
+                                $hoy = new DateTime();                           
+                            }
+                            $requerimientos [] = $requerimiento;
+                        }                        
+                    }                    
+                    $estado = true;                    
+                }
+
+                $requerimientos = (object)$requerimientos;               
+                break;
+
+                case '4':
+                $req = Requerimiento::where([
+                    ['estado', 1],
+                    ['aprobacion', 3],
+                    ['rutEmpresa', auth()->user()->rutEmpresa],
+                ])->get();
+                $arreglo = [];
+                $requerimientos = [];
+                $estado = true;
+
+                $hoy = new DateTime();
+                foreach ($req as $req2) 
+                {
+                    foreach ($anidados as $anidado) {
+                        if ($anidado->idRequerimientoAnexo == $req2->id) {
+                            $estado = false;
+                        }
+                    }
+                    if ($estado == true) {
+                        $arreglo [] = $req2;
+                    }
+                    $estado = true;
+                    $estatus = [];
+                    $hoy = new DateTime();
+                }
+                $arreglo = (object)$arreglo;
+                foreach ($arreglo as $req2) {                
+                    if ($req2->fechaRealCierre == null) 
+                    {
+                        if ($req2->fechaCierre == "9999-12-31 00:00:00") {
+
+                        } else
+                        {
+                            $cierre = new DateTime($req2->fechaCierre);
+                            if ($hoy->getTimestamp()>$cierre->getTimestamp()) 
+                            {
+                                if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                                    $requerimiento ['status'] = 3;
+                                } else {
+                                    $variable = 0;
+                                    while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+
+                                       if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                            $hoy->modify("+1 days");               
+                                        }else{
+                                            $variable++;
+                                            $hoy->modify("+1 days");                       
+                                        }                   
+                                    }
+
+                                    if ($variable<=3) {
+                                        $requerimiento ['status'] = 2;
+                                    } else {
+                                        $requerimiento ['status'] = 1;
+                                    }
+                                    $variable = 0;                            
+                                }
+                                $requerimientos[] = $req2;                            
+                            }
+                        }    
+                    } else 
+                    {
+                        $requerimientos[] = $req2;                       
+                    }   
+                }
+
+                $requerimientos = (object)$requerimientos;
+                break;
+
+                case '5':
+                $req = Requerimiento::where([
+                    ['estado', 1],
+                    ['aprobacion', 3],
+                    ['rutEmpresa', auth()->user()->rutEmpresa],
+                    ['idSolicitante', $request->solicitante],        
+                ])->get();
+                $requerimientos = [];
+                $estado = true;
+                $estatus = [];
+                $hoy = new DateTime();
+
+                foreach ($req as $requerimiento) {
+                    foreach ($anidados as $anidado) {
+                        if ($anidado->idRequerimientoAnexo == $requerimiento->id) {
+                            $estado = false;
+                        }
+                    }
+                    if ($estado == true) {
+                        if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
+                            $requerimiento ['status'] = 1;  
+                        } else
+                        {
+                            $cierre = new DateTime($requerimiento->fechaCierre);
+                            if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                                $requerimiento ['status'] = 3;
+                            } else {
+                                $variable = 0;
+                                while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+
+                                   if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                        $hoy->modify("+1 days");               
+                                    }else{
+                                        $variable++;
+                                        $hoy->modify("+1 days");                       
+                                    }                   
+                                }
+
+                                if ($variable<=3) {
+                                    $requerimiento ['status'] = 2;
+                                } else {
+                                    $requerimiento ['status'] = 1;
+                                }
+                                $variable = 0;
+                                unset($hoy);
+                                $hoy = new DateTime();                           
+                            }
+                            $requerimientos [] = $requerimiento;
+                        }                       
+                    }                    
+                    $estado = true;                    
+                }
+
+                $requerimientos = (object)$requerimientos;                 
+                break;
+
+                case '6':
+                $req = DB::table('requerimientos_equipos')->where([
+                    ['estado', 1],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                    ['aprobacion', 4],
+                    ['lider', 1],
+                ])->get();
+                $requerimientos = [];
+                $estado = true;
+                $estatus = [];
+                $hoy = new DateTime();
+                foreach ($req as $requerimiento) 
+                {
+                    $requerimiento = (array)$requerimiento;
+                    foreach ($anidados as $anidado) {
+                        if ($anidado->idRequerimientoAnexo == $requerimiento['id']) {
+                            $estado = false;
+                        }
+                    }
+                    if ($estado == true) 
+                    {
+                        if ($requerimiento['fechaCierre'] == "9999-12-31 00:00:00") {
+                            $requerimiento ['status'] = 1;
+                            $requerimiento = (object) $requerimiento;
+                            $requerimientos [] = $requerimiento;                            
+                        } else
+                        {
+                            $cierre = new DateTime($requerimiento['fechaCierre']);
+                            if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                                $requerimiento ['status'] = 3;
+                            } else 
+                            {
+                                $variable = 0;
+                                while ($hoy->getTimestamp() < $cierre->getTimestamp()) 
+                                {
+                                    if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') 
+                                    {
+                                        $hoy->modify("+1 days");               
+                                    }else
+                                    {
+                                        $variable++;
+                                        $hoy->modify("+1 days");                       
+                                    }                   
+                                }
+                                if ($variable<=3) 
+                                {
+                                    $requerimiento ['status'] = 2;
+                                } else {
+                                    $requerimiento ['status'] = 1;
+                                }
+                                $variable = 0;
+                                unset($hoy);
+                                $hoy = new DateTime();                           
+                            }
+                            $requerimiento = (object) $requerimiento;
+                            $requerimientos [] = $requerimiento;
+                        }                        
+                    }                    
+                    $estado = true;                    
+                }
+                $requerimientos = (object)$requerimientos;              
+                break;                                           
+            }
+        } 
+        else 
+        {
             $res = Resolutor::where('idUser', $user[0]->idUser)->first();
             switch ($request->session()->get('state')) 
             {
                 case '1':
                 $req = Requerimiento::where([
-                    ['estado', '=', 1],
+                    ['estado', 1],
+                    ['aprobacion', 3],
                     ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                 ])->get();
                 $requerimientos = [];
@@ -1058,7 +1591,8 @@ class RequerimientoController extends Controller
                     }
                     if ($estado == true) {
                     	if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
-                    		$requerimiento ['status'] = 1;	
+                    		$requerimiento ['status'] = 1;
+                            $requerimientos [] = $requerimiento;	
                     	} else
                     	{
 	                        $cierre = new DateTime($requerimiento->fechaCierre);
@@ -1095,7 +1629,8 @@ class RequerimientoController extends Controller
                 break;  
                 case '2':
                 $req = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-                    ['estado', '=', 1],
+                    ['estado', 1],
+                    ['aprobacion', 3],
                     ['porcentajeEjecutado', '>=', $request->valorN],
                     ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                 ])->get();
@@ -1149,7 +1684,8 @@ class RequerimientoController extends Controller
                 break;
                 case '3':
                 $req = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
-                    ['estado', '=', 1],
+                    ['estado', 1],
+                    ['aprobacion', 3],
                     ['porcentajeEjecutado', '<=', $request->valorN],
                     ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                 ])->get();
@@ -1166,7 +1702,8 @@ class RequerimientoController extends Controller
                     }
                     if ($estado == true) {
                     	if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
-                    		$requerimiento ['status'] = 1;	
+                    		$requerimiento ['status'] = 1;
+                            $requerimientos [] = $requerimiento;	
                     	} else
                     	{
 	                        $cierre = new DateTime($requerimiento->fechaCierre);
@@ -1204,6 +1741,7 @@ class RequerimientoController extends Controller
                 case '4':
                 $req = Requerimiento::where([
                     ['estado', 1],
+                    ['aprobacion', 3],
                     ['rutEmpresa', auth()->user()->rutEmpresa],
                 ])->get();
                 $arreglo = [];
@@ -1230,14 +1768,12 @@ class RequerimientoController extends Controller
                     if ($req2->fechaRealCierre == null) 
                     {
                     	if ($req2->fechaCierre == "9999-12-31 00:00:00") {
-                    		$requerimiento ['status'] = 1;
+
                     	} else
                     	{
 	                        $cierre = new DateTime($req2->fechaCierre);
 	                        if ($hoy->getTimestamp()>$cierre->getTimestamp()) 
 	                        {
-	                            
-	                            $cierre = new DateTime($req2->fechaCierre);
 	                            if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
 	                                $requerimiento ['status'] = 3;
 	                            } else {
@@ -1273,6 +1809,7 @@ class RequerimientoController extends Controller
                 case '5':
                 $req = Requerimiento::where([
                     ['estado', 1],
+                    ['aprobacion', 3],
                     ['rutEmpresa', auth()->user()->rutEmpresa],
                     ['idSolicitante', $request->solicitante],        
                 ])->get();
@@ -1326,9 +1863,9 @@ class RequerimientoController extends Controller
                 break;
                 case '6':
                 $req = DB::table('requerimientos_equipos')->where([
-                    ['estado', '=', 3],
+                    ['estado', 1],
                     ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-                    ['aprobacion','=',4],
+                    ['aprobacion', 4],
                 ])->get();
                 $requerimientos = [];
                 $estado = true;
@@ -1382,7 +1919,65 @@ class RequerimientoController extends Controller
                     $estado = true;                    
                 }
                 $requerimientos = (object)$requerimientos;              
-                break;                                  
+                break;
+
+                    case '8':
+                    $req = Requerimiento::orderBy('fechaSolicitud', 'desc')->where([
+                        ['estado', 1],
+                        ['aprobacion', 2],
+                        ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                    ])->get();
+                    $requerimientos = [];
+                    $estado = true;
+                    $estatus = [];
+                    $hoy = new DateTime();
+
+                    foreach ($req as $requerimiento) {
+                        foreach ($anidados as $anidado) {
+                            if ($anidado->idRequerimientoAnexo == $requerimiento->id) {
+                                $estado = false;
+                            }
+                        }
+                        if ($estado == true) {
+                            if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
+                                $requerimiento ['status'] = 1;
+                                $requerimiento = (object) $requerimiento;
+                                $requerimientos [] = $requerimiento;
+                            } else
+                            {
+                                $cierre = new DateTime($requerimiento->fechaCierre);
+                                if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                                    $requerimiento ['status'] = 3;
+                                } else {
+                                    $variable = 0;
+                                    while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+
+                                       if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                            $hoy->modify("+1 days");               
+                                        }else{
+                                            $variable++;
+                                            $hoy->modify("+1 days");                       
+                                        }                   
+                                    }
+
+                                    if ($variable<=3) {
+                                        $requerimiento ['status'] = 2;
+                                    } else {
+                                        $requerimiento ['status'] = 1;
+                                    }
+                                    $variable = 0;
+                                    unset($hoy);
+                                    $hoy = new DateTime();                           
+                                }
+                                $requerimiento = (object) $requerimiento;
+                                $requerimientos [] = $requerimiento;
+                            }                        
+                        }                    
+                        $estado = true;                    
+                    }
+
+                    $requerimientos = (object)$requerimientos; 
+                    break;                                                 
             }            
         }          
 
@@ -1418,13 +2013,18 @@ class RequerimientoController extends Controller
     public function create()
     {
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        $lider = 0;
+        if ($user[0]->nombre == "resolutor") {
+            $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+            $lider = $resolutor->lider;           
+        }
 
         $gestores = Resolutor::where([
             ['rutEmpresa', auth()->user()->rutEmpresa],
             ['lider', 1]
         ])->get();        
 
-        auth()->user()->authorizeRoles(['administrador', 'solicitante']);    
+        auth()->user()->authorizeRoles(['administrador', 'solicitante', 'resolutor']);    
 
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->orderBy('nombreResolutor')->get();
         $priorities = Priority::where('rutEmpresa', auth()->user()->rutEmpresa)->orderBy('namePriority')->get();
@@ -1432,7 +2032,7 @@ class RequerimientoController extends Controller
 
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
 
-        return view('Requerimientos.create', compact('resolutors', 'priorities', 'solicitantes', 'user', 'teams', 'gestores'));        
+        return view('Requerimientos.create', compact('resolutors', 'priorities', 'solicitantes', 'user', 'teams', 'gestores', 'lider'));        
     }
 
     /**
@@ -1443,7 +2043,7 @@ class RequerimientoController extends Controller
      */
     public function store(Request $request)
     {
-        auth()->user()->authorizeRoles(['administrador', 'solicitante']);
+        auth()->user()->authorizeRoles(['administrador', 'solicitante', 'resolutor']);
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
         $sol = Solicitante::where('idUser', $user[0]->idUser)->first();
 
@@ -1608,6 +2208,13 @@ class RequerimientoController extends Controller
      */
     public function show(Requerimiento $requerimiento)
     {
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        $res = Resolutor::where('idUser', $user[0]->idUser)->first();
+        $lider = 0;
+        if ($user[0]->nombre == "resolutor") {
+            $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+            $lider = $resolutor->lider;           
+        }        
         $solicitante = Solicitante::where([
             ['rutEmpresa', auth()->user()->rutEmpresa],
             ['id', $requerimiento->idSolicitante],
@@ -1649,7 +2256,7 @@ class RequerimientoController extends Controller
             $fechaCierre = new DateTime(FECHACIERRE);
             $restantes = 0;                        
 
-        return view('Requerimientos.show', compact('user','requerimiento', 'resolutors', 'priorities', 'avances', 'teams', 'fechaCierre', 'requerimientosAnidados', 'tareas', 'requerimientos', 'solicitante', 'resolutor', 'resolutores'));        
+        return view('Requerimientos.show', compact('user','requerimiento', 'resolutors', 'priorities', 'avances', 'teams', 'fechaCierre', 'requerimientosAnidados', 'tareas', 'requerimientos', 'solicitante', 'resolutor', 'resolutores', 'lider', 'res'));        
     }
 
     /**
@@ -1661,7 +2268,12 @@ class RequerimientoController extends Controller
     public function edit(Requerimiento $requerimiento)
     {
 
-        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        $lider = 0;
+        if ($user[0]->nombre == "resolutor") {
+            $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+            $lider = $resolutor->lider;           
+        }        
         $fechita = str_split($requerimiento->fechaCierre);
         $fechota = [];
         for ($i=0; $i < 10; $i++) { 
@@ -1695,7 +2307,7 @@ class RequerimientoController extends Controller
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $fechaCierre = new DateTime($requerimiento->fechaCierre);          
 
-        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'fechaCierre', 'cierre', 'solicitud', 'solicitanteEspecifico', 'prioridadEspecifica', 'resolutorEspecifico', 'user'));        
+        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'fechaCierre', 'cierre', 'solicitud', 'solicitanteEspecifico', 'prioridadEspecifica', 'resolutorEspecifico', 'user', 'lider'));        
     }
 
     /**
@@ -1908,8 +2520,13 @@ class RequerimientoController extends Controller
 
     public function terminado(Requerimiento $requerimiento)
     {
-        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
-        return view('Requerimientos.terminado', compact('requerimiento', 'user'));        
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        $lider = 0;
+        if ($user[0]->nombre == "resolutor") {
+            $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+            $lider = $resolutor->lider;           
+        }       
+        return view('Requerimientos.terminado', compact('requerimiento', 'user', 'lider'));        
     } 
 
     public function guardar(Request $request, Requerimiento $requerimiento)
@@ -1921,14 +2538,14 @@ class RequerimientoController extends Controller
        
        if (empty($data['fechaRealCierre'])) {
         $data = [
-            'estado' => 3,
+            'estado' => 1,
             'porcentajeEjecutado' => 100,
             'cierre' => $data['cierre'],
             'aprobacion' => 4,
         ];           
        } else {
         $data = [
-            'estado' => 3,
+            'estado' => 1,
             'porcentajeEjecutado' => 100,
             'cierre' => $data['cierre'],
             'fechaRealCierre' => $data['fechaRealCierre'],
@@ -1997,17 +2614,46 @@ class RequerimientoController extends Controller
     }
 
     public function aceptar($requerimiento) {
-        /* se acepta el requerimiento por parte del supervisor del resolutor del requerimiento */
-        return "Requerimiento aceptado";
+        $req = Requerimiento::where('id', $requerimiento)->first();
+        self::autorizar($req);
+
+        return back()->with('msj', 'Requerimiento autorizado');
     }
 
     public function rechazar($requerimiento) {
-        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();   
-        return view('Requerimientos.rechazar', compact('requerimiento', 'user'));
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        $lider = 0;
+        if ($user[0]->nombre == "resolutor") {
+            $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+            $lider = $resolutor->lider;           
+        }   
+        return view('Requerimientos.rechazar', compact('requerimiento', 'user', 'lider'));
     }
 
     public function RequerimientoRechazado(Request $request) {
-        /* se registra el rechazo del requerimiento */
-        return "Requerimiento rechazado por: ".$request->rechazo;
+        $req = Requerimiento::where('id', $request->requerimiento)->first();
+        $data = [
+            'estado' => 1,
+            'aprobacion' => 2,
+            'rechazo' => $request->rechazo,
+        ];
+        $req->update($data);
+
+        $resolutor = Resolutor::where('id', $req->resolutor)->first();
+        $solicitante = Solicitante::where('id', $req->idSolicitante)->first();
+
+        $obj = new \stdClass();
+        $obj->idReq = $req->id2;
+        $obj->id = $req->id;
+        $obj->sol = $req->textoRequerimiento;
+        $obj->nombre = $resolutor->nombreResolutor;
+        $obj->solicitante = $solicitante->nombreSolicitante;
+        $obj->rechazo = $req->rechazo;
+
+        $recep = $resolutor->email;
+
+        Notification::route('mail', $recep)->notify(new RechazadoNotifi($obj)); 
+
+        return redirect('requerimientos');
     }
 }

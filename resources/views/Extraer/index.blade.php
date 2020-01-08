@@ -112,7 +112,7 @@ if (isset($requerimientos)) {
 							@endforeach
 						</select>
 						<br>
-						<button class="btn btn-primary" type="submit">Extraer</button>            			
+						<button class="btn btn-primary" type="submit">Extraer</button>
 					</form>
 				</div>
 				<div id="porResolutor" class="from-row col-md-4">
@@ -145,7 +145,8 @@ if (isset($requerimientos)) {
 				@endif
 			</div>
 			<br>
-			<div id="body2" class="row">
+			@if($user[0]->nombre!="resolutor")
+			<div id="body3" class="row">
 				<div id="word" class="from-row col-md-4">
 					<h5>Exportar word (por solicitante)</h5>
 					<form method="GET" action="{{ url('/extracciones/word') }}">
@@ -160,6 +161,7 @@ if (isset($requerimientos)) {
 					</form>
 				</div>	
 			</div>
+			@endif
 		</div>
 	</div>
 </div>

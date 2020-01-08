@@ -105,6 +105,7 @@
       ['Vencido',  {{ $rojo }}]
       ]);
     var options = {
+      
       title: 'Todos los equipos',
       pieHole: 0.3,
       colors: ['#35A41D', '#CBA20B', '#BB3125'],
@@ -112,14 +113,6 @@
       height: '445px',
     };
     var chart = new google.visualization.PieChart(document.getElementById('donutchart3'));
-    function selectHandler() {
-      var selectedItem = chart.getSelection()[0];
-      if (selectedItem) {
-        var topping = data.getValue(selectedItem.row, 0);
-        alert('The user selected ' + topping);
-      }
-    }
-    google.visualization.events.addListener(chart, 'select', selectHandler);        
     chart.draw(data, options);
   }
 </script> 

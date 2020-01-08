@@ -12,6 +12,7 @@ use App\Solicitante;
 use App\Resolutor;
 use App\Requerimiento;
 use App\Team;
+use App\Avance;
 use Illuminate\Support\Facades\DB;
 use DateTime;
 
@@ -69,61 +70,26 @@ class ExtraerController extends Controller
         <h3 style ='font size:1;' style = 'font-family:courier,arial,helvética;' align='center'>Informe de requerimientos por solicitante
         </h3><p style = 'font size:1'; 'font-family:courier,arial,helvética;'>".$solicitante->nombreSolicitante." tiene un total de ".$total." requerimientos en el sistema.</p>".
         "<p style ='font size:1;' style='font-family:courier,arial,helvética;'>El estado de sus requerimientos es el siguiente: </p> <table style = 'font-family:courier,arial,helvética;' border='1'><tr align='center'>
-        <td><strong>id</strong></td><td><strong>Solicitud</strong></td><td><strong>Fecha Solicitud</strong></td><td><strong>Fecha Cierre</strong></td><td><strong>Estado</strong></td></tr>";
+        <td><strong>id</strong></td><td><strong>Solicitud</strong></td><td><strong>Fecha Solicitud</strong></td><td><strong>Fecha Cierre</strong></td><td><strong>".utf8_decode("Último Avance")."</strong></td></tr>";
         $dia = 0;
         $vencer = 0;
         $vencido = 0;
         foreach ($requerimientos as $req) {
+            $avance = Avance::where('idRequerimiento', $req->id)->latest()->first();
             $texto.="<tr style ='font size:1;'>";
             $texto.="<td style ='font size:1;'>".$req->id2."</td>";
             $texto.="<td style ='font size:1;'>".utf8_decode($req->textoRequerimiento)."</td>";
             $texto.="<td style ='font size:1;' align='center'>".date('d-m-Y', strtotime($req->fechaSolicitud))."</td>";
             $texto.="<td style ='font size:1;' align='center'>".date('d-m-Y', strtotime($req->fechaCierre))."</td>";
-            if ($req['fechaCierre'] == "9999-12-31 00:00:00") {
-                $texto.="<td align='center'; style ='font size:1;'>".utf8_decode('Al día')."</td>";
-                $dia++;
-            } else
-            {
-                $hoy = new DateTime();
-                $cierre = new DateTime($req['fechaCierre']);
-                if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
-                    $texto.="<td align='center'; style ='font size:1;'><strong>".utf8_decode('Vencido')."</strong></td>";
-                    $vencido++;
-                } else 
-                {
-                    $variable = 0;
-                    while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
-                        if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') 
-                        {
-                            $hoy->modify("+1 days");               
-                        }else
-                        {
-                            $variable++;
-                            $hoy->modify("+1 days");                       
-                        }                   
-                    }
-                    if ($variable<=3) {
-                        $texto.="<td align='center'; style ='font size:1;'><i>Por vencer</i></td>";
-                        $vencer++;
-                    } else 
-                    {
-                        $texto.="<td align='center'; style ='font size:1;'>".utf8_decode('Al día')."</td>";
-                        $dia++;
-                    }
-                    $variable = 0;
-                    unset($hoy);
-                    $hoy = new DateTime();                           
-                }
-            }           
+            if ($avance != null) {
+                $texto.="<td style ='font size:1;' align='center'>".utf8_decode($avance->textAvance)."</td>";
+            } else {
+                $texto.="<td style ='font size:1;' align='center'></td>";                
+            }          
             $texto.="</tr>";
         }
         $hoy = new DateTime();
-        $texto.="</table>";
-        $texto.="<h3 align='center' style = 'font size:1'; 'font-family:courier,arial,helvética;'>
-                Resumen de requerimientos solicitante ".$solicitante->nombreSolicitante."</h3>
-                <p>Requerimientos al ".utf8_decode("día").": ".$dia.".</p>
-                <p>Requerimientos por vencer: ".$vencer.".</p>
-                <p>Requerimientos vencidos: ".$vencido.".</p>";       
+        $texto.="</table>";    
 
         if (empty($texto)) {
             return back()->with('msj', 'No existen requerimientos que cumplan con su solicitud.');                

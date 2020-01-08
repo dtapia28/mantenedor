@@ -90,9 +90,7 @@
                             <label for="idPrioridad">Prioridad</label>        
                             <select class="form-control col-md-12" name="idPrioridad">
                                 @foreach($priorities as $priority)
-                                    <optgroup>
                                         <option value={{ $priority->id }}>{{ $priority->namePriority }}</option>
-                                    </optgroup>
                                 @endforeach
                             </select>
                             <a href="{{ url('/priorities/nueva') }}?volver=1">Crear Prioridad</a>

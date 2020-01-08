@@ -76,6 +76,13 @@ class ResolutorController extends Controller
             $data = [
                 'lider' => 1];
                 DB::table('resolutors')->where('id', $resolutor->id)->update($data);
+
+            Solicitante::create([
+                'nombreSolicitante' => $data['nombreResolutor'],
+                'rutEmpresa' => auth()->user()->rutEmpresa,
+                'idUser' => auth()->user()->id,
+                'email' => auth()->user()->email,
+            ]);                
         }
             $resolutor = null;
         if (isset($_GET['volver'])) 
