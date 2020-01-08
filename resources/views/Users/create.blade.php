@@ -69,11 +69,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="idRole" id="lTeam" class="col-md-2 col-form-label text-md-right" style='display: none';>Equipo</label>
+                            <label for="idRole" id="lTeam" class="col-md-2 col-form-label text-md-right" style='display: none'>Equipo</label>
                             <div class="col-md-4">
                                 <select style='display: none' id="idTeam" class='form-control' name='idTeam'></select>
                             </div>
-                        </div>                                               
+                        </div>
+                        <div class="form-group row">
+                            <label for="idLider" id="lLider" class="col-md-2 form-check-label text-md-right" style='display: none'>Lider de Equipo</label>
+                            <div class="col-md-4">
+                                <input type="checkbox" class='align-items-center pull-left' name='idLider' id='idLider' style='display: none'>
+                            </div>
+                        </div>                                            
                         <div class="form-group row">
                             <div class="col-md-2"></div>
                             <div class="col-md-4 form-inline">
@@ -103,6 +109,8 @@
             if(selected == 'resolutor' || selected == 'gestor'){
                 document.getElementById('lTeam').style.display = 'block';
                 document.getElementById('idTeam').style.display = 'block';
+                document.getElementById('idLider').style.display = 'block';
+                document.getElementById('lLider').style.display = 'block';
                 $.get('../users/script', function(teams){
                     $('#idTeam').empty();
                     $('#idTeam').append("<option value=''>Seleccione un equipo</option>");
@@ -114,6 +122,8 @@
             {
             document.getElementById('idTeam').style.display = 'none';
             document.getElementById('lTeam').style.display = 'none';
+            document.getElementById('idLider').style.display = 'none';
+            document.getElementById('lLider').style.display = 'none';
             }
         });
 
