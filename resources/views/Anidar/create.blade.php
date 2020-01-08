@@ -1,6 +1,10 @@
 @extends('Bases.dashboard')
 @section('titulo', "Anidar")
 
+@section('css')
+	<link href="{{ asset('vendor/DataTables/datatables.min.css') }}" rel="stylesheet" />
+@endsection
+
 @section('contenido')
 <div class="page-heading">
 	<h1 class="page-title"><i class="fa fa-compress"></i> Anidar</h1>
@@ -19,6 +23,7 @@
 				<br>
 			@empty
 			@endforelse
+			<br>
 			<form method="POST" action="{{ url('/requerimientos/'.$requerimiento->id.'/anidar') }}">
 				{{ csrf_field() }}		
 				<div class="table-responsive">
@@ -38,11 +43,11 @@
 						@forelse ($requerimientos as $requerimientoA)
 						@if($requerimientoA->id != $requerimiento->id)
 							<tr>
-							<th id="tabla" scope="row">
+							<td id="tabla" scope="row" style="white-space: nowrap;">
 								<a href="requerimientos/{{ $requerimientoA->id }}">
 								{{ $requerimientoA->id2 }}
 								</a>            
-							</th>
+							</td>
 							<td width="350px" style="text-align:left;"> 
 								{{ $requerimientoA->textoRequerimiento }}
 							</td>       
@@ -89,6 +94,7 @@
 					</table>
 				</div>
 				<input type="hidden" value="{{ $requerimiento->id }}" name="requerimiento">
+				<br>
 				<div class="col-sm-12 form-group">
 					<div class="col-md-12 form-inline">
 						<div class="col-md-3">
@@ -108,9 +114,19 @@
 @endsection
 
 @section('script')
+<script src="{{ asset('vendor/DataTables/datatables.min.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         menu_activo('mRequerimientos');
     });
+	$(function() {
+		$('#dataTable').DataTable({
+			"language": {
+				"url": "{{ asset('vendor/DataTables/lang/spanish.json') }}"
+			},
+			pageLength: 10,
+			stateSave: true,
+		});
+	});
 </script>
 @endsection

@@ -34,4 +34,10 @@ class HomeController extends Controller
         $idColor = $param[0]->idColor;      
         return $idColor;
     }
+
+    static function logoEmpresa() {
+        $param = DB::select('SELECT linkLogo FROM parametros where rutEmpresa = ?', [Auth::user()->rutEmpresa]);
+        $linkLogo = $param[0]->linkLogo;      
+        return $linkLogo;
+    }
 }
