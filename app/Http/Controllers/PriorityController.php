@@ -58,7 +58,7 @@ class PriorityController extends Controller
         if ($data['volver'] == 1) {
             return redirect()->action('RequerimientoController@create');
         } else {
-        return redirect('priorities');
+            return redirect('priorities');
         }
     }
 

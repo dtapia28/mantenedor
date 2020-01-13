@@ -27,7 +27,7 @@
 			<form method="POST" action="{{ url('/requerimientos/'.$requerimiento->id.'/anidar') }}">
 				{{ csrf_field() }}		
 				<div class="table-responsive">
-					<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+					<table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
 						<thead>
 						<tr>
 							<th>Id</th>

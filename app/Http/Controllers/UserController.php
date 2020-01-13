@@ -146,7 +146,6 @@ class UserController extends Controller
 
     public function guardar (Request $request)
     {
-
         $data = request()->validate([
             'name' => 'required',
             'apellido' => 'required',
@@ -166,7 +165,10 @@ class UserController extends Controller
             ['rutEmpresa', auth()->user()->rutEmpresa],
         ])->first());           
 
-            return redirect('users');            
+        if ($request->volver == "1")
+            return redirect('requerimientos/nuevo');
+        else
+            return redirect('users');
     }
 
     public function cambiar (Request $request)

@@ -42,7 +42,13 @@
                                     <button type="submit" class="btn btn-success btn-block mb-2 mr-sm-2 mb-sm-0" style="cursor:pointer"><i class="fa fa-check-circle"></i> Guardar Registro</button>
                                 </div>
                                 <div class="col-md-5">
-                                    <a href="{{url('priorities')}}" class="btn btn-outline-primary btn-block"><i class="fa fa-arrow-left"></i> Regresar</a>
+                                    @if(strpos(url()->full(), 'volver=1'))
+                                        <input type="hidden" id="volver" name="volver" value="1">
+                                        <a href="{{url('requerimientos/nuevo')}}" class="btn btn-outline-primary btn-block"><i class="fa fa-arrow-left"></i> Regresar</a>
+                                    @else
+                                        <input type="hidden" id="volver" name="volver" value="0">
+                                        <a href="{{url('priorities')}}" class="btn btn-outline-primary btn-block"><i class="fa fa-arrow-left"></i> Regresar</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
