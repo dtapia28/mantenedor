@@ -224,7 +224,10 @@ class UserController extends Controller
                 ])->first());
             }         
 
-            return redirect('users');            
+        if ($request->volver == "1")
+            return redirect('requerimientos/nuevo');
+        else
+            return redirect('users');
     }
 
     public function cambiar (Request $request)

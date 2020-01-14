@@ -58,6 +58,7 @@
                                 @enderror
                             </div>
                         </div>
+                        
                         <div class="form-group row">
                             <label for="idRole" class="col-md-2 col-form-label text-md-right">Rol</label>
                             <div class="col-md-4">
@@ -89,7 +90,13 @@
                                 </button>
                                 </div>
                                 <div class="col-md-5">
-                                <a href="{{url('users')}}" class="btn btn-outline-primary btn-block"><i class="fa fa-arrow-left"></i> Regresar</a>
+                                    @if(strpos(url()->full(), 'volver=1'))
+                                        <input type="hidden" id="volver" name="volver" value="1">
+                                        <a href="{{url('requerimientos/nuevo')}}" class="btn btn-outline-primary btn-block"><i class="fa fa-arrow-left"></i> Regresar</a>
+                                    @else
+                                        <input type="hidden" id="volver" name="volver" value="0">
+                                        <a href="{{url('users')}}" class="btn btn-outline-primary btn-block"><i class="fa fa-arrow-left"></i> Regresar</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
