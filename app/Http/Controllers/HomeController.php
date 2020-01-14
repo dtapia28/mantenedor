@@ -40,4 +40,10 @@ class HomeController extends Controller
         $linkLogo = $param[0]->linkLogo;      
         return $linkLogo;
     }
+
+    static function nombreEmpresa() {
+        $sql = DB::select('SELECT nombreEmpresa FROM empresas where rut = ?', [Auth::user()->rutEmpresa]);
+        $nomEmpresa = $sql[0]->nombreEmpresa;      
+        return $nomEmpresa;
+    }
 }

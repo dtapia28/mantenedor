@@ -63,7 +63,7 @@
 		</div>
 		<div class="ibox-body">	
 			<div class="table-responsive">
-				<table class="table table-bordered table-striped table-hover" id="dataTable" width="100%"  cellspacing="0">
+				<table class="table table-bordered table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
 					<thead>
 						<tr>
 							@if($state == 0)
@@ -104,7 +104,7 @@
 							@endif --}}
 						</tr>
 					</thead>
-					<tbody>
+					<tbody style="font-size:13px">
 						@forelse ($requerimientos as $requerimiento)
 						<tr>
 							@if($state == 6)
@@ -242,6 +242,7 @@
 <script src="{{ asset('vendor/DataTables/datatables.min.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
+		sessionStorage.clear();
 		$('#state').on('change', function(){
 			var role = $(this).val();
 			if(role == 2 || role ==3){
