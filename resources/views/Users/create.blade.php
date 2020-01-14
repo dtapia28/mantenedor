@@ -74,26 +74,12 @@
                                 <select style='display: none' id="idTeam" class='form-control' name='idTeam'></select>
                             </div>
                         </div>
-<<<<<<< HEAD
-                        <div id="idLider" class="form-group row" style="display: none;">
-                            <label for="lider" class="col-md-2 text-md-right">Líder de Equipo</label>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="ui-checkbox">
-                                        <input type="checkbox" name="lider" class="form-control form-check-input" value=1>
-                                        <span class="input-span"></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>     
-=======
                         <div class="form-group row">
                             <label for="idLider" id="lLider" class="col-md-2 form-check-label text-md-right" style='display: none'>Lider de Equipo</label>
                             <div class="col-md-4">
                                 <input type="checkbox" class='align-items-center pull-left' name='idLider' id='idLider' style='display: none'>
                             </div>
                         </div>                                            
->>>>>>> frontend
                         <div class="form-group row">
                             <div class="col-md-2"></div>
                             <div class="col-md-4 form-inline">
@@ -120,7 +106,7 @@
         $('#idRole').on('change', function(){
             var combo = document.getElementById('idRole');
             var selected = combo.options[combo.selectedIndex].text;
-            if(selected == 'resolutor'){
+            if(selected == 'resolutor' || selected == 'gestor'){
                 document.getElementById('lTeam').style.display = 'block';
                 document.getElementById('idTeam').style.display = 'block';
                 document.getElementById('idLider').style.display = 'block';
@@ -140,30 +126,7 @@
             document.getElementById('lLider').style.display = 'none';
             }
         });
-
         menu_activo('mUsuarios');
-    });    
-</script>
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('#idTeam').on('change', function(){
-            var combo = document.getElementById('idTeam');
-            var selected = combo.options[combo.selectedIndex].value;
-            var id_team = selected;
-            $.get('../users/script3', {id_team: id_team}, function(resolutors)
-            {
-                if (resolutors != "No hay nada") {
-                    $.each(resolutors, function(index, value){
-                    });
-                } else {
-                }    
-            });           
-            if(selected == 'resolutor'){
-                document.getElementById('idLider').style.display = 'block';
-            } else {
-               document.getElementById('idLider').style.display = 'none'; 
-            }    
-        });
     });    
 </script>                
 @endsection

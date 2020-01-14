@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -72,10 +73,11 @@ class RegisterController extends Controller
         if ($empresa->count() != 0) {
 
         $user = User::create([
-            'name' => $data['name'],
+            'name' => $data['lastname']." ".$data['name'],
             'rutEmpresa' => $data['rut'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'api_token' => Str::random(30),
         ]);
 
         $user->roles()->attach(Role::where([
@@ -126,10 +128,11 @@ class RegisterController extends Controller
         ]);                                       
 
         $user = User::create([
-            'name' => $data['name'],
+            'name' => $data['lastname']." ".$data['name'],
             'rutEmpresa' => $data['rut'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'api_token' => Str::random(30),
         ]);
 
         $user->roles()->attach(Role::where([

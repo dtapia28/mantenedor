@@ -145,7 +145,7 @@
 						</div>
 					</div>
 					{{-- AVANCES --}}
-					@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor")
+					@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "supervisor")
 					<div class="row">
 						<div class="col-md-12">
 							<h2>Avances</h2>
@@ -202,6 +202,61 @@
 						</div>
 					</div>
 					@endif
+					@if($user[0]->nombre == "administrador")
+					<div class="row">
+						<div class="col-md-12">
+							<h2>Avances</h2>
+							@if($requerimiento->estado == 1 and $requerimiento->aprobacion == 3)
+								<form method='HEAD' action="{{ url('/requerimientos/'.$requerimiento->id.'/avances/nuevo') }}">
+									<button type="submit" value="Ingresar" class="btn btn-primary" name="" style="cursor:pointer"><i class="fa fa-plus"></i> Ingresar</button>
+								</form>
+							@endif
+							<div class="table-responsive">
+								<table class="table table-borderless table-striped table-hover table-sm">
+									<thead>
+										<tr>
+											<th>Fecha Avance</th>
+											<th>Texto del Avance</th>
+											@if($requerimiento->estado == 1 and $requerimiento->aprobacion == 3)
+											<th>Acciones</th>
+											@endif
+										</tr>		
+									</thead>
+									<tbody>
+									@forelse ($avances as $avance)	
+									<tr>
+										@if ($avance->idRequerimiento == $requerimiento->id)
+										<td>
+											{{ $avance->created_at->format('d-m-Y') }}
+										</td>
+										<td>{{ $avance->textAvance }}</td>
+										@if($requerimiento->estado == 1 and $requerimiento->aprobacion == 3)
+										<td>			
+											<div scope="row" class="btn-group">
+											<form method='HEAD' action="{{ url('/requerimientos/'.$requerimiento->id.'/avances/'.$avance->id.'/editar') }}">
+												{{ csrf_field() }}
+												<button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
+											</form>
+											&nbsp;&nbsp;&nbsp;
+											<form method='POST' action="{{ url('/requerimientos/'.$requerimiento->id.'/avances/'.$avance->id) }}">
+												{{ csrf_field() }}
+												{{ method_field('DELETE') }}
+												<button type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Eliminar" style="cursor:pointer"><i class="fa fa-trash"></i></button>
+											</form>	
+											</div>					
+										</td>
+										@endif			
+										@endif
+									</tr>
+									@empty
+									@endforelse 
+									</tbody>
+								</table>
+								{!! $avances->render() !!}	
+							</div>
+						</div>
+					</div>
+					@endif					
 					{{-- TAREAS --}}
 					@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
 					<div class="row">

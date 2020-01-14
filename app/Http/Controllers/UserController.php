@@ -13,6 +13,7 @@ use App\Solicitante;
 use App\Parametros;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 use Illuminate\Http\Request;
 
@@ -168,7 +169,6 @@ class UserController extends Controller
 
     public function guardar (Request $request)
     {
-
         $data = request()->validate([
             'name' => 'required',
             'apellido' => 'required',
@@ -181,12 +181,48 @@ class UserController extends Controller
             'rutEmpresa' => auth()->user()->rutEmpresa,
             'email' => $data['email'],
             'password' => Hash::make('secreto'),
+            'api_token' => Str::random(30),  
             ]);
-
-        $user->roles()->attach(Role::where([
-            ['nombre', 'usuario'],
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-        ])->first());           
+            
+            if (isset($request->idTeam)) {
+                if (isset($request->idLider)) {
+                    Resolutor::create([
+                        'nombreResolutor' => $user->name,          
+                        'rutEmpresa' => auth()->user()->rutEmpresa,
+                        'idTeam' => $request->idTeam,
+                        'idUser' => $user->id,
+                        'email' => $user->email,
+                        'lider' => 1,
+                    ]); 
+                } else {
+                    Resolutor::create([
+                        'nombreResolutor' => $user->name,          
+                        'rutEmpresa' => auth()->user()->rutEmpresa,
+                        'idTeam' => $request->idTeam,
+                        'idUser' => $user->id,
+                        'email' => $user->email,
+                    ]);                    
+                }
+                
+                $user->roles()->attach(Role::where([
+                    ['nombre', 'resolutor'],
+                    ['rutEmpresa', auth()->user()->rutEmpresa],
+                ])->first());
+            } else {
+                $role = Role::where('id', $request->idRole)->first();
+                if ($role->nombre == 'solicitante') {
+                    Solicitante::create([
+                        'nombreSolicitante' => $user->name,
+                        'rutEmpresa' => auth()->user()->rutEmpresa,
+                        'idUser' => $user->id,
+                        'email' => $user->email,
+                    ]);                       
+                }
+                $user->roles()->attach(Role::where([
+                    ['nombre', $role->nombre],
+                    ['rutEmpresa', auth()->user()->rutEmpresa],
+                ])->first());
+            }         
 
             return redirect('users');            
     }

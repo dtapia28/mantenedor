@@ -14,7 +14,8 @@
   <link href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('vendor/themify-icons/css/themify-icons.css') }}" rel="stylesheet" />
   <link href="{{ asset('css/main.min.css') }}" rel="stylesheet" />
-  <?php use \App\Http\Controllers\HomeController; $color = HomeController::colorSitio(); $linkLogo = HomeController::logoEmpresa();?>
+  <?php use \App\Http\Controllers\HomeController; $color = HomeController::colorSitio(); $linkLogo = HomeController::logoEmpresa(); $nombre = HomeController::nombreEmpresa();?>
+
   @switch($color)
 	  	@case(1)
 		  	<link href="{{ asset('css/themes/red.css') }}" rel="stylesheet" />
@@ -90,7 +91,7 @@
 						@endif
 					</div>
 					<div class="admin-info">
-						<div class="font-strong">Nombre Empresa</div><small><?= date('d.m.Y') ?></small>
+						<div class="font-strong">{{ $nombre }}</div><small><?= date('d.m.Y') ?></small>
 					</div>
 				</div>
 				<ul class="side-menu metismenu">

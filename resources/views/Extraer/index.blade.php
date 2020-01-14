@@ -150,7 +150,7 @@ if (isset($requerimientos)) {
 				<div id="word" class="from-row col-md-4">
 					<h5>Exportar word (por solicitante)</h5>
 					<form method="GET" action="{{ url('/extracciones/word') }}">
-						<select class="form-control col-md-8" name="idSolicitante">
+						<select class="form-control col-md-8" name="solicitante">
 							<option selected="selected" disabled="disabled">Escoge una opción</option>
 							@foreach($solicitantes as $solicitante)
 									<option value={{ $solicitante->id }}>{{ $solicitante->nombreSolicitante }}</option>
