@@ -57,3 +57,12 @@
     </div>
 </form>
 @endsection
+
+@section('js')
+    <script src="{{ asset('js/jquery.mask.js') }}" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('#rut').mask('00000000-A', {reverse: true, 'translation': {A: {pattern: /[0-9Kk]/}}});
+        })
+    </script>
+@endsection
