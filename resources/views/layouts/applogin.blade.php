@@ -40,5 +40,6 @@
     <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/login/waves.min.js') }}"></script>
     <script src="{{ asset('js/login/elements.js') }}"></script>
+    @yield('js')
 </body>
 </html>
