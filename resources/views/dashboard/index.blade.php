@@ -1,98 +1,111 @@
 @extends('Bases.dashboard')
 @section('titulo', 'Tablero')
-@section('css')
-<style>
-.chart {
-  width: 100%; 
-  min-height: 445px;
-}
-.chart-bar {
-  width: 90%; 
-  min-height: 445px;
-}
-</style>
-@endsection
-@section('contenido')
-<div class="page-heading">
-  <h1 class="page-title"><i class="fa fa fa-th-large"></i> Tablero</h1>
-</div>
-<div class="page-content fade-in-up" id="g1">
-  <div class="ibox">
-    <div class="ibox-head">
-      <div class="ibox-title">Gráfico</div>
-    </div>
-    <div class="ibox-body" align="center">
-      <div id="donutchart3" class="chart"></div>
-    </div>
-  </div>
-</div>
-<div class="page-content fade-in-up" id="g2">
-	<div class="ibox">
-		<div class="ibox-head">
-			<div class="ibox-title">Gráfico</div>
-		</div>
-		<div class="ibox-body" align="center">
-			<div id="graficosTeam" class="chart" style="display: none;"> 
-				<?php
-				foreach ($equipos2 as $valor) {
-					echo "<div id='".$valor['id']."_chart_div' class='chart'></div>\n";
-				}  
-				?>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="page-content fade-in-up" id="g3">
-	<div class="ibox">
-		<div class="ibox-head">
-			<div class="ibox-title">Gráfico</div>
-		</div>
-		<div class="ibox-body" align="center">
-			<div id="reqEquipos" class="chart"></div>
-		</div>
-	</div>
-</div>
-<div class="page-content fade-in-up" id="g4">
-	<div class="ibox">
-		<div class="ibox-head">
-			<div class="ibox-title">Gráfico</div>
-		</div>
-		<div class="ibox-body" align="center">
-			<div id="barra" class="chart-bar"></div>
-		</div>
-	</div>
-</div>
-<div class="page-content fade-in-up" id="g5">
-	<div class="ibox">
-		<div class="ibox-head">
-			<div class="ibox-title">Gráfico</div>
-		</div>
-		<div class="ibox-body" align="center">
-			<div id="barra2" class="chart-bar"></div>
-		</div>
-	</div>
-</div>
 
-<div class="theme-config">
-  <div class="theme-config-toggle"><i class="fa fa-cog theme-config-show"></i><i class="ti-close theme-config-close"></i></div>
-  <div class="theme-config-box">
-      <div class="text-center font-18 m-b-20">GRÁFICOS</div>
-      <div class="font-strong">OPCIONES</div>
-      <div class="btn-group-vertical m-r-10">
-          <button class="btn btn-primary" onclick="changeDisplay1()"><i class="fa fa-pie-chart"></i> 1</button>
-            <button class="btn btn-success" onclick="changeDisplay2()"><i class="fa fa-pie-chart"></i> 2</button>
-            <button class="btn btn-warning" onclick="changeDisplay3()"><i class="fa fa-pie-chart"></i> 3</button>
-      </div>
-      <div class="btn-group-vertical">
-          <button class="btn btn-primary" onclick="changeDisplay4()"><i class="fa fa-bar-chart"></i> 4</button>
-          <button class="btn btn-success" onclick="changeDisplay5()"><i class="fa fa-bar-chart"></i> 5</button>
-          <button class="btn btn-warning" onclick="mytheme(5)"><i class="fa fa-bar-chart"></i> 6</button>
-      </div>
-  </div>
-</div>
+@section('css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
+    <style>
+    .chart {
+        width: 100%; 
+        min-height: 445px;
+    }
+    .chart-bar {
+        width: 90%; 
+        min-height: 445px;
+    }
+    </style>
+@endsection
+
+@section('contenido')
+<div class="page-content fade-in-up">
+    <div class="ibox">
+        <div class="ibox-body row">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-4">
+                        <small class="text-dark"><i class="fa fa-calendar-check-o"></i> Período</small>
+                        <select name="rango_fecha" id="rango_fecha" class="form-control" onchange="validarTipo(this.value)">
+                            <option value="mes_actual">Mes actual</option>
+                            <option value="mes_ult3">Últimos 3 meses</option>
+                            <option value="mes_ult6">Últimos 6 meses</option>
+                            <option value="mes_ult12">Últimos 12 meses</option>
+                            <option value="por_rango">Por rango</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        <small class="text-dark"><i class="fa fa-calendar"></i> Rango de fecha</small>
+                        <div class="input-daterange input-group" id="datepicker">
+                            <span class="input-group-addon p-l-10 p-r-10"><small class="text-dark">desde</small></span>
+                            <input type="text" class="form-control datetimepicker-input" id="fec_des" name="fec_des" value="" data-toggle="datetimepicker" data-target="#fec_des" maxlength="16" disabled/>
+                            <span class="input-group-addon p-l-10 p-r-10"><small class="text-dark">hasta</small></span>
+                            <input type="text" class="form-control datetimepicker-input" id="fec_has" name="fec_has" value="" data-toggle="datetimepicker" data-target="#fec_has" maxlength="16" disabled/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <small>&nbsp;</small>
+                        <a class="btn btn-success btn-block text-white" href="#"><i class="fa fa-filter"></i> Filtrar</a>
+                    </div>
+                    <div class="col-md-6">
+                        <small>&nbsp;</small>
+                        <a class="btn btn-warning btn-block text-white" href="{{ url ('dashboard')}}"><i class="fa fa-repeat"></i> Reiniciar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <div class="ibox bg-success color-white widget-stat">
+                <div class="ibox-body">
+                    <h2 class="m-b-5 font-strong">201</h2>
+                    <div class="m-b-5">REQUERIMIENTOS</div><i class="fa fa-address-card widget-stat-icon"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="ibox bg-info color-white widget-stat">
+                <div class="ibox-body">
+                    <h2 class="m-b-5 font-strong">32</h2>
+                    <div class="m-b-5">RESOLUTORES</div><i class="fa fa-address-book widget-stat-icon"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="ibox bg-warning color-white widget-stat">
+                <div class="ibox-body">
+                    <h2 class="m-b-5 font-strong">50</h2>
+                    <div class="m-b-5">SOLICITANTES</div><i class="fa fa-address-book-o widget-stat-icon"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="ibox bg-danger color-white widget-stat">
+                <div class="ibox-body">
+                    <h2 class="m-b-5 font-strong">24</h2>
+                    <div class="m-b-5">EQUIPOS</div><i class="fa fa-users widget-stat-icon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if ($user[0]->nombre == "administrador" || $user[0]->nombre == "supervisor")
+        @include('dashboard.administrador')
+    @endif
+    @if($user[0]->nombre == 'solicitante')
+        @include('dashboard.solicitante')
+    @endif
+    @if($user[0]->nombre == 'resolutor')
+        @include('dashboard.resolutor')
+    @endif
+    @if($user[0]->nombre == 'resolutor_lider')
+        @include('dashboard.resolutor_lider')
+    @endif
 @endsection
 
 @section('script')
+<<<<<<< HEAD
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   google.charts.load("current", {packages:["corechart"]});
@@ -140,141 +153,52 @@
         height: '445px',
         colors: ['#35A41D', '#CBA20B', '#BB3125'],
       };
+=======
+    <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/moment-with-locales.js') }}" type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script type="text/javascript">
+        menu_activo('mTablero');
+>>>>>>> frontend
 
-      var chart".$valor['id']." = new google.visualization.PieChart(document.getElementById('".$valor['id']."_chart_div'));
-      chart".$valor['id'].".draw(data, options);
-    }\n";
-  }
-  ?>
-</script>
-<script type="text/javascript">
-  google.charts.load('current', {'packages':['corechart']});
-  google.charts.setOnLoadCallback(equipos);
-  function equipos(){
-    var data = new google.visualization.arrayToDataTable([
-      ['Segmento','Cantidad'],
-      <?php
-      foreach ($equipos2 as $equipo) {
-        echo "['".$equipo['nombre']."',".$equipo['conteo']."],";
-      }
-
-      ?>
-      ]);
-    var options = {
-      width: '100%',
-      height: '445px',
-      title: 'Requerimientos por equipo',
-      pieHole: 0.3
-    };
-    var equi = new google.visualization.PieChart(document.getElementById('reqEquipos'));
-    equi.draw(data, options);     
-  }
-</script>
-<script type="text/javascript">
-  google.charts.load('current', {'packages':['bar']});
-  google.charts.setOnLoadCallback(equiposBarra);
-  function equiposBarra(){
-    var data = new google.visualization.arrayToDataTable([
-      ['Segmento','Cantidad'],
-      <?php
-      foreach ($equipos2 as $equipo) {
-        echo "['".$equipo['nombre']."',".$equipo['conteo']."],\n";
-      }
-
-      ?>
-      ]);
-    var options = {
-      title: 'Requerimientos por equipo',
-      width: '90%',
-      height: '445px',
-      legend: {position: 'none'},
-      chart: {title: 'Cantidad de requerimientos por equipo'},
-      bars: 'vertical',        
-      axes: {
-        x: {
-          0: {side:'bottom', label: 'Equipos'}
+        function validarTipo(valor) {
+            if (valor=='por_rango') {
+                $('#fec_des').prop('disabled', false);
+                $('#fec_has').prop('disabled', false);
+            } else {
+                $('#fec_des').val("");
+                $('#fec_has').val("");
+                $('#fec_des').prop('disabled', true);
+                $('#fec_has').prop('disabled', true);
+            }
         }
-      },
-      bar: {groupWidth: "90%"}
-    };
-    var bar = new google.charts.Bar(document.getElementById('barra'));
-    bar.draw(data, options);     
-  }
-</script>
-<script type="text/javascript">
-  google.charts.load('current', {'packages':['bar']});
-  google.charts.setOnLoadCallback(seccionBarra);
-  function seccionBarra(){
-    var data = new google.visualization.arrayToDataTable([
-      ['Equipos', 'Al día', {role: 'style'}, 'Por vencer', {role: 'style'}, 'Vencido', {role: 'style'}],
-      <?php
-        foreach ($equipos2 as $equipo) {
-          echo "['".$equipo['nombre']."', ".$equipo['verde'].", 'color: green', ".$equipo['amarillo'].", 'color: yellow', ".$equipo['rojo'].", 'color: red'],\n ";
-        }
-      ?>
-      ]);
 
-    var options = {
-      width: '90%',
-      height: '445px',
-      colors: ['#35A41D', '#CBA20B', '#BB3125'],
-      chart: {
-        title: 'Requerimientos por equipo'
-      },
-      // series: {
-      //   0: {axis: 'Al día'},
-      //   1: {axis: 'Por vencer'},
-      //   2: {axis: 'Vencido'}
-      // }
-    };
-    var bar2 = new google.charts.Bar(document.getElementById('barra2'));
-    bar2.draw(data, options);      
-  }
-</script>
-<script type="text/javascript">
-  menu_activo('mTablero');
-  function changeDisplay1() {
-    document.getElementById("donutchart3").style.display = "block";
-    document.getElementById("graficosTeam").style.display = "none";
-    document.getElementById('reqEquipos').style.display = "none";
-    document.getElementById('barra').style.display = "none";  
-    document.getElementById('barra2').style.display = "none";
-	$("#g1").show(); $("#g2").hide(); $("#g3").hide(); $("#g4").hide(); $("#g5").hide();
-  }
-
-  function changeDisplay2() {
-    document.getElementById("donutchart3").style.display = "none";
-    document.getElementById("graficosTeam").style.display = "block";
-    document.getElementById('reqEquipos').style.display = "none";
-    document.getElementById('barra').style.display = "none";
-    document.getElementById('barra2').style.display = "none";
-	$("#g1").hide(); $("#g2").show(); $("#g3").hide(); $("#g4").hide(); $("#g5").hide();
-  }
-  function changeDisplay3() {
-    document.getElementById("donutchart3").style.display = "none";
-    document.getElementById("graficosTeam").style.display = "none";
-    document.getElementById('reqEquipos').style.display = "block";
-    document.getElementById('barra').style.display = "none"; 
-    document.getElementById('barra2').style.display = "none";
-	$("#g1").hide(); $("#g2").hide(); $("#g3").show(); $("#g4").hide(); $("#g5").hide();
-  }
-
-  function changeDisplay4() {
-    document.getElementById("donutchart3").style.display = "none";
-    document.getElementById("graficosTeam").style.display = "none";
-    document.getElementById('reqEquipos').style.display = "none";
-    document.getElementById('barra').style.display = "block";
-    document.getElementById('barra2').style.display = "none";
-	$("#g1").hide(); $("#g2").hide(); $("#g3").hide(); $("#g4").show(); $("#g5").hide();
-  }
-
-  function changeDisplay5(){
-    document.getElementById("donutchart3").style.display = "none";
-    document.getElementById("graficosTeam").style.display = "none";
-    document.getElementById('reqEquipos').style.display = "none";
-    document.getElementById('barra').style.display = "none";
-    document.getElementById('barra2').style.display = "block";
-	$("#g1").hide(); $("#g2").hide(); $("#g3").hide(); $("#g4").hide(); $("#g5").show();
-  }
-</script>
+        $(function () {
+            $('#fec_des').datetimepicker({
+                locale: 'es',
+                useCurrent: false,
+                format: 'DD/MM/YYYY',
+                ignoreReadonly: true,
+                forceParse: false,
+                maxDate: 'now',
+            });
+            
+            $('#fec_has').datetimepicker({
+                locale: 'es',
+                useCurrent: false,
+                format: 'DD/MM/YYYY',
+                ignoreReadonly: true,
+                forceParse: false,
+                maxDate: 'now',
+            });
+            
+            // Valida que la fecha hasta no sea menor que fecha desde
+            $("#fec_des").on("change.datetimepicker", function (e) {
+                $('#fec_has').datetimepicker('minDate', e.date);
+            });
+            $("#fec_has").on("change.datetimepicker", function (e) {
+                $('#fec_des').datetimepicker('maxDate', e.date);
+            });
+        });
+    </script>
 @endsection
