@@ -62,7 +62,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-sm-6 form-group">
+<!--                        <div class="col-sm-6 form-group">
                             <label for="idResolutor">Resolutor:</label>    
                             <select class="form-control col-md-12" name="resolutor">
                                 @foreach($resolutors as $resolutor)
@@ -71,7 +71,21 @@
                                     </optgroup>
                                 @endforeach
                             </select>                     
+                        </div>-->
+                        <div class="col-sm-6 form-group">
+                            <label for="team">Equipo Resolutores</label>
+                            <select class="form-control col-md-12" id="team" name="team">
+                                <option value="">Seleccione un Equipo</option>                    
+                                @foreach($teams as $team)
+                                        <option value={{ $team->id }}>{{ $team->nameTeam }}</option>
+                                @endforeach
+                            </select>
                         </div>
+                        <div class="col-sm-6 form-group">
+                            <label for='idResolutor'>Resolutor</label>                      
+                            <select class='form-control col-md-12' id="resolutor" name='resolutor'>
+                            </select>
+                        </div>                        
                         <div class="col-sm-6 form-group">
                             <div id="creaAvance">
                                 <label for="textAvance">Ingresar avance al requerimiento:</label>
@@ -101,5 +115,72 @@
     $(document).ready(function(){
         menu_activo('mRequerimientos');
     });
+</script>
+@endsection
+@section('script2')
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#team').on('change', function(){
+            var id_team = $(this).val();
+            $.get('../script', {id_team: id_team}, function(resolutors){
+                $('#resolutor').empty();
+                $('#resolutor').append("<option value=''>Selecciona un resolutor</opcion>");
+                $.each(resolutors, function(index, value){
+                    $('#resolutor').append("<option value='"+index+"'>"+value+"</opcion>");
+                });
+            });
+        });
+        
+        menu_activo('mRequerimientos');
+
+        let textoReq       = sessionStorage.getItem('stRequerimiento'),
+            fechaEmail     = sessionStorage.getItem('stFechaEmail'),
+            fechaSolicitud = sessionStorage.getItem('stFechaSolicitud'),
+            fechaCierre    = sessionStorage.getItem('stFechaCierre'),
+            idGestor       = sessionStorage.getItem('stIdGestor'),
+            idSolicitante  = sessionStorage.getItem('stIdSolicitante'),
+            team           = sessionStorage.getItem('stTeam'),
+            idResolutor    = sessionStorage.getItem('stIdResolutor'),
+            idPrioridad    = sessionStorage.getItem('stIdPrioridad'),
+            comentario     = sessionStorage.getItem('stComentario'),
+            textAvance     = sessionStorage.getItem('stTextAvance');
+
+        (textoReq!="" && textoReq!=null) ? $('#texto').val(textoReq) : $('#texto').val("");
+        (fechaEmail!="" && fechaEmail!=null) ? $('#fechaEmail').val(fechaEmail) : $('#fechaEmail').val("");
+        (fechaSolicitud!="" && fechaSolicitud!=null) ? $('#fechaSolicitud').val(fechaSolicitud) : $('#fechaSolicitud').val("");
+        (fechaCierre!="" && fechaCierre!=null) ? $('#fechaCierre').val(fechaCierre) : $('#fechaCierre').val("");
+        (idGestor!="" && idGestor!=null) ? $('#idGestor').val(idGestor) : $('#idGestor').val("");
+        (idSolicitante!="" && idSolicitante!=null) ? $('#idSolicitante').val(idSolicitante) : $('#idSolicitante').val("");
+        (team!="" && team!=null) ? $('#team').val(team) : $('#team').val("");
+        if (team!="" && team!=null) {
+            $.get('../requerimientos/script', {id_team: team}, function(resolutors){
+                $('#resolutor').empty();
+                $('#resolutor').append("<option value=''>Selecciona un resolutor</opcion>");
+                $.each(resolutors, function(index, value){
+                    $('#resolutor').append("<option value='"+index+"'>"+value+"</opcion>");
+                });
+            });
+        }
+        (idResolutor!="" && idResolutor!=null) ? $('#resolutor').val(idResolutor) : $('#resolutor').val("");
+        (idPrioridad!="" && idPrioridad!=null) ? $('#idPrioridad').val(idPrioridad) : $('#idPrioridad').val("");
+        (comentario!="" && comentario!=null) ? $('#comentario').val(comentario) : $('#comentario').val("");
+        (textAvance!="" && textAvance!=null) ? $('#textAvance').val(textAvance) : $('#textAvance').val("");
+    });
+
+    function storeCacheForm() {
+        if (typeof(Storage) !== 'undefined') {
+            sessionStorage.setItem('stRequerimiento', $('#texto').val());
+            sessionStorage.setItem('stFechaEmail', $('#fechaEmail').val());
+            sessionStorage.setItem('stFechaSolicitud', $('#fechaSolicitud').val());
+            sessionStorage.setItem('stFechaCierre', $('#fechaCierre').val());
+            sessionStorage.setItem('stIdGestor', $('#idGestor').val());
+            sessionStorage.setItem('stIdSolicitante', $('#idSolicitante').val());
+            sessionStorage.setItem('stTeam', $('#team').val());
+            sessionStorage.setItem('stIdResolutor', $('#resolutor').val());
+            sessionStorage.setItem('stIdPrioridad', $('#idPrioridad').val());
+            sessionStorage.setItem('stComentario', $('#comentario').val());
+            sessionStorage.setItem('stTextAvance', $('#textAvance').val());
+        }
+    }
 </script>
 @endsection

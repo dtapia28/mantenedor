@@ -14,12 +14,7 @@
   <link href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('vendor/themify-icons/css/themify-icons.css') }}" rel="stylesheet" />
   <link href="{{ asset('css/main.min.css') }}" rel="stylesheet" />
-<<<<<<< HEAD
-  <?php use \App\Http\Controllers\HomeController; $color = HomeController::colorSitio(); $linkLogo = HomeController::logoEmpresa(); $nombre = HomeController::nombreEmpresa();?>
-
-=======
   <?php use \App\Http\Controllers\HomeController; $color = HomeController::colorSitio(); $linkLogo = HomeController::logoEmpresa(); $nomEmpresa = HomeController::nombreEmpresa();?>
->>>>>>> frontend
   @switch($color)
 	  	@case(1)
 		  	<link href="{{ asset('css/themes/red.css') }}" rel="stylesheet" />
@@ -95,28 +90,24 @@
 						@endif
 					</div>
 					<div class="admin-info">
-<<<<<<< HEAD
-						<div class="font-strong">{{ $nombre }}</div><small><?= date('d.m.Y') ?></small>
-=======
 						<div class="font-strong"><?= $nomEmpresa ?></div><small><?= date('d.m.Y') ?></small>
->>>>>>> frontend
 					</div>
 				</div>
 				<ul class="side-menu metismenu">
-					@if(in_array($user[0]->nombre, ["supervisor", "administrador", "solicitante", "resolutor"]))
+					@if(in_array($user[0]->nombre, ["supervisor", "administrador", "solicitante"]))
 					<li id="mTablero">
 						<a class="active" href="{{ url('/dashboard') }}"><i class="sidebar-item-icon fa fa-th-large"></i>
 							<span class="nav-label">Tablero</span>
 						</a>
 					</li>
 					@endif
-					@if($user[0]->nombre == "resolutor" and $lider == 1)
+<!--					@if($user[0]->nombre == "resolutor" and $lider == 1)
 					<li id="mTablero">
 						<a class="active" href="{{ url('/dashboard') }}"><i class="sidebar-item-icon fa fa-th-large"></i>
 							<span class="nav-label">Tablero</span>
 						</a>
 					</li>
-					@endif					
+					@endif					-->
 					<li class="heading">PÁGINAS</li>
 					<li id="mRequerimientos">
 						<a href="{{ url('/requerimientos') }}"><i class="sidebar-item-icon fa fa-address-card"></i>

@@ -37,6 +37,13 @@
                     <form method="POST" action="{{ url('requerimientos/crear') }}">
                         {{ csrf_field() }}
                         <div class="col-sm-6 form-group">
+                            <label for='idTipo'>Tipo</label>               
+                            <select class="form-control col-md-12" name="tipo" id="idTipo">
+                                <option value=1>Requerimiento</option>
+                                <option value=2>Incidente</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6 form-group">
                             <label class="" for="textoRequerimiento">Solicitud</label>
                             <textarea id="texto" class="form-control col-md-12" name="textoRequerimiento" placeholder="Solicitud" rows="5" cols="50"></textarea>
                         </div>
@@ -68,7 +75,9 @@
                                         <option value={{ $solicitante->id }}>{{ $solicitante->nombreSolicitante }}</option>
                                 @endforeach
                             </select>
+                            @if($user[0]->nombre=="administrador")
                             <a href="{{ url('/users/nuevo') }}?volver=1" onclick="storeCacheForm()">Crear Solicitante</a>
+                            @endif
                         </div>
                         @endif
                         <div class="col-sm-6 form-group">
@@ -84,7 +93,9 @@
                             <label for='idResolutor'>Resolutor</label>                      
                             <select class='form-control col-md-12' id="resolutor" name='idResolutor'>
                             </select>
+                            @if($user[0]->nombre=="administrador")
                             <a href='{{ url('/users/nuevo') }}?volver=1' onclick="storeCacheForm()">Crear Resolutor</a>
+                            @endif
                         </div>
                         <div class="col-sm-6 form-group">
                             <label for="idPrioridad">Prioridad</label>        
@@ -93,7 +104,9 @@
                                         <option value={{ $priority->id }}>{{ $priority->namePriority }}</option>
                                 @endforeach
                             </select>
+                            @if($user[0]->nombre=="administrador")
                             <a href="{{ url('/priorities/nueva') }}?volver=1" onclick="storeCacheForm()">Crear Prioridad</a>
+                            @endif
                         </div>
                         <div class="col-sm-6 form-group">
                             <div id="creaComentario">
@@ -150,7 +163,8 @@
             idResolutor    = sessionStorage.getItem('stIdResolutor'),
             idPrioridad    = sessionStorage.getItem('stIdPrioridad'),
             comentario     = sessionStorage.getItem('stComentario'),
-            textAvance     = sessionStorage.getItem('stTextAvance');
+            textAvance     = sessionStorage.getItem('stTextAvance'),
+            tipo           = sessionStorage.getItem('stTipo');
 
         (textoReq!="" && textoReq!=null) ? $('#texto').val(textoReq) : $('#texto').val("");
         (fechaEmail!="" && fechaEmail!=null) ? $('#fechaEmail').val(fechaEmail) : $('#fechaEmail').val("");
@@ -159,6 +173,7 @@
         (idGestor!="" && idGestor!=null) ? $('#idGestor').val(idGestor) : $('#idGestor').val("");
         (idSolicitante!="" && idSolicitante!=null) ? $('#idSolicitante').val(idSolicitante) : $('#idSolicitante').val("");
         (team!="" && team!=null) ? $('#team').val(team) : $('#team').val("");
+        (tipo!="" && tipo!=null) ? $('#tipo').val(tipo) : $('#tipo').val("");
         if (team!="" && team!=null) {
             $.get('../requerimientos/script', {id_team: team}, function(resolutors){
                 $('#resolutor').empty();
@@ -176,6 +191,7 @@
 
     function storeCacheForm() {
         if (typeof(Storage) !== 'undefined') {
+            sessionStorage.setItem('stTipo', $('#tipo').val());
             sessionStorage.setItem('stRequerimiento', $('#texto').val());
             sessionStorage.setItem('stFechaEmail', $('#fechaEmail').val());
             sessionStorage.setItem('stFechaSolicitud', $('#fechaSolicitud').val());

@@ -2133,8 +2133,12 @@ class RequerimientoController extends Controller
                 } else {
                     $conteoA = $conteo;
                 }
-
-                $var = "RQ-".$team[0]->id2."-".$conteoA;
+                if ($request->idTipo == 1) {
+                    $var = "RQ-".$team[0]->id2."-".$conteoA;
+                } else {
+                    $var = "INC-".$team[0]->id2."-".$conteoA;
+                }
+                
               
 
             Requerimiento::create([
@@ -2148,7 +2152,7 @@ class RequerimientoController extends Controller
                 'idPrioridad' => $data['idPrioridad'],
                 'resolutor' => $data['idResolutor'],
                 'rutEmpresa' => auth()->user()->rutEmpresa,
-                'id2' => "RQ-".$team[0]->id2."-".$conteoA,
+                'id2' => $var,
                 'aprobacion' => 3,
             ]);
 
@@ -2191,9 +2195,12 @@ class RequerimientoController extends Controller
             $recep = $resolutor->email;
         
             // Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
-
-            return redirect('requerimientos')->with('msj', 'Requerimiento '.$requerimiento->id2.' guardado correctamente');
-
+            
+            if ($request->idTipo == 1) {
+                return redirect('requerimientos')->with('msj', 'Requerimiento '.$requerimiento->id2.' guardado correctamente');
+            } else {
+                return redirect('requerimientos')->with('msj', 'Incidente '.$requerimiento->id2.' guardado correctamente');
+            }
         }else 
         {
             return back()->with('msj', 'La fecha de cierre del requerimiento debe ser mayor a la fecha de solicitud');
@@ -2210,6 +2217,7 @@ class RequerimientoController extends Controller
     {
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
         $res = Resolutor::where('idUser', $user[0]->idUser)->first();
+        $id2 = substr($requerimiento->id2,0,3);
         $lider = 0;
         if ($user[0]->nombre == "resolutor") {
             $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
@@ -2256,7 +2264,7 @@ class RequerimientoController extends Controller
             $fechaCierre = new DateTime(FECHACIERRE);
             $restantes = 0;                        
 
-        return view('Requerimientos.show', compact('user','requerimiento', 'resolutors', 'priorities', 'avances', 'teams', 'fechaCierre', 'requerimientosAnidados', 'tareas', 'requerimientos', 'solicitante', 'resolutor', 'resolutores', 'lider', 'res'));        
+        return view('Requerimientos.show', compact('user','requerimiento', 'resolutors', 'priorities', 'avances', 'teams', 'fechaCierre', 'requerimientosAnidados', 'tareas', 'requerimientos', 'solicitante', 'resolutor', 'resolutores', 'lider', 'res', 'id2'));        
     }
 
     /**
@@ -2305,9 +2313,17 @@ class RequerimientoController extends Controller
         ])->get();
         $priorities = Priority::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
-        $fechaCierre = new DateTime($requerimiento->fechaCierre);          
-
-        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'fechaCierre', 'cierre', 'solicitud', 'solicitanteEspecifico', 'prioridadEspecifica', 'resolutorEspecifico', 'user', 'lider'));        
+        $fechaCierre = new DateTime($requerimiento->fechaCierre);
+        if($user[0]->nombre == "resolutor")
+        {
+            $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first();
+            $teams = Team::where('id', $resolutor->idTeam)->get();
+        } else
+        {    
+            $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        }
+        
+        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'fechaCierre', 'cierre', 'solicitud', 'solicitanteEspecifico', 'prioridadEspecifica', 'resolutorEspecifico', 'user', 'lider', 'teams'));        
     }
 
     /**

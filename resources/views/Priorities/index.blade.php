@@ -23,7 +23,6 @@
 				<table class="table table-bordered table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
 					<thead>
 					<tr>
-						<th><strong>Id</strong></th>
 						<th><strong>Nombre</strong></th>
 						@if($user[0]->nombre == "administrador")
 						<th><strong>Acciones</strong></th>
@@ -33,11 +32,6 @@
 					<tbody>
 						@forelse ($priorities as $priority)
 						<tr>
-							<td id="tabla" scope="row">
-								<a href="{{ url("priorities/{$priority->id}") }}">					
-									{{ $priority->id }}
-								</a>						
-							</td>
 							<td style="text-align:left;">	
 								{{ $priority->namePriority }}
 							</td>

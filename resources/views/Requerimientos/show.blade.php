@@ -37,7 +37,11 @@
 				<div class="ibox-body">
 					<div class="row">
 						<div class="col-md-6">
-							<h2>Requerimiento {{ $requerimiento->id2 }}</h2>
+                                                    @if($id2 == "INC")
+							<h2>Incidente {{ $requerimiento->id2 }}</h2>
+                                                    @else
+                                                        <h2>Requerimiento {{ $requerimiento->id2 }}</h2>
+                                                    @endif
 							<br>
 							<table class="table table-condensed">	
 								<tr>
@@ -48,7 +52,7 @@
 									<td><strong>Resolutor</strong></td>
 									<td>{{ $resolutor->nombreResolutor }}</td>
 								</tr>
-								@if($user[0]->nombre == "resolutor")
+								@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
 								<tr>
 									<td><strong>Comentario</strong></td>
 									<td>{{ $requerimiento->comentario }}</td>

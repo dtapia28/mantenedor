@@ -31,7 +31,6 @@
 				<table class="table table-bordered table-striped table-hover" id="dataTable" width="100%"  cellspacing="0">
 					<thead>
 						<tr>
-							<th scope="col"><strong>ID</strong></th>
 							<th scope="col"><strong>Nombre</strong></th>
 							@if($user[0]->nombre == "administrador")
 							<th scope="col"><strong>Acciones</strong></th>
@@ -41,11 +40,6 @@
 					<tbody>
 					@forelse ($solicitantes as $solicitante)
 					<tr>
-						<td scope="row">
-							<a href="{{ url("solicitantes/{$solicitante->id}") }}">														    
-							{{ $solicitante->id }}
-							</a>
-						</td>
 						<td scope="row">
 							{{ $solicitante->nombreSolicitante }}
 						</td>

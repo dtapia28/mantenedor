@@ -103,7 +103,6 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-
         $data = request()->validate([
             'idRole' => 'required',
             'idTeam' => 'nullable',
@@ -112,28 +111,25 @@ class UserController extends Controller
 
 
         if (isset($data['idTeam'])) {
-            $role = Role::where('id', $data['idRole'])->first();
-            if ($role->nombre == 'resolutor') {
-                $usuario = User::where('id', $request->idUsers)->first();
-                Resolutor::create([
-                    'nombreResolutor' => $usuario->name,          
-                    'rutEmpresa' => auth()->user()->rutEmpresa,
-                    'idTeam' => $data['idTeam'],
-                    'idUser' => $usuario->id,
-                    'email' => $usuario->email,
-                ]);
+            $resolutor = Resolutor::where('idUser', $request->idUsers)->first();
+            if (isset($resolutor)) {
+                $dato = [
+                    'idTeam' => $request->idTeam,
+                ];
+                $resolutor->update($dato);
             } else {
-                $usuario = User::where('id', $request->idUsers)->first();
-                Resolutor::create([
-                    'nombreResolutor' => $usuario->name,          
-                    'rutEmpresa' => auth()->user()->rutEmpresa,
-                    'idTeam' => $data['idTeam'],
-                    'idUser' => $usuario->id,
-                    'email' => $usuario->email,
-                    'lider' => 1,
-                ]);                
-
-            }            
+                $role = Role::where('id', $data['idRole'])->first();
+                if ($role->nombre == 'resolutor') {
+                    $usuario = User::where('id', $request->idUsers)->first();
+                    Resolutor::create([
+                        'nombreResolutor' => $usuario->name,          
+                        'rutEmpresa' => auth()->user()->rutEmpresa,
+                        'idTeam' => $data['idTeam'],
+                        'idUser' => $usuario->id,
+                        'email' => $usuario->email,
+                    ]);
+                }                
+            }           
         }
 
         $role = Role::where('id', $data['idRole'])->first();
