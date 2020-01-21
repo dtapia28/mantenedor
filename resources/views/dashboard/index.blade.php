@@ -105,62 +105,11 @@
 @endsection
 
 @section('script')
-<<<<<<< HEAD
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-  google.charts.load("current", {packages:["corechart"]});
-  google.charts.setOnLoadCallback(drawChart);
-  function drawChart() {
-    var data = google.visualization.arrayToDataTable([
-      ['Task', 'Hours per Day'],
-      ['Al día',     {{ $verde }}],
-      ['Por vencer',      {{ $amarillo }}],
-      ['Vencido',  {{ $rojo }}]
-      ]);
-    var options = {
-      
-      title: 'Todos los equipos',
-      pieHole: 0.3,
-      colors: ['#35A41D', '#CBA20B', '#BB3125'],
-      width: '100%',
-      height: '445px',
-    };
-    var chart = new google.visualization.PieChart(document.getElementById('donutchart3'));
-    chart.draw(data, options);
-  }
-</script> 
-<script type="text/javascript">
-  google.charts.load('current', {'packages':['corechart']});
-  <?php
-  foreach ($equipos2 as $valor) {
-    echo "google.charts.setOnLoadCallback(drawChart".$valor['id'].");\n";
-  }
-  ?>
-  <?php
-  foreach ($equipos2 as $valor) {
-    echo "function drawChart".$valor['id']."() {
-      var data = new google.visualization.arrayToDataTable([
-      ['Segmento','Cantidad'],
-      ['Al día',".$valor['verde']."],
-      ['Por vencer',".$valor['amarillo']."],
-      ['Vencido',".$valor['rojo']."]
-      ]);
-
-      var options = {
-        title: 'Equipo ".$valor['nombre']."',
-        pieHole: 0.3,
-        width: '100%',
-        height: '445px',
-        colors: ['#35A41D', '#CBA20B', '#BB3125'],
-      };
-=======
     <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/moment-with-locales.js') }}" type="text/javascript"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
     <script type="text/javascript">
         menu_activo('mTablero');
->>>>>>> frontend
-
         function validarTipo(valor) {
             if (valor=='por_rango') {
                 $('#fec_des').prop('disabled', false);
@@ -172,7 +121,6 @@
                 $('#fec_has').prop('disabled', true);
             }
         }
-
         $(function () {
             $('#fec_des').datetimepicker({
                 locale: 'es',
