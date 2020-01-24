@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Requerimiento;
-use App\Empresa;
 use App\Resolutor;
 use App\Priority;
 use App\Solicitante;
@@ -20,11 +19,9 @@ use App\Notifications\RechazadoNotifi;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Collection;
 use DateTime;
 use DateInterval;
 use App\Http\Controllers\Controller;
-use Excel;
 use Carbon\Carbon;
 
 class RequerimientoController extends Controller
@@ -2194,7 +2191,7 @@ class RequerimientoController extends Controller
 
             $recep = $resolutor->email;
         
-            // Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
+            Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
             
             if ($request->idTipo == 1) {
                 return redirect('requerimientos')->with('msj', 'Requerimiento '.$requerimiento->id2.' guardado correctamente');

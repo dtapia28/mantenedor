@@ -41,9 +41,13 @@ class UserController extends Controller
 
     public function cambiarPassword()
     {
-        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
-    
-        return view('Users.cambiar', compact('user'));
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        $lider = 0;
+        if ($user[0]->nombre == "resolutor") {
+            $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+            $lider = $resolutor->lider;           
+        }        
+        return view('Users.cambiar', compact('user', 'lider'));
     }
 
     public function change(Request $request)
