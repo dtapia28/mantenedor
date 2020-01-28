@@ -24,6 +24,64 @@ use DateInterval;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 
+class WhatsmsApi 
+            {
+                var $apikey;
+                    
+                public function setApiKey($apikey){
+                    $this->apikey = $apikey;
+                }
+                    
+                public function sendSms($phone, $message){
+                    if(empty($phone)){
+                        return array("status" => false, "message" => "example -> api->sendSms('+5555555555','message'); ");
+                    }
+                        
+                    if(empty($message)){
+                        return array("status" => false, "message" => "example -> api->sendSms('+5555555555','message'); ");
+                    }
+                        
+                    if(!is_string($phone) || !is_string($message)){
+                        return array("status" => false, "message" => "example -> api->sendSms('string','string'); ");
+                    }
+                        
+                    $curl = curl_init();
+                    curl_setopt_array($curl, array(
+                        CURLOPT_RETURNTRANSFER => 1,
+                        CURLOPT_URL => 'https://whatsmsapi.com/api/send_sms',
+                        CURLOPT_USERAGENT => 'WhatsmsApi',
+                        CURLOPT_POST => 1,
+                        CURLOPT_POSTFIELDS => array(
+                            "phone" => $phone,
+                            "text" => $message
+                        ),
+                        CURLOPT_HTTPHEADER => array(
+                            "x-api-key: $this->apikey"
+                        )
+                    ));
+                    $resp = curl_exec($curl);
+                    if(!$resp){
+                        $response = array(
+                            "phones" => array(
+                                $phone
+                            ), 
+                            "text" => $message,
+                            "sms" => array(
+                                ((object) array(
+                                    "idsms" => -1,
+                                    "success" => false,
+                                    "message" => "Error al ejecutar la operación"
+                                ))
+                            )
+                        );
+                        return $response;
+                    }else{
+                        curl_close($curl);
+                        return json_decode($resp);
+                    }
+                }
+                    
+            }
 class RequerimientoController extends Controller
 {
     /**
@@ -2191,7 +2249,14 @@ class RequerimientoController extends Controller
 
             $recep = $resolutor->email;
         
-            Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
+//            Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
+            
+            $id = $requerimiento->id2;
+            $link = "http://app.kinchika.com/requerimientos/".$requerimiento->id;
+
+            $whatsmsapi = new WhatsmsApi();
+            $whatsmsapi->setApiKey("5e2edfe1aa0f9");
+            $whatsmsapi->sendSms("56964787646", "Hola soy Kinchika y te estoy enviando este mensaje porque se te ha asignado el siguiente requerimiento: ".$id."\n Solicitud: ".$requerimiento->textoRequerimiento."\n Puedes ver el detalle del requerimiento en el siguiente link: ".$link);
             
             if ($request->idTipo == 1) {
                 return redirect('requerimientos')->with('msj', 'Requerimiento '.$requerimiento->id2.' guardado correctamente');
