@@ -3,16 +3,6 @@
 
 @section('css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
-    <style>
-    .chart {
-        width: 100%; 
-        min-height: 445px;
-    }
-    .chart-bar {
-        width: 90%; 
-        min-height: 445px;
-    }
-    </style>
 @endsection
 
 @section('contenido')
@@ -96,10 +86,10 @@
     @if($user[0]->nombre == 'solicitante')
         @include('dashboard.solicitante')
     @endif
-    @if($user[0]->nombre == 'resolutor')
+    @if($user[0]->nombre == 'resolutor' && $resolutor_lider == 0)
         @include('dashboard.resolutor')
     @endif
-    @if($user[0]->nombre == 'resolutor_lider')
+    @if($user[0]->nombre == 'resolutor' && $resolutor_lider == 1)
         @include('dashboard.resolutor_lider')
     @endif
 @endsection
@@ -108,6 +98,9 @@
     <script src="{{ asset('js/moment.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/moment-with-locales.js') }}" type="text/javascript"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script type="text/javascript" src="{{ asset('vendor/fusioncharts/js/fusioncharts.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/fusioncharts/integrations/jquery/js/jquery-fusioncharts.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/fusioncharts/js/themes/fusioncharts.theme.fusion.js') }}"></script>
     <script type="text/javascript">
         menu_activo('mTablero');
         function validarTipo(valor) {
@@ -149,4 +142,10 @@
             });
         });
     </script>
+<<<<<<< HEAD
 @endsection
+=======
+    
+    @yield('scripts_dash')
+@endsection
+>>>>>>> frontend

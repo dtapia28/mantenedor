@@ -65,7 +65,67 @@ class DashboardController extends Controller
                     {
                         $rojo++;
                     }
+<<<<<<< HEAD
                 }    
+=======
+                }
+            }
+
+            if ($everde != 0 or $eamarillo != 0 or $erojo != 0) {
+
+                array_push($equipos2, array('id'=>$equipo['id'], 'nombre'=>$equipo['nameTeam'], 'verde'=>$everde, 'amarillo'=>$eamarillo, 'rojo'=>$erojo, 'conteo' =>$econteo));
+                $everde = 0;
+                $eamarillo = 0;
+                $erojo = 0;
+                $econteo = 0;
+                
+            }
+        }
+        
+        // Verifica si el usuario logueado es un resolutor marcado como líder
+        $resolutor = DB::table('resolutors')->where('idUser', auth()->user()->id)->get();
+        $resolutor_lider = $resolutor[0]->lider;
+        
+        // Termino de prueba        
+
+    	return view('dashboard.index', compact("verde", "amarillo", "rojo", "teams", "equipos2", 'user', 'resolutor_lider'));
+    }
+
+    public function green(){
+
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();  
+        $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();        	
+    	$requerimientos = Requerimiento::where([
+            ['estado', 1],
+            ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+        ])->get();
+    	$requerimientosGreen = [];
+    	foreach ($requerimientos as $requerimiento) 
+        {
+            if ($requerimiento->fechaCierre == "9999-12-31 00:00:00")
+            {  
+            } else 
+            {
+        		$hoy = new DateTime();
+        		$fechaCierre = new DateTime($requerimiento->fechaCierre);
+        		if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
+        			$variable = 0;
+        			while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
+
+    		           if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+    		                $hoy->modify("+1 days");               
+    		            }else{
+    		                $variable++;
+    		                $hoy->modify("+1 days");                       
+    		            }    				
+        			}
+        		if ($variable >= 3) {
+        			$requerimientosGreen[] = $requerimiento;    			
+        		}
+        		}
+>>>>>>> frontend
             }
             $equipos2 = [];
             //Borrar la variable teams
