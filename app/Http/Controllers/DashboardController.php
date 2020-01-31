@@ -121,10 +121,14 @@ class DashboardController extends Controller
                 
             }
         }
- 
+        
+        // Verifica si el usuario logueado es un resolutor marcado como líder
+        $resolutor = DB::table('resolutors')->where('idUser', auth()->user()->id)->get();
+        $resolutor_lider = $resolutor[0]->lider;
+        
         // Termino de prueba        
 
-    	return view('dashboard.index', compact("verde", "amarillo", "rojo", "teams", "equipos2", 'user'));
+    	return view('dashboard.index', compact("verde", "amarillo", "rojo", "teams", "equipos2", 'user', 'resolutor_lider'));
     }
 
     public function green(){
