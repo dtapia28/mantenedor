@@ -2256,7 +2256,7 @@ class RequerimientoController extends Controller
 
             $whatsmsapi = new WhatsmsApi();
             $whatsmsapi->setApiKey("5e2edfe1aa0f9");
-            $whatsmsapi->sendSms("56964787646", "Hola soy Kinchika y te estoy enviando este mensaje porque se te ha asignado el siguiente requerimiento: ".$id."\n Solicitud: ".$requerimiento->textoRequerimiento."\n Puedes ver el detalle del requerimiento en el siguiente link: ".$link);
+            $whatsmsapi->sendSms("56953551286", "Hola soy Kinchika y te estoy enviando este mensaje porque se te ha asignado el siguiente requerimiento: ".$id."\n Solicitud: ".$requerimiento->textoRequerimiento."\n Puedes ver el detalle del requerimiento en el siguiente link: ".$link);
             
             if ($request->idTipo == 1) {
                 return redirect('requerimientos')->with('msj', 'Requerimiento '.$requerimiento->id2.' guardado correctamente');
