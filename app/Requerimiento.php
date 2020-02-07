@@ -15,5 +15,6 @@ class Requerimiento extends Model
 							'fechaCierre', 'fechaRealCierre', 'numeroCambios',
 							'porcentajeEjecutado', 'cierre', 'idSolicitante',
 							'idPrioridad', 'resolutor', 'rutEmpresa', 'estado',
-                                                        'id2', 'comentario', 'gestor', 'aprobacion', 'rechazo', 'msj_whats'];
+                                                        'id2', 'comentario', 'gestor', 'aprobacion', 'rechazo', 'msj_whats',
+                                                        'fechaLiquidacion'];
 }

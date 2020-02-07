@@ -560,3 +560,7 @@ Route::get('/clear_cache', function()
     Artisan::call('optimize:clear');
     return "Caché limpiado";
 });
+
+
+/* Rutas para pruebascontroladores en Tablero - Daniel Tapia */
+Route::get('/dashboard/prueba','GraficosSolicitanteController@index');

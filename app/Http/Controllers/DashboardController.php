@@ -14,60 +14,100 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {   
-        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
-        $lider = 0;
-        if ($user[0]->nombre == "resolutor") {
-            $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
-            $lider = $resolutor->lider;           
-        }
-        
-        if ($user[0]->nombre == "resolutor")
-        {   
-            $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get(['id', 'nameTeam'])->toArray(); 
-            $res = Resolutor::where('idUser', $user[0]->idUser)->first();
-            $equipo = Team::where('id', $res->idTeam)->first();
-            $verde = 0;
-            $amarillo = 0;
-            $rojo = 0;
-            $requerimientos = DB::table('requerimientos_equipos')->where([
-                ['estado', 1],
-                ['rutEmpresa', auth()->user()->rutEmpresa],
-                ['idEquipo', $equipo->id],
-            ])->get();
-            foreach ($requerimientos as $requerimiento) 
+        //variable array para contener equipos. Linea 18
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
+        $equipos = [];
+        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get(['id', 'nameTeam'])->toArray();
+        $resolutores = Resolutor::where([
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+        ])->get();
+
+        $verde = 0;
+        $amarillo = 0;
+        $rojo = 0;
+    	$requerimientos = Requerimiento::where([
+            ['estado', 1],
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+        ])->get();
+    	foreach ($requerimientos as $requerimiento) 
+        {
+            if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") 
             {
-                if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") 
-                {
-                } else
-                {
-                    $hoy = new DateTime();
-                    $fechaCierre = new DateTime($requerimiento->fechaCierre);
-                    if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
-                        $variable = 0;
-                        while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
-                            if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday')
-                            {
-                                $hoy->modify("+1 days");               
-                            }
-                            else
-                            {
-                                $variable++;
-                                $hoy->modify("+1 days");                       
-                            }    				
-                        }
-                        if ($variable >= 3) {
-                            $verde++;    			
-                        } else {
-                            $amarillo++;
-                        }    			
-                    } 
-                    else 
+            } else
+            {
+        		$hoy = new DateTime();
+        		$fechaCierre = new DateTime($requerimiento->fechaCierre);
+        		if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
+        			$variable = 0;
+        			while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
+
+    		           if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+    		                $hoy->modify("+1 days");               
+    		            }else{
+    		                $variable++;
+    		                $hoy->modify("+1 days");                       
+    		            }    				
+        			}
+        		if ($variable >= 3) {
+        			$verde++;    			
+        		} else {
+        			$amarillo++;
+        		}    			
+        		} else {
+        			$rojo++;
+        		}
+            }    
+    	}
+
+        $equipos2 = [];
+        //Prueba para ver array de equipos
+        foreach ($teams as $team) {
+            $equipos[] = $team;
+        }
+
+        $everde = 0;
+        $eamarillo = 0;
+        $erojo = 0;
+        $econteo = 0;
+
+        foreach ($equipos as $equipo) 
+        {
+            //Busca los resolutores por equipo
+            foreach ($resolutores as $resolutor) 
+            {
+                if ($resolutor->idTeam == $equipo['id']) {
+                    foreach ($requerimientos as $requerimiento) 
                     {
-                        $rojo++;
+                        if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
+                        } else 
+                        {
+                            
+                            if ($requerimiento->resolutor == $resolutor->id) {
+                                $econteo++;
+                                $hoy = new DateTime();
+                                $fechaCierre = new DateTime($requerimiento->fechaCierre);
+                                if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
+                                    $variable = 0;
+                                    while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
+
+                                       if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                            $hoy->modify("+1 days");               
+                                        }else{
+                                            $variable++;
+                                            $hoy->modify("+1 days");                       
+                                        }                   
+                                    }
+                                if ($variable >= 3) {
+                                    $everde++;               
+                                } else {
+                                    $eamarillo++;
+                                }               
+                                } else {
+                                    $erojo++;
+                                }                            
+                            }
+                        }    
                     }
-<<<<<<< HEAD
-                }    
-=======
                 }
             }
 
@@ -84,7 +124,7 @@ class DashboardController extends Controller
         
         // Verifica si el usuario logueado es un resolutor marcado como líder
         $resolutor = DB::table('resolutors')->where('idUser', auth()->user()->id)->get();
-        $resolutor_lider = $resolutor[0]->lider;
+        $resolutor_lider = isset($resolutor[0]->lider)? $resolutor[0]->lider:"";
         
         // Termino de prueba        
 
@@ -125,30 +165,26 @@ class DashboardController extends Controller
         			$requerimientosGreen[] = $requerimiento;    			
         		}
         		}
->>>>>>> frontend
             }
-            $equipos2 = [];
-            //Borrar la variable teams
-            $resolutores = Resolutor::where([
-                ['rutEmpresa', auth()->user()->rutEmpresa],
-                ['idTeam', $equipo->id]
-            ])->get(['id', 'nombreResolutor']);
+    	}	
+    	
+    	return view('dashboard.green', compact('requerimientosGreen', 'resolutors', 'teams', 'solicitantes', 'user'));   	    	
+    }
 
-            $everde = 0;
-            $eamarillo = 0;
-            $erojo = 0;
-            $econteo = 0;
+    public function yellow(){
 
-foreach ($resolutores as $resolutor) 
-{
-    foreach ($requerimientos as $requerimiento) 
-    {
-        if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
-            $everde++; 
-        } else 
-        {  
-            if ($requerimiento->resolutor == $resolutor->id) {
-                $econteo++;
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();  
+        $resolutors = Resolutor::all();  
+        $teams = Team::all();           
+        $requerimientos = Requerimiento::where('estado', 1)->get();
+        $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $requerimientosYellow = [];
+        foreach ($requerimientos as $requerimiento) 
+        {
+            if ($requerimiento->fechaCierre == "9999-12-31 00:00:00")
+            {
+            }else
+            {    
                 $hoy = new DateTime();
                 $fechaCierre = new DateTime($requerimiento->fechaCierre);
                 if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
@@ -156,141 +192,42 @@ foreach ($resolutores as $resolutor)
                     while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
 
                        if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
-                        $hoy->modify("+1 days");               
-                    }else{
-                        $variable++;
-                        $hoy->modify("+1 days");                       
-                    }                   
-                }
-                if ($variable >= 3) {
-                    $everde++;               
-                } else {
-                    $eamarillo++;
-                }               
-            } else {
-                $erojo++;
-            }                            
-        }
-    }    
-}
-}
-
-if ($everde != 0 or $eamarillo != 0 or $erojo != 0) {
-
-    array_push($equipos2, array('id'=>$resolutor['id'], 'nombre'=>$resolutor['nombreResolutor'], 'verde'=>$everde, 'amarillo'=>$eamarillo, 'rojo'=>$erojo, 'conteo' =>$econteo));
-    $everde = 0;
-    $eamarillo = 0;
-    $erojo = 0;
-    $econteo = 0;
-
-}
-        } else {
-            $equipos = [];
-            $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get(['id', 'nameTeam'])->toArray();
-            $resolutores = Resolutor::where([
-                ['rutEmpresa', auth()->user()->rutEmpresa],
-            ])->get();
-
-            $verde = 0;
-            $amarillo = 0;
-            $rojo = 0;
-            $requerimientos = Requerimiento::where([
-                ['estado', 1],
-                ['rutEmpresa', auth()->user()->rutEmpresa],
-            ])->get();
-            foreach ($requerimientos as $requerimiento) 
-            {
-                if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") 
-                {
-                } else
-                {
-                    $hoy = new DateTime();
-                    $fechaCierre = new DateTime($requerimiento->fechaCierre);
-                    if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
-                        $variable = 0;
-                        while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
-
-                           if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
-                                $hoy->modify("+1 days");               
-                            }else{
-                                $variable++;
-                                $hoy->modify("+1 days");                       
-                            }                   
-                        }
-                    if ($variable >= 3) {
-                        $verde++;               
-                    } else {
-                        $amarillo++;
-                    }               
-                    } else {
-                        $rojo++;
+                            $hoy->modify("+1 days");               
+                        }else{
+                            $variable++;
+                            $hoy->modify("+1 days");                       
+                        }                   
                     }
-                }    
-            }
-
-            $equipos2 = [];
-            //Prueba para ver array de equipos
-            foreach ($teams as $team) {
-                $equipos[] = $team;
-            }
-
-            $everde = 0;
-            $eamarillo = 0;
-            $erojo = 0;
-            $econteo = 0;
-
-            foreach ($equipos as $equipo) 
-            {
-                //Busca los resolutores por equipo
-                foreach ($resolutores as $resolutor) 
-                {
-                    if ($resolutor->idTeam == $equipo['id']) {
-                        foreach ($requerimientos as $requerimiento) 
-                        {
-                            if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
-                            } else 
-                            {
-                                
-                                if ($requerimiento->resolutor == $resolutor->id) {
-                                    $econteo++;
-                                    $hoy = new DateTime();
-                                    $fechaCierre = new DateTime($requerimiento->fechaCierre);
-                                    if ($requerimiento->fechaRealCierre == "" and ($hoy->getTimestamp() < $fechaCierre->getTimestamp())) {
-                                        $variable = 0;
-                                        while ($hoy->getTimestamp() < $fechaCierre->getTimestamp()) {
-
-                                           if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
-                                                $hoy->modify("+1 days");               
-                                            }else{
-                                                $variable++;
-                                                $hoy->modify("+1 days");                       
-                                            }                   
-                                        }
-                                    if ($variable >= 3) {
-                                        $everde++;               
-                                    } else {
-                                        $eamarillo++;
-                                    }               
-                                    } else {
-                                        $erojo++;
-                                    }                            
-                                }
-                            }    
-                        }
-                    }
+                if ($variable <= 2 and $variable >=0) {
+                    $requerimientosYellow[] = $requerimiento;                
                 }
-
-                if ($everde != 0 or $eamarillo != 0 or $erojo != 0) {
-
-                    array_push($equipos2, array('id'=>$equipo['id'], 'nombre'=>$equipo['nameTeam'], 'verde'=>$everde, 'amarillo'=>$eamarillo, 'rojo'=>$erojo, 'conteo' =>$econteo));
-                    $everde = 0;
-                    $eamarillo = 0;
-                    $erojo = 0;
-                    $econteo = 0;
-                    
                 }
-            }            
-        }
-    	return view('dashboard.index', compact("verde", "amarillo", "rojo", "teams", "equipos2", 'user', 'lider'));
+            }    
+        }   
+        
+        return view('dashboard.yellow', compact('requerimientosYellow', 'resolutors', 'teams', 'solicitantes', 'user'));              
+    }
+
+    public function red(){
+
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();  
+        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();  
+        $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();           
+        $requerimientos = Requerimiento::where([
+            ['estado', 1],
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+            ])->get();
+        $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $requerimientosRed = [];
+        foreach ($requerimientos as $requerimiento) 
+        {
+            $hoy = new DateTime();
+            $fechaCierre = new DateTime($requerimiento->fechaCierre);
+            if ($requerimiento->fechaRealCierre != "" or ($hoy->getTimestamp() > $fechaCierre->getTimestamp())) {
+                $requerimientosRed[] = $requerimiento;                 
+            }
+        }   
+        
+        return view('dashboard.red', compact('requerimientosRed', 'resolutors', 'teams', 'solicitantes', 'user'));              
     }        
 }

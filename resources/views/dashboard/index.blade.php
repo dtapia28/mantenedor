@@ -142,10 +142,6 @@
             });
         });
     </script>
-<<<<<<< HEAD
-@endsection
-=======
     
     @yield('scripts_dash')
 @endsection
->>>>>>> frontend

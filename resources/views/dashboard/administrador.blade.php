@@ -28,6 +28,8 @@
 
 @section('scripts_dash')
 	<script type="text/javascript">
+            var arrayEquipos = {!! json_encode($arrayEquipos)!!};
+            console.log(equipos);
 		const equipos = ["Matzikama", "Cederberg", "Bergrivier", "Swartland", "Witzenberg", "Langeberg", "George", "Laingsburg"];
 		const vencidos = ["357", "267", "555", "679", "238", "852", "357", "855"];
 		const alDia = ["356", "473", "635", "244", "588", "870", "883", "679"];

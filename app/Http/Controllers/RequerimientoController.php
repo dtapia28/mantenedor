@@ -2609,6 +2609,7 @@ class RequerimientoController extends Controller
 
     public function guardar(Request $request, Requerimiento $requerimiento)
     {
+        $hoy = new DateTime();
         $data = request()->validate([
             'cierre'=>'required',
             'fechaRealCierre' => 'nullable'],
@@ -2620,6 +2621,7 @@ class RequerimientoController extends Controller
             'porcentajeEjecutado' => 100,
             'cierre' => $data['cierre'],
             'aprobacion' => 4,
+            'fechaLiquidacion' => $hoy,
         ];           
        } else {
         $data = [
@@ -2628,7 +2630,14 @@ class RequerimientoController extends Controller
             'cierre' => $data['cierre'],
             'fechaRealCierre' => $data['fechaRealCierre'],
             'aprobacion' => 4,
-        ];      
+            'fechaLiquidacion' => $hoy,
+        ];
+        
+        $real = new DateTime($data['fechaRealCierre']);
+        $cierre = new DateTime($requerimiento->fechaCierre);
+        if($cierre->getTimestamp()>$real->getTimestamp()){
+            return back()->with('msj', 'La fecha real de cierre no puede ser menor a la fecha de cierre del requerimiento.');
+        }
        }
         $variable =$requerimiento->update($data);
         
