@@ -157,7 +157,7 @@ Route::get('/requerimientos/{requerimiento}/avances/nuevo', 'AvanceController@cr
 Route::get('/requerimientos/script', 'RequerimientoController@getResolutors');
 Route::get('/users/script', 'UserController@getTeams');
 Route::get('/requerimientos/script2', 'UserController@getTeams');
-
+Route::get('/users/script3', 'UserController@getLider');
 
 Route::get('/requerimientos/{requerimiento}/avances/{avance}/editar', 'AvanceController@edit')->name('Avances.edit');	
 
@@ -519,7 +519,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/requerimientos/{requerimiento}/anidar', 'AnidadoController@anidar');
 Route::post('/requerimientos/{requerimiento}/anidar', 'AnidadoController@anidara');
-Auth::routes();
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/requerimientos/{requerimiento}/tareas/nueva', 'TareaController@create')
@@ -545,6 +545,13 @@ Route::delete('/requerimientos/{requerimiento}/tareas/{tarea}/eliminar', 'TareaC
 Route::get('/requerimientos/{requerimiento}/aceptar', 'RequerimientoController@aceptar');
 Route::get('/requerimientos/{requerimiento}/rechazar', 'RequerimientoController@rechazar');
 Route::post('/requerimientos/{requerimiento}/rechazar', 'RequerimientoController@RequerimientoRechazado');
+
+Route::get('/tablero', 'TableroController@index')->name('tablero');
+Route::get('/dashboard/getReqEquipoByEstado/{equipo}/{estado}', 'DashboardController@getReqEquipoByEstado')->name('getReqEquipoByEstado');
+Route::get('/dashboard/getReqSolicitanteByEstado/{solicitante}/{estado}', 'DashboardController@getReqSolicitanteByEstado')->name('getReqSolicitanteByEstado');
+Route::get('/dashboard/getReqResolutorByEstado/{resolutor}/{estado}', 'DashboardController@getReqResolutorByEstado')->name('getReqResolutorByEstado');
+Route::get('/dashboard/getReqResolutorGralByEstado/{estado}', 'DashboardController@getReqResolutorGralByEstado')->name('getReqResolutorGralByEstado');
+Route::get('/dashboard/getReqSolicitanteGralByEstado/{estado}', 'DashboardController@getReqSolicitanteGralByEstado')->name('getReqSolicitanteGralByEstado');
 /* ************************** */
 
 Route::get('/clear_cache', function()
@@ -557,3 +564,6 @@ Route::get('/clear_cache', function()
     Artisan::call('optimize:clear');
     return "Caché limpiado";
 });
+
+/* Rutas para pruebascontroladores en Tablero - Daniel Tapia */	
+Route::get('/dashboard/prueba','GraficosSolicitanteController@index');
