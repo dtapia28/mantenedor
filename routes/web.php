@@ -562,5 +562,10 @@ Route::get('/clear_cache', function()
 });
 
 
+<<<<<<< HEAD
 /* Rutas para pruebascontroladores en Tablero - Daniel Tapia */
 Route::get('/dashboard/prueba','GraficosSolicitanteController@index');
+=======
+Route::get('/redirect', 'Auth\LoginController@redirectToProvider');
+Route::get('/callback', 'Auth\LoginController@handleProviderCallback');
+>>>>>>> backend
