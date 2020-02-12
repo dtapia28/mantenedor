@@ -23,7 +23,6 @@ class AvanceController extends Controller
     public function index(Requerimiento $requerimiento)
     {
         $avances = Avance::oldest('updated_at')->get();
-        dd($avances);
         return view('Avances.index', compact('requerimiento', 'avances'));         
     }
 
@@ -36,7 +35,12 @@ class AvanceController extends Controller
     {
 
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
-        return view('Avances.create', compact('requerimiento', 'user'));
+        $lider = 0;
+        if ($user[0]->nombre == "resolutor") {
+            $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+            $lider = $resolutor->lider;           
+        }        
+        return view('Avances.create', compact('requerimiento', 'user', 'lider'));
     }
 
     /**

@@ -1153,6 +1153,10 @@ class RequerimientoController extends Controller
         } elseif ($user[0]->nombre == "supervisor") 
         {
             $res = Resolutor::where('idUser', $user[0]->idUser)->first();
+            if (empty($res)){
+                $res['id'] = 0;
+                $res = (object)$res;
+            }
             switch ($request->session()->get('state'))
             {
                 case '1':
@@ -2279,6 +2283,10 @@ class RequerimientoController extends Controller
     {
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
         $res = Resolutor::where('idUser', $user[0]->idUser)->first();
+        if (empty($res)){
+            $res['id']=0;
+            $res = (object)$res;
+        }
         $id2 = substr($requerimiento->id2,0,3);
         $lider = 0;
         if ($user[0]->nombre == "resolutor") {

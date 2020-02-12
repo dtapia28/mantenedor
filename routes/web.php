@@ -560,3 +560,7 @@ Route::get('/clear_cache', function()
     Artisan::call('optimize:clear');
     return "Caché limpiado";
 });
+
+
+Route::get('/redirect', 'Auth\LoginController@redirectToProvider');
+Route::get('/callback', 'Auth\LoginController@handleProviderCallback');

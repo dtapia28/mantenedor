@@ -1,5 +1,10 @@
 @extends('layouts.applogin')
 @section('titulo', "Crear Cuenta")
+<?php
+$nombre = Illuminate\Support\Facades\Cache::get('name');
+$mail = Illuminate\Support\Facades\Cache::get('mail');
+
+?>
 
 @section('content')
 <form method="POST" action="{{ route('register') }}" class="md-float-material">
@@ -9,7 +14,7 @@
     <h4 class="text-center txt-primary"> Crear cuenta</h4>
     @csrf
     <div class="md-input-wrapper">
-        <input id="name" type="text" class="md-form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+        <input id="name" type="text" class="md-form-control @error('name') is-invalid @enderror" name="name" value="{{$nombre}}" required autocomplete="name" autofocus>
         @error('name')
             <span class="text-danger" role="alert">
                 <strong>{{ $message }}</strong>
@@ -18,7 +23,7 @@
         <label>Nombre</label>
     </div>
     <div class="md-input-wrapper">
-        <input id="email" type="email" class="md-form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+        <input id="email" type="email" class="md-form-control @error('email') is-invalid @enderror" name="email" value="{{$mail}}" required autocomplete="email">
         @error('email')
             <span class="text-danger" role="alert">
                 <strong>{{ $message }}</strong>

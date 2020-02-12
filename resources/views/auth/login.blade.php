@@ -46,6 +46,7 @@
             <div class="col-xs-10 offset-xs-1">
                 <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">INGRESAR</button>
             </div>
+            <a href="{{ url('/redirect/') }}" class="btn btn-google"><i class="fa fa-google"></i> Google</a>
         </div>
         @if (Route::has('register'))
             <div class="col-sm-12 col-xs-12 text-center">
