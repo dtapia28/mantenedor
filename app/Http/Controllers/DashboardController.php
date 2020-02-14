@@ -124,7 +124,7 @@ class DashboardController extends Controller
         
         // Verifica si el usuario logueado es un resolutor marcado como líder
         $resolutor = DB::table('resolutors')->where('idUser', auth()->user()->id)->get();
-        $resolutor_lider = isset($resolutor[0]->lider)? $resolutor[0]->lider:"";
+        $resolutor_lider = isset($resolutor[0]->lider) ? $resolutor[0]->lider : "";
         
         // Termino de prueba        
 
@@ -229,5 +229,58 @@ class DashboardController extends Controller
         }   
         
         return view('dashboard.red', compact('requerimientosRed', 'resolutors', 'teams', 'solicitantes', 'user'));              
-    }        
+    }
+    
+    public function getReqEquipoByEstado($equipo, $estado) {
+        $data = DB::select('SELECT a.id, a.id2, a.textoRequerimiento, DATE_FORMAT(a.fechaSolicitud, "%d/%m/%Y") fechaSolicitud, DATE_FORMAT(a.fechaCierre, "%d/%m/%Y") fechaCierre, b.nombreResolutor, a.porcentajeEjecutado
+                            FROM requerimientos a
+                            JOIN resolutors b ON a.resolutor=b.id
+                            JOIN teams c ON b.idTeam=c.id
+                            WHERE c.nameTeam LIKE ? AND a.estado = ?', [$equipo, $estado]);
+        
+        $records = ['respuesta' => true, 'req' => $data];
+        return response()->json($records, 200);
+    }
+
+    public function getReqSolicitanteByEstado($solicitante, $estado) {
+        $data = DB::select('SELECT a.id, a.id2, a.textoRequerimiento, DATE_FORMAT(a.fechaSolicitud, "%d/%m/%Y") fechaSolicitud, DATE_FORMAT(a.fechaCierre, "%d/%m/%Y") fechaCierre, b.nombreResolutor, a.porcentajeEjecutado
+                            FROM requerimientos a
+                            JOIN resolutors b ON a.resolutor=b.id
+                            JOIN solicitantes c ON a.idSolicitante=c.id
+                            WHERE c.nombreSolicitante LIKE ? AND a.estado = ?', [$solicitante, $estado]);
+        
+        $records = ['respuesta' => true, 'req' => $data];
+        return response()->json($records, 200);
+    }
+
+    public function getReqResolutorByEstado($resolutor, $estado) {
+        $data = DB::select('SELECT a.id, a.id2, a.textoRequerimiento, DATE_FORMAT(a.fechaSolicitud, "%d/%m/%Y") fechaSolicitud, DATE_FORMAT(a.fechaCierre, "%d/%m/%Y") fechaCierre, b.nombreResolutor, a.porcentajeEjecutado
+                            FROM requerimientos a
+                            JOIN resolutors b ON a.resolutor=b.id
+                            WHERE b.nombreResolutor LIKE ? AND a.estado = ?', [$resolutor, $estado]);
+        
+        $records = ['respuesta' => true, 'req' => $data];
+        return response()->json($records, 200);
+    }
+
+    public function getReqResolutorGralByEstado($estado) {
+        $data = DB::select('SELECT a.id, a.id2, a.textoRequerimiento, DATE_FORMAT(a.fechaSolicitud, "%d/%m/%Y") fechaSolicitud, DATE_FORMAT(a.fechaCierre, "%d/%m/%Y") fechaCierre, b.nombreResolutor, a.porcentajeEjecutado
+                            FROM requerimientos a
+                            JOIN resolutors b ON a.resolutor=b.id
+                            WHERE b.idUser = ? AND a.estado = ?', [auth()->user()->id, $estado]);
+
+        $records = ['respuesta' => true, 'req' => $data];
+        return response()->json($records, 200);
+    }
+
+    public function getReqSolicitanteGralByEstado($estado) {
+        $data = DB::select('SELECT a.id, a.id2, a.textoRequerimiento, DATE_FORMAT(a.fechaSolicitud, "%d/%m/%Y") fechaSolicitud, DATE_FORMAT(a.fechaCierre, "%d/%m/%Y") fechaCierre, b.nombreResolutor, a.porcentajeEjecutado
+                            FROM requerimientos a
+                            JOIN resolutors b ON a.resolutor=b.id
+                            JOIN solicitantes c ON a.idSolicitante=c.id
+                            WHERE c.idUser = ? AND a.estado = ?', [auth()->user()->id, $estado]);
+
+        $records = ['respuesta' => true, 'req' => $data];
+        return response()->json($records, 200);
+    }
 }

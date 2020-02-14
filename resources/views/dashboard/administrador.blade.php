@@ -1,6 +1,44 @@
+@section('css')
+	<link href="{{ asset('vendor/DataTables/datatables.min.css') }}" rel="stylesheet" />
+@endsection
+
 <div class="ibox">
 	<div class="ibox-body" align="center">
 		<div id="chart-apilado" style="min-height:60vh"></div>
+		<!-- Modal -->
+		<div class="modal fade" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalScrollableTitle">Requerimientos <span id="estadoModal"></span> del Equipo <span id="equipoModal"></span></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="table-responsive">
+							<table class="table table-striped table-bordered table-sm" id="tablaModal" style="font-size: 0.85em">
+								<thead>
+									<tr>
+										<th>Id</th>
+										<th>Requerimiento</th>
+										<th>F. Solicitud</th>
+										<th>F. Cierre</th>
+										<th>Resolutor</th>
+										<th>% Ejec.</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 <div class="ibox">
@@ -17,7 +55,7 @@
 	</div>
 	<div class="ibox-body" align="center">
 		<div class="row">
-			@for (	$i=0; $i<8; $i++)
+			@for ($i=0; $i<count((array)$data["arrayEquipos"]); $i++)
 			<div class="col-md-3">
 				<div id="chart-medidor-eq{{$i}}" style="min-height:30vh;"></div>
 			</div>
@@ -27,13 +65,26 @@
 </div>
 
 @section('scripts_dash')
+	<script src="{{ asset('vendor/DataTables/datatables.min.js') }}" type="text/javascript"></script>
 	<script type="text/javascript">
-            var arrayEquipos = {!! json_encode($arrayEquipos)!!};
-            console.log(equipos);
-		const equipos = ["Matzikama", "Cederberg", "Bergrivier", "Swartland", "Witzenberg", "Langeberg", "George", "Laingsburg"];
-		const vencidos = ["357", "267", "555", "679", "238", "852", "357", "855"];
-		const alDia = ["356", "473", "635", "244", "588", "870", "883", "679"];
-		const porVencer = ["635", "263", "346", "356", "619", "588", "883", "870"];
+		<?php
+			$equipos = "";
+			foreach((array)$data["arrayEquipos"] as $item) { $equipos .= "'".$item."',"; }
+			$equipos = substr($equipos, 0, strlen($equipos)-1);
+			$vencidos = "";
+			foreach((array)$data["arrayVencidos"] as $item) { $vencidos .= "'".$item."',"; }
+			$vencidos = substr($vencidos, 0, strlen($vencidos)-1);
+			$alDia = "";
+			foreach((array)$data["arrayAlDia"] as $item) { $alDia .= "'".$item."',"; }
+			$alDia = substr($alDia, 0, strlen($alDia)-1);
+			$porVencer = "";
+			foreach((array)$data["arrayPorVencer"] as $item) { $porVencer .= "'".$item."',"; }
+			$porVencer = substr($porVencer, 0, strlen($porVencer)-1);
+		?>
+		const equipos = [<?=$equipos?>];
+		const vencidos = [<?=$vencidos?>];
+		const alDia = [<?=$alDia?>];
+		const porVencer = [<?=$porVencer?>];
 		
 		var nombreEquipos = [];
 		equipos.forEach(element => {
@@ -42,7 +93,6 @@
 			nombreEquipos.push(obj);
 			return nombreEquipos;
 		});
-
 		var valoresVencidos = [];
 		vencidos.forEach(element => {
 			var obj = {};
@@ -50,7 +100,6 @@
 			valoresVencidos.push(obj);
 			return valoresVencidos;
 		});
-
 		var valoresAlDia = [];
 		alDia.forEach(element => {
 			var obj = {};
@@ -58,7 +107,6 @@
 			valoresAlDia.push(obj);
 			return valoresAlDia;
 		});
-
 		var valoresPorVencer = [];
 		porVencer.forEach(element => {
 			var obj = {};
@@ -108,9 +156,55 @@
 					color: "#2ecc71",
 				}
 				]
+			},
+			events: {
+				dataPlotClick: function(e) {
+					var equipo = e.data.categoryLabel;
+					var estado = e.data.datasetName;
+					var valor = e.data.dataValue;
+					var codEstado;
+					$("#dataModal").modal("show");
+					$("#equipoModal").text(equipo);
+					$("#estadoModal").text(estado);
+					switch(estado) {
+						case 'Al día': codEstado = 1; break;
+						case 'Por Vencer': codEstado = 2; break;
+						case 'Vencidos': codEstado = 3; break;
+					}
+					$.ajax({
+						type: 'get',
+						url: 'dashboard/getReqEquipoByEstado/'+equipo+'/'+codEstado,
+						dataType: 'json',
+						success: function (data) {
+							if (data.respuesta) {
+								$('#tablaModal').DataTable().destroy();
+								$("#tablaModal tbody tr").remove();
+								for(var i=0; i<data.req.length; i++) {
+									var fila = "<tr><td style='white-space: nowrap;'>" + data.req[i]['id2'] + "</td><td>" + data.req[i].textoRequerimiento + "</td><td>" + data.req[i].fechaSolicitud + "</td><td>" + data.req[i].fechaCierre + "</td><td>" + data.req[i].nombreResolutor + "</td><td>" + data.req[i].porcentajeEjecutado + "</td></tr>";
+									$("#tablaModal tbody").append(fila);
+								}
+							} else {
+								console.log("El equipo no tiene registros de requerimientos");
+								return;
+							}
+						},
+						complete: function() {
+							$('#tablaModal').DataTable({
+								"language": {
+									"url": "{{ asset('vendor/DataTables/lang/spanish.json') }}"
+								},
+								pageLength: 10,
+								stateSave: true,
+							});
+						},
+						error: function (data) {
+							console.log('Error:', data);
+							alert("Error al consultar los requerimientos del equipo");
+						}
+					});
+				}
 			}
 		});
-
 		$("#chart-medidor-gral").insertFusionCharts({
 			type: "angulargauge",
 			width: "100%",
@@ -149,14 +243,21 @@
 				dials: {
 				dial: [
 					{
-					value: "62"
+					value: "<?=$data['cerradosAlDia']?>"
 					}
 				]
 				}
 			}
 		});
-
-		for(var i=0; i<8; i++) {
+		// Gráfico Medidores por Equipo
+		var numEquipos = <?=count((array)$data["arrayEquipos"])?>;
+		<?php
+			$cerradosAlDiaPorEq = "";
+			foreach((array)$data["porEquipoPorVencer"] as $item) {$cerradosAlDiaPorEq .= "'".$item."',"; }
+			$cerradosAlDiaPorEq = substr($cerradosAlDiaPorEq, 0, strlen($cerradosAlDiaPorEq)-1);
+		?>
+		var cerradosAlDiaPorEq = [<?=$cerradosAlDiaPorEq?>];
+		for(var i=0; i<numEquipos; i++) {
 			$("#chart-medidor-eq"+i).insertFusionCharts({
 				type: "angulargauge",
 				width: "100%",
@@ -193,7 +294,7 @@
 					dials: {
 					dial: [
 						{
-						value: "62"
+						value: cerradosAlDiaPorEq[i]
 						}
 					]
 					}

@@ -584,11 +584,10 @@ class GraficosAdministradorController extends Controller
         $porEquipoAlDia=(object)$porEquipoAlDia;
         $porEquipoPorVencer=(object)$porEquipoPorVencer;
         $porEquipoVencido=(object)$porEquipoVencido;
-        
-        
-        return view('dashboard.administrador', compact('requerimientos', 'alDia', 'vencer', 'vencido',
+
+        return compact('requerimientos', 'alDia', 'vencer', 'vencido',
                 'arrayEquipos', 'arrayAlDia', 'arrayPorVencer', 'arrayVencidos', 'cerradosAlDia',
                 'cerradosPorVencer', 'cerradosVencidos', 'porEquipoAlDia', 'porEquipoPorVencer',
-                'porEquipoVencido'));
+                'porEquipoVencido');
     }
 }

@@ -1,8 +1,47 @@
+  
+@section('css')
+	<link href="{{ asset('vendor/DataTables/datatables.min.css') }}" rel="stylesheet" />
+@endsection
+
 <div class="row">
   	<div class="col-lg-8">
 		<div class="ibox">
 			<div class="ibox-body" align="center">
 				<div id="chart-dona" style="min-height:45vh"></div>
+				<!-- Modal -->
+				<div class="modal fade" id="dataModalDona" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalScrollableTitle">Requerimientos <span id="estadoModalDona"></span> del Resolutor</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div class="table-responsive">
+									<table class="table table-striped table-bordered table-sm" id="tablaModalDona" style="font-size: 0.85em">
+										<thead>
+											<tr>
+												<th>Id</th>
+												<th>Requerimiento</th>
+												<th>F. Solicitud</th>
+												<th>F. Cierre</th>
+												<th>Resolutor</th>
+												<th>% Ejec.</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -41,7 +80,7 @@
 							</tr>
 							<tr>
 								<td>Vencidos</td>
-								<td>200</td>
+								<td><?=$data["vencido"]?></td>
 								<td>
 									<div class="progress">
 										<div class="progress-bar progress-bar-danger" role="progressbar" style="width:22%; height:5px;" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100"></div>
@@ -51,7 +90,7 @@
 							</tr>
 							<tr>
 								<td>Por Vencer</td>
-								<td>150</td>
+								<td><?=$data["vencer"]?></td>
 								<td>
 									<div class="progress">
 										<div class="progress-bar progress-bar-info" role="progressbar" style="width:17%; height:5px;" aria-valuenow="17" aria-valuemin="0" aria-valuemax="100"></div>
@@ -61,7 +100,7 @@
 							</tr>
 							<tr>
 								<td><strong>TOTALES</strong></td>
-								<td><strong>900</strong></td>
+								<td><strong><?=$data["vencido"] + $data["vencer"]?></strong></td>
 								<td>
 									<div class="progress">
 										<div class="progress-bar progress-bar" role="progressbar" style="width:100%; height:5px;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
@@ -81,6 +120,40 @@
 		<div class="ibox">
 			<div class="ibox-body" align="center">
 				<div id="chart-apilado" style="min-height:50vh"></div>
+				<!-- Modal -->
+				<div class="modal fade" id="dataModalSol" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalScrollableTitle">Requerimientos <span id="estadoModalSol"></span> del Solicitante <span id="solicitanteModalSol"></span></h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div class="table-responsive">
+									<table class="table table-striped table-bordered table-sm" id="tablaModalSol" style="font-size: 0.85em">
+										<thead>
+											<tr>
+												<th>Id</th>
+												<th>Requerimiento</th>
+												<th>F. Solicitud</th>
+												<th>F. Cierre</th>
+												<th>Resolutor</th>
+												<th>% Ejec.</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -97,12 +170,48 @@
 		<div class="ibox">
 			<div class="ibox-body" align="center">
 				<div id="chart-apilado2" style="min-height:50vh"></div>
+				<!-- Modal -->
+				<div class="modal fade" id="dataModalRes" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalScrollableTitle">Requerimientos <span id="estadoModalRes"></span> del Resolutor <span id="solicitanteModalRes"></span></h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div class="table-responsive">
+									<table class="table table-striped table-bordered table-sm" id="tablaModalRes" style="font-size: 0.85em">
+										<thead>
+											<tr>
+												<th>Id</th>
+												<th>Requerimiento</th>
+												<th>F. Solicitud</th>
+												<th>F. Cierre</th>
+												<th>Resolutor</th>
+												<th>% Ejec.</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
 @section('scripts_dash')
+	<script src="{{ asset('vendor/DataTables/datatables.min.js') }}" type="text/javascript"></script>
 	<script type="text/javascript">
+		// Gráfico de dona
 		$("#chart-dona").insertFusionCharts({
 			type: "doughnut3d",
 			width: "100%",
@@ -114,35 +223,95 @@
 					enablesmartlabels: "1",
 					showlabels: "1",
 					numbersuffix: " MMbbl",
-          exportEnabled: "1",
+          			exportEnabled: "1",
 					usedataplotcolorforlabels: "1",
 					plottooltext: "$label: <b>$value</b>",
 					theme: "fusion"
 				},	
 				data: [
 				{
-					label: "Al Día",
-					value: "290",
+					label: "Al día",
+					value: <?=$data["alDia"]?>,
 					color: "#2ecc71",
 				},
 				{
 					label: "Por Vencer",
-					value: "260",
+					value: <?=$data["vencer"]?>,
 					color: "#f39c12",
 				},
 				{
 					label: "Vencidos",
-					value: "180",
+					value: <?=$data["vencido"]?>,
 					color: "#e74c3c",
 				}
 				]
+			},
+			events: {
+				dataPlotClick: function(e) {
+					var estado = e.data.categoryLabel;
+					var valor = e.data.dataValue;
+					var codEstado;
+					
+					$("#dataModalDona").modal("show");
+					$("#estadoModalDona").text(estado);
+					switch(estado) {
+						case 'Al día': codEstado = 1; break;
+						case 'Por Vencer': codEstado = 2; break;
+						case 'Vencidos': codEstado = 3; break;
+					}
+					$.ajax({
+						type: 'get',
+						url: 'dashboard/getReqResolutorGralByEstado/'+codEstado,
+						dataType: 'json',
+						success: function (data) {
+							if (data.respuesta) {
+								$('#tablaModalDona').DataTable().destroy();
+								$("#tablaModalDona tbody tr").remove();
+								for(var i=0; i<data.req.length; i++) {
+									var fila = "<tr><td style='white-space: nowrap;'>" + data.req[i]['id2'] + "</td><td>" + data.req[i].textoRequerimiento + "</td><td>" + data.req[i].fechaSolicitud + "</td><td>" + data.req[i].fechaCierre + "</td><td>" + data.req[i].nombreResolutor + "</td><td>" + data.req[i].porcentajeEjecutado + "</td></tr>";
+									$("#tablaModalDona tbody").append(fila);
+								}
+							} else {
+								console.log("El resolutor no tiene registros de requerimientos");
+								return;
+							}
+						},
+						complete: function() {
+							$('#tablaModalDona').DataTable({
+								"language": {
+									"url": "{{ asset('vendor/DataTables/lang/spanish.json') }}"
+								},
+								pageLength: 10,
+								stateSave: true,
+							});
+						},
+						error: function (data) {
+							console.log('Error:', data);
+							alert("Error al consultar los requerimientos del resolutor");
+						}
+					});
+				}
 			}
 		});
-
-		const solicitantes = ["Pedro Pérez", "Marcos Jiménez", "Luis Villarroel", "María Maza"];
-		const vencidos = ["357", "267", "555", "679"];
-		const alDia = ["356", "883", "306", "679"];
-		const porVencer = ["635", "263", "346", "870"];
+		// Gráfico apilado por solicitante
+		<?php
+			$solicitantes = "";
+			foreach((array)$data["arraySolicitantes"] as $item) { $solicitantes .= "'".$item."',"; }
+			$solicitantes = substr($solicitantes, 0, strlen($solicitantes)-1);
+			$vencidos = "";
+			foreach((array)$data["porSolicitanteVencido"] as $item) { $vencidos .= "'".$item."',"; }
+			$vencidos = substr($vencidos, 0, strlen($vencidos)-1);
+			$alDia = "";
+			foreach((array)$data["porSolicitanteAldia"] as $item) { $alDia .= "'".$item."',"; }
+			$alDia = substr($alDia, 0, strlen($alDia)-1);
+			$porVencer = "";
+			foreach((array)$data["porSolicitantePorVencer"] as $item) { $porVencer .= "'".$item."',"; }
+			$porVencer = substr($porVencer, 0, strlen($porVencer)-1);
+		?>
+		const solicitantes = [<?=$solicitantes?>];
+		const vencidos = [<?=$vencidos?>];
+		const alDia = [<?=$alDia?>];
+		const porVencer = [<?=$porVencer?>];
 		
 		var nombreSolicitantes = [];
 		solicitantes.forEach(element => {
@@ -151,7 +320,6 @@
 			nombreSolicitantes.push(obj);
 			return nombreSolicitantes;
 		});
-
 		var valoresVencidos = [];
 		vencidos.forEach(element => {
 			var obj = {};
@@ -159,7 +327,6 @@
 			valoresVencidos.push(obj);
 			return valoresVencidos;
 		});
-
 		var valoresAlDia = [];
 		alDia.forEach(element => {
 			var obj = {};
@@ -167,7 +334,6 @@
 			valoresAlDia.push(obj);
 			return valoresAlDia;
 		});
-
 		var valoresPorVencer = [];
 		porVencer.forEach(element => {
 			var obj = {};
@@ -217,9 +383,56 @@
 					color: "#2ecc71",
 				}
 				]
+			},
+			events: {
+				dataPlotClick: function(e) {
+					var solicitante = e.data.categoryLabel;
+					var estado = e.data.datasetName;
+					var valor = e.data.dataValue;
+					var codEstado;
+					$("#dataModalSol").modal("show");
+					$("#solicitanteModalSol").text(solicitante);
+					$("#estadoModalSol").text(estado);
+					switch(estado) {
+						case 'Al día': codEstado = 1; break;
+						case 'Por Vencer': codEstado = 2; break;
+						case 'Vencidos': codEstado = 3; break;
+					}
+					$.ajax({
+						type: 'get',
+						url: 'dashboard/getReqSolicitanteByEstado/'+solicitante+'/'+codEstado,
+						dataType: 'json',
+						success: function (data) {
+							if (data.respuesta) {
+								$('#tablaModalSol').DataTable().destroy();
+								$("#tablaModalSol tbody tr").remove();
+								for(var i=0; i<data.req.length; i++) {
+									var fila = "<tr><td style='white-space: nowrap;'>" + data.req[i]['id2'] + "</td><td>" + data.req[i].textoRequerimiento + "</td><td>" + data.req[i].fechaSolicitud + "</td><td>" + data.req[i].fechaCierre + "</td><td>" + data.req[i].nombreResolutor + "</td><td>" + data.req[i].porcentajeEjecutado + "</td></tr>";
+									$("#tablaModalSol tbody").append(fila);
+								}
+							} else {
+								console.log("El solicitante no tiene registros de requerimientos");
+								return;
+							}
+						},
+						complete: function() {
+							$('#tablaModalSol').DataTable({
+								"language": {
+									"url": "{{ asset('vendor/DataTables/lang/spanish.json') }}"
+								},
+								pageLength: 10,
+								stateSave: true,
+							});
+						},
+						error: function (data) {
+							console.log('Error:', data);
+							alert("Error al consultar los requerimientos del solicitante");
+						}
+					});
+				}
 			}
 		});
-
+		// Gráfico Medidor
     	$("#chart-medidor").insertFusionCharts({
 			type: "angulargauge",
 			width: "100%",
@@ -258,17 +471,31 @@
 				dials: {
 				dial: [
 					{
-					value: "62"
+					value: <?=$data["cerradoAlDia"]?>,
 					}
 				]
 				}
 			}
 		});
-
-		const resolutores = ["Carlos Martínez", "José Sánchez", "Jimena Marcano", "Magalis Carrillo", "Elezar Ramírez", "Andrés Celedon"];
-		const vencidosR = ["457", "367", "355", "325", "479", "223"];
-		const alDiaR = ["256", "213", "806", "779", "621", "436"];
-		const porVencerR = ["435", "563", "246", "570", "310", "329"];
+		// Gráfico apilado por resolutor
+		<?php
+			$resolutores = "";
+			foreach((array)$data["arrayResolutores"] as $item) { $resolutores .= "'".$item."',"; }
+			$resolutores = substr($resolutores, 0, strlen($resolutores)-1);
+			$vencidosR = "";
+			foreach((array)$data["porResolutorVencido"] as $item) { $vencidosR .= "'".$item."',"; }
+			$vencidosR = substr($vencidosR, 0, strlen($vencidosR)-1);
+			$alDiaR = "";
+			foreach((array)$data["porResolutorAlDia"] as $item) { $alDiaR .= "'".$item."',"; }
+			$alDiaR = substr($alDiaR, 0, strlen($alDiaR)-1);
+			$porVencerR = "";
+			foreach((array)$data["porResolutorPorVencer"] as $item) { $porVencerR .= "'".$item."',"; }
+			$porVencerR = substr($porVencerR, 0, strlen($porVencerR)-1);
+		?>
+		const resolutores = [<?=$resolutores?>];
+		const vencidosR = [<?=$vencidosR?>];
+		const alDiaR = [<?=$alDiaR?>];
+		const porVencerR = [<?=$porVencerR?>];
 		
 		var nombreResolutores = [];
 		resolutores.forEach(element => {
@@ -277,7 +504,6 @@
 			nombreResolutores.push(obj);
 			return nombreResolutores;
 		});
-
 		var valoresVencidosR = [];
 		vencidosR.forEach(element => {
 			var obj = {};
@@ -285,7 +511,6 @@
 			valoresVencidosR.push(obj);
 			return valoresVencidosR;
 		});
-
 		var valoresAlDiaR = [];
 		alDiaR.forEach(element => {
 			var obj = {};
@@ -293,7 +518,6 @@
 			valoresAlDiaR.push(obj);
 			return valoresAlDiaR;
 		});
-
 		var valoresPorVencerR = [];
 		porVencerR.forEach(element => {
 			var obj = {};
@@ -343,6 +567,53 @@
 					color: "#2ecc71",
 				}
 				]
+			},
+			events: {
+				dataPlotClick: function(e) {
+					var resolutor = e.data.categoryLabel;
+					var estado = e.data.datasetName;
+					var valor = e.data.dataValue;
+					var codEstado;
+					$("#dataModalRes").modal("show");
+					$("#solicitanteModalRes").text(resolutor);
+					$("#estadoModalRes").text(estado);
+					switch(estado) {
+						case 'Al día': codEstado = 1; break;
+						case 'Por Vencer': codEstado = 2; break;
+						case 'Vencidos': codEstado = 3; break;
+					}
+					$.ajax({
+						type: 'get',
+						url: 'dashboard/getReqResolutorByEstado/'+resolutor+'/'+codEstado,
+						dataType: 'json',
+						success: function (data) {
+							if (data.respuesta) {
+								$('#tablaModalRes').DataTable().destroy();
+								$("#tablaModalRes tbody tr").remove();
+								for(var i=0; i<data.req.length; i++) {
+									var fila = "<tr><td style='white-space: nowrap;'>" + data.req[i]['id2'] + "</td><td>" + data.req[i].textoRequerimiento + "</td><td>" + data.req[i].fechaSolicitud + "</td><td>" + data.req[i].fechaCierre + "</td><td>" + data.req[i].nombreResolutor + "</td><td>" + data.req[i].porcentajeEjecutado + "</td></tr>";
+									$("#tablaModalRes tbody").append(fila);
+								}
+							} else {
+								console.log("El resolutor no tiene registros de requerimientos");
+								return;
+							}
+						},
+						complete: function() {
+							$('#tablaModalRes').DataTable({
+								"language": {
+									"url": "{{ asset('vendor/DataTables/lang/spanish.json') }}"
+								},
+								pageLength: 10,
+								stateSave: true,
+							});
+						},
+						error: function (data) {
+							console.log('Error:', data);
+							alert("Error al consultar los requerimientos del resolutor");
+						}
+					});
+				}
 			}
 		});
     </script>

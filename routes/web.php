@@ -548,6 +548,13 @@ Route::delete('/requerimientos/{requerimiento}/tareas/{tarea}/eliminar', 'TareaC
 Route::get('/requerimientos/{requerimiento}/aceptar', 'RequerimientoController@aceptar');
 Route::get('/requerimientos/{requerimiento}/rechazar', 'RequerimientoController@rechazar');
 Route::post('/requerimientos/{requerimiento}/rechazar', 'RequerimientoController@RequerimientoRechazado');
+
+Route::get('/tablero', 'TableroController@index')->name('tablero');
+Route::get('/dashboard/getReqEquipoByEstado/{equipo}/{estado}', 'DashboardController@getReqEquipoByEstado')->name('getReqEquipoByEstado');
+Route::get('/dashboard/getReqSolicitanteByEstado/{solicitante}/{estado}', 'DashboardController@getReqSolicitanteByEstado')->name('getReqSolicitanteByEstado');
+Route::get('/dashboard/getReqResolutorByEstado/{resolutor}/{estado}', 'DashboardController@getReqResolutorByEstado')->name('getReqResolutorByEstado');
+Route::get('/dashboard/getReqResolutorGralByEstado/{estado}', 'DashboardController@getReqResolutorGralByEstado')->name('getReqResolutorGralByEstado');
+Route::get('/dashboard/getReqSolicitanteGralByEstado/{estado}', 'DashboardController@getReqSolicitanteGralByEstado')->name('getReqSolicitanteGralByEstado');
 /* ************************** */
 
 Route::get('/clear_cache', function()
@@ -562,10 +569,8 @@ Route::get('/clear_cache', function()
 });
 
 
-<<<<<<< HEAD
+
 /* Rutas para pruebascontroladores en Tablero - Daniel Tapia */
 Route::get('/dashboard/prueba','GraficosSolicitanteController@index');
-=======
 Route::get('/redirect', 'Auth\LoginController@redirectToProvider');
 Route::get('/callback', 'Auth\LoginController@handleProviderCallback');
->>>>>>> backend

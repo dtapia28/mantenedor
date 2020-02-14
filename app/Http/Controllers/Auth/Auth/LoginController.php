@@ -280,15 +280,6 @@ class LoginController extends Controller
             \Illuminate\Support\Facades\Cache::put('name', $user->name,5);
             \Illuminate\Support\Facades\Cache::put('mail', $user->email);
             return redirect()->to('/register');
-            // create a new user
-            $newUser                  = new User;
-            $newUser->name            = $user->name;
-            $newUser->email           = $user->email;
-            $newUser->google_id       = $user->id;
-            $newUser->avatar          = $user->avatar;
-            $newUser->avatar_original = $user->avatar_original;
-            $newUser->save();
-            auth()->login($newUser, true);
         }
         return redirect()->to('/home');
     }    

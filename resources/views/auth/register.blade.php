@@ -23,6 +23,15 @@ $mail = Illuminate\Support\Facades\Cache::get('mail');
         <label>Nombre</label>
     </div>
     <div class="md-input-wrapper">
+        <input id="lastname" type="text" class="md-form-control @error('name') is-invalid @enderror" name="lastname" value="{{$nombre}}" required autocomplete="name" autofocus>
+        @error('name')
+            <span class="text-danger" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+        <label>Apellido</label>
+    </div>    
+    <div class="md-input-wrapper">
         <input id="email" type="email" class="md-form-control @error('email') is-invalid @enderror" name="email" value="{{$mail}}" required autocomplete="email">
         @error('email')
             <span class="text-danger" role="alert">

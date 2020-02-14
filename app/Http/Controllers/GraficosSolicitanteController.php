@@ -82,9 +82,9 @@ class GraficosSolicitanteController extends Controller
         $porEquipoVencido = [];
         foreach($arrayEquipo as $idEquipo)
         {
-            $alDia = 0;
-            $vencer = 0;
-            $vencido = 0;            
+            $EquialDia = 0;
+            $Equivencer = 0;
+            $Equivencido = 0;            
             $equipo = Team::where('id',$idEquipo)->first();
             $arrayEquipos[]=$equipo->nameTeam;
             $req = DB::table('requerimientos_equipos')->where([
@@ -98,13 +98,13 @@ class GraficosSolicitanteController extends Controller
             {
                     if($requerimiento->fechaCierre == "9999-12-31 00:00:00")
                     {
-                        $alDia++;
+                        $EquialDia++;
                     } else 
                     {
                         $hoy = new DateTime();
                         $cierre = new DateTime($requerimiento->fechaCierre);
                         if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
-                            $vencido++;
+                            $Equivencido++;
                         } else {
                             $variable = 0;
                             while ($hoy->getTimestamp() < $cierre->getTimestamp())
@@ -118,9 +118,9 @@ class GraficosSolicitanteController extends Controller
                                 }                   
                             }                
                             if ($variable<=3) {
-                                $vencer++;
+                                $Equivencer++;
                             } else {
-                                $alDia++;
+                                $EquialDia++;
                             }
                             $variable = 0;
                             unset($hoy);
@@ -128,11 +128,11 @@ class GraficosSolicitanteController extends Controller
                         }                        
                     }             
             }
-            $porEquipoAldia[]=$alDia;
-            $porEquipoPorVencer[]=$vencer;
-            $porEquipoVencido[]=$vencido;
+            $porEquipoAldia[]=$EquialDia;
+            $porEquipoPorVencer[]=$Equivencer;
+            $porEquipoVencido[]=$Equivencido;
         }
         
-        return view('dashboard.solicitante', compact(''))
+        return compact('requerimientos', 'arrayEquipos', 'alDia', 'vencer', 'vencido', 'porEquipoAldia', 'porEquipoPorVencer', 'porEquipoVencido');
     }
 }

@@ -40,7 +40,7 @@
                     </div>
                     <div class="col-md-6">
                         <small>&nbsp;</small>
-                        <a class="btn btn-warning btn-block text-white" href="{{ url ('dashboard')}}"><i class="fa fa-repeat"></i> Reiniciar</a>
+                        <a class="btn btn-warning btn-block text-white" href="{{ route ('tablero')}}"><i class="fa fa-repeat"></i> Reiniciar</a>
                     </div>
                 </div>
             </div>

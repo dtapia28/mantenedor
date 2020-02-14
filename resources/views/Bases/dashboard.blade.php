@@ -96,7 +96,7 @@
 				<ul class="side-menu metismenu">
 					@if(in_array($user[0]->nombre, ["supervisor", "administrador", "solicitante", "resolutor"]))
 					<li id="mTablero">
-						<a class="active" href="{{ url('/dashboard') }}"><i class="sidebar-item-icon fa fa-th-large"></i>
+						<a class="active" href="{{ route('tablero') }}"><i class="sidebar-item-icon fa fa-th-large"></i>
 							<span class="nav-label">Tablero</span>
 						</a>
 					</li>

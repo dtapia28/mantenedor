@@ -427,9 +427,9 @@ class GraficosLiderController extends Controller
           $porResolutorVencido[]=$vencido;
         }
         
-        return view('dashboard.resolutor_lider', compact('requerimientos', 'alDia', 'vencer', 'vencido',
+        return compact('requerimientos', 'alDia', 'vencer', 'vencido',
                 'arraySolicitantes', 'porSolicitanteAldia', 'porSolicitantePorVencer',
                 'porSolicitanteVencido', 'cerradoAlDia', 'cerradoPorVencer', 'cerradoVencido',
-                'arrayResolutores', 'porResolutorAlDia', 'porResolutorPorVencer', 'porResolutorVencido'));
+                'arrayResolutores', 'porResolutorAlDia', 'porResolutorPorVencer', 'porResolutorVencido');
     }
 }

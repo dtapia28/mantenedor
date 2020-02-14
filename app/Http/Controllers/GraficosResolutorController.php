@@ -91,9 +91,9 @@ class GraficosResolutorController extends Controller
         $porSolicitanteVencido = [];
         foreach ($arraySolicitantes as $solicitante)
         {
-            $alDia = 0;
-            $vencer = 0;
-            $vencido = 0;            
+            $solAlDia = 0;
+            $solVencer = 0;
+            $solVencido = 0;            
             $sol = Solicitante::where('nombreSolicitante', $solicitante)->first();
             foreach ($req as $requerimiento)
             {
@@ -101,13 +101,13 @@ class GraficosResolutorController extends Controller
                 {
                     if($requerimiento->fechaCierre == "9999-12-31 00:00:00")
                     {
-                        $alDia++;
+                        $solAlDia++;
                     } else 
                     {
                         $hoy = new DateTime();
                         $cierre = new DateTime($requerimiento->fechaCierre);
                         if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
-                            $vencido++;
+                            $solVencido++;
                         } else {
                             $variable = 0;
                             while ($hoy->getTimestamp() < $cierre->getTimestamp())
@@ -121,9 +121,9 @@ class GraficosResolutorController extends Controller
                                 }                   
                             }                
                             if ($variable<=3) {
-                                $vencer++;
+                                $solVencer++;
                             } else {
-                                $alDia++;
+                                $solAlDia++;
                             }
                             $variable = 0;
                             unset($hoy);
@@ -132,9 +132,9 @@ class GraficosResolutorController extends Controller
                     }                    
                 }
             }
-            $porSolicitanteAldia[]=$alDia;
-            $porSolicitantePorVencer[]=$vencer;
-            $porSolicitanteVencido[]=$vencido;            
+            $porSolicitanteAldia[]=$solAlDia;
+            $porSolicitantePorVencer[]=$solVencer;
+            $porSolicitanteVencido[]=$solVencido;            
         }
         
 
@@ -354,7 +354,8 @@ class GraficosResolutorController extends Controller
             }
         }
         
-        return view('dashboard.resolutor', compact('requerimientos', 'alDia', 'vencer', 'vencido',
-                'arraySolicitantes', 'cerradoAlDia', 'cerradoPorVencer', 'cerradoVencido'));
+        return compact('requerimientos', 'alDia', 'vencer', 'vencido',
+                'arraySolicitantes', 'porSolicitanteAldia', 'porSolicitantePorVencer',
+                'porSolicitanteVencido', 'cerradoAlDia', 'cerradoPorVencer', 'cerradoVencido');
     }
 }
