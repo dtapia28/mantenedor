@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-
+  <link rel="icon" href="{{ asset('img/favicon.png') }}">
   <title>@yield('titulo') - Kinchika</title>
   
   <link href="{{ asset('vendor/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet" />
@@ -41,10 +41,10 @@
         <header class="header">
 			<div class="page-brand">
         	<a class="link" href="{{ url('/requerimientos') }}">
-				<span class="brand">Kinchika
+				<span class="brand" style="margin-top:10px"><img src="{{asset('img/logo.png')}}" alt="logo">
 					<span class="brand-tip"></span>
           		</span>
-				<span class="brand-mini">KcK</span>
+				<span class="brand-mini"><img src="{{asset('img/logo_small.png')}}" alt="logo"></span>
 			</a>
 			</div>
 			<div class="flexbox flex-1">

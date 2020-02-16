@@ -2,6 +2,14 @@
 
 @section('css')
 	<link href="{{ asset('vendor/DataTables/datatables.min.css') }}" rel="stylesheet" />
+	<style type="text/css">
+		.table thead th, .table td, .table th {
+			vertical-align: middle;
+		}
+		.table th {
+			text-align: center;
+		}
+	</style>
 @endsection
 
 @section('titulo', "Requerimientos")
@@ -79,7 +87,7 @@
 							<th>Fecha Solicitud</th>
 							<th>Fecha Cierre</th>
 							<th>Resolutor</th>
-							<th>Ejecutado (%)</th>
+							<th>Avance (%)</th>
 							@if($state != 0)
 							<th>Estatus</th>
 							@endif
