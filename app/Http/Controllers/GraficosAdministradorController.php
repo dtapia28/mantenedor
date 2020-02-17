@@ -358,6 +358,7 @@ class GraficosAdministradorController extends Controller
         $porEquipoAlDia = [];
         $porEquipoPorVencer = [];
         $porEquipoVencido = [];
+        $porcentajeEquipoAlDia = [];
         foreach ($equipos as $equipo)
         {
             $varAlDia = 0;
@@ -580,14 +581,20 @@ class GraficosAdministradorController extends Controller
             $porEquipoAlDia[] = $varAlDia;
             $porEquipoPorVencer[] = $varPorVencer;
             $porEquipoVencido[] = $varVencido;
+            $porcentajeEquipoAlDia[] = ($varAlDia/($varAlDia+$varPorVencer+$varVencido))*100;
         }
+        $porcentajeEquipoAlDia = (object)$porcentajeEquipoAlDia;
         $porEquipoAlDia=(object)$porEquipoAlDia;
         $porEquipoPorVencer=(object)$porEquipoPorVencer;
         $porEquipoVencido=(object)$porEquipoVencido;
+        
+        
+        $divisor = $cerradosAlDia+$cerradosPorVencer+$cerradosVencidos;
+        $porcentajeAlDia = ($cerradosAlDia/$divisor)*100;
 
         return compact('requerimientos', 'alDia', 'vencer', 'vencido',
                 'arrayEquipos', 'arrayAlDia', 'arrayPorVencer', 'arrayVencidos', 'cerradosAlDia',
                 'cerradosPorVencer', 'cerradosVencidos', 'porEquipoAlDia', 'porEquipoPorVencer',
-                'porEquipoVencido');
+                'porEquipoVencido', 'porcentajeAlDia', 'porcentajeEquipoAlDia');
     }
 }

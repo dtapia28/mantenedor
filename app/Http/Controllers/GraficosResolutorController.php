@@ -353,9 +353,11 @@ class GraficosResolutorController extends Controller
                 }
             }
         }
+        $porcentajeAlDia = ($cerradoAlDia/($cerradoAlDia+$cerradoPorVencer+$cerradoVencido))*100;
         
         return compact('requerimientos', 'alDia', 'vencer', 'vencido',
                 'arraySolicitantes', 'porSolicitanteAldia', 'porSolicitantePorVencer',
-                'porSolicitanteVencido', 'cerradoAlDia', 'cerradoPorVencer', 'cerradoVencido');
+                'porSolicitanteVencido', 'cerradoAlDia', 'cerradoPorVencer', 'cerradoVencido',
+                'porcentajeAlDia');
     }
 }

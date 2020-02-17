@@ -232,12 +232,9 @@ class DashboardController extends Controller
     }
     
     public function getReqEquipoByEstado($equipo, $estado) {
-        $data = DB::select('SELECT a.id, a.id2, a.textoRequerimiento, DATE_FORMAT(a.fechaSolicitud, "%d/%m/%Y") fechaSolicitud, DATE_FORMAT(a.fechaCierre, "%d/%m/%Y") fechaCierre, b.nombreResolutor, a.porcentajeEjecutado
-                            FROM requerimientos a
-                            JOIN resolutors b ON a.resolutor=b.id
-                            JOIN teams c ON b.idTeam=c.id
-                            WHERE c.nameTeam LIKE ? AND a.estado = ?', [$equipo, $estado]);
-        
+        $data = DB::select('SELECT id, id2, textoRequerimiento, DATE_FORMAT(fechaSolicitud, "%d/%m/%Y") fechaSolicitud, DATE_FORMAT(fechaCierre, "%d/%m/%Y") fechaCierre, nombreResolutor, porcentajeEjecutado
+                            FROM requerimientos_equipos
+                            WHERE nameTeam LIKE ? AND estado = ?', [$equipo, $estado]);
         $records = ['respuesta' => true, 'req' => $data];
         return response()->json($records, 200);
     }
