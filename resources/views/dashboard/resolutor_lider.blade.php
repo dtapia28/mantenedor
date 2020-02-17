@@ -219,7 +219,7 @@
 			dataFormat: "json",
 			dataSource: {
 				chart: {
-					caption: "Requerimientos del Resolutor",
+					caption: "Requerimientos del equipo",
 					enablesmartlabels: "1",
 					showlabels: "1",
 					numbersuffix: " MMbbl",
@@ -440,7 +440,7 @@
 			dataFormat: "json",
 			dataSource: {
 				chart: {
-					caption: "Requerimientos en General",
+					caption: "Medidor Equipo",
 					lowerlimit: "0",
 					upperlimit: "100",
 					showvalue: "1",
@@ -471,7 +471,7 @@
 				dials: {
 				dial: [
 					{
-					value: <?=$data["cerradoAlDia"]?>,
+					value: <?=$data["porcentajeAlDia"]?>,
 					}
 				]
 				}

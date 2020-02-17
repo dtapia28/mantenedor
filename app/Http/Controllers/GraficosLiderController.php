@@ -93,22 +93,22 @@ class GraficosLiderController extends Controller
         $porSolicitanteVencido = [];
         foreach ($arraySolicitantes as $solicitante)
         {
-            $alDia = 0;
-            $vencer = 0;
-            $vencido = 0;
+            $solAlDia = 0;
+            $solVencer = 0;
+            $solVencido = 0;
             $sol = Solicitante::where('nombreSolicitante', $solicitante)->first();
             foreach ($req as $requerimiento){
                 if($requerimiento->idSolicitante == $sol->id)
                 {
                     if($requerimiento->fechaCierre == "9999-12-31 00:00:00")
                     {
-                        $alDia++;
+                        $solAlDia++;
                     } else 
                     {
                         $hoy = new DateTime();
                         $cierre = new DateTime($requerimiento->fechaCierre);
                         if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
-                            $vencido++;
+                            $solVencido++;
                         } else {
                             $variable = 0;
                             while ($hoy->getTimestamp() < $cierre->getTimestamp())
@@ -122,9 +122,9 @@ class GraficosLiderController extends Controller
                                 }                   
                             }                
                             if ($variable<=3) {
-                                $vencer++;
+                                $solVencer++;
                             } else {
-                                $alDia++;
+                                $solAlDia++;
                             }
                             $variable = 0;
                             unset($hoy);
@@ -133,9 +133,9 @@ class GraficosLiderController extends Controller
                     }
                 }
             }
-            $porSolicitanteAldia[]=$alDia;
-            $porSolicitantePorVencer[]=$vencer;
-            $porSolicitanteVencido[]=$vencido;
+            $porSolicitanteAldia[]=$solAlDia;
+            $porSolicitantePorVencer[]=$solVencer;
+            $porSolicitanteVencido[]=$solVencido;
         }
         
         
@@ -382,22 +382,22 @@ class GraficosLiderController extends Controller
         
         foreach ($resolutores as $resolutor)
         {
-            $alDia = 0;
-            $vencer = 0;
-            $vencido = 0;            
+            $resAlDia = 0;
+            $resVencer = 0;
+            $resVencido = 0;            
             foreach ($req as $requerimiento)
             {
                 if($requerimiento->resolutor == $resolutor->id)
                 {
                     if($requerimiento->fechaCierre == "9999-12-31 00:00:00")
                     {
-                        $alDia++;
+                        $resAlDia++;
                     } else 
                     {
                         $hoy = new DateTime();
                         $cierre = new DateTime($requerimiento->fechaCierre);
                         if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
-                            $vencido++;
+                            $resVencido++;
                         } else {
                             $variable = 0;
                             while ($hoy->getTimestamp() < $cierre->getTimestamp())
@@ -411,9 +411,9 @@ class GraficosLiderController extends Controller
                                 }                   
                             }                
                             if ($variable<=3) {
-                                $vencer++;
+                                $resVencer++;
                             } else {
-                                $alDia++;
+                                $resAlDia++;
                             }
                             $variable = 0;
                             unset($hoy);
@@ -422,14 +422,17 @@ class GraficosLiderController extends Controller
                     }                    
                 }
             }
-          $porResolutorAlDia[]= $alDia;
-          $porResolutorPorVencer[]=$vencer;
-          $porResolutorVencido[]=$vencido;
+          $porResolutorAlDia[]= $resAlDia;
+          $porResolutorPorVencer[]=$resVencer;
+          $porResolutorVencido[]=$resVencido;
         }
         
+        $divisor = $cerradoAlDia+$cerradoPorVencer+$cerradoVencido;
+        $porcentajeAlDia = ($cerradoAlDia/$divisor)*100;
         return compact('requerimientos', 'alDia', 'vencer', 'vencido',
                 'arraySolicitantes', 'porSolicitanteAldia', 'porSolicitantePorVencer',
                 'porSolicitanteVencido', 'cerradoAlDia', 'cerradoPorVencer', 'cerradoVencido',
-                'arrayResolutores', 'porResolutorAlDia', 'porResolutorPorVencer', 'porResolutorVencido');
+                'arrayResolutores', 'porResolutorAlDia', 'porResolutorPorVencer',
+                'porResolutorVencido', 'porcentajeAlDia');
     }
 }

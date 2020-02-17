@@ -3,16 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
             <file>file:/C:/xampp/htdocs/Mantenedor/app/Http/Controllers/GraficosLiderController.php</file>
-            <file>file:/C:/xampp/htdocs/Mantenedor/routes/web.php</file>
-            <file>file:/C:/xampp/htdocs/Mantenedor/app/Http/Controllers/GraficosResolutorController.php</file>
-            <file>file:/C:/xampp/htdocs/Mantenedor/app/Http/Controllers/GraficosAdministradorController.php</file>
-            <file>file:/C:/xampp/htdocs/Mantenedor/app/Http/Controllers/GraficosSolicitanteController.php</file>
-=======
-            <file>file:/C:/xampp/htdocs/Mantenedor/.env</file>
-            <file>file:/C:/xampp/htdocs/Mantenedor/config/app.php</file>
->>>>>>> backend
+            <file>file:/C:/xampp/htdocs/Mantenedor/resources/views/dashboard/resolutor_lider.blade.php</file>
+            <file>file:/C:/xampp/htdocs/Mantenedor/resources/views/dashboard/solicitante.blade.php</file>
         </group>
     </open-files>
 </project-private>
