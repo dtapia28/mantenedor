@@ -47,7 +47,6 @@
                 <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">INGRESAR <i class="fa-signin"></i></button>
             <a href="{{ url('/redirect/') }}" class="btn btn-default btn-block waves-effect text-center m-b-20"><img src="{{ asset('img/logo-google.png') }}" alt="logo-google"> Ingresa con tu cuenta de Google</a>
             </div>
-            <a href="{{ url('/redirect/') }}" class="btn btn-google"><i class="fa fa-google"></i> Google</a>
         </div>
         @if (Route::has('register'))
             <div class="col-sm-12 col-xs-12 text-center">

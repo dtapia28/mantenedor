@@ -20,12 +20,7 @@ class GraficosSolicitanteController extends Controller
     {
         //Cantidad de requerimientos de solicitante al día, por vencer, vencido
         $solicitante = Solicitante::where('idUser', auth()->user()->id)->first();
-<<<<<<< HEAD
         $req = DB::table('requerimientos_equipos')->where([
-=======
-        // dd($solicitante);
-        $req = DB::table('requerimientos')->where([
->>>>>>> frontend
             ['rutEmpresa', auth()->user()->rutEmpresa],
             ['estado', 1],
             ['aprobacion', 3],
@@ -87,15 +82,9 @@ class GraficosSolicitanteController extends Controller
         $porEquipoVencido = [];
         foreach($arrayEquipo as $idEquipo)
         {
-<<<<<<< HEAD
             $EquialDia = 0;
             $Equivencer = 0;
             $Equivencido = 0;            
-=======
-            $alDia = 0;
-            $vencer = 0;
-            $vencido = 0;            
->>>>>>> frontend
             $equipo = Team::where('id',$idEquipo)->first();
             $arrayEquipos[]=$equipo->nameTeam;
             $req = DB::table('requerimientos_equipos')->where([
@@ -109,21 +98,13 @@ class GraficosSolicitanteController extends Controller
             {
                     if($requerimiento->fechaCierre == "9999-12-31 00:00:00")
                     {
-<<<<<<< HEAD
                         $EquialDia++;
-=======
-                        $alDia++;
->>>>>>> frontend
                     } else 
                     {
                         $hoy = new DateTime();
                         $cierre = new DateTime($requerimiento->fechaCierre);
                         if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
-<<<<<<< HEAD
                             $Equivencido++;
-=======
-                            $vencido++;
->>>>>>> frontend
                         } else {
                             $variable = 0;
                             while ($hoy->getTimestamp() < $cierre->getTimestamp())
@@ -137,15 +118,9 @@ class GraficosSolicitanteController extends Controller
                                 }                   
                             }                
                             if ($variable<=3) {
-<<<<<<< HEAD
                                 $Equivencer++;
                             } else {
                                 $EquialDia++;
-=======
-                                $vencer++;
-                            } else {
-                                $alDia++;
->>>>>>> frontend
                             }
                             $variable = 0;
                             unset($hoy);
@@ -153,18 +128,10 @@ class GraficosSolicitanteController extends Controller
                         }                        
                     }             
             }
-<<<<<<< HEAD
             $porEquipoAldia[]=$EquialDia;
             $porEquipoPorVencer[]=$Equivencer;
             $porEquipoVencido[]=$Equivencido;
         }
-=======
-            $porEquipoAldia[]=$alDia;
-            $porEquipoPorVencer[]=$vencer;
-            $porEquipoVencido[]=$vencido;
-        }
-        $alDia=25; $vencido=10; $vencer= 33;
->>>>>>> frontend
         
         return compact('requerimientos', 'arrayEquipos', 'alDia', 'vencer', 'vencido', 'porEquipoAldia', 'porEquipoPorVencer', 'porEquipoVencido');
     }

@@ -91,15 +91,9 @@ class GraficosResolutorController extends Controller
         $porSolicitanteVencido = [];
         foreach ($arraySolicitantes as $solicitante)
         {
-<<<<<<< HEAD
             $solAlDia = 0;
             $solVencer = 0;
             $solVencido = 0;            
-=======
-            $alDia = 0;
-            $vencer = 0;
-            $vencido = 0;            
->>>>>>> frontend
             $sol = Solicitante::where('nombreSolicitante', $solicitante)->first();
             foreach ($req as $requerimiento)
             {
@@ -107,21 +101,13 @@ class GraficosResolutorController extends Controller
                 {
                     if($requerimiento->fechaCierre == "9999-12-31 00:00:00")
                     {
-<<<<<<< HEAD
                         $solAlDia++;
-=======
-                        $alDia++;
->>>>>>> frontend
                     } else 
                     {
                         $hoy = new DateTime();
                         $cierre = new DateTime($requerimiento->fechaCierre);
                         if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
-<<<<<<< HEAD
                             $solVencido++;
-=======
-                            $vencido++;
->>>>>>> frontend
                         } else {
                             $variable = 0;
                             while ($hoy->getTimestamp() < $cierre->getTimestamp())
@@ -135,15 +121,9 @@ class GraficosResolutorController extends Controller
                                 }                   
                             }                
                             if ($variable<=3) {
-<<<<<<< HEAD
                                 $solVencer++;
                             } else {
                                 $solAlDia++;
-=======
-                                $vencer++;
-                            } else {
-                                $alDia++;
->>>>>>> frontend
                             }
                             $variable = 0;
                             unset($hoy);
@@ -152,15 +132,9 @@ class GraficosResolutorController extends Controller
                     }                    
                 }
             }
-<<<<<<< HEAD
             $porSolicitanteAldia[]=$solAlDia;
             $porSolicitantePorVencer[]=$solVencer;
             $porSolicitanteVencido[]=$solVencido;            
-=======
-            $porSolicitanteAldia[]=$alDia;
-            $porSolicitantePorVencer[]=$vencer;
-            $porSolicitanteVencido[]=$vencido;            
->>>>>>> frontend
         }
         
 
