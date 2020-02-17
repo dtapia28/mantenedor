@@ -93,22 +93,36 @@ class GraficosLiderController extends Controller
         $porSolicitanteVencido = [];
         foreach ($arraySolicitantes as $solicitante)
         {
+<<<<<<< HEAD
             $solAlDia = 0;
             $solVencer = 0;
             $solVencido = 0;
+=======
+            $alDia = 0;
+            $vencer = 0;
+            $vencido = 0;
+>>>>>>> frontend
             $sol = Solicitante::where('nombreSolicitante', $solicitante)->first();
             foreach ($req as $requerimiento){
                 if($requerimiento->idSolicitante == $sol->id)
                 {
                     if($requerimiento->fechaCierre == "9999-12-31 00:00:00")
                     {
+<<<<<<< HEAD
                         $solAlDia++;
+=======
+                        $alDia++;
+>>>>>>> frontend
                     } else 
                     {
                         $hoy = new DateTime();
                         $cierre = new DateTime($requerimiento->fechaCierre);
                         if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+<<<<<<< HEAD
                             $solVencido++;
+=======
+                            $vencido++;
+>>>>>>> frontend
                         } else {
                             $variable = 0;
                             while ($hoy->getTimestamp() < $cierre->getTimestamp())
@@ -122,9 +136,15 @@ class GraficosLiderController extends Controller
                                 }                   
                             }                
                             if ($variable<=3) {
+<<<<<<< HEAD
                                 $solVencer++;
                             } else {
                                 $solAlDia++;
+=======
+                                $vencer++;
+                            } else {
+                                $alDia++;
+>>>>>>> frontend
                             }
                             $variable = 0;
                             unset($hoy);
@@ -133,9 +153,15 @@ class GraficosLiderController extends Controller
                     }
                 }
             }
+<<<<<<< HEAD
             $porSolicitanteAldia[]=$solAlDia;
             $porSolicitantePorVencer[]=$solVencer;
             $porSolicitanteVencido[]=$solVencido;
+=======
+            $porSolicitanteAldia[]=$alDia;
+            $porSolicitantePorVencer[]=$vencer;
+            $porSolicitanteVencido[]=$vencido;
+>>>>>>> frontend
         }
         
         
@@ -382,22 +408,36 @@ class GraficosLiderController extends Controller
         
         foreach ($resolutores as $resolutor)
         {
+<<<<<<< HEAD
             $resAlDia = 0;
             $resVencer = 0;
             $resVencido = 0;            
+=======
+            $alDia = 0;
+            $vencer = 0;
+            $vencido = 0;            
+>>>>>>> frontend
             foreach ($req as $requerimiento)
             {
                 if($requerimiento->resolutor == $resolutor->id)
                 {
                     if($requerimiento->fechaCierre == "9999-12-31 00:00:00")
                     {
+<<<<<<< HEAD
                         $resAlDia++;
+=======
+                        $alDia++;
+>>>>>>> frontend
                     } else 
                     {
                         $hoy = new DateTime();
                         $cierre = new DateTime($requerimiento->fechaCierre);
                         if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+<<<<<<< HEAD
                             $resVencido++;
+=======
+                            $vencido++;
+>>>>>>> frontend
                         } else {
                             $variable = 0;
                             while ($hoy->getTimestamp() < $cierre->getTimestamp())
@@ -411,9 +451,15 @@ class GraficosLiderController extends Controller
                                 }                   
                             }                
                             if ($variable<=3) {
+<<<<<<< HEAD
                                 $resVencer++;
                             } else {
                                 $resAlDia++;
+=======
+                                $vencer++;
+                            } else {
+                                $alDia++;
+>>>>>>> frontend
                             }
                             $variable = 0;
                             unset($hoy);
@@ -422,6 +468,7 @@ class GraficosLiderController extends Controller
                     }                    
                 }
             }
+<<<<<<< HEAD
           $porResolutorAlDia[]= $resAlDia;
           $porResolutorPorVencer[]=$resVencer;
           $porResolutorVencido[]=$resVencido;
@@ -434,5 +481,16 @@ class GraficosLiderController extends Controller
                 'porSolicitanteVencido', 'cerradoAlDia', 'cerradoPorVencer', 'cerradoVencido',
                 'arrayResolutores', 'porResolutorAlDia', 'porResolutorPorVencer',
                 'porResolutorVencido', 'porcentajeAlDia');
+=======
+          $porResolutorAlDia[]= $alDia;
+          $porResolutorPorVencer[]=$vencer;
+          $porResolutorVencido[]=$vencido;
+        }
+        
+        return compact('requerimientos', 'alDia', 'vencer', 'vencido',
+                'arraySolicitantes', 'porSolicitanteAldia', 'porSolicitantePorVencer',
+                'porSolicitanteVencido', 'cerradoAlDia', 'cerradoPorVencer', 'cerradoVencido',
+                'arrayResolutores', 'porResolutorAlDia', 'porResolutorPorVencer', 'porResolutorVencido');
+>>>>>>> frontend
     }
 }

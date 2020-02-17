@@ -167,6 +167,10 @@
 				}
 			}
 		});
+<<<<<<< HEAD
+=======
+
+>>>>>>> frontend
 		// Gráfico apilado por equipo
 		<?php
 			$equipos = "";
@@ -264,6 +268,10 @@
 					var estado = e.data.datasetName;
 					var valor = e.data.dataValue;
 					var codEstado;
+<<<<<<< HEAD
+=======
+
+>>>>>>> frontend
 					$("#dataModalEq").modal("show");
 					$("#solicitanteModalEq").text(equipo);
 					$("#estadoModalEq").text(estado);

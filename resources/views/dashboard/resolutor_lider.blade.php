@@ -1,4 +1,7 @@
+<<<<<<< HEAD
   
+=======
+>>>>>>> frontend
 @section('css')
 	<link href="{{ asset('vendor/DataTables/datatables.min.css') }}" rel="stylesheet" />
 @endsection
@@ -293,6 +296,10 @@
 				}
 			}
 		});
+<<<<<<< HEAD
+=======
+
+>>>>>>> frontend
 		// Gráfico apilado por solicitante
 		<?php
 			$solicitantes = "";
@@ -390,6 +397,10 @@
 					var estado = e.data.datasetName;
 					var valor = e.data.dataValue;
 					var codEstado;
+<<<<<<< HEAD
+=======
+
+>>>>>>> frontend
 					$("#dataModalSol").modal("show");
 					$("#solicitanteModalSol").text(solicitante);
 					$("#estadoModalSol").text(estado);
@@ -432,6 +443,10 @@
 				}
 			}
 		});
+<<<<<<< HEAD
+=======
+
+>>>>>>> frontend
 		// Gráfico Medidor
     	$("#chart-medidor").insertFusionCharts({
 			type: "angulargauge",
@@ -471,12 +486,20 @@
 				dials: {
 				dial: [
 					{
+<<<<<<< HEAD
 					value: <?=$data["porcentajeAlDia"]?>,
+=======
+					value: <?=$data["cerradoAlDia"]?>,
+>>>>>>> frontend
 					}
 				]
 				}
 			}
 		});
+<<<<<<< HEAD
+=======
+
+>>>>>>> frontend
 		// Gráfico apilado por resolutor
 		<?php
 			$resolutores = "";
@@ -574,6 +597,10 @@
 					var estado = e.data.datasetName;
 					var valor = e.data.dataValue;
 					var codEstado;
+<<<<<<< HEAD
+=======
+
+>>>>>>> frontend
 					$("#dataModalRes").modal("show");
 					$("#solicitanteModalRes").text(resolutor);
 					$("#estadoModalRes").text(estado);

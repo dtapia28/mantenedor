@@ -249,6 +249,10 @@
 				}
 			}
 		});
+<<<<<<< HEAD
+=======
+
+>>>>>>> frontend
 		// Gráfico apilado por solicitante
 		<?php
 			$solicitantes = "";
@@ -346,6 +350,10 @@
 					var estado = e.data.datasetName;
 					var valor = e.data.dataValue;
 					var codEstado;
+<<<<<<< HEAD
+=======
+
+>>>>>>> frontend
 					$("#dataModalSol").modal("show");
 					$("#solicitanteModalSol").text(solicitante);
 					$("#estadoModalSol").text(estado);
@@ -388,6 +396,10 @@
 				}
 			}
 		});
+<<<<<<< HEAD
+=======
+
+>>>>>>> frontend
 		// Gráfico Medidor
     	$("#chart-medidor").insertFusionCharts({
 			type: "angulargauge",

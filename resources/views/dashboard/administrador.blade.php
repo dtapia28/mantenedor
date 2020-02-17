@@ -81,6 +81,10 @@
 			foreach((array)$data["arrayPorVencer"] as $item) { $porVencer .= "'".$item."',"; }
 			$porVencer = substr($porVencer, 0, strlen($porVencer)-1);
 		?>
+<<<<<<< HEAD
+=======
+
+>>>>>>> frontend
 		const equipos = [<?=$equipos?>];
 		const vencidos = [<?=$vencidos?>];
 		const alDia = [<?=$alDia?>];
@@ -163,6 +167,10 @@
 					var estado = e.data.datasetName;
 					var valor = e.data.dataValue;
 					var codEstado;
+<<<<<<< HEAD
+=======
+
+>>>>>>> frontend
 					$("#dataModal").modal("show");
 					$("#equipoModal").text(equipo);
 					$("#estadoModal").text(estado);
@@ -257,6 +265,10 @@
 			$cerradosAlDiaPorEq = substr($cerradosAlDiaPorEq, 0, strlen($cerradosAlDiaPorEq)-1);
 		?>
 		var cerradosAlDiaPorEq = [<?=$cerradosAlDiaPorEq?>];
+<<<<<<< HEAD
+=======
+
+>>>>>>> frontend
 		for(var i=0; i<numEquipos; i++) {
 			$("#chart-medidor-eq"+i).insertFusionCharts({
 				type: "angulargauge",

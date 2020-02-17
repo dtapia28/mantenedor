@@ -167,7 +167,10 @@ Route::get('/requerimientos/script', 'RequerimientoController@getResolutors');
 Route::get('/users/script', 'UserController@getTeams');
 Route::get('/requerimientos/script2', 'UserController@getTeams');
 Route::get('/users/script3', 'UserController@getLider');
+<<<<<<< HEAD
 
+=======
+>>>>>>> frontend
 
 Route::get('/requerimientos/{requerimiento}/avances/{avance}/editar', 'AvanceController@edit')->name('Avances.edit');	
 
@@ -523,6 +526,10 @@ Auth::routes();
 
 Route::get('/requerimientos/{requerimiento}/anidar', 'AnidadoController@anidar');
 Route::post('/requerimientos/{requerimiento}/anidar', 'AnidadoController@anidara');
+<<<<<<< HEAD
+=======
+
+>>>>>>> frontend
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/requerimientos/{requerimiento}/tareas/nueva', 'TareaController@create')
@@ -568,8 +575,13 @@ Route::get('/clear_cache', function()
     return "Caché limpiado";
 });
 
+<<<<<<< HEAD
 
 
 /* Rutas para pruebascontroladores en Tablero - Daniel Tapia */
 Route::get('/redirect', 'Auth\LoginController@redirectToProvider');
 Route::get('/callback', 'Auth\LoginController@handleProviderCallback');
+=======
+/* Rutas para pruebascontroladores en Tablero - Daniel Tapia */	
+Route::get('/dashboard/prueba','GraficosSolicitanteController@index');
+>>>>>>> frontend
