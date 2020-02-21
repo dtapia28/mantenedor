@@ -277,7 +277,8 @@ class LoginController extends Controller
             // log them in
             auth()->login($existingUser, true);
         } else {
-            \Illuminate\Support\Facades\Cache::put('name', $user->name,5);
+            \Illuminate\Support\Facades\Cache::put('nombre', $user->user['given_name'],5);
+            \Illuminate\Support\Facades\Cache::put('apellido', $user->user['family_name'],5);
             \Illuminate\Support\Facades\Cache::put('mail', $user->email);
             return redirect()->to('/register');
         }

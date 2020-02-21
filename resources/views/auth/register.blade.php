@@ -1,7 +1,8 @@
 @extends('layouts.applogin')
 @section('titulo', "Crear Cuenta")
 <?php
-$nombre = Illuminate\Support\Facades\Cache::get('name');
+$nombre = Illuminate\Support\Facades\Cache::get('nombre');
+$apellido = Illuminate\Support\Facades\Cache::get('apellido');
 $mail = Illuminate\Support\Facades\Cache::get('mail');
 
 ?>
@@ -23,7 +24,7 @@ $mail = Illuminate\Support\Facades\Cache::get('mail');
         <label>Nombre</label>
     </div>
     <div class="md-input-wrapper">
-        <input id="lastname" type="text" class="md-form-control @error('name') is-invalid @enderror" name="lastname" value="{{$nombre}}" required autocomplete="name" autofocus>
+        <input id="lastname" type="text" class="md-form-control @error('name') is-invalid @enderror" name="lastname" value="{{$apellido}}" required autocomplete="name" autofocus>
         @error('name')
             <span class="text-danger" role="alert">
                 <strong>{{ $message }}</strong>

@@ -151,12 +151,46 @@ class GraficosResolutorController extends Controller
 
         if(isset($req)){
             foreach ($req as $requerimiento){
-                if($requerimiento->fechaLiquidacion != "0000-00-00 00:00:00"){
-                    if($requerimiento->fechaRealCierre != null){
+                $requerimiento = (array)$requerimiento;
+                if($requerimiento['fechaLiquidacion'] != null){
+                    if($requerimiento['fechaRealCierre'] != null){
                         $cierre = new DateTime($requerimiento->fechaCierre);
-                        $cerrado = new DateTime($requerimiento->fechaLiquidacion);
-                        $real = new DateTime($requerimiento->fechaRealCierre);
-                        if($cierre->getTimestamp()<=$real->getTimestamp()){
+                        if($requerimiento['fechaCierre'] == "9999-12-31 00:00:00")
+                        {
+                            $cerradoAlDia++;
+                        } else
+                        {
+                            $cerrado = new DateTime($requerimiento['fechaLiquidacion']);
+                            $real = new DateTime($requerimiento['fechaRealCierre']);
+                            if($cierre->getTimestamp()<=$real->getTimestamp()){
+                                if($cierre->getTimestamp()<$cerrado->getTimestamp()){
+                                    $cerradoVencido++;
+                                } else {
+                                    $variable=0;
+                                    while ($cerrado->getTimestamp()<$cierre->getTimestamp()){
+                                        if ($cerrado->format('l') == 'Saturday' or $cerrado->format('l') == 'Sunday') {
+                                            $cerrado->modify("+1 days");               
+                                        }else{
+                                            $variable++;
+                                            $cerrado->modify("+1 days");                       
+                                        }                                
+                                    }
+                                    if($variable>3){
+                                        $cerradoAlDia++;
+                                    } else {
+                                        $cerradoPorVencer++;
+                                    }
+                                }                            
+                            }                            
+                        }
+                    } else {
+                        $cierre = new DateTime($requerimiento['fechaCierre']);
+                        if($requerimiento['fechaCierre'] == "9999-12-31 00:00:00")
+                        {
+                            $cerradoAlDia++;
+                        } else
+                        {
+                            $cerrado = new DateTime($requerimiento['fechaLiquidacion']);
                             if($cierre->getTimestamp()<$cerrado->getTimestamp()){
                                 $cerradoVencido++;
                             } else {
@@ -174,36 +208,48 @@ class GraficosResolutorController extends Controller
                                 } else {
                                     $cerradoPorVencer++;
                                 }
-                            }                            
-                        }
-                    } else {
-                        $cierre = new DateTime($requerimiento->fechaCierre);
-                        $cerrado = new DateTime($requerimiento->fechaLiquidacion);
-                        if($cierre->getTimestamp()<$cerrado->getTimestamp()){
-                            $cerradoVencido++;
-                        } else {
-                            $variable=0;
-                            while ($cerrado->getTimestamp()<$cierre->getTimestamp()){
-                                if ($cerrado->format('l') == 'Saturday' or $cerrado->format('l') == 'Sunday') {
-                                    $cerrado->modify("+1 days");               
-                                }else{
-                                    $variable++;
-                                    $cerrado->modify("+1 days");                       
-                                }                                
-                            }
-                            if($variable>3){
-                                $cerradoAlDia++;
-                            } else {
-                                $cerradoPorVencer++;
-                            }
-                        }                            
+                            }                             
+                        }                                                   
                     }
                 } else {
-                    if($requerimiento->fechaRealCierre != null){
-                        $cierre = new DateTime($requerimiento->fechaCierre);
-                        $cerrado = new DateTime($requerimiento->updated_at);
-                        $real = new DateTime($requerimiento->fechaRealCierre);
-                        if($cierre->getTimestamp()<=$real->getTimestamp()){
+                    if($requerimiento['fechaRealCierre'] != null){
+                        $cierre = new DateTime($requerimiento['fechaCierre']);
+                        if($requerimiento['fechaCierre'] == "9999-12-31 00:00:00")
+                        {
+                            $cerradoAlDia++;
+                        } else
+                        {
+                            $cerrado = new DateTime($requerimiento['updated_at']);
+                            $real = new DateTime($requerimiento['fechaRealCierre']);
+                            if($cierre->getTimestamp()<=$real->getTimestamp()){
+                                if($cierre->getTimestamp()<$cerrado->getTimestamp()){
+                                    $cerradoVencido++;
+                                } else {
+                                    $variable=0;
+                                    while ($cerrado->getTimestamp()<$cierre->getTimestamp()){
+                                        if ($cerrado->format('l') == 'Saturday' or $cerrado->format('l') == 'Sunday') {
+                                            $cerrado->modify("+1 days");               
+                                        }else{
+                                            $variable++;
+                                            $cerrado->modify("+1 days");                       
+                                        }                                
+                                    }
+                                    if($variable>3){
+                                        $cerradoAlDia++;
+                                    } else {
+                                        $cerradoPorVencer++;
+                                    }
+                                }                            
+                            }                            
+                        }                        
+                    } else {
+                        $cierre = new DateTime($requerimiento['fechaCierre']);
+                        if($requerimiento['fechaCierre'] == "9999-12-31 00:00:00")
+                        {
+                            $cerradoAlDia++;
+                        } else
+                        {
+                            $cerrado = new DateTime($requerimiento['updated_at']);
                             if($cierre->getTimestamp()<$cerrado->getTimestamp()){
                                 $cerradoVencido++;
                             } else {
@@ -222,28 +268,7 @@ class GraficosResolutorController extends Controller
                                     $cerradoPorVencer++;
                                 }
                             }                            
-                        }
-                    } else {
-                        $cierre = new DateTime($requerimiento->fechaCierre);
-                        $cerrado = new DateTime($requerimiento->updated_at);
-                        if($cierre->getTimestamp()<$cerrado->getTimestamp()){
-                            $cerradoVencido++;
-                        } else {
-                            $variable=0;
-                            while ($cerrado->getTimestamp()<$cierre->getTimestamp()){
-                                if ($cerrado->format('l') == 'Saturday' or $cerrado->format('l') == 'Sunday') {
-                                    $cerrado->modify("+1 days");               
-                                }else{
-                                    $variable++;
-                                    $cerrado->modify("+1 days");                       
-                                }                                
-                            }
-                            if($variable>3){
-                                $cerradoAlDia++;
-                            } else {
-                                $cerradoPorVencer++;
-                            }
-                        }                            
+                        }                                                    
                     }                    
                 }
             }
@@ -256,12 +281,46 @@ class GraficosResolutorController extends Controller
         ])->get();
         if(isset($req2)){
             foreach ($req2 as $requerimiento){
-                if($requerimiento->fechaLiquidacion != "0000-00-00 00:00:00"){
-                    if($requerimiento->fechaRealCierre != null){
-                        $cierre = new DateTime($requerimiento->fechaCierre);
-                        $cerrado = new DateTime($requerimiento->fechaLiquidacion);
-                        $real = new DateTime($requerimiento->fechaRealCierre);
-                        if($cierre->getTimestamp()<=$real->getTimestamp()){
+                $requerimiento = (array)$requerimiento;
+                if($requerimiento['fechaLiquidacion'] != null){
+                    if($requerimiento['fechaRealCierre'] != null){
+                        $cierre = new DateTime($requerimiento['fechaCierre']);
+                        if($requerimiento['fechaCierre'] == "9999-12-31 00:00:00")
+                        {
+                            $cerradoAlDia++;
+                        } else
+                        {
+                            $cerrado = new DateTime($requerimiento['fechaLiquidacion']);
+                            $real = new DateTime($requerimiento['fechaRealCierre']);
+                            if($cierre->getTimestamp()<=$real->getTimestamp()){
+                                if($cierre->getTimestamp()<$cerrado->getTimestamp()){
+                                    $cerradoVencido++;
+                                } else {
+                                    $variable=0;
+                                    while ($cerrado->getTimestamp()<$cierre->getTimestamp()){
+                                        if ($cerrado->format('l') == 'Saturday' or $cerrado->format('l') == 'Sunday') {
+                                            $cerrado->modify("+1 days");               
+                                        }else{
+                                            $variable++;
+                                            $cerrado->modify("+1 days");                       
+                                        }                                
+                                    }
+                                    if($variable>3){
+                                        $cerradoAlDia++;
+                                    } else {
+                                        $cerradoPorVencer++;
+                                    }
+                                }                            
+                            }                            
+                        }                        
+                    } else {
+                        $cierre = new DateTime($requerimiento['fechaCierre']);
+                        if($requerimiento['fechaCierre'] == "9999-12-31 00:00:00")
+                        {
+                            $cerradoAlDia++;
+                        } else
+                        {
+                            $cerrado = new DateTime($requerimiento['fechaLiquidacion']);
                             if($cierre->getTimestamp()<$cerrado->getTimestamp()){
                                 $cerradoVencido++;
                             } else {
@@ -280,35 +339,47 @@ class GraficosResolutorController extends Controller
                                     $cerradoPorVencer++;
                                 }
                             }                            
-                        }
-                    } else {
-                        $cierre = new DateTime($requerimiento->fechaCierre);
-                        $cerrado = new DateTime($requerimiento->fechaLiquidacion);
-                        if($cierre->getTimestamp()<$cerrado->getTimestamp()){
-                            $cerradoVencido++;
-                        } else {
-                            $variable=0;
-                            while ($cerrado->getTimestamp()<$cierre->getTimestamp()){
-                                if ($cerrado->format('l') == 'Saturday' or $cerrado->format('l') == 'Sunday') {
-                                    $cerrado->modify("+1 days");               
-                                }else{
-                                    $variable++;
-                                    $cerrado->modify("+1 days");                       
-                                }                                
-                            }
-                            if($variable>3){
-                                $cerradoAlDia++;
-                            } else {
-                                $cerradoPorVencer++;
-                            }
                         }                            
                     }
                 } else {
-                    if($requerimiento->fechaRealCierre != null){
-                        $cierre = new DateTime($requerimiento->fechaCierre);
-                        $cerrado = new DateTime($requerimiento->updated_at);
-                        $real = new DateTime($requerimiento->fechaRealCierre);
-                        if($cierre->getTimestamp()<=$real->getTimestamp()){
+                    if($requerimiento['fechaRealCierre'] != null){
+                        $cierre = new DateTime($requerimiento['fechaCierre']);
+                        if($requerimiento['fechaCierre'] == "9999-12-31 00:00:00")
+                        {
+                            $cerradoAlDia++;
+                        } else
+                        {
+                            $cerrado = new DateTime($requerimiento['updated_at']);
+                            $real = new DateTime($requerimiento['fechaRealCierre']);
+                            if($cierre->getTimestamp()<=$real->getTimestamp()){
+                                if($cierre->getTimestamp()<$cerrado->getTimestamp()){
+                                    $cerradoVencido++;
+                                } else {
+                                    $variable=0;
+                                    while ($cerrado->getTimestamp()<$cierre->getTimestamp()){
+                                        if ($cerrado->format('l') == 'Saturday' or $cerrado->format('l') == 'Sunday') {
+                                            $cerrado->modify("+1 days");               
+                                        }else{
+                                            $variable++;
+                                            $cerrado->modify("+1 days");                       
+                                        }                                
+                                    }
+                                    if($variable>3){
+                                        $cerradoAlDia++;
+                                    } else {
+                                        $cerradoPorVencer++;
+                                    }
+                                }                            
+                            }                            
+                        }                        
+                    } else {
+                        $cierre = new DateTime($requerimiento['fechaCierre']);
+                        if($requerimiento['fechaCierre'] == "9999-12-31 00:00:00")
+                        {
+                            $cerradoAlDia++;
+                        } else
+                        {
+                            $cerrado = new DateTime($requerimiento['updated_at']);
                             if($cierre->getTimestamp()<$cerrado->getTimestamp()){
                                 $cerradoVencido++;
                             } else {
@@ -327,33 +398,12 @@ class GraficosResolutorController extends Controller
                                     $cerradoPorVencer++;
                                 }
                             }                            
-                        }
-                    } else {
-                        $cierre = new DateTime($requerimiento->fechaCierre);
-                        $cerrado = new DateTime($requerimiento->updated_at);
-                        if($cierre->getTimestamp()<$cerrado->getTimestamp()){
-                            $cerradoVencido++;
-                        } else {
-                            $variable=0;
-                            while ($cerrado->getTimestamp()<$cierre->getTimestamp()){
-                                if ($cerrado->format('l') == 'Saturday' or $cerrado->format('l') == 'Sunday') {
-                                    $cerrado->modify("+1 days");               
-                                }else{
-                                    $variable++;
-                                    $cerrado->modify("+1 days");                       
-                                }                                
-                            }
-                            if($variable>3){
-                                $cerradoAlDia++;
-                            } else {
-                                $cerradoPorVencer++;
-                            }
                         }                            
                     }                    
                 }
             }
         }
-        $porcentajeAlDia = ($cerradoAlDia/($cerradoAlDia+$cerradoPorVencer+$cerradoVencido))*100;
+        $porcentajeAlDia = ((($cerradoPorVencer/2)+$cerradoAlDia)/($cerradoAlDia+$cerradoPorVencer+$cerradoVencido))*100;
         
         return compact('requerimientos', 'alDia', 'vencer', 'vencido',
                 'arraySolicitantes', 'porSolicitanteAldia', 'porSolicitantePorVencer',
