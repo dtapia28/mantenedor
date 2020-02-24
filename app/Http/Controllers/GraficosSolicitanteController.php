@@ -16,17 +16,51 @@ class GraficosSolicitanteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request=null)
     {
+        $rango_fecha = $request->rango_fecha;
+        if ($request == null || $request == "") {
+            $desde = date('Y-m-').'01';
+            $hasta = date('Y-m-d');
+        } else {
+            switch ($rango_fecha) {
+                case 'mes_actual':
+                    $desde = date('Y-m-').'01';
+                    $hasta = date('Y-m-d');
+                    break;
+                case 'mes_ult3':
+                    $desde = date("Y-m-d", strtotime("-3 month"));
+                    $hasta = date('Y-m-d');
+                    break;
+                case 'mes_ult6':
+                    $desde = date("Y-m-d", strtotime("-6 month"));
+                    $hasta = date('Y-m-d');
+                    break;
+                case 'mes_ult12':
+                    $desde = date("Y-m-d", strtotime("-12 month"));
+                    $hasta = date('Y-m-d');
+                    break;
+                case 'por_rango':
+                    $desde = substr($request->fec_des, 6, 4).'-'.substr($request->fec_des, 3, 2).'-'.substr($request->fec_des, 0, 2);
+                    $hasta = substr($request->fec_has, 6, 4).'-'.substr($request->fec_has, 3, 2).'-'.substr($request->fec_has, 0, 2);
+                    break;
+                default:
+                    $desde = date('Y-m-').'01';
+                    $hasta = date('Y-m-d');
+                    break;
+            }
+        }
         //Cantidad de requerimientos de solicitante al día, por vencer, vencido
         $solicitante = Solicitante::where('idUser', auth()->user()->id)->first();
         // dd($solicitante);
-        $req = DB::table('requerimientos')->where([
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-            ['estado', 1],
-            ['aprobacion', 3],
-            ['idSolicitante', $solicitante->id],
-        ])->get();
+        $req = DB::table('requerimientos')
+                    ->where('rutEmpresa', auth()->user()->rutEmpresa)
+                    ->where('estado', 1)
+                    ->where('aprobacion', 3)
+                    ->where('idSolicitante', $solicitante->id)
+                    ->whereBetween('fechaSolicitud', [$desde, $hasta])
+                    ->get();
+        
         $alDia = 0;
         $vencer = 0;
         $vencido = 0;
@@ -74,7 +108,10 @@ class GraficosSolicitanteController extends Controller
         }
         $arrayEquipo = array_unique($arrayEquipo);
         $arrayEquipos = [];
-        $requerimientos = (object)$requerimientos;
+        if ($req->all() != "" && $req->all() != null && !is_null($req->all())) 
+            $requerimientos = (object)$requerimientos;
+        else
+            $requerimientos = (object)[];
         
         
         //Cantidad de requerimientos por equipo del solicitante al día, por vencer, vencido
@@ -88,13 +125,15 @@ class GraficosSolicitanteController extends Controller
             $vencido = 0;            
             $equipo = Team::where('id',$idEquipo)->first();
             $arrayEquipos[]=$equipo->nameTeam;
-            $req = DB::table('requerimientos_equipos')->where([
-                ['rutEmpresa', auth()->user()->rutEmpresa],
-                ['estado', 1],
-                ['aprobacion',3],
-                ['idSolicitante', $solicitante->id],
-                ['idEquipo', $idEquipo],
-            ])->get();
+            $req = DB::table('requerimientos_equipos')
+                ->where('rutEmpresa', auth()->user()->rutEmpresa)
+                ->where('estado', 1)
+                ->where('aprobacion',3)
+                ->where('idSolicitante', $solicitante->id)
+                ->where('idEquipo', $idEquipo)
+                ->whereBetween('fechaSolicitud', [$desde, $hasta])
+                ->get();
+            
             foreach($req as $requerimiento)
             {
                     if($requerimiento->fechaCierre == "9999-12-31 00:00:00")
@@ -133,8 +172,7 @@ class GraficosSolicitanteController extends Controller
             $porEquipoPorVencer[]=$vencer;
             $porEquipoVencido[]=$vencido;
         }
-        $alDia=25; $vencido=10; $vencer= 33;
         
-        return compact('requerimientos', 'arrayEquipos', 'alDia', 'vencer', 'vencido', 'porEquipoAldia', 'porEquipoPorVencer', 'porEquipoVencido');
+        return compact('requerimientos', 'arrayEquipos', 'alDia', 'vencer', 'vencido', 'porEquipoAldia', 'porEquipoPorVencer', 'porEquipoVencido', 'rango_fecha', 'desde', 'hasta');
     }
 }

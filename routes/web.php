@@ -547,11 +547,12 @@ Route::get('/requerimientos/{requerimiento}/rechazar', 'RequerimientoController@
 Route::post('/requerimientos/{requerimiento}/rechazar', 'RequerimientoController@RequerimientoRechazado');
 
 Route::get('/tablero', 'TableroController@index')->name('tablero');
-Route::get('/dashboard/getReqEquipoByEstado/{equipo}/{estado}', 'DashboardController@getReqEquipoByEstado')->name('getReqEquipoByEstado');
-Route::get('/dashboard/getReqSolicitanteByEstado/{solicitante}/{estado}', 'DashboardController@getReqSolicitanteByEstado')->name('getReqSolicitanteByEstado');
-Route::get('/dashboard/getReqResolutorByEstado/{resolutor}/{estado}', 'DashboardController@getReqResolutorByEstado')->name('getReqResolutorByEstado');
-Route::get('/dashboard/getReqResolutorGralByEstado/{estado}', 'DashboardController@getReqResolutorGralByEstado')->name('getReqResolutorGralByEstado');
-Route::get('/dashboard/getReqSolicitanteGralByEstado/{estado}', 'DashboardController@getReqSolicitanteGralByEstado')->name('getReqSolicitanteGralByEstado');
+Route::post('/tablero', 'TableroController@index')->name('filtro.dashboard');
+Route::post('/dashboard/getReqEquipoByEstado', 'DashboardController@getReqEquipoByEstado')->name('getReqEquipoByEstado');
+Route::post('/dashboard/getReqSolicitanteByEstado', 'DashboardController@getReqSolicitanteByEstado')->name('getReqSolicitanteByEstado');
+Route::post('/dashboard/getReqResolutorByEstado', 'DashboardController@getReqResolutorByEstado')->name('getReqResolutorByEstado');
+Route::post('/dashboard/getReqResolutorGralByEstado', 'DashboardController@getReqResolutorGralByEstado')->name('getReqResolutorGralByEstado');
+Route::post('/dashboard/getReqSolicitanteGralByEstado', 'DashboardController@getReqSolicitanteGralByEstado')->name('getReqSolicitanteGralByEstado');
 /* ************************** */
 
 Route::get('/clear_cache', function()

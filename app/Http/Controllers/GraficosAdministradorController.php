@@ -15,14 +15,47 @@ class GraficosAdministradorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request=null)
     {
+        $rango_fecha = $request->rango_fecha;
+        if ($request == null || $request == "") {
+            $desde = date('Y-m-').'01';
+            $hasta = date('Y-m-d');
+        } else {
+            switch ($rango_fecha) {
+                case 'mes_actual':
+                    $desde = date('Y-m-').'01';
+                    $hasta = date('Y-m-d');
+                    break;
+                case 'mes_ult3':
+                    $desde = date("Y-m-d", strtotime("-3 month"));
+                    $hasta = date('Y-m-d');
+                    break;
+                case 'mes_ult6':
+                    $desde = date("Y-m-d", strtotime("-6 month"));
+                    $hasta = date('Y-m-d');
+                    break;
+                case 'mes_ult12':
+                    $desde = date("Y-m-d", strtotime("-12 month"));
+                    $hasta = date('Y-m-d');
+                    break;
+                case 'por_rango':
+                    $desde = substr($request->fec_des, 6, 4).'-'.substr($request->fec_des, 3, 2).'-'.substr($request->fec_des, 0, 2);
+                    $hasta = substr($request->fec_has, 6, 4).'-'.substr($request->fec_has, 3, 2).'-'.substr($request->fec_has, 0, 2);
+                    break;
+                default:
+                    $desde = date('Y-m-').'01';
+                    $hasta = date('Y-m-d');
+                    break;
+            }
+        }
+        // dd($desde);
         // cantidad de requerimientos al día, por vencer y vencidos.
-        $req = Requerimiento::where([
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-            ['estado', 1],
-            ['aprobacion', 3],
-        ])->get();
+        $req = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)
+                            ->where('estado', 1)
+                            ->where('aprobacion', 3)
+                            ->whereBetween('fechaSolicitud', [$desde, $hasta])
+                            ->get();
         $alDia = 0;
         $vencer = 0;
         $vencido = 0;
@@ -65,7 +98,10 @@ class GraficosAdministradorController extends Controller
                 $requerimientos [] = $requerimiento;
             }                   
         }
-        $requerimientos = (object)$requerimientos;
+        if ($req->all() != "" && $req->all() != null && !is_null($req->all())) 
+            $requerimientos = (object)$requerimientos;
+        else
+            $requerimientos = (object)[];
         
         $equipos = Team::where('rutEmpresa',auth()->user()->rutEmpresa)->get();
         $arrayEquipos = [];
@@ -75,12 +111,13 @@ class GraficosAdministradorController extends Controller
         foreach ($equipos as $equipo)
         {
            $arrayEquipos[] = $equipo->nameTeam;
-           $req = DB::table('requerimientos_equipos')->where([
-                ['estado', '=', 1],
-                ['aprobacion', 3],
-                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-                ['idEquipo', $equipo->id],
-           ])->get();
+           $req = DB::table('requerimientos_equipos')
+                    ->where('estado', '=', 1)
+                    ->where('aprobacion', 3)
+                    ->where('rutEmpresa', '=', auth()->user()->rutEmpresa)
+                    ->where('idEquipo', $equipo->id)
+                    ->whereBetween('fechaSolicitud', [$desde, $hasta])
+                    ->get();
            
            $EalDia = 0;
            $EporVencer = 0;
@@ -138,10 +175,10 @@ class GraficosAdministradorController extends Controller
         $cerradosPorVencer = 0;
         $cerradosVencidos = 0;
         
-        $req = Requerimiento::where([
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-            ['estado', 2],
-        ])->get();
+        $req = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)
+                            ->where('estado', 2)
+                            ->whereBetween('fechaSolicitud', [$desde, $hasta])
+                            ->get();
         
         if(isset($req)){
             foreach ($req as $requerimiento){
@@ -245,11 +282,11 @@ class GraficosAdministradorController extends Controller
             }
         }
         
-        $req2 = Requerimiento::where([
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-            ['estado', 1],
-            ['aprobacion', 4],
-        ])->get();
+        $req2 = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)
+                            ->where('estado', 1)
+                            ->where('aprobacion', 4)
+                            ->whereBetween('fechaSolicitud', [$desde, $hasta])
+                            ->get();
         
         if(isset($req2)){
             foreach($req2 as $requerimiento){
@@ -363,11 +400,12 @@ class GraficosAdministradorController extends Controller
             $varAlDia = 0;
             $varPorVencer = 0;
             $varVencido = 0;            
-            $req = DB::table('requerimientos_equipos')->where([
-                ['rutEmpresa', auth()->user()->rutEmpresa],
-                ['estado', 2],
-                ['idEquipo', $equipo->id],
-            ])->get();
+            $req = DB::table('requerimientos_equipos')
+                        ->where('rutEmpresa', auth()->user()->rutEmpresa)
+                        ->where('estado', 2)
+                        ->where('idEquipo', $equipo->id)
+                        ->whereBetween('fechaSolicitud', [$desde, $hasta])
+                        ->get();
 
             if(isset($req)){
                 foreach ($req as $requerimiento){
@@ -470,12 +508,13 @@ class GraficosAdministradorController extends Controller
                     }
                 }
             }
-            $req2 = DB::table('requerimientos_equipos')->where([
-                ['rutEmpresa', auth()->user()->rutEmpresa],
-                ['estado', 1],
-                ['aprobacion', 4],
-                ['idEquipo', $equipo->id],
-            ])->get();
+            $req2 = DB::table('requerimientos_equipos')
+                        ->where('rutEmpresa', auth()->user()->rutEmpresa)
+                        ->where('estado', 1)
+                        ->where('aprobacion', 4)
+                        ->where('idEquipo', $equipo->id)
+                        ->whereBetween('fechaSolicitud', [$desde, $hasta])
+                        ->get();
             if(isset($req2)){
                 foreach ($req2 as $requerimiento){
                     if($requerimiento->fechaLiquidacion != "0000-00-00 00:00:00"){
@@ -588,6 +627,6 @@ class GraficosAdministradorController extends Controller
         return compact('requerimientos', 'alDia', 'vencer', 'vencido',
                 'arrayEquipos', 'arrayAlDia', 'arrayPorVencer', 'arrayVencidos', 'cerradosAlDia',
                 'cerradosPorVencer', 'cerradosVencidos', 'porEquipoAlDia', 'porEquipoPorVencer',
-                'porEquipoVencido');
+                'porEquipoVencido', 'rango_fecha', 'desde', 'hasta');
     }
 }
