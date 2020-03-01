@@ -473,9 +473,15 @@ class GraficosLiderController extends Controller
         $abiertos = $sqlAbiertos[0]->abiertos;
         $cerrados = $sqlCerrados[0]->cerrados;
         
+        $sqlEq = DB::select("SELECT a.idTeam, b.nameTeam
+                            FROM resolutors a
+                            JOIN teams b ON a.idTeam=b.id
+                            WHERE a.idUser = ?", [auth()->user()->id]);
+        $equipo = $sqlEq[0]->nameTeam;
+
         return compact('requerimientos', 'alDia', 'vencer', 'vencido',
                 'arraySolicitantes', 'porSolicitanteAldia', 'porSolicitantePorVencer',
                 'porSolicitanteVencido', 'cerradoAlDia', 'cerradoPorVencer', 'cerradoVencido',
-                'arrayResolutores', 'porResolutorAlDia', 'porResolutorPorVencer', 'porResolutorVencido', 'rango_fecha', 'desde', 'hasta', 'abiertos', 'cerrados');
+                'arrayResolutores', 'porResolutorAlDia', 'porResolutorPorVencer', 'porResolutorVencido', 'rango_fecha', 'desde', 'hasta', 'abiertos', 'cerrados', 'equipo');
     }
 }

@@ -241,7 +241,9 @@
 				@endif
 			@endisset
 		});
-		// Gráfico de dona
+		
+		// Gráfico de dona 
+		const titiloequipo = 'Equipo <?=$data["equipo"]?>';
 		$("#chart-dona").insertFusionCharts({
 			type: "doughnut3d",
 			width: "100%",
@@ -249,7 +251,7 @@
 			dataFormat: "json",
 			dataSource: {
 				chart: {
-					caption: "Requerimientos del Resolutor",
+					caption: titiloequipo,
 					enablesmartlabels: "1",
 					showlabels: "1",
 					numbersuffix: " MMbbl",
@@ -486,7 +488,7 @@
 			dataFormat: "json",
 			dataSource: {
 				chart: {
-					caption: "Requerimientos en General",
+					caption: titiloequipo,
 					lowerlimit: "0",
 					upperlimit: "100",
 					showvalue: "1",
