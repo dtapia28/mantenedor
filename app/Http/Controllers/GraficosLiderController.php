@@ -472,6 +472,7 @@ class GraficosLiderController extends Controller
 
         $abiertos = $sqlAbiertos[0]->abiertos;
         $cerrados = $sqlCerrados[0]->cerrados;
+        $equipo_id = $equipo->id;
         
         $sqlEq = DB::select("SELECT a.idTeam, b.nameTeam
                             FROM resolutors a
@@ -479,9 +480,18 @@ class GraficosLiderController extends Controller
                             WHERE a.idUser = ?", [auth()->user()->id]);
         $equipo = $sqlEq[0]->nameTeam;
 
+        $sqlValoresReq = DB::select('select count(*) as cant from requerimientos where idEquipo = ? AND created_at BETWEEN ? AND ?', [$equipo_id, $desde, $hasta]);
+        $valores['requerimientos'] = $sqlValoresReq[0]->cant;
+        $sqlValoresRes = DB::select('select count(*) as cant from resolutors where rutEmpresa = ?', [auth()->user()->rutEmpresa]);
+        $valores['resolutores'] = $sqlValoresRes[0]->cant;
+        $sqlValoresSol = DB::select('select count(*) as cant from solicitantes where rutEmpresa = ?', [auth()->user()->rutEmpresa]);
+        $valores['solicitantes'] = $sqlValoresSol[0]->cant;
+        $sqlValoresEq = DB::select('select count(*) as cant from teams where rutEmpresa = ? AND id = ?', [auth()->user()->rutEmpresa, $equipo_id]);
+        $valores['equipos'] = $sqlValoresEq[0]->cant;
+
         return compact('requerimientos', 'alDia', 'vencer', 'vencido',
                 'arraySolicitantes', 'porSolicitanteAldia', 'porSolicitantePorVencer',
                 'porSolicitanteVencido', 'cerradoAlDia', 'cerradoPorVencer', 'cerradoVencido',
-                'arrayResolutores', 'porResolutorAlDia', 'porResolutorPorVencer', 'porResolutorVencido', 'rango_fecha', 'desde', 'hasta', 'abiertos', 'cerrados', 'equipo');
+                'arrayResolutores', 'porResolutorAlDia', 'porResolutorPorVencer', 'porResolutorVencido', 'rango_fecha', 'desde', 'hasta', 'abiertos', 'cerrados', 'equipo', 'valores');
     }
 }

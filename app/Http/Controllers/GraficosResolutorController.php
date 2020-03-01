@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Requerimiento;
 use App\Resolutor;
 use App\Solicitante;
+use App\Team;
 use DateTime;
 
 class GraficosResolutorController extends Controller
@@ -54,6 +55,7 @@ class GraficosResolutorController extends Controller
         //Cantidad de requerimientos de resolutor al día, por vencer, vencido
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->first();
         $resolutor = Resolutor::where('idUser', $user->idUser)->first();
+        $equipo = Team::where('id', $resolutor->idTeam)->first();
         $req = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)
                             ->where('estado', 1)
                             ->where('aprobacion', 3)
@@ -389,14 +391,24 @@ class GraficosResolutorController extends Controller
                 }
             }
         }
-        $sqlAbiertos = DB::select('SELECT COUNT(*) abiertos FROM requerimientos WHERE resolutor = ? AND estado=? AND fechaSolicitud BETWEEN ? AND ?', [$res->id, 1, $desde, $hasta]);
-        $sqlCerrados = DB::select('SELECT COUNT(*) cerrados FROM requerimientos WHERE resolutor = ? AND estado=? AND fechaSolicitud BETWEEN ? AND ?', [$res->id, 2, $desde, $hasta]);
+        $sqlAbiertos = DB::select('SELECT COUNT(*) abiertos FROM requerimientos WHERE resolutor = ? AND estado=? AND fechaSolicitud BETWEEN ? AND ?', [$resolutor->id, 1, $desde, $hasta]);
+        $sqlCerrados = DB::select('SELECT COUNT(*) cerrados FROM requerimientos WHERE resolutor = ? AND estado=? AND fechaSolicitud BETWEEN ? AND ?', [$resolutor->id, 2, $desde, $hasta]);
 
         $abiertos = $sqlAbiertos[0]->abiertos;
         $cerrados = $sqlCerrados[0]->cerrados;
+        $equipo_id = $equipo->id;
+        
+        $sqlValoresReq = DB::select('select count(*) as cant from requerimientos where idEquipo = ? AND resolutor = ? AND created_at BETWEEN ? AND ?', [$equipo_id, $resolutor->id, $desde, $hasta]);
+        $valores['requerimientos'] = $sqlValoresReq[0]->cant;
+        $sqlValoresRes = DB::select('select count(*) as cant from resolutors where rutEmpresa = ? AND idTeam = ?', [auth()->user()->rutEmpresa, $equipo_id]);
+        $valores['resolutores'] = $sqlValoresRes[0]->cant;
+        $sqlValoresSol = DB::select('select count(*) as cant from solicitantes where rutEmpresa = ?', [auth()->user()->rutEmpresa]);
+        $valores['solicitantes'] = $sqlValoresSol[0]->cant;
+        $sqlValoresEq = DB::select('select count(*) as cant from teams where rutEmpresa = ? AND id = ?', [auth()->user()->rutEmpresa, $equipo_id]);
+        $valores['equipos'] = $sqlValoresEq[0]->cant;
 
         return compact('requerimientos', 'alDia', 'vencer', 'vencido',
                 'arraySolicitantes', 'porSolicitanteAldia', 'porSolicitantePorVencer',
-                'porSolicitanteVencido', 'cerradoAlDia', 'cerradoPorVencer', 'cerradoVencido', 'rango_fecha', 'desde', 'hasta', 'abiertos', 'cerrados');
+                'porSolicitanteVencido', 'cerradoAlDia', 'cerradoPorVencer', 'cerradoVencido', 'rango_fecha', 'desde', 'hasta', 'abiertos', 'cerrados', 'valores');
     }
 }

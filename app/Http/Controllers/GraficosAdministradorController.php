@@ -624,9 +624,18 @@ class GraficosAdministradorController extends Controller
         $porEquipoPorVencer=(object)$porEquipoPorVencer;
         $porEquipoVencido=(object)$porEquipoVencido;
 
+        $sqlValoresReq = DB::select('select count(*) as cant from requerimientos where created_at BETWEEN ? AND ?', [$desde, $hasta]);
+        $valores['requerimientos'] = $sqlValoresReq[0]->cant;
+        $sqlValoresRes = DB::select('select count(*) as cant from resolutors');
+        $valores['resolutores'] = $sqlValoresRes[0]->cant;
+        $sqlValoresSol = DB::select('select count(*) as cant from solicitantes');
+        $valores['solicitantes'] = $sqlValoresSol[0]->cant;
+        $sqlValoresEq = DB::select('select count(*) as cant from teams');
+        $valores['equipos'] = $sqlValoresEq[0]->cant;
+
         return compact('requerimientos', 'alDia', 'vencer', 'vencido',
                 'arrayEquipos', 'arrayAlDia', 'arrayPorVencer', 'arrayVencidos', 'cerradosAlDia',
                 'cerradosPorVencer', 'cerradosVencidos', 'porEquipoAlDia', 'porEquipoPorVencer',
-                'porEquipoVencido', 'rango_fecha', 'desde', 'hasta');
+                'porEquipoVencido', 'rango_fecha', 'desde', 'hasta', 'valores');
     }
 }

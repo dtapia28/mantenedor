@@ -29,6 +29,11 @@ class TableroController extends Controller
         elseif($user[0]->nombre == 'solicitante')
             $data = (new GraficosSolicitanteController)->index($request);
         
-    	return view('dashboard.index', compact('user', 'resolutor_lider', 'data'));
+        $valores['requerimientos'] = $data['valores']['requerimientos'];
+        $valores['resolutores'] = $data['valores']['resolutores'];
+        $valores['solicitantes'] = $data['valores']['solicitantes'];
+        $valores['equipos'] = $data['valores']['equipos'];;
+        
+    	return view('dashboard.index', compact('user', 'resolutor_lider', 'data', 'valores'));
     }
 }

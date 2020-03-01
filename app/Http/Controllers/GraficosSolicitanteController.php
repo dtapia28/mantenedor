@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Requerimiento;
 use App\Solicitante;
+use App\Resolutor;
 use App\Team;
 use DateTime;
 
@@ -52,6 +53,10 @@ class GraficosSolicitanteController extends Controller
         }
         //Cantidad de requerimientos de solicitante al día, por vencer, vencido
         $solicitante = Solicitante::where('idUser', auth()->user()->id)->first();
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->first();
+        $resolutor = Resolutor::where('idUser', $user->idUser)->first();
+        $solicitante2 = Solicitante::where('idUser', $user->idUser)->first();
+        $equipo2 = Team::where('id', $resolutor->idTeam)->first();
         // dd($solicitante);
         $req = DB::table('requerimientos')
                     ->where('rutEmpresa', auth()->user()->rutEmpresa)
@@ -65,6 +70,7 @@ class GraficosSolicitanteController extends Controller
         $vencer = 0;
         $vencido = 0;
         $arrayEquipo = [];
+        
         foreach ($req as $requerimiento) 
         {
             $requerimiento=(array)$requerimiento;
@@ -172,7 +178,19 @@ class GraficosSolicitanteController extends Controller
             $porEquipoPorVencer[]=$vencer;
             $porEquipoVencido[]=$vencido;
         }
+
+        $equipo_id = $equipo2->id;
+        $solicitante_id = $solicitante2->id;
         
-        return compact('requerimientos', 'arrayEquipos', 'alDia', 'vencer', 'vencido', 'porEquipoAldia', 'porEquipoPorVencer', 'porEquipoVencido', 'rango_fecha', 'desde', 'hasta');
+        $sqlValoresReq = DB::select('select count(*) as cant from requerimientos where idSolicitante = ? AND created_at BETWEEN ? AND ?', [$solicitante_id, $desde, $hasta]);
+        $valores['requerimientos'] = $sqlValoresReq[0]->cant;
+        $sqlValoresRes = DB::select('select count(*) as cant from resolutors where rutEmpresa = ? AND idTeam = ?', [auth()->user()->rutEmpresa, $equipo_id]);
+        $valores['resolutores'] = $sqlValoresRes[0]->cant;
+        $sqlValoresSol = DB::select('select count(*) as cant from solicitantes where rutEmpresa = ?', [auth()->user()->rutEmpresa]);
+        $valores['solicitantes'] = $sqlValoresSol[0]->cant;
+        $sqlValoresEq = DB::select('select count(*) as cant from teams where rutEmpresa = ? AND id = ?', [auth()->user()->rutEmpresa, $equipo_id]);
+        $valores['equipos'] = $sqlValoresEq[0]->cant;
+        
+        return compact('requerimientos', 'arrayEquipos', 'alDia', 'vencer', 'vencido', 'porEquipoAldia', 'porEquipoPorVencer', 'porEquipoVencido', 'rango_fecha', 'desde', 'hasta', 'valores');
     }
 }
