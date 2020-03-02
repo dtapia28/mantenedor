@@ -69,7 +69,10 @@
 			@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
 			<div class="pull-right"><a class="btn btn-success" href="{{ url('requerimientos/nuevo') }}" style="white-space: normal;"><i class="fa fa-plus"></i> Nuevo Requerimiento</a></div>
 			@endif
-		</div>
+                        @if($user[0]->nombre == "resolutor" and $lider == 1)
+                        <div class="pull-right"><a class="btn btn-success" href="{{ url('requerimientos/nuevo') }}" style="white-space: normal;"><i class="fa fa-plus"></i> Nuevo Requerimiento</a></div>
+                        @endif                        
+                </div>
 		<div class="ibox-body">	
 			<div class="table-responsive">
 				<table class="table table-bordered table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
@@ -172,7 +175,6 @@
                             </td>
                             @endif
                             @if($state != 6 && $state !=0)
-                            @if($user[0]->nombre!="supervisor")
                             <td class="text-center">
 								<?php
 								$conteo = 0;
@@ -188,7 +190,6 @@
 								}
 								?>
                             </td>
-                            @endif
                             @endif
                             @if($state != 6 and $state != 7 and $state != 8 and $state != 0)
                             <td>

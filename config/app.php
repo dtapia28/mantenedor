@@ -162,8 +162,6 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
-        //Maatwebsite\Excel\ExcelServiceProvider::class,
-        //Silber\Bouncer\BouncerServiceProvider::class,
 
         /*
          * Package Service Providers...
