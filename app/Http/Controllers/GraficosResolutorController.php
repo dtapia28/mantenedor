@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Requerimiento;
 use App\Resolutor;
 use App\Solicitante;
+use App\Team;
 use DateTime;
 
 class GraficosResolutorController extends Controller
@@ -16,17 +17,51 @@ class GraficosResolutorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request=null)
     {
+        $rango_fecha = $request->rango_fecha;
+        if ($request == null || $request == "") {
+            $desde = date('Y-m-').'01';
+            $hasta = date('Y-m-d');
+        } else {
+            switch ($rango_fecha) {
+                case 'mes_actual':
+                    $desde = date('Y-m-').'01';
+                    $hasta = date('Y-m-d');
+                    break;
+                case 'mes_ult3':
+                    $desde = date("Y-m-d", strtotime("-3 month"));
+                    $hasta = date('Y-m-d');
+                    break;
+                case 'mes_ult6':
+                    $desde = date("Y-m-d", strtotime("-6 month"));
+                    $hasta = date('Y-m-d');
+                    break;
+                case 'mes_ult12':
+                    $desde = date("Y-m-d", strtotime("-12 month"));
+                    $hasta = date('Y-m-d');
+                    break;
+                case 'por_rango':
+                    $desde = substr($request->fec_des, 6, 4).'-'.substr($request->fec_des, 3, 2).'-'.substr($request->fec_des, 0, 2);
+                    $hasta = substr($request->fec_has, 6, 4).'-'.substr($request->fec_has, 3, 2).'-'.substr($request->fec_has, 0, 2);
+                    break;
+                default:
+                    $desde = date('Y-m-').'01';
+                    $hasta = date('Y-m-d');
+                    break;
+            }
+        }
+
         //Cantidad de requerimientos de resolutor al día, por vencer, vencido
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->first();
         $resolutor = Resolutor::where('idUser', $user->idUser)->first();
-        $req = Requerimiento::where([
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-            ['estado', 1],
-            ['aprobacion', 3],
-            ['resolutor', $resolutor->id],
-        ])->get();
+        $equipo = Team::where('id', $resolutor->idTeam)->first();
+        $req = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)
+                            ->where('estado', 1)
+                            ->where('aprobacion', 3)
+                            ->where('resolutor', $resolutor->id)
+                            ->whereBetween('fechaSolicitud', [$desde, $hasta])
+                            ->get();
         $alDia = 0;
         $vencer = 0;
         $vencido = 0;
@@ -69,8 +104,10 @@ class GraficosResolutorController extends Controller
                 $requerimientos [] = $requerimiento;
             }                   
         }
-        $requerimientos = (object)$requerimientos;
-        
+        if ($req->all() != "" && $req->all() != null && !is_null($req->all())) 
+            $requerimientos = (object)$requerimientos;
+        else
+            $requerimientos = (object)[];
         
         //Requerimientos de resolutor por solicitante al día, por vencer, vencido
         $arraySolicitantes = [];
@@ -143,11 +180,11 @@ class GraficosResolutorController extends Controller
         $cerradoAlDia = 0;
         $cerradoPorVencer = 0;
         $cerradoVencido = 0;         
-        $req = DB::table('requerimientos_equipos')->where([
-            ['estado', 2],
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-            ['resolutor', $resolutor->id],
-        ])->get();
+        $req = DB::table('requerimientos_equipos')->where('estado', 2)
+                    ->where('rutEmpresa', auth()->user()->rutEmpresa)
+                    ->where('resolutor', $resolutor->id)
+                    ->whereBetween('fechaSolicitud', [$desde, $hasta])
+                    ->get();
 
         if(isset($req)){
             foreach ($req as $requerimiento){
@@ -248,12 +285,13 @@ class GraficosResolutorController extends Controller
                 }
             }
         }
-        $req2 = DB::table('requerimientos_equipos')->where([
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-            ['estado', 1],
-            ['aprobacion', 4],
-            ['resolutor', $resolutor->id],
-        ])->get();
+        $req2 = DB::table('requerimientos_equipos')->where('rutEmpresa', auth()->user()->rutEmpresa)
+                    ->where('estado', 1)
+                    ->where('aprobacion', 4)
+                    ->where('resolutor', $resolutor->id)
+                    ->whereBetween('fechaSolicitud', [$desde, $hasta])
+                    ->get();
+
         if(isset($req2)){
             foreach ($req2 as $requerimiento){
                 if($requerimiento->fechaLiquidacion != "0000-00-00 00:00:00"){
@@ -353,9 +391,24 @@ class GraficosResolutorController extends Controller
                 }
             }
         }
+        $sqlAbiertos = DB::select('SELECT COUNT(*) abiertos FROM requerimientos WHERE resolutor = ? AND estado=? AND fechaSolicitud BETWEEN ? AND ?', [$resolutor->id, 1, $desde, $hasta]);
+        $sqlCerrados = DB::select('SELECT COUNT(*) cerrados FROM requerimientos WHERE resolutor = ? AND estado=? AND fechaSolicitud BETWEEN ? AND ?', [$resolutor->id, 2, $desde, $hasta]);
+
+        $abiertos = $sqlAbiertos[0]->abiertos;
+        $cerrados = $sqlCerrados[0]->cerrados;
+        $equipo_id = $equipo->id;
         
+        $sqlValoresReq = DB::select('select count(*) as cant from requerimientos where idEquipo = ? AND resolutor = ? AND created_at BETWEEN ? AND ?', [$equipo_id, $resolutor->id, $desde, $hasta]);
+        $valores['requerimientos'] = $sqlValoresReq[0]->cant;
+        $sqlValoresRes = DB::select('select count(*) as cant from resolutors where rutEmpresa = ? AND idTeam = ?', [auth()->user()->rutEmpresa, $equipo_id]);
+        $valores['resolutores'] = $sqlValoresRes[0]->cant;
+        $sqlValoresSol = DB::select('select count(*) as cant from solicitantes where rutEmpresa = ?', [auth()->user()->rutEmpresa]);
+        $valores['solicitantes'] = $sqlValoresSol[0]->cant;
+        $sqlValoresEq = DB::select('select count(*) as cant from teams where rutEmpresa = ? AND id = ?', [auth()->user()->rutEmpresa, $equipo_id]);
+        $valores['equipos'] = $sqlValoresEq[0]->cant;
+
         return compact('requerimientos', 'alDia', 'vencer', 'vencido',
                 'arraySolicitantes', 'porSolicitanteAldia', 'porSolicitantePorVencer',
-                'porSolicitanteVencido', 'cerradoAlDia', 'cerradoPorVencer', 'cerradoVencido');
+                'porSolicitanteVencido', 'cerradoAlDia', 'cerradoPorVencer', 'cerradoVencido', 'rango_fecha', 'desde', 'hasta', 'abiertos', 'cerrados', 'valores');
     }
 }

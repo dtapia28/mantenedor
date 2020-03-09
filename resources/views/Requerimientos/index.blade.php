@@ -151,15 +151,15 @@
 							<td>	
 								{{ $requerimiento->textoRequerimiento }}
 							</td>				
-							<td>	
+							<td style="font-size:13px !important">	
 								{{ date('Y-m-d', strtotime($requerimiento->fechaSolicitud)) }}
 							</td>
 							@if($requerimiento->fechaRealCierre != "")
-							<td>	
+							<td style="font-size:13px !important">	
 								{{ date('Y-m-d', strtotime($requerimiento->fechaRealCierre)) }}
 							</td>
 							@else
-							<td>	
+							<td style="font-size:13px !important">	
 								{{ date('Y-m-d', strtotime($requerimiento->fechaCierre)) }}
 							</td>
 							@endif

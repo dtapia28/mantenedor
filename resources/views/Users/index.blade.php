@@ -59,8 +59,8 @@
 									<?php
 									echo "<select id='team".$us->id."' class='form-control col-md-8' name='idTeam' style='display: none;'>";
 									?>
-									</select>
-							
+									</select>&nbsp;
+									<span style='display: none;' id="idLider{{$us->id}}"><input type="checkbox" name="lider" id="lider{{$us->id}}">&nbsp;Líder</span>
 									<input type="hidden" value="{{ $us->id }}" name="idUsers">	
 									<button type="submit" class="btn btn-primary btn-sm" style="cursor:pointer"><i class="fa fa-pencil"></i> Cambiar</button>
 								</form>
@@ -86,7 +86,7 @@
 	foreach ($users as $us) {
 		echo "<script type='text/javascript'>\n$(document).ready(function(){\n";
 
-		echo "$('#role".$us->id."').on('change', function(){\nvar combo = document.getElementById('role".$us->id."');\nvar selected = combo.options[combo.selectedIndex].text;\nif(selected == 'resolutor' || selected == 'gestor'){\ndocument.getElementById('team".$us->id."').style.display = 'block';\n$.get('users/script', function(teams){\n$('#team".$us->id."').empty();\n$('#team".$us->id."').append(\"<option value=''>Seleccione un equipo</option>\");\n$.each(teams, function(index, value){\n $('#team".$us->id."').append(\"<option value='\"+index+\"'>\"+value+\"</option>\");\n});\n});\n} else {\ndocument.getElementById('team".$us->id."').style.display = 'none';\n}\n});\n});\n</script>\n";
+		echo "$('#role".$us->id."').on('change', function(){\nvar combo = document.getElementById('role".$us->id."');\nvar selected = combo.options[combo.selectedIndex].text;\nif(selected == 'resolutor' || selected == 'gestor'){\ndocument.getElementById('team".$us->id."').style.display = 'block';\n$.get('users/script', function(teams){\n$('#team".$us->id."').empty();\n$('#team".$us->id."').append(\"<option value=''>Seleccione un equipo</option>\");\n$.each(teams, function(index, value){\n $('#team".$us->id."').append(\"<option value='\"+index+\"'>\"+value+\"</option>\");\n});\ndocument.getElementById('idLider".$us->id."').style.display = 'block';\n});\n} else {\ndocument.getElementById('team".$us->id."').style.display = 'none';\ndocument.getElementById('idLider".$us->id."').style.display = 'none';\n}\n});\n});\n</script>\n";
 	}
 ?>
 @endsection

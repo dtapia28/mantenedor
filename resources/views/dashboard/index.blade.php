@@ -8,49 +8,52 @@
 @section('contenido')
 <div class="page-content fade-in-up">
     <div class="ibox">
-        <div class="ibox-body row">
-            <div class="col-md-8">
-                <div class="row">
-                    <div class="col-md-4">
-                        <small class="text-dark"><i class="fa fa-calendar-check-o"></i> Período</small>
-                        <select name="rango_fecha" id="rango_fecha" class="form-control" onchange="validarTipo(this.value)">
-                            <option value="mes_actual">Mes actual</option>
-                            <option value="mes_ult3">Últimos 3 meses</option>
-                            <option value="mes_ult6">Últimos 6 meses</option>
-                            <option value="mes_ult12">Últimos 12 meses</option>
-                            <option value="por_rango">Por rango</option>
-                        </select>
+        <form action="{{ route('filtro.dashboard') }}" method="POST">
+            @csrf
+            <div class="ibox-body row">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <small class="text-dark"><i class="fa fa-calendar-check-o"></i> Período</small>
+                            <select name="rango_fecha" id="rango_fecha" class="form-control" onchange="validarTipo(this.value)">
+                                <option value="mes_actual" @isset($data) @if ($data['rango_fecha'] == 'mes_actual') selected @endif @endisset >Mes actual</option>
+                                <option value="mes_ult3" @isset($data) @if ($data['rango_fecha'] == 'mes_ult3') selected @endif @endisset>Últimos 3 meses</option>
+                                <option value="mes_ult6" @isset($data) @if ($data['rango_fecha'] == 'mes_ult6') selected @endif @endisset>Últimos 6 meses</option>
+                                <option value="mes_ult12" @isset($data) @if ($data['rango_fecha'] == 'mes_ult12') selected @endif @endisset>Últimos 12 meses</option>
+                                <option value="por_rango" @isset($data) @if ($data['rango_fecha'] == 'por_rango') selected @endif @endisset>Por rango</option>
+                            </select>
+                        </div>
+                        <div class="col-md-8">
+                            <small class="text-dark"><i class="fa fa-calendar"></i> Rango de fecha</small>
+                            <div class="input-daterange input-group" id="datepicker">
+                                <span class="input-group-addon p-l-10 p-r-10"><small class="text-dark">desde</small></span>
+                                <input type="text" class="form-control datetimepicker-input" id="fec_des" name="fec_des" value="" data-toggle="datetimepicker" data-target="#fec_des" maxlength="16" disabled/>
+                                <span class="input-group-addon p-l-10 p-r-10"><small class="text-dark">hasta</small></span>
+                                <input type="text" class="form-control datetimepicker-input" id="fec_has" name="fec_has" value="" data-toggle="datetimepicker" data-target="#fec_has" maxlength="16" disabled/>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-8">
-                        <small class="text-dark"><i class="fa fa-calendar"></i> Rango de fecha</small>
-                        <div class="input-daterange input-group" id="datepicker">
-                            <span class="input-group-addon p-l-10 p-r-10"><small class="text-dark">desde</small></span>
-                            <input type="text" class="form-control datetimepicker-input" id="fec_des" name="fec_des" value="" data-toggle="datetimepicker" data-target="#fec_des" maxlength="16" disabled/>
-                            <span class="input-group-addon p-l-10 p-r-10"><small class="text-dark">hasta</small></span>
-                            <input type="text" class="form-control datetimepicker-input" id="fec_has" name="fec_has" value="" data-toggle="datetimepicker" data-target="#fec_has" maxlength="16" disabled/>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <small>&nbsp;</small>
+                            <button type="submit" class="btn btn-success btn-block text-white" style="cursor:pointer"><i class="fa fa-filter"></i> Filtrar</button>
+                        </div>
+                        <div class="col-md-6">
+                            <small>&nbsp;</small>
+                            <a class="btn btn-warning btn-block text-white" href="{{ route ('tablero')}}"><i class="fa fa-repeat"></i> Reiniciar</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="row">
-                    <div class="col-md-6">
-                        <small>&nbsp;</small>
-                        <a class="btn btn-success btn-block text-white" href="#"><i class="fa fa-filter"></i> Filtrar</a>
-                    </div>
-                    <div class="col-md-6">
-                        <small>&nbsp;</small>
-                        <a class="btn btn-warning btn-block text-white" href="{{ route ('tablero')}}"><i class="fa fa-repeat"></i> Reiniciar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </form>
     </div>
     <div class="row">
         <div class="col-lg-3 col-md-6">
             <div class="ibox bg-success color-white widget-stat">
                 <div class="ibox-body">
-                    <h2 class="m-b-5 font-strong">201</h2>
+                    <h2 class="m-b-5 font-strong">{{$valores['requerimientos']}}</h2>
                     <div class="m-b-5">REQUERIMIENTOS</div><i class="fa fa-address-card widget-stat-icon"></i>
                 </div>
             </div>
@@ -58,24 +61,24 @@
         <div class="col-lg-3 col-md-6">
             <div class="ibox bg-info color-white widget-stat">
                 <div class="ibox-body">
-                    <h2 class="m-b-5 font-strong">32</h2>
-                    <div class="m-b-5">RESOLUTORES</div><i class="fa fa-address-book widget-stat-icon"></i>
+                    <h2 class="m-b-5 font-strong">{{$valores['resolutores']}}</h2>
+                    <div class="m-b-5">TOTAL RESOLUTORES</div><i class="fa fa-address-book widget-stat-icon"></i>
                 </div>
             </div>
         </div>
         <div class="col-lg-3 col-md-6">
             <div class="ibox bg-warning color-white widget-stat">
                 <div class="ibox-body">
-                    <h2 class="m-b-5 font-strong">50</h2>
-                    <div class="m-b-5">SOLICITANTES</div><i class="fa fa-address-book-o widget-stat-icon"></i>
+                    <h2 class="m-b-5 font-strong">{{$valores['solicitantes']}}</h2>
+                    <div class="m-b-5">TOTAL SOLICITANTES</div><i class="fa fa-address-book-o widget-stat-icon"></i>
                 </div>
             </div>
         </div>
         <div class="col-lg-3 col-md-6">
             <div class="ibox bg-danger color-white widget-stat">
                 <div class="ibox-body">
-                    <h2 class="m-b-5 font-strong">24</h2>
-                    <div class="m-b-5">EQUIPOS</div><i class="fa fa-users widget-stat-icon"></i>
+                    <h2 class="m-b-5 font-strong">{{$valores['equipos']}}</h2>
+                    <div class="m-b-5">TOTAL EQUIPOS</div><i class="fa fa-users widget-stat-icon"></i>
                 </div>
             </div>
         </div>

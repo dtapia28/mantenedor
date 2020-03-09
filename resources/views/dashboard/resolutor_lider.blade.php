@@ -27,7 +27,7 @@
 												<th>F. Solicitud</th>
 												<th>F. Cierre</th>
 												<th>Resolutor</th>
-												<th>% Ejec.</th>
+												<th>% Avance</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -56,50 +56,67 @@
 								<th>Global</th>
 							</tr>
 						</thead>
+						<?php
+							$abiertosTab = $data["abiertos"];
+							$cerradosTab = $data["cerrados"];
+							$vencidosTab = $data["vencido"];
+							$vencerTab   = $data["vencer"];
+							$totales = $data["abiertos"] + $data["cerrados"] + $data["vencido"] + $data["vencer"];
+							$totales == 0 ? $totales = 1 : $totales = $totales;
+							$abiertosPorc = number_format(($data["abiertos"] * 100 / $totales), 2, ',', '.');
+							$cerradosPorc = number_format(($data["cerrados"] * 100 / $totales), 2, ',', '.');
+							$vencidosPorc = number_format(($data["vencido"] * 100 / $totales), 2, ',', '.');
+							$vencerPorc = number_format(($data["vencer"] * 100 / $totales), 2, ',', '.');
+
+							$abiertosPorc2 = number_format(($data["abiertos"] * 100 / $totales), 0, ',', '.');
+							$cerradosPorc2 = number_format(($data["cerrados"] * 100 / $totales), 0, ',', '.');
+							$vencidosPorc2 = number_format(($data["vencido"] * 100 / $totales), 0, ',', '.');
+							$vencerPorc2 = number_format(($data["vencer"] * 100 / $totales), 0, ',', '.');
+						?>
 						<tbody>
 							<tr>
 								<td>Abiertos</td>
-								<td>300</td>
+								<td><?=$abiertosTab?></td>
 								<td>
 									<div class="progress">
-										<div class="progress-bar progress-bar-success" role="progressbar" style="width:33%; height:5px;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+										<div class="progress-bar progress-bar-success" role="progressbar" style="width:<?=$abiertosPorc2?>%; height:5px;" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
-									<span class="progress-parcent">33%</span>
+									<span class="progress-parcent"><?=$abiertosPorc?>%</span>
 								</td>
 							</tr>
 							<tr>
 								<td>Cerrados</td>
-								<td>250</td>
+								<td><?=$cerradosTab?></td>
 								<td>
 									<div class="progress">
-										<div class="progress-bar progress-bar-warning" role="progressbar" style="width:28%; height:5px;" aria-valuenow="28" aria-valuemin="0" aria-valuemax="100"></div>
+										<div class="progress-bar progress-bar-danger" role="progressbar" style="width:<?=$cerradosPorc2?>%; height:5px;" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
-									<span class="progress-parcent">28%</span>
+									<span class="progress-parcent"><?=$cerradosPorc?>%</span>
 								</td>
 							</tr>
 							<tr>
 								<td>Vencidos</td>
-								<td><?=$data["vencido"]?></td>
+								<td><?=$vencidosTab?></td>
 								<td>
 									<div class="progress">
-										<div class="progress-bar progress-bar-danger" role="progressbar" style="width:22%; height:5px;" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100"></div>
+										<div class="progress-bar progress-bar-warning" role="progressbar" style="width:<?=$vencidosPorc2?>%; height:5px;" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
-									<span class="progress-parcent">22%</span>
+									<span class="progress-parcent"><?=$vencidosPorc?>%</span>
 								</td>
 							</tr>
 							<tr>
 								<td>Por Vencer</td>
-								<td><?=$data["vencer"]?></td>
+								<td><?=$vencerTab?></td>
 								<td>
 									<div class="progress">
-										<div class="progress-bar progress-bar-info" role="progressbar" style="width:17%; height:5px;" aria-valuenow="17" aria-valuemin="0" aria-valuemax="100"></div>
+										<div class="progress-bar progress-bar-info" role="progressbar" style="width:<?=$vencerPorc2?>%; height:5px;" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
-									<span class="progress-parcent">17%</span>
+									<span class="progress-parcent"><?=$vencerPorc?>%</span>
 								</td>
 							</tr>
 							<tr>
 								<td><strong>TOTALES</strong></td>
-								<td><strong><?=$data["vencido"] + $data["vencer"]?></strong></td>
+								<td><strong><?=$totales?></strong></td>
 								<td>
 									<div class="progress">
 										<div class="progress-bar progress-bar" role="progressbar" style="width:100%; height:5px;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
@@ -139,7 +156,7 @@
 												<th>F. Solicitud</th>
 												<th>F. Cierre</th>
 												<th>Resolutor</th>
-												<th>% Ejec.</th>
+												<th>% Avance</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -189,7 +206,7 @@
 												<th>F. Solicitud</th>
 												<th>F. Cierre</th>
 												<th>Resolutor</th>
-												<th>% Ejec.</th>
+												<th>% Avance</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -210,7 +227,23 @@
 @section('scripts_dash')
 	<script src="{{ asset('vendor/DataTables/datatables.min.js') }}" type="text/javascript"></script>
 	<script type="text/javascript">
-		// Gráfico de dona
+		$(document).ready(function(){
+			$.ajaxSetup({
+				headers:
+				{ 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+			});
+			@isset($data)
+				@if ($data['rango_fecha'] == "por_rango")
+					$('#fec_des').prop('disabled', false);
+					$('#fec_des').val('<?= substr($data["desde"], 8, 2)."/".substr($data["desde"], 5, 2)."/".substr($data["desde"], 0, 4) ?>');
+					$('#fec_has').prop('disabled', false);
+					$('#fec_has').val('<?= substr($data["hasta"], 8, 2)."/".substr($data["hasta"], 5, 2)."/".substr($data["hasta"], 0, 4) ?>');
+				@endif
+			@endisset
+		});
+		
+		// Gráfico de dona 
+		const titiloequipo = 'Equipo <?=$data["equipo"]?>';
 		$("#chart-dona").insertFusionCharts({
 			type: "doughnut3d",
 			width: "100%",
@@ -218,7 +251,7 @@
 			dataFormat: "json",
 			dataSource: {
 				chart: {
-					caption: "Requerimientos del Resolutor",
+					caption: titiloequipo,
 					enablesmartlabels: "1",
 					showlabels: "1",
 					numbersuffix: " MMbbl",
@@ -259,15 +292,18 @@
 						case 'Vencidos': codEstado = 3; break;
 					}
 					$.ajax({
-						type: 'get',
-						url: 'dashboard/getReqResolutorGralByEstado/'+codEstado,
+						type: 'post',
+						url: 'dashboard/getReqResolutorGralByEstado',
+						data: {
+							'estado': codEstado
+						},
 						dataType: 'json',
 						success: function (data) {
 							if (data.respuesta) {
 								$('#tablaModalDona').DataTable().destroy();
 								$("#tablaModalDona tbody tr").remove();
 								for(var i=0; i<data.req.length; i++) {
-									var fila = "<tr><td style='white-space: nowrap;'>" + data.req[i]['id2'] + "</td><td>" + data.req[i].textoRequerimiento + "</td><td>" + data.req[i].fechaSolicitud + "</td><td>" + data.req[i].fechaCierre + "</td><td>" + data.req[i].nombreResolutor + "</td><td>" + data.req[i].porcentajeEjecutado + "</td></tr>";
+									var fila = "<tr><td style='white-space: nowrap;'><a href='requerimientos/" + data.req[i]['id'] + "'>" + data.req[i]['id2'] + "</a></td><td>" + data.req[i].textoRequerimiento + "</td><td>" + data.req[i].fechaSolicitud + "</td><td>" + data.req[i].fechaCierreF + "</td><td>" + data.req[i].nombreResolutor + "</td><td>" + data.req[i].porcentajeEjecutado + "</td></tr>";
 									$("#tablaModalDona tbody").append(fila);
 								}
 							} else {
@@ -403,15 +439,22 @@
 						case 'Vencidos': codEstado = 3; break;
 					}
 					$.ajax({
-						type: 'get',
-						url: 'dashboard/getReqSolicitanteByEstado/'+solicitante+'/'+codEstado,
+						type: 'post',
+						url: 'dashboard/getReqSolicitanteByEstado',
+						data: {
+							'solicitante': solicitante,
+							'estado': codEstado,
+							'rango_fecha': $("#rango_fecha").val(),
+							'desde': $("#fec_des").val(),
+							'hasta': $("#fec_has").val(),
+						},
 						dataType: 'json',
 						success: function (data) {
 							if (data.respuesta) {
 								$('#tablaModalSol').DataTable().destroy();
 								$("#tablaModalSol tbody tr").remove();
 								for(var i=0; i<data.req.length; i++) {
-									var fila = "<tr><td style='white-space: nowrap;'>" + data.req[i]['id2'] + "</td><td>" + data.req[i].textoRequerimiento + "</td><td>" + data.req[i].fechaSolicitud + "</td><td>" + data.req[i].fechaCierre + "</td><td>" + data.req[i].nombreResolutor + "</td><td>" + data.req[i].porcentajeEjecutado + "</td></tr>";
+									var fila = "<tr><td style='white-space: nowrap;'><a href='requerimientos/" + data.req[i]['id'] + "'>" + data.req[i]['id2'] + "</a></td><td>" + data.req[i].textoRequerimiento + "</td><td>" + data.req[i].fechaSolicitud + "</td><td>" + data.req[i].fechaCierreF + "</td><td>" + data.req[i].nombreResolutor + "</td><td>" + data.req[i].porcentajeEjecutado + "</td></tr>";
 									$("#tablaModalSol tbody").append(fila);
 								}
 							} else {
@@ -445,7 +488,7 @@
 			dataFormat: "json",
 			dataSource: {
 				chart: {
-					caption: "Requerimientos en General",
+					caption: titiloequipo,
 					lowerlimit: "0",
 					upperlimit: "100",
 					showvalue: "1",
@@ -593,15 +636,22 @@
 						case 'Vencidos': codEstado = 3; break;
 					}
 					$.ajax({
-						type: 'get',
-						url: 'dashboard/getReqResolutorByEstado/'+resolutor+'/'+codEstado,
+						type: 'post',
+						url: 'dashboard/getReqResolutorByEstado',
+						data: {
+							'resolutor': resolutor,
+							'estado': codEstado,
+							'rango_fecha': $("#rango_fecha").val(),
+							'desde': $("#fec_des").val(),
+							'hasta': $("#fec_has").val(),
+						},
 						dataType: 'json',
 						success: function (data) {
 							if (data.respuesta) {
 								$('#tablaModalRes').DataTable().destroy();
 								$("#tablaModalRes tbody tr").remove();
 								for(var i=0; i<data.req.length; i++) {
-									var fila = "<tr><td style='white-space: nowrap;'>" + data.req[i]['id2'] + "</td><td>" + data.req[i].textoRequerimiento + "</td><td>" + data.req[i].fechaSolicitud + "</td><td>" + data.req[i].fechaCierre + "</td><td>" + data.req[i].nombreResolutor + "</td><td>" + data.req[i].porcentajeEjecutado + "</td></tr>";
+									var fila = "<tr><td style='white-space: nowrap;'><a href='requerimientos/" + data.req[i]['id'] + "'>" + data.req[i]['id2'] + "</a></td><td>" + data.req[i].textoRequerimiento + "</td><td>" + data.req[i].fechaSolicitud + "</td><td>" + data.req[i].fechaCierreF + "</td><td>" + data.req[i].nombreResolutor + "</td><td>" + data.req[i].porcentajeEjecutado + "</td></tr>";
 									$("#tablaModalRes tbody").append(fila);
 								}
 							} else {
