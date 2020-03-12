@@ -113,8 +113,8 @@ class UserController extends Controller
         ],
             [ 'idRole.required' => 'El campo nombre es obligatorio']);
 
-
         if (isset($data['idTeam'])) {
+<<<<<<< HEAD
             $resolutor = Resolutor::where('idUser', $request->idUsers)->first();
             if (isset($resolutor)) {
                 $dato = [
@@ -125,26 +125,48 @@ class UserController extends Controller
                 $role = Role::where('id', $data['idRole'])->first();
                 if ($role->nombre == 'resolutor') {
                     $usuario = User::where('id', $request->idUsers)->first();
+=======
+            $role = Role::where('id', $data['idRole'])->first();
+            if ($role->nombre == 'resolutor') {
+                $usuario = User::where('id', $request->idUsers)->first();
+                $lider = (isset($request['lider']) == 'on' ? '1': '0');
+                $exists = Resolutor::where('idUser', "=", $usuario->id)->exists();
+                if (!$exists) {
+>>>>>>> frontend
                     Resolutor::create([
                         'nombreResolutor' => $usuario->name,          
                         'rutEmpresa' => auth()->user()->rutEmpresa,
                         'idTeam' => $data['idTeam'],
                         'idUser' => $usuario->id,
                         'email' => $usuario->email,
+<<<<<<< HEAD
                     ]);
                 }                
             }           
+=======
+                        'lider' => $lider,
+                    ]);
+                } else {
+                    DB::table('resolutors')
+                        ->where('idUser', $usuario->id)
+                        ->update(['idTeam' => $data['idTeam'], 'lider' => $lider]);
+                }
+            }         
+>>>>>>> frontend
         }
 
         $role = Role::where('id', $data['idRole'])->first();
         if ($role->nombre == 'solicitante') {
-           $usuario = User::where('id', $request->idUsers)->first(); 
-           Solicitante::create([
-                'nombreSolicitante' => $usuario->name,
-                'rutEmpresa' => auth()->user()->rutEmpresa,
-                'idUser' => $usuario->id,
-                'email' => $usuario->email,
-           ]); 
+           $usuario = User::where('id', $request->idUsers)->first();
+           $exists = Solicitante::where('idUser', "=", $usuario->id)->exists();
+           if (!$exists) {
+                Solicitante::create([
+                        'nombreSolicitante' => $usuario->name,
+                        'rutEmpresa' => auth()->user()->rutEmpresa,
+                        'idUser' => $usuario->id,
+                        'email' => $usuario->email,
+                ]);
+            }
         }
 
         $data2 = request()->validate([

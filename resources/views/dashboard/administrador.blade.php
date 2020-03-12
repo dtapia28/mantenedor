@@ -25,7 +25,7 @@
 										<th>F. Solicitud</th>
 										<th>F. Cierre</th>
 										<th>Resolutor</th>
-										<th>% Ejec.</th>
+										<th>% Avance</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -67,6 +67,21 @@
 @section('scripts_dash')
 	<script src="{{ asset('vendor/DataTables/datatables.min.js') }}" type="text/javascript"></script>
 	<script type="text/javascript">
+		$(document).ready(function(){
+			$.ajaxSetup({
+				headers:
+				{ 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+			});
+			@isset($data)
+				@if ($data['rango_fecha'] == "por_rango")
+					$('#fec_des').prop('disabled', false);
+					$('#fec_des').val('<?= substr($data["desde"], 8, 2)."/".substr($data["desde"], 5, 2)."/".substr($data["desde"], 0, 4) ?>');
+					$('#fec_has').prop('disabled', false);
+					$('#fec_has').val('<?= substr($data["hasta"], 8, 2)."/".substr($data["hasta"], 5, 2)."/".substr($data["hasta"], 0, 4) ?>');
+				@endif
+			@endisset
+		});
+
 		<?php
 			$equipos = "";
 			foreach((array)$data["arrayEquipos"] as $item) { $equipos .= "'".$item."',"; }
@@ -114,7 +129,7 @@
 			valoresPorVencer.push(obj);
 			return valoresPorVencer;
 		});
-		
+		// Gráfico Apilado por Equipo
 		$("#chart-apilado").insertFusionCharts({
 			type: "stackedcolumn3d",
 			width: "100%",
@@ -172,15 +187,22 @@
 						case 'Vencidos': codEstado = 3; break;
 					}
 					$.ajax({
-						type: 'get',
-						url: 'dashboard/getReqEquipoByEstado/'+equipo+'/'+codEstado,
+						type: 'post',
+						url: 'dashboard/getReqEquipoByEstado',
+						data: {
+							'equipo': equipo,
+							'estado': codEstado,
+							'rango_fecha': $("#rango_fecha").val(),
+							'desde': $("#fec_des").val(),
+							'hasta': $("#fec_has").val(),
+						},
 						dataType: 'json',
 						success: function (data) {
 							if (data.respuesta) {
 								$('#tablaModal').DataTable().destroy();
 								$("#tablaModal tbody tr").remove();
 								for(var i=0; i<data.req.length; i++) {
-									var fila = "<tr><td style='white-space: nowrap;'>" + data.req[i]['id2'] + "</td><td>" + data.req[i].textoRequerimiento + "</td><td>" + data.req[i].fechaSolicitud + "</td><td>" + data.req[i].fechaCierre + "</td><td>" + data.req[i].nombreResolutor + "</td><td>" + data.req[i].porcentajeEjecutado + "</td></tr>";
+									var fila = "<tr><td style='white-space: nowrap;'><a href='requerimientos/" + data.req[i]['id'] + "'>" + data.req[i]['id2'] + "</a></td><td>" + data.req[i].textoRequerimiento + "</td><td>" + data.req[i].fechaSolicitud + "</td><td>" + data.req[i].fechaCierreF + "</td><td>" + data.req[i].nombreResolutor + "</td><td>" + data.req[i].porcentajeEjecutado + "</td></tr>";
 									$("#tablaModal tbody").append(fila);
 								}
 							} else {
@@ -205,6 +227,10 @@
 				}
 			}
 		});
+<<<<<<< HEAD
+=======
+		// Gráfico Medidor General
+>>>>>>> frontend
 		$("#chart-medidor-gral").insertFusionCharts({
 			type: "angulargauge",
 			width: "100%",

@@ -15,14 +15,46 @@ class GraficosAdministradorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request=null)
     {
+        $rango_fecha = $request->rango_fecha;
+        if ($request == null || $request == "") {
+            $desde = date('Y-m-').'01';
+            $hasta = date('Y-m-d');
+        } else {
+            switch ($rango_fecha) {
+                case 'mes_actual':
+                    $desde = date('Y-m-').'01';
+                    $hasta = date('Y-m-d');
+                    break;
+                case 'mes_ult3':
+                    $desde = date("Y-m-d", strtotime("-3 month"));
+                    $hasta = date('Y-m-d');
+                    break;
+                case 'mes_ult6':
+                    $desde = date("Y-m-d", strtotime("-6 month"));
+                    $hasta = date('Y-m-d');
+                    break;
+                case 'mes_ult12':
+                    $desde = date("Y-m-d", strtotime("-12 month"));
+                    $hasta = date('Y-m-d');
+                    break;
+                case 'por_rango':
+                    $desde = substr($request->fec_des, 6, 4).'-'.substr($request->fec_des, 3, 2).'-'.substr($request->fec_des, 0, 2);
+                    $hasta = substr($request->fec_has, 6, 4).'-'.substr($request->fec_has, 3, 2).'-'.substr($request->fec_has, 0, 2);
+                    break;
+                default:
+                    $desde = date('Y-m-').'01';
+                    $hasta = date('Y-m-d');
+                    break;
+            }
+        }
         // cantidad de requerimientos al día, por vencer y vencidos.
-        $req = Requerimiento::where([
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-            ['estado', 1],
-            ['aprobacion', 3],
-        ])->get();
+        $req = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)
+                            ->where('estado', 1)
+                            ->where('aprobacion', 3)
+                            ->whereBetween('fechaSolicitud', [$desde, $hasta])
+                            ->get();
         $alDia = 0;
         $vencer = 0;
         $vencido = 0;
@@ -65,7 +97,10 @@ class GraficosAdministradorController extends Controller
                 $requerimientos [] = $requerimiento;
             }                   
         }
-        $requerimientos = (object)$requerimientos;
+        if ($req->all() != "" && $req->all() != null && !is_null($req->all())) 
+            $requerimientos = (object)$requerimientos;
+        else
+            $requerimientos = (object)[];
         
         
         // Requerimientos por equipo al día, por vencer y vencido
@@ -77,12 +112,13 @@ class GraficosAdministradorController extends Controller
         foreach ($equipos as $equipo)
         {
            $arrayEquipos[] = $equipo->nameTeam;
-           $req = DB::table('requerimientos_equipos')->where([
-                ['estado', '=', 1],
-                ['aprobacion', 3],
-                ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-                ['idEquipo', $equipo->id],
-           ])->get();
+           $req = DB::table('requerimientos_equipos')
+                    ->where('estado', '=', 1)
+                    ->where('aprobacion', 3)
+                    ->where('rutEmpresa', '=', auth()->user()->rutEmpresa)
+                    ->where('idEquipo', $equipo->id)
+                    ->whereBetween('fechaSolicitud', [$desde, $hasta])
+                    ->get();
            
            $EalDia = 0;
            $EporVencer = 0;
@@ -140,10 +176,10 @@ class GraficosAdministradorController extends Controller
         $cerradosPorVencer = 0;
         $cerradosVencidos = 0;
         
-        $req = Requerimiento::where([
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-            ['estado', 2],
-        ])->get();
+        $req = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)
+                            ->where('estado', 2)
+                            ->whereBetween('fechaSolicitud', [$desde, $hasta])
+                            ->get();
         
         if(isset($req)){
             foreach ($req as $requerimiento){
@@ -268,11 +304,11 @@ class GraficosAdministradorController extends Controller
             }
         }
         
-        $req2 = Requerimiento::where([
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-            ['estado', 1],
-            ['aprobacion', 4],
-        ])->get();
+        $req2 = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)
+                            ->where('estado', 1)
+                            ->where('aprobacion', 4)
+                            ->whereBetween('fechaSolicitud', [$desde, $hasta])
+                            ->get();
         
         if(isset($req2)){
             foreach($req2 as $requerimiento){
@@ -400,6 +436,15 @@ class GraficosAdministradorController extends Controller
             }
         }
         
+        if(($cerradosAlDia+$cerradosPorVencer+$cerradosVencidos) == 0)
+        {
+            $divisor = 1;
+        } else {
+            $divisor = $cerradosAlDia+$cerradosPorVencer+$cerradosVencidos;
+        }
+        
+        $porcentajeAlDia = ((($cerradosPorVencer/2)+$cerradosAlDia)/$divisor)*100;
+        
         
         //Requerimientos cerrados por equipo al día, por vencer y vencidos
         $porEquipoAlDia = [];
@@ -411,11 +456,13 @@ class GraficosAdministradorController extends Controller
             $varAlDia = 0;
             $varPorVencer = 0;
             $varVencido = 0;            
-            $req = DB::table('requerimientos_equipos')->where([
-                ['rutEmpresa', auth()->user()->rutEmpresa],
-                ['estado', 2],
-                ['idEquipo', $equipo->id],
-            ])->get();
+            $req = DB::table('requerimientos_equipos')
+                        ->where('rutEmpresa', auth()->user()->rutEmpresa)
+                        ->where('estado', 2)
+                        ->where('idEquipo', $equipo->id)
+                        ->whereBetween('fechaSolicitud', [$desde, $hasta])
+                        ->get();
+            
 
             if(isset($req)){
                 foreach ($req as $requerimiento){
@@ -541,6 +588,7 @@ class GraficosAdministradorController extends Controller
                     }
                 }
             }
+<<<<<<< HEAD
             $req2 = DB::table('requerimientos_equipos')->where([
                 ['rutEmpresa', auth()->user()->rutEmpresa],
                 ['estado', 1],
@@ -548,6 +596,15 @@ class GraficosAdministradorController extends Controller
                 ['idEquipo', $equipo->id],
             ])->get();
             
+=======
+            $req2 = DB::table('requerimientos_equipos')
+                        ->where('rutEmpresa', auth()->user()->rutEmpresa)
+                        ->where('estado', 1)
+                        ->where('aprobacion', 4)
+                        ->where('idEquipo', $equipo->id)
+                        ->whereBetween('fechaSolicitud', [$desde, $hasta])
+                        ->get();
+>>>>>>> frontend
             if(isset($req2)){
                 foreach ($req2 as $requerimiento){
                     $requerimiento = (array)$requerimiento;
@@ -672,11 +729,21 @@ class GraficosAdministradorController extends Controller
                         }                    
                     }
                 }
-            } 
+            }
             $porEquipoAlDia[] = $varAlDia;
             $porEquipoPorVencer[] = $varPorVencer;
             $porEquipoVencido[] = $varVencido;
+<<<<<<< HEAD
             $porcentajeEquipoAlDia[] = ((($varPorVencer/2)+$varAlDia)/($varAlDia+$varPorVencer+$varVencido))*100;
+=======
+            if(($varAlDia+$varPorVencer+$varVencido) == 0)
+            {
+                $divisor = 1;
+            } else {
+                $divisor = $varAlDia+$varPorVencer+$varVencido;
+            }
+            $porcentajeEquipoAlDia[] = ((($varPorVencer/2)+$varAlDia)/$divisor)*100;
+>>>>>>> frontend
         }
         $porcentajeEquipoAlDia = (object)$porcentajeEquipoAlDia;
         $porEquipoAlDia=(object)$porEquipoAlDia;
@@ -688,9 +755,22 @@ class GraficosAdministradorController extends Controller
         $mediaVencer = $cerradosPorVencer/2;
         $porcentajeAlDia = (($mediaVencer+$cerradosAlDia)/$divisor)*100;
 
+        $sqlValoresReq = DB::select('select count(*) as cant from requerimientos where created_at BETWEEN ? AND ?', [$desde, $hasta]);
+        $valores['requerimientos'] = $sqlValoresReq[0]->cant;
+        $sqlValoresRes = DB::select('select count(*) as cant from resolutors');
+        $valores['resolutores'] = $sqlValoresRes[0]->cant;
+        $sqlValoresSol = DB::select('select count(*) as cant from solicitantes');
+        $valores['solicitantes'] = $sqlValoresSol[0]->cant;
+        $sqlValoresEq = DB::select('select count(*) as cant from teams');
+        $valores['equipos'] = $sqlValoresEq[0]->cant;
+
         return compact('requerimientos', 'alDia', 'vencer', 'vencido',
                 'arrayEquipos', 'arrayAlDia', 'arrayPorVencer', 'arrayVencidos', 'cerradosAlDia',
                 'cerradosPorVencer', 'cerradosVencidos', 'porEquipoAlDia', 'porEquipoPorVencer',
+<<<<<<< HEAD
                 'porEquipoVencido', 'porcentajeAlDia', 'porcentajeEquipoAlDia');
+=======
+                'porEquipoVencido', 'porcentajeEquipoAlDia', 'porcentajeAlDia', 'rango_fecha', 'desde', 'hasta', 'valores');
+>>>>>>> frontend
     }
 }

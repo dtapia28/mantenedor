@@ -113,6 +113,7 @@
 							@endif --}}
 						</tr>
 					</thead>
+<<<<<<< HEAD
                     <tbody style="font-size:13px">
                         @forelse ($requerimientos as $requerimiento)
                         <tr>
@@ -176,6 +177,81 @@
                             @endif
                             @if($state != 6 && $state !=0)
                             <td class="text-center">
+=======
+					<tbody style="font-size:13px">
+						@forelse ($requerimientos as $requerimiento)
+						<tr>
+							@if($state == 6)
+							@if($user[0]->nombre=="gestor" or $user[0]->nombre == "supervisor")
+							<td id="tabla" scope="row">
+								<form method="POST" action="{{ url("requerimientos/{$requerimiento->id}/autorizar") }}">
+									{{ csrf_field() }}
+									<button onclick="return confirm('¿Estás seguro/a de autorizar el cierre del requerimiento?')" type="submit" value="Nuevo Requerimiento" class="btn btn-success" name="">Autorizar</button>
+								</form>
+							</td>							
+							@endif
+							@endif
+							@if($state == 0)
+							<td id="tabla" scope="row">
+								<form method="POST" action="{{ url("requerimientos/{$requerimiento->id}/activar") }}">
+									{{ csrf_field() }}
+									<button onclick="return confirm('¿Estás seguro/a de activar el requerimiento?')" type="submit" value="Nuevo Requerimiento" class="btn btn-success" name="">Activar</button>
+								</form>
+							</td>
+							@endif
+							@if($state == 7)
+							<th id="tabla" scope="row">
+								<form method="POST" action="{{ url("requerimientos/{$requerimiento->id}/activar") }}">
+									{{ csrf_field() }}
+									<button onclick="return confirm('¿Estás seguro/a de activar el requerimiento?')" type="submit" value="Nuevo Requerimiento" class="btn btn-success" name="">Activar</button>
+								</form>
+							</th>
+							@endif							
+							<td style="white-space: nowrap;">
+								<a href="{{ url("requerimientos/{$requerimiento->id}") }}">
+									{{ $requerimiento->id2 }}
+								</a>					
+							</td>
+							<td>	
+								{{ $requerimiento->textoRequerimiento }}
+							</td>				
+							<td style="font-size:13px !important">	
+								{{ date('Y-m-d', strtotime($requerimiento->fechaSolicitud)) }}
+							</td>
+							@if($requerimiento->fechaRealCierre != "")
+							<td style="font-size:13px !important">	
+								{{ date('Y-m-d', strtotime($requerimiento->fechaRealCierre)) }}
+							</td>
+							@else
+							<td style="font-size:13px !important">	
+								{{ date('Y-m-d', strtotime($requerimiento->fechaCierre)) }}
+							</td>
+							@endif
+							<td>								
+								@forelse ($resolutors as $resolutor)
+								@if ($requerimiento->resolutor == $resolutor->id)			
+								{{ $resolutor->nombreResolutor }}
+								@endif
+								@empty
+								@endforelse	
+							</td>
+							<td>
+								{{ $requerimiento->porcentajeEjecutado }}
+							</td>
+							@if($state != 0)
+							<td class="text-center">
+								@if($requerimiento->status == 1)
+								<span class="badge badge-default">Al día <i class="fa fa-circle text-success"></i></span>
+								@elseif($requerimiento->status == 2)
+								<span class="badge badge-default">Por Vencer <i class="fa fa-circle text-warning"></i></span>
+								@else
+								<span class="badge badge-default">Vencido <i class="fa fa-circle text-danger"></i></span>
+								@endif					
+							</td>
+							@endif
+							@if($state != 6 && $state !=0)
+							<td class="text-center">
+>>>>>>> frontend
 								<?php
 								$conteo = 0;
 								foreach ($anidados as $anidado) {
