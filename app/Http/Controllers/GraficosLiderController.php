@@ -186,6 +186,7 @@ class GraficosLiderController extends Controller
                     ->where('idEquipo', $equipo->id)
                     ->whereBetween('fechaSolicitud', [$desde, $hasta])
                     ->get();
+        
 
         if(isset($req)){
             foreach ($req as $requerimiento){
@@ -466,6 +467,15 @@ class GraficosLiderController extends Controller
           $porResolutorPorVencer[]=$vencer;
           $porResolutorVencido[]=$vencido;
         }
+        if(($cerradoAlDia+$cerradoPorVencer+$cerradoVencido) == 0)
+        {
+            $divisor = 1;
+        } else
+        {
+            $divisor = $cerradoAlDia+$cerradoPorVencer+$cerradoVencido;            
+        }
+    
+        $porcentajeAlDia = ((($cerradoPorVencer/2)+$cerradoAlDia)/$divisor)*100;
 
         $sqlAbiertos = DB::select('SELECT COUNT(*) abiertos FROM requerimientos WHERE resolutor = ? AND estado=? AND fechaSolicitud BETWEEN ? AND ?', [$res->id, 1, $desde, $hasta]);
         $sqlCerrados = DB::select('SELECT COUNT(*) cerrados FROM requerimientos WHERE resolutor = ? AND estado=? AND fechaSolicitud BETWEEN ? AND ?', [$res->id, 2, $desde, $hasta]);
@@ -480,7 +490,7 @@ class GraficosLiderController extends Controller
                             WHERE a.idUser = ?", [auth()->user()->id]);
         $equipo = $sqlEq[0]->nameTeam;
 
-        $sqlValoresReq = DB::select('select count(*) as cant from requerimientos where idEquipo = ? AND created_at BETWEEN ? AND ?', [$equipo_id, $desde, $hasta]);
+        $sqlValoresReq = DB::select('select count(*) as cant from requerimientos_equipos where idEquipo = ? AND created_at BETWEEN ? AND ?', [$equipo_id, $desde, $hasta]);
         $valores['requerimientos'] = $sqlValoresReq[0]->cant;
         $sqlValoresRes = DB::select('select count(*) as cant from resolutors where rutEmpresa = ?', [auth()->user()->rutEmpresa]);
         $valores['resolutores'] = $sqlValoresRes[0]->cant;
@@ -492,6 +502,7 @@ class GraficosLiderController extends Controller
         return compact('requerimientos', 'alDia', 'vencer', 'vencido',
                 'arraySolicitantes', 'porSolicitanteAldia', 'porSolicitantePorVencer',
                 'porSolicitanteVencido', 'cerradoAlDia', 'cerradoPorVencer', 'cerradoVencido',
-                'arrayResolutores', 'porResolutorAlDia', 'porResolutorPorVencer', 'porResolutorVencido', 'rango_fecha', 'desde', 'hasta', 'abiertos', 'cerrados', 'equipo', 'valores');
+                'arrayResolutores', 'porResolutorAlDia', 'porResolutorPorVencer', 'porResolutorVencido',
+                'rango_fecha', 'desde', 'hasta', 'abiertos', 'cerrados', 'equipo', 'valores', 'porcentajeAlDia');
     }
 }

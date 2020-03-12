@@ -519,7 +519,7 @@
 				dials: {
 				dial: [
 					{
-					value: <?=$data["cerradoAlDia"]?>,
+					value: <?=$data["porcentajeAlDia"]?>,
 					}
 				]
 				}

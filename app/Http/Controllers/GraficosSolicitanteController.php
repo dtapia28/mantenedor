@@ -54,15 +54,13 @@ class GraficosSolicitanteController extends Controller
         //Cantidad de requerimientos de solicitante al día, por vencer, vencido
         $solicitante = Solicitante::where('idUser', auth()->user()->id)->first();
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->first();
-        $resolutor = Resolutor::where('idUser', $user->idUser)->first();
-        $solicitante2 = Solicitante::where('idUser', $user->idUser)->first();
+        $solicitante2 = Solicitante::where('idUser', $user->idUser)->first();   
         $equipo2 = Team::where('id', $resolutor->idTeam)->first();
-        // dd($solicitante);
         $req = DB::table('requerimientos')
                     ->where('rutEmpresa', auth()->user()->rutEmpresa)
                     ->where('estado', 1)
                     ->where('aprobacion', 3)
-                    ->where('idSolicitante', $solicitante->id)
+                    ->where('idSolicitante', $solicitante2->id)
                     ->whereBetween('fechaSolicitud', [$desde, $hasta])
                     ->get();
         

@@ -49,7 +49,6 @@ class GraficosAdministradorController extends Controller
                     break;
             }
         }
-        // dd($desde);
         // cantidad de requerimientos al día, por vencer y vencidos.
         $req = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)
                             ->where('estado', 1)
@@ -390,6 +389,15 @@ class GraficosAdministradorController extends Controller
             }
         }
         
+        if(($cerradosAlDia+$cerradosPorVencer+$cerradosVencidos) == 0)
+        {
+            $divisor = 1;
+        } else {
+            $divisor = $cerradosAlDia+$cerradosPorVencer+$cerradosVencidos;
+        }
+        
+        $porcentajeAlDia = ((($cerradosPorVencer/2)+$cerradosAlDia)/$divisor)*100;
+        
         
         //Requerimientos cerrados por equipo al día, por vencer y vencidos
         $porEquipoAlDia = [];
@@ -406,6 +414,7 @@ class GraficosAdministradorController extends Controller
                         ->where('idEquipo', $equipo->id)
                         ->whereBetween('fechaSolicitud', [$desde, $hasta])
                         ->get();
+            
 
             if(isset($req)){
                 foreach ($req as $requerimiento){
@@ -615,11 +624,19 @@ class GraficosAdministradorController extends Controller
                         }                    
                     }
                 }
-            } 
+            }
             $porEquipoAlDia[] = $varAlDia;
             $porEquipoPorVencer[] = $varPorVencer;
             $porEquipoVencido[] = $varVencido;
+            if(($varAlDia+$varPorVencer+$varVencido) == 0)
+            {
+                $divisor = 1;
+            } else {
+                $divisor = $varAlDia+$varPorVencer+$varVencido;
+            }
+            $porcentajeEquipoAlDia[] = ((($varPorVencer/2)+$varAlDia)/$divisor)*100;
         }
+        $porcentajeEquipoAlDia = (object)$porcentajeEquipoAlDia;
         $porEquipoAlDia=(object)$porEquipoAlDia;
         $porEquipoPorVencer=(object)$porEquipoPorVencer;
         $porEquipoVencido=(object)$porEquipoVencido;
@@ -636,6 +653,6 @@ class GraficosAdministradorController extends Controller
         return compact('requerimientos', 'alDia', 'vencer', 'vencido',
                 'arrayEquipos', 'arrayAlDia', 'arrayPorVencer', 'arrayVencidos', 'cerradosAlDia',
                 'cerradosPorVencer', 'cerradosVencidos', 'porEquipoAlDia', 'porEquipoPorVencer',
-                'porEquipoVencido', 'rango_fecha', 'desde', 'hasta', 'valores');
+                'porEquipoVencido', 'porcentajeEquipoAlDia', 'porcentajeAlDia', 'rango_fecha', 'desde', 'hasta', 'valores');
     }
 }

@@ -271,7 +271,7 @@
 				dials: {
 				dial: [
 					{
-					value: "<?=$data['cerradosAlDia']?>"
+					value: "<?=$data['porcentajeAlDia']?>"
 					}
 				]
 				}
@@ -281,7 +281,7 @@
 		var numEquipos = <?=count((array)$data["arrayEquipos"])?>;
 		<?php
 			$cerradosAlDiaPorEq = "";
-			foreach((array)$data["porEquipoPorVencer"] as $item) {$cerradosAlDiaPorEq .= "'".$item."',"; }
+			foreach((array)$data["porcentajeEquipoAlDia"] as $item) {$cerradosAlDiaPorEq .= "'".$item."',"; }
 			$cerradosAlDiaPorEq = substr($cerradosAlDiaPorEq, 0, strlen($cerradosAlDiaPorEq)-1);
 		?>
 		var cerradosAlDiaPorEq = [<?=$cerradosAlDiaPorEq?>];
