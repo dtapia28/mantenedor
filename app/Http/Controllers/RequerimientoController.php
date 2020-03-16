@@ -14,6 +14,7 @@ use App\LogRequerimientos;
 use App\Tarea;
 use App\Parametros;
 use App\Notifications\NewReqResolutor;
+use App\Notifications\EnvioWhatsapp;
 use App\Notifications\FinalizadoNotifi;
 use App\Notifications\RechazadoNotifi;
 use Illuminate\Support\Facades\Notification;
@@ -2252,15 +2253,10 @@ class RequerimientoController extends Controller
             $obj->nombre = $resolutor->nombreResolutor;
 
             $recep = $resolutor->email;
+            
+            $request->user()->notify(new EnvioWhatsapp($requerimiento));
         
 //            Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
-            
-            $id = $requerimiento->id2;
-            $link = "http://app.kinchika.com/requerimientos/".$requerimiento->id;
-
-            $whatsmsapi = new WhatsmsApi();
-            $whatsmsapi->setApiKey("5e2edfe1aa0f9");
-            $whatsmsapi->sendSms("56953551286", "Hola soy Kinchika y te estoy enviando este mensaje porque se te ha asignado el siguiente requerimiento: ".$id."\n Solicitud: ".$requerimiento->textoRequerimiento."\n Puedes ver el detalle del requerimiento en el siguiente link: ".$link);
             
             if ($request->idTipo == 1) {
                 return redirect('requerimientos')->with('msj', 'Requerimiento '.$requerimiento->id2.' guardado correctamente');

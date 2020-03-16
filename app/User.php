@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'rutEmpresa', 'api_token',
+        'name', 'email', 'password', 'rutEmpresa', 'api_token','telefono',
     ];
 
     /**
@@ -80,5 +80,10 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new MyResetPassword($token));        
+    }
+    
+    public function routeNotificationForWhatsApp()
+    {
+        return $this->telefono;
     }
 }

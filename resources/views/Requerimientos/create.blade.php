@@ -38,7 +38,7 @@
                         {{ csrf_field() }}
                         <div class="col-sm-6 form-group">
                             <label for='idTipo'>Tipo</label>               
-                            <select class="form-control col-md-12" name="tipo" id="idTipo">
+                            <select class="form-control col-md-12" name="idTipo" id="idTipo">
                                 <option value=1>Requerimiento</option>
                                 <option value=2>Incidente</option>
                             </select>
