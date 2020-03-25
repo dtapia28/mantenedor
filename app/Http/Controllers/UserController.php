@@ -13,7 +13,6 @@ use App\Solicitante;
 use App\Parametros;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 use Illuminate\Http\Request;
 
@@ -41,13 +40,9 @@ class UserController extends Controller
 
     public function cambiarPassword()
     {
-        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
-        $lider = 0;
-        if ($user[0]->nombre == "resolutor") {
-            $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
-            $lider = $resolutor->lider;           
-        }        
-        return view('Users.cambiar', compact('user', 'lider'));
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
+    
+        return view('Users.cambiar', compact('user'));
     }
 
     public function change(Request $request)
@@ -82,29 +77,7 @@ class UserController extends Controller
         }
 
         return response()->json($teamArray);        
-    }
-
-    public function getLider(Request $request){
-        if ($request->ajax()) {
-            $lider = Resolutor::where([
-                ['rutEmpresa', auth()->user()->rutEmpresa],
-                ['idTeam', $request->id_team],
-                ['lider', 1],
-            ])->get();
-            if (empty($lider)) {
-                $liderArray = "No hay nada";
-
-                return $liderArray;
-            } else 
-            {
-                foreach ($lider as $lid) {
-                    $liderArray[$lid->id] = $lid->nombreResolutor;
-                }
-                return response()->json($liderArray);                
-            }    
-        }        
-    }
-
+    }	
     public function store(Request $request)
     {
         $data = request()->validate([
@@ -114,36 +87,18 @@ class UserController extends Controller
             [ 'idRole.required' => 'El campo nombre es obligatorio']);
 
         if (isset($data['idTeam'])) {
-<<<<<<< HEAD
-            $resolutor = Resolutor::where('idUser', $request->idUsers)->first();
-            if (isset($resolutor)) {
-                $dato = [
-                    'idTeam' => $request->idTeam,
-                ];
-                $resolutor->update($dato);
-            } else {
-                $role = Role::where('id', $data['idRole'])->first();
-                if ($role->nombre == 'resolutor') {
-                    $usuario = User::where('id', $request->idUsers)->first();
-=======
             $role = Role::where('id', $data['idRole'])->first();
             if ($role->nombre == 'resolutor') {
                 $usuario = User::where('id', $request->idUsers)->first();
                 $lider = (isset($request['lider']) == 'on' ? '1': '0');
                 $exists = Resolutor::where('idUser', "=", $usuario->id)->exists();
                 if (!$exists) {
->>>>>>> frontend
                     Resolutor::create([
                         'nombreResolutor' => $usuario->name,          
                         'rutEmpresa' => auth()->user()->rutEmpresa,
                         'idTeam' => $data['idTeam'],
                         'idUser' => $usuario->id,
                         'email' => $usuario->email,
-<<<<<<< HEAD
-                    ]);
-                }                
-            }           
-=======
                         'lider' => $lider,
                     ]);
                 } else {
@@ -152,7 +107,6 @@ class UserController extends Controller
                         ->update(['idTeam' => $data['idTeam'], 'lider' => $lider]);
                 }
             }         
->>>>>>> frontend
         }
 
         $role = Role::where('id', $data['idRole'])->first();
@@ -203,48 +157,12 @@ class UserController extends Controller
             'rutEmpresa' => auth()->user()->rutEmpresa,
             'email' => $data['email'],
             'password' => Hash::make('secreto'),
-            'api_token' => Str::random(30),  
             ]);
-            
-            if (isset($request->idTeam)) {
-                if (isset($request->idLider)) {
-                    Resolutor::create([
-                        'nombreResolutor' => $user->name,          
-                        'rutEmpresa' => auth()->user()->rutEmpresa,
-                        'idTeam' => $request->idTeam,
-                        'idUser' => $user->id,
-                        'email' => $user->email,
-                        'lider' => 1,
-                    ]); 
-                } else {
-                    Resolutor::create([
-                        'nombreResolutor' => $user->name,          
-                        'rutEmpresa' => auth()->user()->rutEmpresa,
-                        'idTeam' => $request->idTeam,
-                        'idUser' => $user->id,
-                        'email' => $user->email,
-                    ]);                    
-                }
-                
-                $user->roles()->attach(Role::where([
-                    ['nombre', 'resolutor'],
-                    ['rutEmpresa', auth()->user()->rutEmpresa],
-                ])->first());
-            } else {
-                $role = Role::where('id', $request->idRole)->first();
-                if ($role->nombre == 'solicitante') {
-                    Solicitante::create([
-                        'nombreSolicitante' => $user->name,
-                        'rutEmpresa' => auth()->user()->rutEmpresa,
-                        'idUser' => $user->id,
-                        'email' => $user->email,
-                    ]);                       
-                }
-                $user->roles()->attach(Role::where([
-                    ['nombre', $role->nombre],
-                    ['rutEmpresa', auth()->user()->rutEmpresa],
-                ])->first());
-            }         
+
+        $user->roles()->attach(Role::where([
+            ['nombre', 'usuario'],
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+        ])->first());           
 
         if ($request->volver == "1")
             return redirect('requerimientos/nuevo');

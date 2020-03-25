@@ -227,10 +227,7 @@
 				}
 			}
 		});
-<<<<<<< HEAD
-=======
 		// Gráfico Medidor General
->>>>>>> frontend
 		$("#chart-medidor-gral").insertFusionCharts({
 			type: "angulargauge",
 			width: "100%",

@@ -588,15 +588,6 @@ class GraficosAdministradorController extends Controller
                     }
                 }
             }
-<<<<<<< HEAD
-            $req2 = DB::table('requerimientos_equipos')->where([
-                ['rutEmpresa', auth()->user()->rutEmpresa],
-                ['estado', 1],
-                ['aprobacion', 4],
-                ['idEquipo', $equipo->id],
-            ])->get();
-            
-=======
             $req2 = DB::table('requerimientos_equipos')
                         ->where('rutEmpresa', auth()->user()->rutEmpresa)
                         ->where('estado', 1)
@@ -604,7 +595,7 @@ class GraficosAdministradorController extends Controller
                         ->where('idEquipo', $equipo->id)
                         ->whereBetween('fechaSolicitud', [$desde, $hasta])
                         ->get();
->>>>>>> frontend
+
             if(isset($req2)){
                 foreach ($req2 as $requerimiento){
                     $requerimiento = (array)$requerimiento;
@@ -733,9 +724,7 @@ class GraficosAdministradorController extends Controller
             $porEquipoAlDia[] = $varAlDia;
             $porEquipoPorVencer[] = $varPorVencer;
             $porEquipoVencido[] = $varVencido;
-<<<<<<< HEAD
-            $porcentajeEquipoAlDia[] = ((($varPorVencer/2)+$varAlDia)/($varAlDia+$varPorVencer+$varVencido))*100;
-=======
+
             if(($varAlDia+$varPorVencer+$varVencido) == 0)
             {
                 $divisor = 1;
@@ -743,15 +732,20 @@ class GraficosAdministradorController extends Controller
                 $divisor = $varAlDia+$varPorVencer+$varVencido;
             }
             $porcentajeEquipoAlDia[] = ((($varPorVencer/2)+$varAlDia)/$divisor)*100;
->>>>>>> frontend
         }
         $porcentajeEquipoAlDia = (object)$porcentajeEquipoAlDia;
         $porEquipoAlDia=(object)$porEquipoAlDia;
         $porEquipoPorVencer=(object)$porEquipoPorVencer;
         $porEquipoVencido=(object)$porEquipoVencido;
         
+        if($cerradosAlDia+$cerradosPorVencer+$cerradosVencidos == 0)
+        {
+            $divisor = 1;
+        } else
+        {
+            $divisor = $cerradosAlDia+$cerradosPorVencer+$cerradosVencidos;
+        }
         
-        $divisor = $cerradosAlDia+$cerradosPorVencer+$cerradosVencidos;
         $mediaVencer = $cerradosPorVencer/2;
         $porcentajeAlDia = (($mediaVencer+$cerradosAlDia)/$divisor)*100;
 
@@ -767,10 +761,6 @@ class GraficosAdministradorController extends Controller
         return compact('requerimientos', 'alDia', 'vencer', 'vencido',
                 'arrayEquipos', 'arrayAlDia', 'arrayPorVencer', 'arrayVencidos', 'cerradosAlDia',
                 'cerradosPorVencer', 'cerradosVencidos', 'porEquipoAlDia', 'porEquipoPorVencer',
-<<<<<<< HEAD
-                'porEquipoVencido', 'porcentajeAlDia', 'porcentajeEquipoAlDia');
-=======
                 'porEquipoVencido', 'porcentajeEquipoAlDia', 'porcentajeAlDia', 'rango_fecha', 'desde', 'hasta', 'valores');
->>>>>>> frontend
     }
 }
