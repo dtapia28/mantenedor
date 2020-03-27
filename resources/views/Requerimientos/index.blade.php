@@ -27,29 +27,34 @@
 	<h1 class="page-title"><i class="fa fa-address-card"></i> Requerimientos</h1>
 </div>
 <div class="form-check form-check-inline">
+	@php
+		$estado = Request()->state;
+		$valor = Request()->valorN;
+		$solicitantereq = Request()->solicitante;
+	@endphp
+	{{-- {{dd($estado)}} --}}
 	<form class="navbar-form navbar-left pull-right" method='GET' action="{{ url('requerimientos/') }}">
 		<select id="state" class="custom-select" name="state">
 			<option selected="true" disabled="disabled" value="">Escoja una opción...</option>
 			@if($user[0]->nombre == "gestor")
-			<option value="6">Por autorizar</option>
+			<option value="6" @if ($estado == "6") selected @endif>Por autorizar</option>
 			@endif
 			@if($user[0]->nombre == "resolutor")
-			<option value="7">Esperando autorización</option>
+			<option value="7" @if ($estado == "7") selected @endif>Esperando autorización</option>
 			@endif							
-			<option value="0">Inactivo</option>
-			<option value="1">Activo</option>
-			<option value="2">% mayor o igual que</option>
-			<option value="3">% menor o igual que</option>
-			<option value="4">Vencidos</option>
-			<option value="5">Por solicitante</option>     	
+			<option value="0" @if ($estado == "0") selected @endif>Inactivo</option>
+			<option value="1" @if ($estado == "1") selected @endif>Activo</option>
+			<option value="2" @if ($estado == "2") selected @endif>% mayor o igual que</option>
+			<option value="3" @if ($estado == "3") selected @endif>% menor o igual que</option>
+			<option value="4" @if ($estado == "4") selected @endif>Vencidos</option>
+			<option value="5" @if ($estado == "5") selected @endif>Por solicitante</option>     	
 		</select>
-		<input class="form-control col-md-12" type="number" id="valor" style="display: none" name="valorN" placeholder="porcentaje avance">
-		<select id='solicitante' class='form-control col-md-12' name='solicitante' style='display: none;'>
-			<optgroup>
-				@foreach($solicitantes as $solicitante)
-				<option value={{ $solicitante->id }}>{{ $solicitante->nombreSolicitante }}</option>
-				@endforeach							
-			</optgroup>
+		<input class="form-control col-md-12" type="number" id="valor"  @if ($valor=="" || $valor==null) style="display: none" @endif name="valorN" placeholder="porcentaje avance" min="1" max="100" @if ($valor!="") value="{{ $valor }}" @endif>
+		<select id='solicitante' class='form-control col-md-12 custom-select' name='solicitante' @if ($solicitantereq=="" || $solicitantereq==null) style='display: none;' @endif>
+			<option selected="true" disabled="disabled" value="">Escoja una opción...</option>
+			@foreach($solicitantes as $solicitante)
+				<option value={{ $solicitante->id }} @if ($solicitante->id == $solicitantereq) selected @endif>{{ $solicitante->nombreSolicitante }}</option>
+			@endforeach							
 		</select>
 		<button class="btn btn-outline-primary my-2 my-sm-0" type="submit" style="cursor:pointer">Filtrar</button>
 	</form>
@@ -236,18 +241,30 @@
 <script src="{{ asset('vendor/DataTables/datatables.min.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-		sessionStorage.clear();
-		$('#state').on('change', function(){
+		let estado = $('#state').val();
+		if (estado != "" && estado != null) {
+			storeCacheFilter();
+		} else {
+			sessionStorage.clear();
+		}
+		$('#state').on('change', function() {
 			var role = $(this).val();
-			if(role == 2 || role ==3){
+			if(role == "2" || role == "3") {
 				document.getElementById("valor").style.display = "block";
 				document.getElementById("solicitante").style.display = "none";
-			} else if (role == 5){
+				$('#valor').prop('required', true);
+				$('#solicitante').val("");
+			} else if (role == "5"){
 				document.getElementById("solicitante").style.display = "block";
 				document.getElementById("valor").style.display = "none";
+				$('#valor').val("");
+				$('#valor').prop('required', false);
 			} else {
 				document.getElementById("valor").style.display = "none";
-				document.getElementById("solicitante").style.display = "none";	
+				document.getElementById("solicitante").style.display = "none";
+				$('#valor').prop('required', false);
+				$('#valor').val("");
+				$('#solicitante').val("");
 			}
 		});
 		menu_activo('mRequerimientos');
@@ -272,6 +289,14 @@
 			return true;
 		} else {
 			return false;
+		}
+	}
+	function storeCacheFilter() {
+		if (typeof(Storage) !== 'undefined') {
+            sessionStorage.setItem('stState', $('#state').val());
+            sessionStorage.setItem('stValor', $('#valor').val());
+			sessionStorage.setItem('stSolicitante', $('#solicitante').val());
+			sessionStorage.setItem('stFiltroActivo', 1);
 		}
 	}
 </script>		

@@ -1911,6 +1911,14 @@ class RequerimientoController extends Controller
 
     public function RequerimientoRechazado(Request $request) {
         /* se registra el rechazo del requerimiento */
-        return "Requerimiento rechazado por: ".$request->rechazo;
+        
+        if ($request->fActivo == "1") {
+            if ($request->fSolicitante!="" && $request->fSolicitante!=null && $request->fSolicitante!="null")
+                return redirect('requerimientos?state='.$request->fState.'&valorN='.$request->fValor.'&solicitante='.$request->fSolicitante);
+            else
+                return redirect('requerimientos?state='.$request->fState.'&valorN='.$request->fValor);
+        } 
+        
+        return redirect('requerimientos');
     }
 }
