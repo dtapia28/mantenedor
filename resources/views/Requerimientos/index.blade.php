@@ -83,7 +83,7 @@
 							@endif
 							@endif							
 							<th>Id</th>
-							<th>Requerimiento</th>
+							<th>Requerimiento/Tarea</th>
 							<th>Fecha Solicitud</th>
 							<th>Fecha Cierre</th>
 							<th>Resolutor</th>
@@ -131,12 +131,20 @@
 							</td>
 							@endif
 							<td style="white-space: nowrap;">
-								<a href="{{ url("requerimientos/{$requerimiento->id}") }}">
+                                                            @if($requerimiento->tipo == "tarea")
+                                                                <a href="{{ url("requerimientos/{$requerimiento->idRequerimiento}") }}">
+                                                            @else
+								<a href="{{ url("requerimientos/{$requerimiento->id}") }}">                                                            
+                                                            @endif
 									{{ $requerimiento->id2 }}
 								</a>					
 							</td>
-							<td>	
-								{{ $requerimiento->textoRequerimiento }}
+							<td>
+                                                            @if($requerimiento->tipo == "tarea")
+                                                                {{ $requerimiento->textoTarea }}
+                                                            @else
+                                                                {{ $requerimiento->textoRequerimiento }}
+                                                            @endif								
 							</td>				
 							<td style="font-size:13px !important">	
 								{{ date('Y-m-d', strtotime($requerimiento->fechaSolicitud)) }}

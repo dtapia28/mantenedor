@@ -139,6 +139,19 @@ class RequerimientoController extends Controller
                         ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                         ['idEquipo', $equipo->id],
                     ])->get();
+
+                    foreach ($req as $requerimiento)
+                    {
+                        $tareas = Tarea::where('idRequerimiento', $requerimiento->id)->get();
+                        if(count($tareas) != 0)
+                        {
+                            foreach ($tareas as $tarea)
+                            {
+                                $tarea ['tipo'] = "tarea";
+                                $req->push($tarea);
+                            }
+                        }
+                    }
                     
                     foreach ($req as $requerimiento)
                     {
@@ -389,7 +402,21 @@ class RequerimientoController extends Controller
                         ['aprobacion', 3],
                         ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                         ['idEquipo', $equipo->id],
-                    ])->get();                    
+                    ])->get();
+
+                    foreach ($req as $requerimiento)
+                    {
+                        $tareas = Tarea::where('idRequerimiento', $requerimiento->id)->get();
+                        if(count($tareas) != 0)
+                        {
+                            foreach ($tareas as $tarea)
+                            {
+                                $tarea ['tipo'] = "tarea";
+                                $req->push($tarea);
+                            }
+                        }
+                    }
+                    
                     $arreglo = [];
                     $requerimientos = [];
                     $estado = true;
@@ -1590,7 +1617,7 @@ class RequerimientoController extends Controller
                     ['aprobacion', 3],
                     ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                 ])->get();
-
+                
                 foreach ($req as $requerimiento)
                 {
                     $tareas = Tarea::where('idRequerimiento', $requerimiento->id)->get();
@@ -1608,12 +1635,9 @@ class RequerimientoController extends Controller
                 $estado = true;
                 $estatus = [];
                 $hoy = new DateTime();
+                
 
                 foreach ($req as $requerimiento) {
-                    if($requerimiento->tipo == "tarea")
-                    {
-                        dd($requerimiento);
-                    }
                     foreach ($anidados as $anidado) {
                         if ($anidado->idRequerimientoAnexo == $requerimiento->id) {
                             $estado = false;
@@ -1719,6 +1743,7 @@ class RequerimientoController extends Controller
                     ['porcentajeEjecutado', '>=', $request->valorN],
                     ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                 ])->get();
+                
                 $requerimientos = [];
                 $estado = true;
                 $estatus = [];
@@ -1829,6 +1854,20 @@ class RequerimientoController extends Controller
                     ['aprobacion', 3],
                     ['rutEmpresa', auth()->user()->rutEmpresa],
                 ])->get();
+
+                foreach ($req as $requerimiento)
+                {
+                    $tareas = Tarea::where('idRequerimiento', $requerimiento->id)->get();
+                    if(count($tareas) != 0)
+                    {
+                        foreach ($tareas as $tarea)
+                        {
+                            $tarea ['tipo'] = "tarea";
+                            $req->push($tarea);
+                        }
+                    }
+                }
+                    
                 $arreglo = [];
                 $requerimientos = [];
                 $estado = true;

@@ -151,9 +151,39 @@ class TareaController extends Controller
     {
 
         $tarea = Tarea::where('id', $request->tarea)->first();
+        $requerimiento = Requerimiento::where('id', $tarea->idRequerimiento)->first();
+        $tareas = Tarea::where([
+            ['idRequerimiento', $requerimiento->id],
+            ['estado', 1],
+        ])->get();
+        $cTareas = count($tareas);
+        if($requerimiento->porcentajeEjecutado == null or $requerimiento->porcentajeEjecutado == 0)
+        {
+            $porcentaje = 100/$cTareas;
+        } else
+        {
+            $porcentaje = $requerimiento->porcentajeEjecutado+((100-$requerimiento->porcentajeEjecutado)/$cTareas);
+        }
+        
         $data = [
             'estado' => 2];   
         $tarea->update($data);
+        
+        if($porcentaje == 100){
+            $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+            $lider = 0;
+            if ($user[0]->nombre == "resolutor") {
+                $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+                $lider = $resolutor->lider;           
+            }       
+            return view('Requerimientos.terminado', compact('requerimiento', 'user', 'lider'));            
+        } else
+        {
+            $data = [
+                'porcentajeEjecutado'=>$porcentaje
+            ];
+            $requerimiento->update($data);            
+        }
 
         return redirect(url("requerimientos/$request->req"));
     }
