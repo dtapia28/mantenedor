@@ -2808,7 +2808,15 @@ class RequerimientoController extends Controller
         $recep = $resolutor->email;
 
         Notification::route('mail', $recep)->notify(new RechazadoNotifi($obj)); 
-
+        /* se registra el rechazo del requerimiento */
+        
+        if ($request->fActivo == "1") {
+            if ($request->fSolicitante!="" && $request->fSolicitante!=null && $request->fSolicitante!="null")
+                return redirect('requerimientos?state='.$request->fState.'&valorN='.$request->fValor.'&solicitante='.$request->fSolicitante);
+            else
+                return redirect('requerimientos?state='.$request->fState.'&valorN='.$request->fValor);
+        } 
+        
         return redirect('requerimientos');
     }
 }
