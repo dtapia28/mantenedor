@@ -382,7 +382,8 @@
 		});
 		
 		$("#chart-apilado").insertFusionCharts({
-			type: "stackedcolumn3d",
+			// type: "stackedcolumn3d",
+			type: "scrollstackedcolumn2d",
 			width: "100%",
 			height: "100%",
 			dataFormat: "json",
@@ -392,6 +393,8 @@
 					subcaption: "Por Estatus",
 					numvisibleplot: "6",
 					showvalues: "1",
+					scrollheight: "12",
+					numvisibleplot: "6",
 					decimals: "0",
 					// stack100percent: "1",
 					valuefontcolor: "#FFFFFF",
@@ -579,7 +582,8 @@
 		});
 		
 		$("#chart-apilado2").insertFusionCharts({
-			type: "stackedcolumn3d",
+			// type: "stackedcolumn3d",
+			type: "scrollstackedcolumn2d",
 			width: "100%",
 			height: "100%",
 			dataFormat: "json",
@@ -589,6 +593,8 @@
 					subcaption: "Por Estatus",
 					numvisibleplot: "6",
 					showvalues: "1",
+					scrollheight: "12",
+					numvisibleplot: "8",
 					decimals: "0",
 					// stack100percent: "1",
 					valuefontcolor: "#FFFFFF",
