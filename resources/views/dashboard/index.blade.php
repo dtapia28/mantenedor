@@ -49,6 +49,7 @@
             </div>
         </form>
     </div>
+    @if($user[0]->nombre != 'solicitante')
     <div class="row">
         <div class="col-lg-3 col-md-6">
             <div class="ibox bg-success color-white widget-stat">
@@ -83,6 +84,7 @@
             </div>
         </div>
     </div>
+    @endif
     @if ($user[0]->nombre == "administrador" || $user[0]->nombre == "supervisor")
         @include('dashboard.administrador')
     @endif

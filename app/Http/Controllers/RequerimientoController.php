@@ -2726,6 +2726,7 @@ class RequerimientoController extends Controller
     }
 
     public function RequerimientoRechazado(Request $request) {
+        
         $req = Requerimiento::where('id', $request->requerimiento)->first();
         $data = [
             'estado' => 1,
@@ -2749,6 +2750,15 @@ class RequerimientoController extends Controller
 
         Notification::route('mail', $recep)->notify(new RechazadoNotifi($obj)); 
 
+        /* se registra el rechazo del requerimiento */
+        
+        if ($request->fActivo == "1") {
+            if ($request->fSolicitante!="" && $request->fSolicitante!=null && $request->fSolicitante!="null")
+                return redirect('requerimientos?state='.$request->fState.'&valorN='.$request->fValor.'&solicitante='.$request->fSolicitante);
+            else
+                return redirect('requerimientos?state='.$request->fState.'&valorN='.$request->fValor);
+        } 
+        
         return redirect('requerimientos');
     }
 }
