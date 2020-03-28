@@ -9,7 +9,7 @@
         <h3 class="text-center txt-primary">Ingresa a tu cuenta</h3>
         @csrf
         <div class="md-input-wrapper">
-            <input id="email" type="email" class="md-form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+            <input id="email" type="email" class="md-form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
                 @error('email')
                     <span class="text-danger" role="alert">
                         <strong>{{ $message }}</strong>
@@ -18,7 +18,7 @@
             <label>Correo electrónico</label>
         </div>
         <div class="md-input-wrapper">
-            <input id="password" type="password" class="md-form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+            <input id="password" type="password" class="md-form-control @error('password') is-invalid @enderror" name="password" required autocomplete="off">
                 @error('password')
                     <span class="text-danger" role="alert">
                         <strong>{{ $message }}</strong>
@@ -55,4 +55,12 @@
             </div>
         @endif
     </form>
+@endsection
+@section('js')
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $('#email').val("");
+            $('#password').val("");
+        });
+    </script>
 @endsection

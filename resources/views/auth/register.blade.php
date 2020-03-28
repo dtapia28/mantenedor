@@ -9,7 +9,7 @@
     <h4 class="text-center txt-primary"> Crear cuenta</h4>
     @csrf
     <div class="md-input-wrapper">
-        <input id="name" type="text" class="md-form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+        <input id="name" type="text" class="md-form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="off" autofocus>
         @error('name')
             <span class="text-danger" role="alert">
                 <strong>{{ $message }}</strong>
@@ -18,7 +18,7 @@
         <label>Nombre</label>
     </div>
     <div class="md-input-wrapper">
-        <input id="email" type="email" class="md-form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+        <input id="email" type="email" class="md-form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off">
         @error('email')
             <span class="text-danger" role="alert">
                 <strong>{{ $message }}</strong>
@@ -35,7 +35,7 @@
         <label>Nombre Empresa</label>
     </div>                    
     <div class="md-input-wrapper">
-        <input id="password" type="password" class="md-form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+        <input id="password" type="password" class="md-form-control @error('password') is-invalid @enderror" name="password" required autocomplete="off">
             @error('password')
                 <span class="text-danger" role="alert">
                     <strong>{{ $message }}</strong>
@@ -44,7 +44,7 @@
         <label>Contraseña</label>
     </div>
     <div class="md-input-wrapper">
-        <input id="password-confirm" type="password" class="md-form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" required autocomplete="new-password">
+        <input id="password-confirm" type="password" class="md-form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" required autocomplete="off">
         <label>Confirmar Contraseña</label>
     </div>
     <div class="row">
@@ -61,6 +61,14 @@
 @section('js')
     <script src="{{ asset('js/jquery.mask.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
+        $( document ).ready(function() {
+            $('#name').val("");
+            $('#email').val("");
+            $('#rut').val("");
+            $('#nombre').val("");
+            $('#password').val("");
+            $('#password-confirm').val("");
+        });
         $(function() {
             $('#rut').mask('00000000-A', {reverse: true, 'translation': {A: {pattern: /[0-9Kk]/}}});
         })
