@@ -1,4 +1,3 @@
-
 @extends('Bases.dashboard')
 
 @section('css')
@@ -30,12 +29,17 @@
 <div class="form-check form-check-inline">
 	<form class="navbar-form navbar-left pull-right" method='GET' action="{{ url('requerimientos/') }}">
 		<select id="state" class="custom-select" name="state">
-			<option selected="true" disabled="disabled" value="">Escoja una opción...</option>
-			@if($user[0]->nombre == "gestor")
+			<option selected="true" disabled="disabled" value="">Escoja una opcion...</option>
+			@if($user[0]->nombre == "gestor" or $user[0]->nombre == "supervisor" or $user[0]->nombre =="administrador")
 			<option value="6">Por autorizar</option>
 			@endif
+                        @if($user[0]->nombre == "resolutor")
+                        @if($user2->lider == 1)
+                            <option value="6">Por autorizar</option>
+                        @endif			
+                        @endif                         
 			@if($user[0]->nombre == "resolutor")
-			<option value="7">Esperando autorización</option>
+			<option value="7">Esperando autorizaci&#243n</option>
 			@endif							
 			<option value="0">Inactivo</option>
 			<option value="1">Activo</option>
@@ -69,10 +73,7 @@
 			@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
 			<div class="pull-right"><a class="btn btn-success" href="{{ url('requerimientos/nuevo') }}" style="white-space: normal;"><i class="fa fa-plus"></i> Nuevo Requerimiento</a></div>
 			@endif
-                        @if($user[0]->nombre == "resolutor" and $lider == 1)
-                        <div class="pull-right"><a class="btn btn-success" href="{{ url('requerimientos/nuevo') }}" style="white-space: normal;"><i class="fa fa-plus"></i> Nuevo Requerimiento</a></div>
-                        @endif                        
-                </div>
+		</div>
 		<div class="ibox-body">	
 			<div class="table-responsive">
 				<table class="table table-bordered table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
@@ -87,7 +88,7 @@
 							@endif
 							@endif							
 							<th>Id</th>
-							<th>Requerimiento</th>
+							<th>Requerimiento/Tarea</th>
 							<th>Fecha Solicitud</th>
 							<th>Fecha Cierre</th>
 							<th>Resolutor</th>
@@ -113,71 +114,6 @@
 							@endif --}}
 						</tr>
 					</thead>
-<<<<<<< HEAD
-                    <tbody style="font-size:13px">
-                        @forelse ($requerimientos as $requerimiento)
-                        <tr>
-                            @if($state == 0 or $state == 8)
-                            <td id="tabla" scope="row">
-                                <form method="POST" action="{{ url("requerimientos/{$requerimiento->id}/activar") }}">
-                                    {{ csrf_field() }}
-                                    <button onclick="return confirm('Â¿EstÃ¡s seguro/a de activar el requerimiento?')" type="submit" value="Activar" class="btn btn-success" name="">Activar</button>
-                                </form>
-                            </td>
-                            @endif
-                            @if($state == 7)
-                            <th id="tabla" scope="row">
-                                <form method="POST" action="{{ url("requerimientos/{$requerimiento->id}/activar") }}">
-                                    {{ csrf_field() }}
-                                    <button onclick="return confirm('Â¿EstÃ¡s seguro/a de activar el requerimiento?')" type="submit" value="Nuevo Requerimiento" class="btn btn-success" name="">Activar</button>
-                                </form>
-                            </th>
-                            @endif                                                        
-                            <td style="white-space: nowrap;">
-                                <a href="{{ url("requerimientos/{$requerimiento->id}") }}">
-                                    {{ $requerimiento->id2 }}
-                                </a>					
-                            </td>
-                            <td>	
-                                {{ $requerimiento->textoRequerimiento }}
-                            </td>				
-                            <td>	
-                                {{ date('Y-m-d', strtotime($requerimiento->fechaSolicitud)) }}
-                            </td>
-                            @if($requerimiento->fechaRealCierre != "")
-                            <td>	
-                                {{ date('Y-m-d', strtotime($requerimiento->fechaRealCierre)) }}
-                            </td>
-                            @else
-                            <td>	
-                                {{ date('Y-m-d', strtotime($requerimiento->fechaCierre)) }}
-                            </td>
-                            @endif
-                            <td>								
-                                @forelse ($resolutors as $resolutor)
-                                @if ($requerimiento->resolutor == $resolutor->id)			
-                                {{ $resolutor->nombreResolutor }}
-                                @endif
-                                @empty
-                                @endforelse	
-                            </td>
-                            <td>
-                                {{ $requerimiento->porcentajeEjecutado }}
-                            </td>
-                            @if($state != 0)
-                            <td class="text-center">
-                                @if($requerimiento->status == 1)
-                                <span class="badge badge-default">Al día <i class="fa fa-circle text-success"></i></span>
-                                @elseif($requerimiento->status == 2)
-                                <span class="badge badge-default">Por Vencer <i class="fa fa-circle text-warning"></i></span>
-                                @else
-                                <span class="badge badge-default">Vencido <i class="fa fa-circle text-danger"></i></span>
-                                @endif					
-                            </td>
-                            @endif
-                            @if($state != 6 && $state !=0)
-                            <td class="text-center">
-=======
 					<tbody style="font-size:13px">
 						@forelse ($requerimientos as $requerimiento)
 						<tr>
@@ -186,7 +122,7 @@
 							<td id="tabla" scope="row">
 								<form method="POST" action="{{ url("requerimientos/{$requerimiento->id}/autorizar") }}">
 									{{ csrf_field() }}
-									<button onclick="return confirm('¿Estás seguro/a de autorizar el cierre del requerimiento?')" type="submit" value="Nuevo Requerimiento" class="btn btn-success" name="">Autorizar</button>
+									<button onclick="return confirm('�Est�s seguro/a de autorizar el cierre del requerimiento?')" type="submit" value="Nuevo Requerimiento" class="btn btn-success" name="">Autorizar</button>
 								</form>
 							</td>							
 							@endif
@@ -195,25 +131,25 @@
 							<td id="tabla" scope="row">
 								<form method="POST" action="{{ url("requerimientos/{$requerimiento->id}/activar") }}">
 									{{ csrf_field() }}
-									<button onclick="return confirm('¿Estás seguro/a de activar el requerimiento?')" type="submit" value="Nuevo Requerimiento" class="btn btn-success" name="">Activar</button>
+									<button onclick="return confirm('�Est�s seguro/a de activar el requerimiento?')" type="submit" value="Nuevo Requerimiento" class="btn btn-success" name="">Activar</button>
 								</form>
 							</td>
 							@endif
-							@if($state == 7)
-							<th id="tabla" scope="row">
-								<form method="POST" action="{{ url("requerimientos/{$requerimiento->id}/activar") }}">
-									{{ csrf_field() }}
-									<button onclick="return confirm('¿Estás seguro/a de activar el requerimiento?')" type="submit" value="Nuevo Requerimiento" class="btn btn-success" name="">Activar</button>
-								</form>
-							</th>
-							@endif							
 							<td style="white-space: nowrap;">
-								<a href="{{ url("requerimientos/{$requerimiento->id}") }}">
+                                                            @if($requerimiento->tipo == "tarea")
+                                                                <a href="{{ url("requerimientos/{$requerimiento->idRequerimiento}") }}">
+                                                            @else
+								<a href="{{ url("requerimientos/{$requerimiento->id}") }}">                                                            
+                                                            @endif
 									{{ $requerimiento->id2 }}
 								</a>					
 							</td>
 							<td>	
-								{{ $requerimiento->textoRequerimiento }}
+                                                            @if($requerimiento->tipo == "tarea")
+                                                                {{ $requerimiento->textoTarea }}
+                                                            @else
+                                                                {{ $requerimiento->textoRequerimiento }}
+                                                            @endif
 							</td>				
 							<td style="font-size:13px !important">	
 								{{ date('Y-m-d', strtotime($requerimiento->fechaSolicitud)) }}
@@ -241,7 +177,7 @@
 							@if($state != 0)
 							<td class="text-center">
 								@if($requerimiento->status == 1)
-								<span class="badge badge-default">Al día <i class="fa fa-circle text-success"></i></span>
+								<span class="badge badge-default">Al dia <i class="fa fa-circle text-success"></i></span>
 								@elseif($requerimiento->status == 2)
 								<span class="badge badge-default">Por Vencer <i class="fa fa-circle text-warning"></i></span>
 								@else
@@ -251,7 +187,6 @@
 							@endif
 							@if($state != 6 && $state !=0)
 							<td class="text-center">
->>>>>>> frontend
 								<?php
 								$conteo = 0;
 								foreach ($anidados as $anidado) {
@@ -265,31 +200,17 @@
 									echo '<span class="badge badge-danger">No</span>';
 								}
 								?>
-                            </td>
-                            @endif
-                            @if($state != 6 and $state != 7 and $state != 8 and $state != 0)
-                            <td>
-                                <div scope="row" class="btn-group">
-                                    @if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor")
-                                    @if($user[0]->nombre == "resolutor" and $res->id == $requerimiento->resolutor)
-                                    <form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/anidar") }}">
-                                        {{ csrf_field() }}
-                                        <button type="submit" class="btn btn-warning btn-sm" data-toggle="tooltip" data-original-title="Anidar" style="cursor:pointer"><i class="fa fa-compress"></i></button>
-                                    </form>
-                                    @endif
-                                    @if($user[0]->nombre == "supervisor" and $res->id == $requerimiento->resolutor)
-                                    <form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/anidar") }}">
-                                        {{ csrf_field() }}
-                                        <button type="submit" class="btn btn-warning btn-sm" data-toggle="tooltip" data-original-title="Anidar" style="cursor:pointer"><i class="fa fa-compress"></i></button>
-                                    </form>
-                                    @endif
-                                    @if($user[0]->nombre == "administrador")
-                                    <form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/anidar") }}">
-                                        {{ csrf_field() }}
-                                        <button type="submit" class="btn btn-warning btn-sm" data-toggle="tooltip" data-original-title="Anidar" style="cursor:pointer"><i class="fa fa-compress"></i></button>
-                                    </form>
-                                    @endif
-                                    @endif
+							</td>
+							@endif
+							<td>
+							<div scope="row" class="btn-group">
+                                                        @if($state != 6 and $state != 7 and $state != 0)    
+							@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
+								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/anidar") }}">
+									{{ csrf_field() }}
+									<button type="submit" class="btn btn-warning btn-sm" data-toggle="tooltip" data-original-title="Anidar" style="cursor:pointer"><i class="fa fa-compress"></i></button>
+								</form>
+							@endif						
                                     @if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor")
                                     @if($user[0]->nombre == "resolutor" and $res->id == $requerimiento->resolutor)
                                     &nbsp;
@@ -312,36 +233,36 @@
                                         <button type="submit" class="btn btn-success btn-sm btn-terminar" data-toggle="tooltip" data-original-title="Terminar" style="cursor:pointer"><i class="fa fa-check"></i></button>
                                     </form>
                                     @endif
-                                    @endif    
-                                    @if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
-                                    &nbsp;
-                                    <form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/editar") }}">
-                                        {{ csrf_field() }}
-                                        <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
-                                    </form>
-                                    @endif
-                                    @if($user[0]->nombre == "resolutor" and $lider == 1)
-                                    &nbsp;
-                                    <form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/editar") }}">
-                                        {{ csrf_field() }}
-                                        <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
-                                    </form>
-                                    @endif                                    
-                                    @if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
-                                    &nbsp;
-                                    <form method='POST' action="{{ url('/requerimientos/'.$requerimiento->id) }}">
-                                        {{ csrf_field() }}
-                                        {{ method_field('DELETE') }}						
-                                        <button type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Eliminar" style="cursor:pointer"><i class="fa fa-trash"></i></button>
-                                    </form>
-                                    @endif
-                                </div>
-                            </td>
-                            @endif        
-                        </tr>										               	
-                        @empty
-                        @endforelse
-                    </tbody>
+                                    @endif 
+							@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
+								&nbsp;
+								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/editar") }}">
+									{{ csrf_field() }}
+									<button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
+								</form>
+							@endif
+                                                        @if($user[0]->nombre == "resolutor" and $lider == 1)
+                                                        &nbsp;
+                                                        <form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/editar") }}">
+                                                        {{ csrf_field() }}
+                                                             <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
+                                                        </form>
+                                                        @endif                                            
+							@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
+								&nbsp;
+								<form method='POST' action="{{ url('/requerimientos/'.$requerimiento->id) }}">
+									{{ csrf_field() }}
+									{{ method_field('DELETE') }}						
+									<button type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Eliminar" style="cursor:pointer"><i class="fa fa-trash"></i></button>
+								</form>
+							@endif
+                                                        @endif
+							</div>
+							</td>
+						</tr>										               	
+						@empty
+						@endforelse
+					</tbody>
 				</table>
 			</div>
 		</div>
@@ -382,7 +303,7 @@
 		});
 	});
 	function confirmar(){
-		var respuesta = confirm("¿Estás seguro/a que desea activar el requerimiento?");
+		var respuesta = confirm("�Est�s seguro/a que desea activar el requerimiento?");
 		if (respuesta == true) {
 			return true;
 		} else {

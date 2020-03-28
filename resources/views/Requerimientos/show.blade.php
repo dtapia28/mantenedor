@@ -139,7 +139,7 @@
 								</tr>
 								@endif
 								</tr>
-								@if($requerimiento->rechazo != "" and $requerimiento->porcentajeEjecutado != 100)
+								@if($requerimiento->rechazo != "")
 								<tr>
 									<td><strong>Motivo rechazo</strong></td>
 									<td>{{ $requerimiento->rechazo }}</td>
@@ -153,7 +153,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<h2>Avances</h2>
-							@if($requerimiento->estado == 1 and $requerimiento->aprobacion == 3)
+							@if($requerimiento->estado == 1 and $requerimiento->aprobacion != 4)
 							@if($res->id == $requerimiento->resolutor)
 								<form method='HEAD' action="{{ url('/requerimientos/'.$requerimiento->id.'/avances/nuevo') }}">
 									<button type="submit" value="Ingresar" class="btn btn-primary" name="" style="cursor:pointer"><i class="fa fa-plus"></i> Ingresar</button>
