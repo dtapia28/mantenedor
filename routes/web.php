@@ -553,6 +553,8 @@ Route::post('/dashboard/getReqSolicitanteByEstado', 'DashboardController@getReqS
 Route::post('/dashboard/getReqResolutorByEstado', 'DashboardController@getReqResolutorByEstado')->name('getReqResolutorByEstado');
 Route::post('/dashboard/getReqResolutorGralByEstado', 'DashboardController@getReqResolutorGralByEstado')->name('getReqResolutorGralByEstado');
 Route::post('/dashboard/getReqSolicitanteGralByEstado', 'DashboardController@getReqSolicitanteGralByEstado')->name('getReqSolicitanteGralByEstado');
+
+Route::get('/indicadores', 'IndicadoresController@index')->name('indicadores');
 /* ************************** */
 
 Route::get('/clear_cache', function()
