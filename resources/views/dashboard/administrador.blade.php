@@ -1,5 +1,5 @@
 @section('css')
-	<link href="{{ asset('vendor/DataTables/datatables.min.css') }}" rel="stylesheet" />
+	<link href="{{ asset('vendor/DataTables/Excel/datatables.min.css') }}" rel="stylesheet" />
 @endsection
 
 <div class="ibox">
@@ -65,7 +65,7 @@
 </div>
 
 @section('scripts_dash')
-	<script src="{{ asset('vendor/DataTables/datatables.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('vendor/DataTables/Excel/datatables.min.js') }}" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$.ajaxSetup({
@@ -81,7 +81,6 @@
 				@endif
 			@endisset
 		});
-
 		<?php
 			$equipos = "";
 			foreach((array)$data["arrayEquipos"] as $item) { $equipos .= "'".$item."',"; }
@@ -212,11 +211,25 @@
 						},
 						complete: function() {
 							$('#tablaModal').DataTable({
+								"dom": '<"row"<"col-md-6 text-left"l><"col-md-6 text-right"f>><rt><"row"<"col-md-4 d-flex"p><"col-md-4 text-center"B><"col-md-4 text-right"i>>',
 								"language": {
 									"url": "{{ asset('vendor/DataTables/lang/spanish.json') }}"
 								},
 								pageLength: 10,
 								stateSave: true,
+								"buttons": [
+									{
+										"extend": 'excelHtml5',
+										"className": 'btn btn-success',
+										"text": '<i class="fa fa-file-excel-o"></i> XLS',
+										"messageTop": 'Requerimientos por Equipo',
+										"exportOptions": {
+											"modifier": {
+												"page": 'all'
+											}
+										}
+									},
+								],
 							});
 						},
 						error: function (data) {
@@ -276,7 +289,7 @@
 		var numEquipos = <?=count((array)$data["arrayEquipos"])?>;
 		<?php
 			$cerradosAlDiaPorEq = "";
-			foreach((array)$data["porcentajeEquipoAlDia"] as $item) {$cerradosAlDiaPorEq .= "'".$item."',"; }
+                            foreach((array)$data["porcentajeEquipoAlDia"] as $item) {$cerradosAlDiaPorEq .= "'".$item."',"; }
 			$cerradosAlDiaPorEq = substr($cerradosAlDiaPorEq, 0, strlen($cerradosAlDiaPorEq)-1);
 		?>
 		var cerradosAlDiaPorEq = [<?=$cerradosAlDiaPorEq?>];

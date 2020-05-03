@@ -106,6 +106,7 @@
     <script type="text/javascript" src="{{ asset('vendor/fusioncharts/js/themes/fusioncharts.theme.fusion.js') }}"></script>
     <script type="text/javascript">
         menu_activo('mTablero');
+
         function validarTipo(valor) {
             if (valor=='por_rango') {
                 $('#fec_des').prop('disabled', false);
@@ -117,6 +118,7 @@
                 $('#fec_has').prop('disabled', true);
             }
         }
+
         $(function () {
             $('#fec_des').datetimepicker({
                 locale: 'es',

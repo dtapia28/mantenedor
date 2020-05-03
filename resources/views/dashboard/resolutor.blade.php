@@ -1,5 +1,5 @@
 @section('css')
-	<link href="{{ asset('vendor/DataTables/datatables.min.css') }}" rel="stylesheet" />
+	<link href="{{ asset('vendor/DataTables/Excel/datatables.min.css') }}" rel="stylesheet" />
 @endsection
 
 <div class="row">
@@ -67,7 +67,6 @@
 							$cerradosPorc = number_format(($data["cerrados"] * 100 / $totales), 2, ',', '.');
 							$vencidosPorc = number_format(($data["vencido"] * 100 / $totales), 2, ',', '.');
 							$vencerPorc = number_format(($data["vencer"] * 100 / $totales), 2, ',', '.');
-
 							$abiertosPorc2 = number_format(($data["abiertos"] * 100 / $totales), 0, ',', '.');
 							$cerradosPorc2 = number_format(($data["cerrados"] * 100 / $totales), 0, ',', '.');
 							$vencidosPorc2 = number_format(($data["vencido"] * 100 / $totales), 0, ',', '.');
@@ -182,7 +181,7 @@
 	</div>
 </div>
 @section('scripts_dash')
-	<script src="{{ asset('vendor/DataTables/datatables.min.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('vendor/DataTables/Excel/datatables.min.js') }}" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$.ajaxSetup({
@@ -268,11 +267,25 @@
 						},
 						complete: function() {
 							$('#tablaModalDona').DataTable({
+								"dom": '<"row"<"col-md-6 text-left"l><"col-md-6 text-right"f>><rt><"row"<"col-md-4 d-flex"p><"col-md-4 text-center"B><"col-md-4 text-right"i>>',
 								"language": {
 									"url": "{{ asset('vendor/DataTables/lang/spanish.json') }}"
 								},
 								pageLength: 10,
 								stateSave: true,
+								"buttons": [
+									{
+										"extend": 'excelHtml5',
+										"className": 'btn btn-success',
+										"text": '<i class="fa fa-file-excel-o"></i> XLS',
+										"messageTop": 'Requerimientos por Resolutor',
+										"exportOptions": {
+											"modifier": {
+												"page": 'all'
+											}
+										}
+									},
+								],
 							});
 						},
 						error: function (data) {
@@ -333,7 +346,8 @@
 		});
 		
 		$("#chart-apilado").insertFusionCharts({
-			type: "stackedcolumn3d",
+			// type: "stackedcolumn3d",
+			type: "scrollstackedcolumn2d",
 			width: "100%",
 			height: "100%",
 			dataFormat: "json",
@@ -343,6 +357,8 @@
 					subcaption: "Por Estatus",
 					numvisibleplot: "6",
 					showvalues: "1",
+					scrollheight: "12",
+					numvisibleplot: "6",
 					decimals: "0",
 					// stack100percent: "1",
 					valuefontcolor: "#FFFFFF",
@@ -380,10 +396,7 @@
 					var estado = e.data.datasetName;
 					var valor = e.data.dataValue;
 					var codEstado;
-<<<<<<< HEAD
-=======
 					
->>>>>>> frontend
 					$("#dataModalSol").modal("show");
 					$("#solicitanteModalSol").text(solicitante);
 					$("#estadoModalSol").text(estado);
@@ -418,11 +431,25 @@
 						},
 						complete: function() {
 							$('#tablaModalSol').DataTable({
+								"dom": '<"row"<"col-md-6 text-left"l><"col-md-6 text-right"f>><rt><"row"<"col-md-4 d-flex"p><"col-md-4 text-center"B><"col-md-4 text-right"i>>',
 								"language": {
 									"url": "{{ asset('vendor/DataTables/lang/spanish.json') }}"
 								},
 								pageLength: 10,
 								stateSave: true,
+								"buttons": [
+									{
+										"extend": 'excelHtml5',
+										"className": 'btn btn-success',
+										"text": '<i class="fa fa-file-excel-o"></i> XLS',
+										"messageTop": 'Requerimientos por Solicitante',
+										"exportOptions": {
+											"modifier": {
+												"page": 'all'
+											}
+										}
+									},
+								],
 							});
 						},
 						error: function (data) {

@@ -37,4 +37,3 @@ class TableroController extends Controller
     	return view('dashboard.index', compact('user', 'resolutor_lider', 'data', 'valores'));
     }
 }
-

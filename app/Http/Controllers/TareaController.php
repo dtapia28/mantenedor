@@ -197,11 +197,9 @@ class TareaController extends Controller
     public function destroy(Request $request)
     {
         $tarea = Tarea::where('id', $request->tarea)->first();
-        $data = [
-            'estado' => 0,
-        ];
 
-        $tarea->update($data);
+
+        $tarea->delete();
 
         return redirect(url("requerimientos/$request->req"));        
     }

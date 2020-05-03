@@ -183,6 +183,9 @@ Route::put('/requerimientos/{requerimiento}/avances/{avance}', 'AvanceController
 Route::post('/requerimientos/{requerimiento}/activar', 'RequerimientoController@activar')
 	->middleware('auth');
 
+Route::get('/requerimientos/{requerimiento}/log', 'RequerimientoController@ver_log')
+	->middleware('auth');
+
 Route::post('/requerimientos/{requerimiento}/autorizar', 'RequerimientoController@autorizar')
 	->middleware('auth');		
 
@@ -555,6 +558,8 @@ Route::post('/dashboard/getReqSolicitanteByEstado', 'DashboardController@getReqS
 Route::post('/dashboard/getReqResolutorByEstado', 'DashboardController@getReqResolutorByEstado')->name('getReqResolutorByEstado');
 Route::post('/dashboard/getReqResolutorGralByEstado', 'DashboardController@getReqResolutorGralByEstado')->name('getReqResolutorGralByEstado');
 Route::post('/dashboard/getReqSolicitanteGralByEstado', 'DashboardController@getReqSolicitanteGralByEstado')->name('getReqSolicitanteGralByEstado');
+Route::get('/indicadores', 'IndicadoresController@index')->name('indicadores');
+
 /* ************************** */
 
 Route::get('/clear_cache', function()
@@ -571,4 +576,6 @@ Route::get('/clear_cache', function()
 
 Route::get('/redirect', 'Auth\LoginController@redirectToProvider');
 Route::get('/callback', 'Auth\LoginController@handleProviderCallback');
+
+Route::post('/requerimientos/{requerimiento}/mail_info', 'RequerimientoController@mail_info');
 
