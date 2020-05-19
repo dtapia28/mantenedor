@@ -147,6 +147,7 @@ class ExtraerController extends Controller
                     $base1 = DB::table('requ_view')->where([
                         ['rutEmpresa', auth()->user()->rutEmpresa],
                         ['estado', 1],
+                        ['porcentajeEjecutado', '<', 100],
                         ['teamId', $equipo->id],
                     ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
 
@@ -159,7 +160,11 @@ class ExtraerController extends Controller
 
                         } else
                         {
-                            $cierre = new DateTime($req2['Fecha de cierre']);
+                            if($requerimiento['fechaRealCierre'] != ""){
+                                $cierre = new Datetime($requerimiento['fechaRealCierre']);
+                            } else {
+                                $cierre = new DateTime($requerimiento['fechaCierre']);
+                            }
                             if ($hoy->getTimestamp()>$cierre->getTimestamp()) 
                             {
                                 $req2 = (object)$req2;
@@ -206,7 +211,11 @@ class ExtraerController extends Controller
 
                         } else
                         {
-                            $cierre = new DateTime($req2['Fecha de cierre']);
+                            if($req2['Fecha real de cierre'] != ""){
+                                $cierre = new Datetime($req2['Fecha real de cierre']);
+                            } else {
+                                $cierre = new DateTime($req2['Fecha de cierre']);
+                            }
                             if ($hoy->getTimestamp()>$cierre->getTimestamp()) 
                             {
                                 $req2 = (object)$req2;
