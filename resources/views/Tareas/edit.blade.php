@@ -28,6 +28,10 @@
                             <input value="{{ $cierre }}" class="form-control col-md-12" type="date" name="fechaCierre">
                         </div>
                         <div class="col-sm-6 form-group">
+                            <label class="" for="textoRequerimiento">Título Tarea</label>
+                            <textarea id="titulo_tarea" class="form-control col-md-12" name="titulo_tarea" placeholder="Título Tarea" rows="1" cols="50">{{ $tarea->titulo_tarea }}</textarea>
+                        </div>                         
+                        <div class="col-sm-6 form-group">
                             <label for="texto">Tarea:</label>
                             <textarea class="form-control col-md-12" name="texto" placeholder="Tarea" rows="5" cols="50">{{ $tarea->textoTarea }}</textarea>
                             <input type="hidden" name="tarea" value={{$tarea->id}}>

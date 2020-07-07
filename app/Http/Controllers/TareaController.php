@@ -51,18 +51,20 @@ class TareaController extends Controller
             'fechaSolicitud' => 'required',
             'fechaCierre' => 'required',
             'texto' => 'required',
+            'titulo' => 'required',
             'idResolutor' => 'required',
             'idRequerimiento' => 'required'],
             ['fechaSolicitud.required' => 'La fecha de solicitud es obligatoria'],
             ['fechaCierre.required' => 'La fecha de cierre es obligatoria'],
-            ['texto.required' => 'El texto de la tarea es obligatorio']);            
+            ['texto.required' => 'El texto de la tarea es obligatorio']);
+        
 
         $fechaSoli = new DateTime($data['fechaSolicitud']);
         $fechaCie = new DateTime($data['fechaCierre']);
         if ($fechaCie->getTimestamp() >= $fechaSoli->getTimestamp()) 
         {
             $formato = "0";
-            $requerimiento = Requerimiento::where('id', $data['idRequerimiento'])->get();
+            $requerimiento = Requerimiento::where('id', $data['idRequerimiento'])->first();
             $tareasReq = Tarea::where('idRequerimiento', $data['idRequerimiento'])->count();
             if ($tareasReq >= 0) {
                 $tareasReq++;
@@ -72,12 +74,33 @@ class TareaController extends Controller
             }
             Tarea::create([
                 'textoTarea' => $data['texto'],
+                'titulo_tarea' => $data['titulo'],
                 'fechaSolicitud' => $data['fechaSolicitud'],
                 'fechaCierre' => $data['fechaCierre'],
                 'idRequerimiento' => $data['idRequerimiento'],
                 'resolutor' => $data['idResolutor'],
-                'id2' => $requerimiento['0']->id2."-".$formato,
+                'id2' => $requerimiento->id2."-".$formato,
             ]);
+        }
+        if($requerimiento->fechaRealCierre != ""){
+            $fecha_cierre = new DateTime($requerimiento->fechaRealCierre);
+            if($fechaCie->getTimestamp() > $fecha_cierre->getTimestamp()){
+                $data = [
+                  'fechaRealCierre' => $fechaCie,  
+                ];
+                
+                $requerimiento->update($data);
+            }
+        } else {
+            $fecha_cierre = new DateTime($requerimiento->fechaCierre);
+            if($fechaCie->getTimestamp() > $fecha_cierre->getTimestamp())
+            {
+                $data = [
+                  'fechaRealCierre' => $fechaCie,  
+                ];
+                
+                $requerimiento->update($data);                
+            }
         }
 
         return redirect(url("requerimientos/$request->idRequerimiento"));        
@@ -140,9 +163,34 @@ class TareaController extends Controller
             'fechaSolicitud' => $request->fechaSolicitud,
             'fechaCierre' => $request->fechaCierre,
             'textoTarea' => $request->texto,
+            'titulo_tarea' => $request->titulo_tarea,
         ];
+        
+        $tarea->update($data);        
 
-        $tarea->update($data);
+        $requerimiento = Requerimiento::where('id', $tarea->idRequerimiento)->first();        
+
+        $fechaCie = new DateTime($data['fechaCierre']);
+        if($requerimiento->fechaRealCierre != ""){
+            $fecha_cierre = new DateTime($requerimiento->fechaRealCierre);
+            if($fechaCie->getTimestamp() > $fecha_cierre->getTimestamp()){
+                $data = [
+                  'fechaRealCierre' => $fechaCie,  
+                ];
+                
+                $requerimiento->update($data);
+            }
+        } else {
+            $fecha_cierre = new DateTime($requerimiento->fechaCierre);
+            if($fechaCie->getTimestamp() > $fecha_cierre->getTimestamp())
+            {
+                $data = [
+                  'fechaRealCierre' => $fechaCie,  
+                ];
+                
+                $requerimiento->update($data);                
+            }
+        }
 
         return redirect(url("requerimientos/$request->req"));
     }
@@ -156,13 +204,50 @@ class TareaController extends Controller
             ['idRequerimiento', $requerimiento->id],
             ['estado', 1],
         ])->get();
-        $cTareas = count($tareas);
+        
+        $cTareas = 0;
+        foreach ($tareas as $tarea){
+            $fecha_solicitud = new DateTime($tarea->fechaSolicitud);
+            $fecha_solicitud = $fecha_solicitud->modify("-1 days");
+            $fecha_cierre = new DateTime($tarea->fechaCierre);
+            $variable = 0;
+            while ($fecha_solicitud->getTimestamp() < $fecha_cierre->getTimestamp())
+            {
+                if ($fecha_solicitud->format('l') == 'Saturday' or $fecha_solicitud->format('l') == 'Sunday') {
+                    $fecha_solicitud->modify("+1 days");               
+                }else{
+                    $variable++;
+                    $fecha_solicitud->modify("+1 days");                       
+                }                    
+            }
+            
+            $cTareas = $cTareas + $variable;
+        }
+        
+        $tarea = Tarea::where('id', $request->tarea)->first();
+        $fecha_solicitud = new DateTime($tarea->fechaSolicitud);
+        $fecha_solicitud = $fecha_solicitud->modify("-1 days");
+        $fecha_cierre = new DateTime($tarea->fechaCierre);
+
+        $variable2 = 0;
+        while ($fecha_solicitud->getTimestamp() < $fecha_cierre->getTimestamp())
+        {
+            if ($fecha_solicitud->format('l') == 'Saturday' or $fecha_solicitud->format('l') == 'Sunday') {
+                $fecha_solicitud->modify("+1 days");               
+            }else{
+                $variable2++;
+                $fecha_solicitud->modify("+1 days");                       
+            }                    
+        }
+
+        $cTareas = ($variable2/$cTareas);
+        
         if($requerimiento->porcentajeEjecutado == null or $requerimiento->porcentajeEjecutado == 0)
         {
-            $porcentaje = 100/$cTareas;
+            $porcentaje = 100*$cTareas;
         } else
         {
-            $porcentaje = $requerimiento->porcentajeEjecutado+((100-$requerimiento->porcentajeEjecutado)/$cTareas);
+            $porcentaje = 100*$cTareas;
         }
         
         $data = [
@@ -175,8 +260,15 @@ class TareaController extends Controller
             if ($user[0]->nombre == "resolutor") {
                 $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
                 $lider = $resolutor->lider;           
-            }       
-            return view('Requerimientos.terminado', compact('requerimiento', 'user', 'lider'));            
+            }
+
+            if($requerimiento->fechaRealCierre != null){
+                $fecha = new DateTime($requerimiento->fechaRealCierre);
+            } else {
+                $fecha = new DateTime($requerimiento->fechaCierre);
+            }
+            
+            return view('Requerimientos.terminado', compact('requerimiento', 'user', 'lider', 'fecha'));            
         } else
         {
             $data = [

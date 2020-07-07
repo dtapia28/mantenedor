@@ -286,6 +286,7 @@
                                     <thead>
                                         <tr>
                                             <th>N°</th>
+                                            <th>Título</th>
                                             <th>Tarea</th>
                                             <th>Solicitud</th>
                                             <th>Cierre</th>
@@ -298,14 +299,20 @@
                                         @forelse ($tareas as $tarea)	
                                         <tr>
                                             @if($tarea->estado == 1 or $tarea->estado == 2)
-                                            <td>{{ $tarea->id2 }}</td>	
-                                            <td>{{ $tarea->textoTarea }}</td>
+                                            <td>{{ $tarea->id2 }}</td>
+                                            <td>{{ $tarea->titulo_tarea }}</td>
+                                            <td style="max-width: 500px; overflow-wrap: break-word;">{{ $tarea->textoTarea }}</td>
                                             <td>{{date('d-m-Y', strtotime($tarea->fechaSolicitud)) }}</td>
                                             <td>{{date('d-m-Y', strtotime($tarea->fechaCierre)) }}</td>
                                             @endif
                                             @if($tarea->estado == 1 or $tarea->estado == 2)				
-                                            <td>	
-                                                {{ $resolutor2->nombreResolutor }}	
+                                            <td>
+                                                @forelse ($resolutores as $resolutor)
+                                                    @if($tarea->resolutor == $resolutor->id)
+                                                        {{ $resolutor->nombreResolutor }}
+                                                    @endif
+                                                @empty    
+                                                @endforelse    
                                             </td>
                                             <td>			
                                                 @if($tarea->estado == 1)

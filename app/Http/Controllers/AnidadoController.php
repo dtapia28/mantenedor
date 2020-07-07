@@ -6,6 +6,8 @@ use App\Anidado;
 use App\Requerimiento;
 use App\Resolutor;
 use App\Team;
+use App\Avance;
+use App\Tarea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -43,12 +45,15 @@ class AnidadoController extends Controller
     {        
         $data = request()->validate([            
             'anidar' => 'nullable',            
-            'requerimiento' => 'nullable']);        
+            'requerimiento' => 'nullable']);
+        
+        dd($data);
         
         Anidado::create([            
             'idRequerimientoAnexo' => $data['anidar'],            
             'idRequerimientoBase' => $data['requerimiento'],        
-            ]);        
+        ]);
+        
         
         return redirect(url("requerimientos/$request->requerimiento"));    
         
@@ -93,8 +98,9 @@ class AnidadoController extends Controller
     }    
     
     public function anidara (Request $request)    
-    {        
-        $idReq = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)->get('id');        
+    {   
+        //dd($request);
+        $idReq = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)->get('id');
         $nReq = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)->count();        
         $nReq++;        
         
@@ -108,8 +114,48 @@ class AnidadoController extends Controller
                         Anidado::create([                            
                             'idRequerimientoAnexo' => $id->id,                            
                             'idRequerimientoBase' => $request->requerimiento,                        
-                            ]);                    
+                            ]);
                         
+                        //Traigo los 2 requerimientos: anexado y req base
+                        $anexo = Requerimiento::where('id', $id->id)->first();
+                        $base = Requerimiento::where('id', $request->requerimiento)->first();
+                        
+                        //Avances de requerimiento anexado
+                        
+                        $avances = Avance::where('idRequerimiento', $anexo->id)->get();
+                        
+                        //Tareas de requerimiento anexado
+                        
+                        $tareas = Tarea::where('idRequerimiento', $anexo->id)->get();
+                        
+                        
+                        //Opción 1
+                        
+                        foreach ($avances as $avance)
+                        {
+                            Avance::create([
+                                'textAvance' => $avance->textAvance." Avance de requerimiento anidado.",
+                                'fechaAvance' => $avance->fechaAvance,
+                                'idRequerimiento' => $base->id                                
+                            ]);
+                            
+                            $avance->delete();
+                        }
+                        
+                        $data = [
+                            'estado' => 0,
+                        ];
+                        
+                        DB::table('requerimientos')->where('id', $anexo->id)->update($data);
+                        
+                        foreach ($tareas as $tarea)
+                        {
+                            $data = [
+                                'idRequerimiento' => $base->id,
+                            ];
+                            
+                            $tarea->update($data);
+                        }
                     }                
                 }            
             }                  

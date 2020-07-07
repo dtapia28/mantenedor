@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b1727de081d763c12d247ca5339a26d",
+    "content-hash": "a4ff95dbbd493bbc65ecf1f266591599",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -607,6 +607,7 @@
                     "email": "jakub.onderka@gmail.com"
                 }
             ],
+            "abandoned": "php-parallel-lint/php-console-color",
             "time": "2018-09-29T17:23:10+00:00"
         },
         {
@@ -653,6 +654,7 @@
                 }
             ],
             "description": "Highlight PHP code in terminal",
+            "abandoned": "php-parallel-lint/php-console-highlighter",
             "time": "2018-09-29T18:48:56+00:00"
         },
         {
@@ -3238,16 +3240,16 @@
         },
         {
             "name": "twilio/sdk",
-            "version": "6.0.1",
+            "version": "6.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twilio/twilio-php.git",
-                "reference": "89381f6fa4400e7b0592755b383e204782fa9cc4"
+                "reference": "eba44af458c63227acc9a2449f21733a6f72ce86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/89381f6fa4400e7b0592755b383e204782fa9cc4",
-                "reference": "89381f6fa4400e7b0592755b383e204782fa9cc4",
+                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/eba44af458c63227acc9a2449f21733a6f72ce86",
+                "reference": "eba44af458c63227acc9a2449f21733a6f72ce86",
                 "shasum": ""
             },
             "require": {
@@ -3284,7 +3286,7 @@
                 "sms",
                 "twilio"
             ],
-            "time": "2020-03-04T22:01:47+00:00"
+            "time": "2020-05-27T19:28:33+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
