@@ -43,7 +43,14 @@
                                     </span>
                                 @enderror
                             </div>
-                        </div>                        
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label for="n_telefono" class="col-md-2 col-form-label text-md-right">Número Teléfono</label>
+                            <div class="col-md-4">
+                                <input id="n_telefono" type="text" title="Si es que desea que el sistema le pueda enviar mensajes via WhatsApp." class="md-form-control @error('n_telefono') no es valido @enderror" name="n_telefono" value="{{ old('n_telefono') }}">
+                            </div>
+                        </div>                         
             
                         <div class="form-group row">
                             <label for="email" class="col-md-2 col-form-label text-md-right">{{ __('E-Mail') }}</label>

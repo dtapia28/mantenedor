@@ -71,8 +71,8 @@ class ExtraerController extends Controller
         $total = count($requerimientos);
         $hoy = new DateTime();
         $texto = "
-        <p style = 'font-family:verdana; font-size:10pt;'  align='center'><strong>Informe de requerimientos por solicitante</strong></p>
-        <p style = 'font-family:verdana; font-size:9pt;'  align='center'><strong>".$hoy->format('d-m-Y')."</strong></p>
+        <p style = 'font-family:verdana; font-size:10pt;'  align='center'><strong>Informe de requerimientos por solicitante</strong>\n
+        <br><strong>".$hoy->format('d-m-Y')."</strong></p>
         <p style = 'font-family:verdana; font-size:9pt;'>".$solicitante->nombreSolicitante." tiene un total de ".$total." requerimientos activos en el sistema.</p>
         <p style ='font-family:verdana; font-size:9pt;'>El estado de sus requerimientos es el siguiente: </p>
         <table style ='font-family:verdana; font-size:9pt;' border='1'>
@@ -82,16 +82,16 @@ class ExtraerController extends Controller
             <td><strong>Fecha Solicitud</strong></td>
             <td><strong>Fecha Cierre</strong></td>
             <td><strong>Resolutor</strong></td>
-            <td><strong>".utf8_decode("Último Avance")."</strong></td>
+            <td><strong>".utf8_decode("&#218ltimo Avance")."</strong></td>
         </tr>";
         foreach ($requerimientos as $req) {
-            $id2 = substr($req->id2,4,7);
+            $id2 = substr($req->id2,3,7);
             $avance = Avance::where('idRequerimiento', $req->id)->latest()->first();
             $texto.="<tr align='justify'; style = 'font-family:verdana; font-size:9pt;'>";
             $texto.="<td>".$id2."</td>";
             $texto.="<td>".utf8_decode($req->textoRequerimiento)."</td>";
-            $texto.="<td>".date('d-m-Y', strtotime($req->fechaSolicitud))."</td>";
-            $texto.="<td>".date('d-m-Y', strtotime($req->fechaCierre))."</td>";
+            $texto.="<td align='center'>".date('d-m-Y', strtotime($req->fechaSolicitud))."</td>";
+            $texto.="<td align='center'>".date('d-m-Y', strtotime($req->fechaCierre))."</td>";
             foreach ($resolutores as $resolutor) {
                 if ($resolutor->id == $req->resolutor) {
                     $texto.="<td>".utf8_decode($resolutor->nombreResolutor)."</td>";
@@ -147,8 +147,13 @@ class ExtraerController extends Controller
                     $base1 = DB::table('requ_view')->where([
                         ['rutEmpresa', auth()->user()->rutEmpresa],
                         ['estado', 1],
+                        ['porcentajeEjecutado', '<', 100],
                         ['teamId', $equipo->id],
-                    ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+                    ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email',
+                        'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre',
+                        'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado',
+                        'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor',
+                        'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
 
                     $base = [];
                     $hoy = new DateTime();
@@ -156,10 +161,23 @@ class ExtraerController extends Controller
                     {
                         $req2 = (array) $req2;
                         if ($req2['Fecha de cierre'] == "9999-12-31 00:00:00") {
-
+                            if($req2['Fecha real de cierre'] != ""){
+                                $cierre = new DateTime($req2['Fecha real de cierre']);
+                                
+                                if ($hoy->getTimestamp()>$cierre->getTimestamp()) 
+                                {
+                                    $req2 = (object)$req2;
+                                    
+                                    $base [] = $req2;
+                                }                                
+                            }
                         } else
                         {
-                            $cierre = new DateTime($req2['Fecha de cierre']);
+                            if($req2['Fecha real de cierre'] != ""){
+                                $cierre = new Datetime($req2['Fecha real de cierre']);
+                            } else {
+                                $cierre = new DateTime($req2['Fecha de cierre']);
+                            }
                             if ($hoy->getTimestamp()>$cierre->getTimestamp()) 
                             {
                                 $req2 = (object)$req2;
@@ -195,6 +213,7 @@ class ExtraerController extends Controller
                     $base1 = DB::table('requ_view')->where([
                         ['rutEmpresa', auth()->user()->rutEmpresa],
                         ['estado', 1],
+                        ['porcentajeEjecutado', '<', 100],
                     ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
 
                     $base = [];
@@ -203,10 +222,23 @@ class ExtraerController extends Controller
                     {
                         $req2 = (array) $req2;
                         if ($req2['Fecha de cierre'] == "9999-12-31 00:00:00") {
-
+                            if($req2['Fecha real de cierre'] != ""){
+                                $cierre = new DateTime($req2['Fecha real de cierre']);
+                                
+                                if ($hoy->getTimestamp()>$cierre->getTimestamp()) 
+                                {
+                                    $req2 = (object)$req2;
+                                    
+                                    $base [] = $req2;
+                                }                                
+                            }
                         } else
                         {
-                            $cierre = new DateTime($req2['Fecha de cierre']);
+                            if($req2['Fecha real de cierre'] != ""){
+                                $cierre = new Datetime($req2['Fecha real de cierre']);
+                            } else {
+                                $cierre = new DateTime($req2['Fecha de cierre']);
+                            }
                             if ($hoy->getTimestamp()>$cierre->getTimestamp()) 
                             {
                                 $req2 = (object)$req2;

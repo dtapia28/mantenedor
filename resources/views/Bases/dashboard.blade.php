@@ -1,3 +1,4 @@
+  
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -96,8 +97,15 @@
 				<ul class="side-menu metismenu">
 					@if(in_array($user[0]->nombre, ["supervisor", "administrador", "solicitante", "resolutor"]))
 					<li id="mTablero">
-						<a class="active" href="{{ route('tablero') }}"><i class="sidebar-item-icon fa fa-th-large"></i>
+						<a class="active" href="{{ route('tablero') }}"><i class="sidebar-item-icon fa fa-th"></i>
 							<span class="nav-label">Tablero</span>
+						</a>
+					</li>
+					@endif
+					@if(in_array($user[0]->nombre, ["administrador"]))
+					<li id="mIndicadores">
+						<a href="{{ route('indicadores') }}"><i class="sidebar-item-icon fa fa-tachometer"></i>
+							<span class="nav-label">Indicadores</span>
 						</a>
 					</li>
 					@endif

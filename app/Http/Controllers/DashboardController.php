@@ -231,12 +231,6 @@ class DashboardController extends Controller
         return view('dashboard.red', compact('requerimientosRed', 'resolutors', 'teams', 'solicitantes', 'user'));              
     }
     
-<<<<<<< HEAD
-    public function getReqEquipoByEstado($equipo, $estado) {
-        $data = DB::select('SELECT id, id2, textoRequerimiento, DATE_FORMAT(fechaSolicitud, "%d/%m/%Y") fechaSolicitud, DATE_FORMAT(fechaCierre, "%d/%m/%Y") fechaCierre, nombreResolutor, porcentajeEjecutado
-                            FROM requerimientos_equipos
-                            WHERE nameTeam LIKE ? AND estado = ?', [$equipo, $estado]);
-=======
     public function getReqEquipoByEstado(Request $request) {
         $rango_fecha = $request->rango_fecha;
         if ($request == null || $request == "") {
@@ -275,7 +269,7 @@ class DashboardController extends Controller
                             FROM requerimientos a
                             JOIN resolutors b ON a.resolutor=b.id
                             JOIN teams c ON b.idTeam=c.id
-                            WHERE c.nameTeam LIKE ? AND a.estado = ? AND a.fechaSolicitud BETWEEN ? AND ?', [$request->equipo, 1, $desde, $hasta]);
+                            WHERE c.nameTeam LIKE ? AND a.estado = ? AND a.aprobacion = 3 AND a.fechaSolicitud BETWEEN ? AND ?', [$request->equipo, 1, $desde, $hasta]);
         $req = collect($sqlReq);
         
         $alDia = 0;
@@ -338,7 +332,6 @@ class DashboardController extends Controller
             default: break;
         }
 
->>>>>>> frontend
         $records = ['respuesta' => true, 'req' => $data];
         return response()->json($records, 200);
     }
@@ -381,7 +374,7 @@ class DashboardController extends Controller
                             FROM requerimientos a
                             JOIN resolutors b ON a.resolutor=b.id
                             JOIN solicitantes c ON a.idSolicitante=c.id
-                            WHERE c.nombreSolicitante LIKE ? AND a.estado = ? AND a.fechaSolicitud BETWEEN ? AND ?', [$request->solicitante, 1, $desde, $hasta]);
+                            WHERE c.nombreSolicitante LIKE ? AND a.estado = ? AND a.aprobacion = 3 AND a.fechaSolicitud BETWEEN ? AND ?', [$request->solicitante, 1, $desde, $hasta]);
         $req = collect($sqlReq);
         
         $alDia = 0;
@@ -485,7 +478,7 @@ class DashboardController extends Controller
         $sqlReq = DB::select('SELECT a.id, a.id2, a.textoRequerimiento, DATE_FORMAT(a.fechaSolicitud, "%d/%m/%Y") fechaSolicitud, DATE_FORMAT(a.fechaCierre, "%d/%m/%Y") fechaCierreF, a.fechaCierre, b.nombreResolutor, a.porcentajeEjecutado
                             FROM requerimientos a
                             JOIN resolutors b ON a.resolutor=b.id
-                            WHERE b.nombreResolutor LIKE ? AND a.estado = ? AND a.fechaSolicitud BETWEEN ? AND ?', [$request->resolutor, 1, $desde, $hasta]);
+                            WHERE b.nombreResolutor LIKE ? AND a.estado = ? AND a.aprobacion = 3 AND a.fechaSolicitud BETWEEN ? AND ?', [$request->resolutor, 1, $desde, $hasta]);
         
         $req = collect($sqlReq);
         
@@ -586,11 +579,11 @@ class DashboardController extends Controller
                     break;
             }
         }
-
+        
         $sqlReq = DB::select('SELECT a.id, a.id2, a.textoRequerimiento, DATE_FORMAT(a.fechaSolicitud, "%d/%m/%Y") fechaSolicitud, DATE_FORMAT(a.fechaCierre, "%d/%m/%Y") fechaCierreF, a.fechaCierre, b.nombreResolutor, a.porcentajeEjecutado
                             FROM requerimientos a
                             JOIN resolutors b ON a.resolutor=b.id
-                            WHERE b.idUser = ? AND a.estado = ? AND a.fechaSolicitud BETWEEN ? AND ?', [auth()->user()->id, 1, $desde, $hasta]);
+                            WHERE b.idUser = ? AND a.estado = ? AND a.aprobacion = 3 AND a.fechaSolicitud BETWEEN ? AND ?', [auth()->user()->id, 1, $desde, $hasta]);
         $req = collect($sqlReq);
         
         $alDia = 0;
@@ -695,7 +688,7 @@ class DashboardController extends Controller
                             FROM requerimientos a
                             JOIN resolutors b ON a.resolutor=b.id
                             JOIN solicitantes c ON a.idSolicitante=c.id
-                            WHERE c.idUser = ? AND a.estado = ?', [auth()->user()->id, 1]);
+                            WHERE c.idUser = ? AND a.aprobacion = 3 AND a.estado = ?', [auth()->user()->id, 1]);
 
         $req = collect($sqlReq);
                 

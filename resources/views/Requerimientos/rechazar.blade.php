@@ -32,10 +32,17 @@
                             <label for="cierre">Motivo del rechazo</label>
                             <textarea class="form-control col-md-12" name="rechazo" placeholder="Texto del rechazo" rows="5" cols="50" required></textarea>
                             <input type="hidden" value="{{$requerimiento}}" name="requerimiento" id="requerimiento">
+<<<<<<< HEAD
                             <input type="hidden" value="" name="fActivo" id="fActivo">
                             <input type="hidden" value="" name="fState" id="fState">
                             <input type="hidden" value="" name="fValor" id="fValor">
                             <input type="hidden" value="" name="fSolicitante" id="fSolicitante">
+=======
+                            <input type="hidden" value="{{$estado}}" name="fActivo" id="fActivo">
+                            <input type="hidden" value="" name="fState" id="fState">
+                            <input type="hidden" value="" name="fValor" id="fValor">
+                            <input type="hidden" value="" name="fSolicitante" id="fSolicitante">                        
+>>>>>>> Mejoras_anidar
                         </div>
                         <div class="col-sm-6 form-group">
                             <div class="col-md-12 form-inline">
@@ -65,7 +72,10 @@
             $("#fState").val(sessionStorage.getItem('stState'));
             $("#fValor").val(sessionStorage.getItem('stValor'));
             $("#fSolicitante").val(sessionStorage.getItem('stSolicitante'));
+<<<<<<< HEAD
         }
+=======
+>>>>>>> Mejoras_anidar
     });
 </script>
 @endsection

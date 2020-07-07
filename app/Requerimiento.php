@@ -16,5 +16,5 @@ class Requerimiento extends Model
 							'porcentajeEjecutado', 'cierre', 'idSolicitante',
 							'idPrioridad', 'resolutor', 'rutEmpresa', 'estado',
                                                         'id2', 'comentario', 'gestor', 'aprobacion', 'rechazo', 'msj_whats',
-                                                        'fechaLiquidacion'];
+                                                        'fechaLiquidacion', 'fecha_aprobacion_supervisor'];
 }

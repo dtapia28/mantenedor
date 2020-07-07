@@ -123,7 +123,7 @@
                         <div class="col-sm-6 form-group">
                             <div class="col-md-12 form-inline">
                                 <div class="col-md-7">
-                                    <button type="submit" class="btn btn-success btn-block mb-2 mr-sm-2 mb-sm-0" style="cursor:pointer"><i class="fa fa-check-circle"></i> Guardar Registro</button>
+                                    <button type="submit" onclick="storeCacheForm()" class="btn btn-success btn-block mb-2 mr-sm-2 mb-sm-0" style="cursor:pointer"><i class="fa fa-check-circle"></i> Guardar Registro</button>
                                 </div>
                                 <div class="col-md-5">
                                     <a href="{{url('requerimientos')}}" class="btn btn-outline-primary btn-block"><i class="fa fa-arrow-left"></i> Regresar</a>

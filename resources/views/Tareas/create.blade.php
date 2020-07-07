@@ -51,6 +51,10 @@
                             </select>
                         </div>
                         <div class="col-sm-6 form-group">
+                            <label class="" for="textoRequerimiento">Título Tarea</label>
+                            <textarea id="titulo" class="form-control col-md-12" name="titulo" placeholder="Título Tarea" rows="1" cols="50"></textarea>
+                        </div>                        
+                        <div class="col-sm-6 form-group">
                             <label class="" for="textoRequerimiento">Tarea</label>
                             <textarea id="texto" class="form-control col-md-12" name="texto" placeholder="Tarea" rows="5" cols="50"></textarea>
                             <input type="hidden" id="idRequerimiento" name="idRequerimiento" value="{{$requerimiento->id}}">

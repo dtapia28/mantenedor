@@ -19,5 +19,5 @@ class Tarea extends Model
      * @var array
      */
     protected $fillable = ['id2', 'textoTarea', 'fechaSolicitud', 'fechaCierre', 'estado',
-     					'idRequerimiento', 'resolutor'];		
+     					'idRequerimiento', 'resolutor', 'titulo_tarea'];		
 }

@@ -53,14 +53,6 @@ class GraficosSolicitanteController extends Controller
         }
         //Cantidad de requerimientos de solicitante al día, por vencer, vencido
         $solicitante = Solicitante::where('idUser', auth()->user()->id)->first();
-<<<<<<< HEAD
-        $req = DB::table('requerimientos_equipos')->where([
-            ['rutEmpresa', auth()->user()->rutEmpresa],
-            ['estado', 1],
-            ['aprobacion', 3],
-            ['idSolicitante', $solicitante->id],
-        ])->get();
-=======
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->first();
         $solicitante2 = Solicitante::where('idUser', $user->idUser)->first();   
         $equipo2 = Team::where('id', $resolutor->idTeam)->first();
@@ -72,7 +64,6 @@ class GraficosSolicitanteController extends Controller
                     ->whereBetween('fechaSolicitud', [$desde, $hasta])
                     ->get();
         
->>>>>>> frontend
         $alDia = 0;
         $vencer = 0;
         $vencido = 0;
@@ -133,9 +124,9 @@ class GraficosSolicitanteController extends Controller
         $porEquipoVencido = [];
         foreach($arrayEquipo as $idEquipo)
         {
-            $EquialDia = 0;
-            $Equivencer = 0;
-            $Equivencido = 0;            
+            $alDia = 0;
+            $vencer = 0;
+            $vencido = 0;            
             $equipo = Team::where('id',$idEquipo)->first();
             $arrayEquipos[]=$equipo->nameTeam;
             $req = DB::table('requerimientos_equipos')
@@ -151,13 +142,13 @@ class GraficosSolicitanteController extends Controller
             {
                     if($requerimiento->fechaCierre == "9999-12-31 00:00:00")
                     {
-                        $EquialDia++;
+                        $alDia++;
                     } else 
                     {
                         $hoy = new DateTime();
                         $cierre = new DateTime($requerimiento->fechaCierre);
                         if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
-                            $Equivencido++;
+                            $vencido++;
                         } else {
                             $variable = 0;
                             while ($hoy->getTimestamp() < $cierre->getTimestamp())
@@ -171,9 +162,9 @@ class GraficosSolicitanteController extends Controller
                                 }                   
                             }                
                             if ($variable<=3) {
-                                $Equivencer++;
+                                $vencer++;
                             } else {
-                                $EquialDia++;
+                                $alDia++;
                             }
                             $variable = 0;
                             unset($hoy);
@@ -181,12 +172,10 @@ class GraficosSolicitanteController extends Controller
                         }                        
                     }             
             }
-            $porEquipoAldia[]=$EquialDia;
-            $porEquipoPorVencer[]=$Equivencer;
-            $porEquipoVencido[]=$Equivencido;
+            $porEquipoAldia[]=$alDia;
+            $porEquipoPorVencer[]=$vencer;
+            $porEquipoVencido[]=$vencido;
         }
-<<<<<<< HEAD
-=======
 
         $equipo_id = $equipo2->id;
         $solicitante_id = $solicitante2->id;
@@ -199,7 +188,6 @@ class GraficosSolicitanteController extends Controller
         $valores['solicitantes'] = $sqlValoresSol[0]->cant;
         $sqlValoresEq = DB::select('select count(*) as cant from teams where rutEmpresa = ? AND id = ?', [auth()->user()->rutEmpresa, $equipo_id]);
         $valores['equipos'] = $sqlValoresEq[0]->cant;
->>>>>>> frontend
         
         return compact('requerimientos', 'arrayEquipos', 'alDia', 'vencer', 'vencido', 'porEquipoAldia', 'porEquipoPorVencer', 'porEquipoVencido', 'rango_fecha', 'desde', 'hasta', 'valores');
     }

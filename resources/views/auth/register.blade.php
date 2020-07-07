@@ -48,7 +48,11 @@ $mail = Illuminate\Support\Facades\Cache::get('mail');
     <div class="md-input-wrapper">
         <input id="nombre" type="text" class="md-form-control @error('nombre') no es valido @enderror" name="nombre" value="{{ old('nombre') }}">
         <label>Nombre Empresa</label>
-    </div>                    
+    </div>
+    <div class="md-input-wrapper">
+        <input id="n_telefono" type="text" title="Si es que desea que el sistema le pueda enviar mensajes via WhatsApp." class="md-form-control @error('n_telefono') no es valido @enderror" name="n_telefono" value="{{ old('n_telefono') }}">
+        <label>Número Teléfono</label>
+    </div>     
     <div class="md-input-wrapper">
         <input id="password" type="password" class="md-form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
             @error('password')
