@@ -579,7 +579,7 @@ class DashboardController extends Controller
                     break;
             }
         }
-        
+
         $sqlReq = DB::select('SELECT a.id, a.id2, a.textoRequerimiento, DATE_FORMAT(a.fechaSolicitud, "%d/%m/%Y") fechaSolicitud, DATE_FORMAT(a.fechaCierre, "%d/%m/%Y") fechaCierreF, a.fechaCierre, b.nombreResolutor, a.porcentajeEjecutado
                             FROM requerimientos a
                             JOIN resolutors b ON a.resolutor=b.id

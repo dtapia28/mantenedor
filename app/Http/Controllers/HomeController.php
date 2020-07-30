@@ -41,7 +41,7 @@ class HomeController extends Controller
         return $linkLogo;
     }
     static function nombreEmpresa(){
-        $param = DB::select('SELECT nombreEmpresa FROM empresas where rut = ?', [Auth::user()->rutEmpresa]);
+        $param = DB::select('SELECT nombreEmpresa FROM empresa where rut = ?', [Auth::user()->rutEmpresa]);
         $nombreEmpresa = $param[0]->nombreEmpresa;
         return $nombreEmpresa;
     }

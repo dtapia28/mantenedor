@@ -45,15 +45,14 @@ class AnidadoController extends Controller
     {        
         $data = request()->validate([            
             'anidar' => 'nullable',            
-            'requerimiento' => 'nullable']);
+            'requerimiento' => 'nullable']);        
         
-        dd($data);
         
         Anidado::create([            
             'idRequerimientoAnexo' => $data['anidar'],            
             'idRequerimientoBase' => $data['requerimiento'],        
-        ]);
-        
+            ]);        
+
         
         return redirect(url("requerimientos/$request->requerimiento"));    
         
@@ -64,12 +63,12 @@ class AnidadoController extends Controller
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();        
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();        
         $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();        
-        $requerimientosAnidadosLista = Anidado::where('idRequerimientoBase', $requerimiento->id)->get();
-        $reqs = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $requerimientosAnidadosLista = Anidado::where('idRequerimientoBase', $requerimiento->id)->get();        
+        $reqs = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)->get();        
         $requerimientosAnidados = [];                
         
         foreach ($requerimientosAnidadosLista as $anexo)        
-        {                    
+        {
             $req = Requerimiento::where('id', $anexo->idRequerimientoAnexo)->first();
             $requerimientosAnidados[]= $req;
         }
@@ -78,10 +77,10 @@ class AnidadoController extends Controller
         foreach ($reqs as $req)
         {
             $es_parte = true;
-            foreach ($requerimientosAnidadosLista as $anexo)
-            {
-                if($anexo->idRequerimientoAnexo == $req->id)
-                {
+            foreach ($requerimientosAnidadosLista as $anexo)             
+            {                
+                if($anexo->idRequerimientoAnexo == $req->id)                 
+                {                    
                     $es_parte = false;
                 }
             }
@@ -90,7 +89,7 @@ class AnidadoController extends Controller
             {
                 $requerimientos[] = $req;
             }
-        }
+        }            
         
         return view('Anidar.create', compact('user', 'requerimientosAnidados', 'requerimientos',                    
                     'requerimiento', 'resolutors', 'teams'));    
@@ -99,8 +98,8 @@ class AnidadoController extends Controller
     
     public function anidara (Request $request)    
     {   
-        //dd($request);
-        $idReq = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)->get('id');
+        
+        $idReq = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)->get('id');        
         $nReq = Requerimiento::where('rutEmpresa', auth()->user()->rutEmpresa)->count();        
         $nReq++;        
         
@@ -114,12 +113,12 @@ class AnidadoController extends Controller
                         Anidado::create([                            
                             'idRequerimientoAnexo' => $id->id,                            
                             'idRequerimientoBase' => $request->requerimiento,                        
-                            ]);
+                            ]);                    
                         
                         //Traigo los 2 requerimientos: anexado y req base
                         $anexo = Requerimiento::where('id', $id->id)->first();
                         $base = Requerimiento::where('id', $request->requerimiento)->first();
-                        
+                    
                         //Avances de requerimiento anexado
                         
                         $avances = Avance::where('idRequerimiento', $anexo->id)->get();
@@ -127,9 +126,9 @@ class AnidadoController extends Controller
                         //Tareas de requerimiento anexado
                         
                         $tareas = Tarea::where('idRequerimiento', $anexo->id)->get();
+
                         
-                        
-                        //OpciÃ³n 1
+                        //Opción 1
                         
                         foreach ($avances as $avance)
                         {
@@ -141,13 +140,13 @@ class AnidadoController extends Controller
                             
                             $avance->delete();
                         }
-                        
+
                         $data = [
                             'estado' => 0,
                         ];
                         
-                        DB::table('requerimientos')->where('id', $anexo->id)->update($data);
-                        
+                        DB::table('requerimientos')->where('id', $anexo->id)->update($data);                        
+
                         foreach ($tareas as $tarea)
                         {
                             $data = [
@@ -155,7 +154,7 @@ class AnidadoController extends Controller
                             ];
                             
                             $tarea->update($data);
-                        }
+                        }                        
                     }                
                 }            
             }                  

@@ -28,8 +28,8 @@
                             <input value="{{ $cierre }}" class="form-control col-md-12" type="date" name="fechaCierre">
                         </div>
                         <div class="col-sm-6 form-group">
-                            <label class="" for="textoRequerimiento">TÃ­tulo Tarea</label>
-                            <textarea id="titulo_tarea" class="form-control col-md-12" name="titulo_tarea" placeholder="TÃ­tulo Tarea" rows="1" cols="50">{{ $tarea->titulo_tarea }}</textarea>
+                            <label class="" for="textoRequerimiento">Título Tarea</label>
+                            <textarea id="titulo_tarea" class="form-control col-md-12" name="titulo_tarea" placeholder="Título Tarea" rows="1" cols="50">{{ $tarea->titulo_tarea }}</textarea>
                         </div>                         
                         <div class="col-sm-6 form-group">
                             <label for="texto">Tarea:</label>

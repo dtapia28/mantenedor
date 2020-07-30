@@ -47,6 +47,7 @@ class TareaController extends Controller
      */
     public function store(Request $request)
     {
+
         $data = request()->validate([
             'fechaSolicitud' => 'required',
             'fechaCierre' => 'required',
@@ -57,8 +58,8 @@ class TareaController extends Controller
             ['fechaSolicitud.required' => 'La fecha de solicitud es obligatoria'],
             ['fechaCierre.required' => 'La fecha de cierre es obligatoria'],
             ['texto.required' => 'El texto de la tarea es obligatorio']);
-        
 
+        
         $fechaSoli = new DateTime($data['fechaSolicitud']);
         $fechaCie = new DateTime($data['fechaCierre']);
         if ($fechaCie->getTimestamp() >= $fechaSoli->getTimestamp()) 
@@ -73,8 +74,8 @@ class TareaController extends Controller
                 $formato = $formato.$tareasReq;
             }
             Tarea::create([
-                'textoTarea' => $data['texto'],
                 'titulo_tarea' => $data['titulo'],
+                'textoTarea' => $data['texto'],
                 'fechaSolicitud' => $data['fechaSolicitud'],
                 'fechaCierre' => $data['fechaCierre'],
                 'idRequerimiento' => $data['idRequerimiento'],
@@ -100,9 +101,9 @@ class TareaController extends Controller
                 ];
                 
                 $requerimiento->update($data);                
-            }
+            }            
         }
-
+        
         return redirect(url("requerimientos/$request->idRequerimiento"));        
     }
 
@@ -165,8 +166,8 @@ class TareaController extends Controller
             'textoTarea' => $request->texto,
             'titulo_tarea' => $request->titulo_tarea,
         ];
-        
-        $tarea->update($data);        
+
+        $tarea->update($data);
 
         $requerimiento = Requerimiento::where('id', $tarea->idRequerimiento)->first();        
 
@@ -191,7 +192,7 @@ class TareaController extends Controller
                 $requerimiento->update($data);                
             }
         }
-
+        
         return redirect(url("requerimientos/$request->req"));
     }
 
@@ -223,7 +224,7 @@ class TareaController extends Controller
             
             $cTareas = $cTareas + $variable;
         }
-        
+
         $tarea = Tarea::where('id', $request->tarea)->first();
         $fecha_solicitud = new DateTime($tarea->fechaSolicitud);
         $fecha_solicitud = $fecha_solicitud->modify("-1 days");

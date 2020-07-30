@@ -42,12 +42,12 @@ class AvanceController extends Controller
             $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
             $lider = $resolutor->lider;           
         }
-        
+
         if($requerimiento->fechaRealCierre != null){
             $fecha = new DateTime($requerimiento->fechaRealCierre);
         } else {
             $fecha = new DateTime($requerimiento->fechaCierre);
-        }
+        }        
         return view('Avances.create', compact('requerimiento', 'user', 'lider','fecha'));
     }
 
@@ -82,9 +82,9 @@ class AvanceController extends Controller
                 $fecha = new DateTime($requerimiento->fechaRealCierre);
             } else {
                 $fecha = new DateTime($requerimiento->fechaCierre);
-            }           
+            }
             if($request->input("fechaRealCierre")!=$fecha){
-                
+                         
                 $cambios=$requerimiento->numeroCambios;
                 $fechaRealCierre = $request->input("fechaRealCierre");
                 if ($cambios == null) {
@@ -93,14 +93,14 @@ class AvanceController extends Controller
                 else {
                     $cambios +=1;             
                 }
-
+                
                 LogRequerimientos::create([
                     'idRequerimiento' => $requerimiento->id,
                     'idUsuario' => $user[0]->idUser,
-                    'tipo' => 'edición',
+                    'tipo' => 'edicion',
                     'campo' => 'fecha cierre resolutor',
                 ]);
-            }    
+            }        
         } else {
             $requerimiento = DB::table('requerimientos')->select('fechaRealCierre')->where('id', $request->input("idRequerimiento"))->first();
             $fechaRealCierre = $requerimiento->fechaRealCierre;
@@ -144,7 +144,7 @@ class AvanceController extends Controller
 
                 $recep = $lider->email;
 
-                //Notification::route('mail', $recep)->notify(new FinalizadoNotifi($obj));
+                Notification::route('mail', $recep)->notify(new FinalizadoNotifi($obj));
             } else 
             {
                 $data = [

@@ -31,7 +31,7 @@
                                 </tr>
                                 @if(count($elementos_log)!= 0)
                                     @foreach($elementos_log as $log)
-                                        @if($log->tipo == "edición")
+                                        @if($log->tipo == "edicion")
                                             <tr>
                                                 <td width="40%"><strong>Edición de {{$log->campo}}</strong></td>
                                                 @foreach($usuarios_log as $usuario)
@@ -83,7 +83,7 @@
                                             @break
                                         @endif
                                     @endforeach                                     
-                                    @foreach($elementos_log as $log)
+                                    @foreach($elementos_log as $log)                                    
                                         @if($log->tipo == "rechazar")
                                             <tr>
                                                 <td width="40%"><strong>Rechazado por</strong></td>

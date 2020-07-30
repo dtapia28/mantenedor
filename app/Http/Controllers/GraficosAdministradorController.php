@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Requerimiento;
 use App\Team;
+use App\Resolutor;
 use DateTime;
+use DateInterval;
 
 class GraficosAdministradorController extends Controller
 {
@@ -925,9 +927,228 @@ class GraficosAdministradorController extends Controller
         $sqlValoresEq = DB::select('select count(*) as cant from teams');
         $valores['equipos'] = $sqlValoresEq[0]->cant;
 
+        $equipos = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        
+        $resolutores = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        
+        $hoy = date("d-m-Y");
+        $ayer = date("d-m-Y", strtotime("-1 day"));
+        
+        $ayer_dtt = new DateTime($ayer);
+        $hoy_dtt = new DateTime($hoy);
+        
+        $horas_modifica_ayer = new DateInterval('PT23H59M59S');
+        $ayer_dtt = $ayer_dtt->add($horas_modifica_ayer);
+        
+        $prueba = $ayer_dtt->format('Y-m-d H:i:s');
+        $hoy_dtt = $hoy_dtt->add($horas_modifica_ayer);
+        
+        $array_equipos = [];
+        $array_resolutores = [];
+        $array_pendientes_resolutor = [];
+        $array_creadoHoy_resolutor = [];
+        $array_vencidos = [];
+        $array_cerrados_hoy=[];
+        $array_pendientes_resolutor_hoy= [];
+        
+        //Calcular pendientes al día anterior al actual
+        foreach($resolutores as $resolutor)
+        {
+            $requerimientos_resolutor = Requerimiento::where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+                ['resolutor', $resolutor['id']],
+                ['estado', 1],
+                ['porcentajeEjecutado', '<', 100],
+            ])->get();
+            
+            $contador = 0;
+            foreach ($requerimientos_resolutor as $requerimiento)
+            {
+               $fecha_crea_req = new DateTime($requerimiento['created_at']);
+               
+               if($fecha_crea_req < $ayer_dtt)
+               {
+                   $contador = $contador+1;
+               }
+            }
+            
+            $contador_2 = 0;
+            foreach ($requerimientos_resolutor as $requerimiento)
+            {
+                if($requerimiento['fechaRealCierre'] != "")
+                {
+                    $fecha_cierre_req = new DateTime($requerimiento['fechaRealCierre']);
+                } else
+                {
+                    $fecha_cierre_req = new DateTime($requerimiento['fechaCierre']);
+                }
+                
+                if($fecha_cierre_req<$hoy_dtt)
+                {
+                    ++$contador_2;
+                }
+            }
+            $array_vencidos[] = $contador_2;
+            
+            $requerimientos_resolutor = Requerimiento::where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+                ['resolutor', $resolutor['id']],
+                ['estado', 1],
+                ['porcentajeEjecutado', null],
+            ])->get();
+
+            foreach ($requerimientos_resolutor as $requerimiento)
+            {
+               $fecha_crea_req = new DateTime($requerimiento['created_at']);
+               
+               if($fecha_crea_req < $ayer_dtt)
+               {
+                   $contador = $contador+1;
+               }
+            }            
+            $array_pendientes_resolutor[] = $contador;
+            //Acá termina
+            
+            //Calcular creados hoy
+            $requerimientos_resolutor = Requerimiento::where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+                ['resolutor', $resolutor['id']],
+                ['estado', 1],
+                ['porcentajeEjecutado','<',100]
+            ])->get();            
+          
+            $contador = 0;
+            foreach ($requerimientos_resolutor as $requerimiento)
+            {
+                $fecha_crea_req = new DateTime($requerimiento['created_at']);
+                
+                if($fecha_crea_req->getTimestamp() > $ayer_dtt->getTimestamp() and $fecha_crea_req->getTimestamp()<$hoy_dtt->getTimestamp()){
+                    ++$contador;
+                }
+            }
+
+            $requerimientos_resolutor = Requerimiento::where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+                ['resolutor', $resolutor['id']],
+                ['estado', 1],
+                ['porcentajeEjecutado', null]
+            ])->get();            
+
+            foreach ($requerimientos_resolutor as $requerimiento)
+            {
+                $fecha_crea_req = new DateTime($requerimiento['created_at']);
+                
+                if($fecha_crea_req->getTimestamp() > $ayer_dtt->getTimestamp() and $fecha_crea_req->getTimestamp()<$hoy_dtt->getTimestamp()){
+                    ++$contador;
+                }
+            }            
+            $array_creadoHoy_resolutor[]=$contador;
+            
+            $array_resolutores[] = $resolutor['nombreResolutor'];
+            foreach ($equipos as $equipo)
+            {
+                if($resolutor['idTeam'] == $equipo['id'])
+                {
+                    $array_equipos[] = $equipo['nameTeam'];
+                }
+            }
+            
+            
+            //Calcular cerrados hoy
+            
+            $requerimientos_resolutor = Requerimiento::where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+                ['resolutor', $resolutor['id']],
+                ['estado', 1],
+                ['fechaLiquidacion', '!=',""]
+            ])->get();
+            
+            $cerrados = 0;
+            foreach ($requerimientos_resolutor as $requerimiento)
+            {
+                $fl = new DateTime($requerimiento['fechaLiquidacion']);
+                $fecha_liquidacion = $fl->format('d-m-Y');
+                $al = new DateTime();
+                $actual = $al->format('d-m-Y');
+                if($actual == $fecha_liquidacion)
+                {
+                    ++$cerrados;
+                }   
+            }
+            
+            $requerimientos_resolutor = Requerimiento::where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+                ['resolutor', $resolutor['id']],
+                ['estado', 2],
+                ['fechaLiquidacion', '!=',""]
+            ])->get();
+            
+            foreach ($requerimientos_resolutor as $requerimiento)
+            {
+                $fl = new DateTime($requerimiento['fechaLiquidacion']);
+                $fecha_liquidacion = $fl->format('d-m-Y');
+                $al = new DateTime();
+                $actual = $al->format('d-m-Y');
+                if($actual == $fecha_liquidacion)
+                {
+                    ++$cerrados;
+                }   
+            }
+            $array_cerrados_hoy[] = $cerrados;
+            
+            
+            //Calcular pendientes al día de hoy
+            $requerimientos_resolutor = Requerimiento::where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+                ['resolutor', $resolutor['id']],
+                ['estado', 1],
+                ['porcentajeEjecutado', '<', 100],
+            ])->get();
+            
+            $contador = 0;
+            foreach ($requerimientos_resolutor as $requerimiento)
+            {
+               $fecha_crea_req = new DateTime($requerimiento['created_at']);
+               
+               if($fecha_crea_req < $hoy_dtt)
+               {
+                   $contador = $contador+1;
+               }
+            }
+
+            $requerimientos_resolutor = Requerimiento::where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+                ['resolutor', $resolutor['id']],
+                ['estado', 1],
+                ['porcentajeEjecutado', null],
+            ])->get();
+
+            foreach ($requerimientos_resolutor as $requerimiento)
+            {
+               $fecha_crea_req = new DateTime($requerimiento['created_at']);
+               
+               if($fecha_crea_req < $ayer_dtt)
+               {
+                   $contador = $contador+1;
+               }
+            }            
+            $array_pendientes_resolutor_hoy[] = $contador;           
+        }
+        
+        for ($index = 0; $index < count($array_equipos); $index++) {
+            if($index>0){
+                if($array_equipos[$index]==$array_equipos[$index-1]){
+                    $array_equipos[$index] = "";
+                }
+            }
+        }
+        
         return compact('requerimientos', 'alDia', 'vencer', 'vencido',
                 'arrayEquipos', 'arrayAlDia', 'arrayPorVencer', 'arrayVencidos', 'cerradosAlDia',
                 'cerradosPorVencer', 'cerradosVencidos', 'porEquipoAlDia', 'porEquipoPorVencer',
-                'porEquipoVencido', 'porcentajeEquipoAlDia', 'porcentajeAlDia', 'rango_fecha', 'desde', 'hasta', 'valores');
+                'porEquipoVencido', 'porcentajeEquipoAlDia', 'porcentajeAlDia', 'rango_fecha',
+                'desde', 'hasta', 'valores', 'array_equipos', 'array_resolutores',
+                'array_pendientes_resolutor','array_creadoHoy_resolutor', 'array_vencidos',
+                'array_cerrados_hoy','array_pendientes_resolutor_hoy');
     }
 }

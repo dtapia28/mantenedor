@@ -51,8 +51,8 @@
                             </select>
                         </div>
                         <div class="col-sm-6 form-group">
-                            <label class="" for="textoRequerimiento">Título Tarea</label>
-                            <textarea id="titulo" class="form-control col-md-12" name="titulo" placeholder="Título Tarea" rows="1" cols="50"></textarea>
+                            <label class="" for="textoRequerimiento">T&#237tulo Tarea</label>
+                            <textarea id="titulo" class="form-control col-md-12" name="titulo" placeholder="T&#237tulo Tarea" rows="1" cols="50"></textarea>
                         </div>                        
                         <div class="col-sm-6 form-group">
                             <label class="" for="textoRequerimiento">Tarea</label>

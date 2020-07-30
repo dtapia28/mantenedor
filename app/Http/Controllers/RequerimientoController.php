@@ -1223,6 +1223,73 @@ class RequerimientoController extends Controller
                     ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                 ])->get();
                     break;
+
+                case '6':
+                $req = DB::table('requerimientos_equipos')->where([
+                    ['estado', 1],
+                    ['rutEmpresa', '=', auth()->user()->rutEmpresa],
+                    ['aprobacion', 4],
+                    ['idSolicitante', $sol->id]
+                ])->get();
+                $requerimientos = [];
+                $estado = true;
+                $estatus = [];
+                $hoy = new DateTime();
+                foreach ($req as $requerimiento) 
+                {
+                    $requerimiento = (array)$requerimiento;
+                    foreach ($anidados as $anidado) {
+                        if ($anidado->idRequerimientoAnexo == $requerimiento['id']) {
+                            $estado = false;
+                        }
+                    }
+                    if ($estado == true) 
+                    {
+                        if ($requerimiento['fechaCierre'] == "9999-12-31 00:00:00") {
+                            $requerimiento ['status'] = 1;
+                            $requerimiento = (object) $requerimiento;
+                            $requerimientos [] = $requerimiento;                            
+                        } else
+                        {
+                            if($requerimiento['fechaRealCierre'] != ""){
+                                $cierre = new Datetime($requerimiento['fechaRealCierre']);
+                            } else {
+                                $cierre = new DateTime($requerimiento['fechaCierre']);
+                            }
+                            if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                                $requerimiento ['status'] = 3;
+                            } else 
+                            {
+                                $variable = 0;
+                                while ($hoy->getTimestamp() < $cierre->getTimestamp()) 
+                                {
+                                    if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') 
+                                    {
+                                        $hoy->modify("+1 days");               
+                                    }else
+                                    {
+                                        $variable++;
+                                        $hoy->modify("+1 days");                       
+                                    }                   
+                                }
+                                if ($variable<=3) 
+                                {
+                                    $requerimiento ['status'] = 2;
+                                } else {
+                                    $requerimiento ['status'] = 1;
+                                }
+                                $variable = 0;
+                                unset($hoy);
+                                $hoy = new DateTime();                           
+                            }
+                            $requerimiento = (object) $requerimiento;
+                            $requerimientos [] = $requerimiento;
+                        }                        
+                    }                    
+                    $estado = true;                    
+                }
+                $requerimientos = (object)$requerimientos;                    
+                break;    
             }
         } elseif ($user[0]->nombre == "supervisor") 
         {
@@ -2340,8 +2407,8 @@ class RequerimientoController extends Controller
         
         $fechaSoli = new DateTime($data['fechaSolicitud']);
         $fechaCie = new DateTime($data['fechaCierre']);
-
-        if ($fechaCie->getTimestamp() >= $fechaSoli->getTimestamp()) 
+        
+        if ($fechaCie >= $fechaSoli) 
         {
                 $resolutor = Resolutor::where([
                     ['rutEmpresa', auth()->user()->rutEmpresa],
@@ -2361,24 +2428,28 @@ class RequerimientoController extends Controller
                 ['rutEmpresa', auth()->user()->rutEmpresa],
                 ])->get();
                 
-                $conteo = 1;
-                foreach ($resolutors as $resolutor) {
-                    if ($resolutor->idTeam == $team[0]->id) {
-                        foreach ($requerimientos as $requerimiento) {
-                            if ($requerimiento->resolutor == $resolutor->id) {
-                                $conteo++;
-                            }
-                        }
-                    }
+                $ultimo_req = DB::table('requerimientos_equipos')
+                        ->where([
+                            ['rutEmpresa', auth()->user()->rutEmpresa],
+                            ['idEquipo', $team[0]->id]
+                        ])->orderBy('created_at','DESC')->first();
+                
+                if($ultimo_req != null){
+                   $ultimo_req_n = intval(substr($ultimo_req->id2, -3)); 
+                } else{
+                    $ultimo_req_n = 0;
                 }
 
-                if ($conteo < 10) {
-                    $conteoA = "00".$conteo;
-                } elseif ($conteo >= 10 and $conteo <= 99){
-                    $conteoA = "0".$conteo;
+                $conteoA = $ultimo_req_n+1;
+                
+                if($conteoA<10){
+                    $conteoA = "00".$conteoA;
+                } else if($conteoA > 10 and $conteoA<100){
+                    $conteoA = "0".$conteoA;
                 } else {
-                    $conteoA = $conteo;
+                    $conteoA = $conteoA;
                 }
+
                 if ($request->idTipo == 1) {
                     $var = "RQ-".$team[0]->id2."-".$conteoA;
                 } else {
@@ -2386,8 +2457,8 @@ class RequerimientoController extends Controller
                 }
                 
                 Requerimiento::create([
-                    'textoRequerimiento' => $data['textoRequerimiento'],
-                    'comentario' => $data['comentario'],            
+                    'textoRequerimiento' => preg_replace("/[\r\n|\n|\r|\t]+/", " ", $data['textoRequerimiento']),
+                    'comentario' => preg_replace("/[\r\n|\n|\r|\t]+/", " ", $data['comentario']),            
                     'fechaEmail' => $data['fechaEmail'],
                     'fechaSolicitud' => $data['fechaSolicitud'],
                     'fechaCierre' => $data['fechaCierre'],
@@ -2399,8 +2470,6 @@ class RequerimientoController extends Controller
                     'id2' => $var,
                     'aprobacion' => 3,
                 ]);
-
-            $conteo = 1;
 
             $req = Requerimiento::where('textoRequerimiento', $data['textoRequerimiento'])->get();
 
@@ -2439,8 +2508,9 @@ class RequerimientoController extends Controller
             $recep = $resolutor->email;
             
             //$request->user()->notify(new EnvioWhatsapp($requerimiento));
-        
+            
             Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
+            
             
             if ($request->idTipo == 1) {
                 return redirect('requerimientos')->with('msj', 'Requerimiento '.$requerimiento->id2.' guardado correctamente');
@@ -2615,6 +2685,9 @@ class RequerimientoController extends Controller
             'textAvance' => 'nullable',            
             'fechaSolicitud' => 'nullable',
         ]);
+        
+        $data['textoRequerimiento'] = preg_replace("/[\r\n|\n|\r|\t]+/", " ", $data['textoRequerimiento']);
+        $data['textAvance'] = preg_replace("/[\r\n|\n|\r|\t]+/", " ", $data['textAvance']);
 
         $data['idEmpresa'] = auth()->user()->rutEmpresa;
 
@@ -2906,6 +2979,14 @@ class RequerimientoController extends Controller
         }
         $variable =$requerimiento->update($data);
         
+        $tareas = Tarea::where('idRequerimiento', $requerimiento->id)->get();
+        
+        foreach ($tareas as $tarea){
+            $data = [
+                'estado' => 2];   
+            $tarea->update($data);            
+        }
+        
         LogRequerimientos::create([
             'idRequerimiento' => $requerimiento->id,
             'idUsuario' => $user[0]->idUser,
@@ -2926,35 +3007,30 @@ class RequerimientoController extends Controller
                         $lider = $resol;
                     }
                 }
-                /**
-                *$obj = new \stdClass();
-                *$obj->idReq = $requerimiento->id2;
-                *$obj->id = $requerimiento->id;
-                *$obj->sol = $requerimiento->textoRequerimiento;
-                *$obj->nombre = $resolutor->nombreResolutor;
-                *$obj->solicitante = $solicitante->nombreSolicitante;
+                $obj = new \stdClass();
+                $obj->idReq = $requerimiento->id2;
+                $obj->id = $requerimiento->id;
+                $obj->sol = $requerimiento->textoRequerimiento;
+                $obj->nombre = $resolutor->nombreResolutor;
+                $obj->solicitante = $solicitante->nombreSolicitante;
 
-                *$recep = $lider->email;
+                $recep = $lider->email;
 
-                *Notification::route('mail', $recep)->notify(new FinalizadoNotifi($obj));
-            **/
+                Notification::route('mail', $recep)->notify(new FinalizadoNotifi($obj));
             } else 
             {
-                /**
-                *$solicitante = Solicitante::where('id', $requerimiento->idSolicitante)->first();
-                *$parametros = Parametros::where('rutEmpresa', auth()->user()->rutEmpresa)->first();
-                *$obj = new \stdClass();
-                *$obj->idReq = $requerimiento->id2;
-                *$obj->id = $requerimiento->id;
-                *$obj->sol = $requerimiento->textoRequerimiento;
-                *$obj->nombre = $resolutor->nombreResolutor;
-                *$obj->solicitante = $solicitante->nombreSolicitante;
-                *$email = $parametros->emailSupervisor;
+                $solicitante = Solicitante::where('id', $requerimiento->idSolicitante)->first();
+                $parametros = Parametros::where('rutEmpresa', auth()->user()->rutEmpresa)->first();
+                $obj = new \stdClass();
+                $obj->idReq = $requerimiento->id2;
+                $obj->id = $requerimiento->id;
+                $obj->sol = $requerimiento->textoRequerimiento;
+                $obj->nombre = $resolutor->nombreResolutor;
+                $obj->solicitante = $solicitante->nombreSolicitante;
+                $email = $parametros->emailSupervisor;
 
-                *Notification::route('mail', $email)->notify(new FinalizadoNotifi($obj));
-                **/
+                Notification::route('mail', $email)->notify(new FinalizadoNotifi($obj));
             }             
-            
         }
    
         return redirect('requerimientos'); 
@@ -3057,7 +3133,6 @@ class RequerimientoController extends Controller
     }
 
     public function RequerimientoRechazado(Request $request) {
-        
         $req = Requerimiento::where('id', $request->requerimiento)->first();
         $data = [
             'estado' => 1,
@@ -3093,17 +3168,6 @@ class RequerimientoController extends Controller
         $recep = $resolutor->email;
 
         Notification::route('mail', $recep)->notify(new RechazadoNotifi($obj)); 
-<<<<<<< HEAD
-
-        /* se registra el rechazo del requerimiento */
-        
-        if ($request->fActivo == "1") {
-            if ($request->fSolicitante!="" && $request->fSolicitante!=null && $request->fSolicitante!="null")
-                return redirect('requerimientos?state='.$request->fState.'&valorN='.$request->fValor.'&solicitante='.$request->fSolicitante);
-            else
-                return redirect('requerimientos?state='.$request->fState.'&valorN='.$request->fValor);
-        } 
-=======
         /* se registra el rechazo del requerimiento */
         
         if ($request->fActivo == "6") {
@@ -3112,7 +3176,6 @@ class RequerimientoController extends Controller
             else
                 return redirect('requerimientos?state=6&valorN=');
         }
->>>>>>> Mejoras_anidar
         
         return redirect('requerimientos');
     }
@@ -3121,10 +3184,10 @@ class RequerimientoController extends Controller
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
         $id2 = substr($requerimiento->id2,0,3);
         
-        //Desde acï¿½ deberï¿½ borrar
+        //Desde acá deberé borrar
         $log_requerimiento = LogRequerimientos::where('idRequerimiento', $requerimiento->id)->get();
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
-        // Hasta acï¿½ deberï¿½ borrar
+        // Hasta acá deberé borrar
         
         //dd($log_requerimiento);
         if(count($log_requerimiento)==1){
@@ -3250,6 +3313,6 @@ class RequerimientoController extends Controller
             }
         }
        
-        return back()->with('msj', 'Se realizï¿½ el envï¿½o de email.');
+        return back()->with('msj', 'Se realizó el envío de email.');
     }    
 }

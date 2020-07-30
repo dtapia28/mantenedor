@@ -243,7 +243,8 @@
 		});
 		
 		// Gráfico de dona 
-		const titiloequipo = 'Equipo <?=$data["equipo"]?>';
+		const titiloequipo = 'Requerimientos activos del Equipo <?=$data["equipo"]?>';
+                const tituloEquipo = 'Medidor requerimientos cerrados por equipo <?=$data["equipo"]?>';
 		$("#chart-dona").insertFusionCharts({
 			type: "doughnut3d",
 			width: "100%",
@@ -399,7 +400,7 @@
 			dataFormat: "json",
 			dataSource: {
 				chart: {
-					caption: "Requerimientos por Solicitante",
+					caption: "Requerimientos activos por Solicitante",
 					subcaption: "Por Estatus",
 					numvisibleplot: "6",
 					showvalues: "1",
@@ -513,7 +514,7 @@
 			dataFormat: "json",
 			dataSource: {
 				chart: {
-					caption: titiloequipo,
+					caption: tituloEquipo,
 					lowerlimit: "0",
 					upperlimit: "100",
 					showvalue: "1",
@@ -607,7 +608,7 @@
 			dataFormat: "json",
 			dataSource: {
 				chart: {
-					caption: "Requerimientos por Resolutor",
+					caption: "Requerimientos activos por Resolutor",
 					subcaption: "Por Estatus",
 					numvisibleplot: "6",
 					showvalues: "1",

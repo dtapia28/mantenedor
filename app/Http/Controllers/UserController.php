@@ -169,10 +169,12 @@ class UserController extends Controller
 
     public function guardar (Request $request)
     {
+
         $data = request()->validate([
             'name' => 'required',
             'apellido' => 'required',
-            'email' => 'required'],
+            'n_telefono' => 'nullable',
+            'email' => 'required'],    
             ['name.required' => 'El nombre es obligatorio'],
             ['email.required' => 'El mail es obligatorio']);        
 
@@ -181,6 +183,7 @@ class UserController extends Controller
             'rutEmpresa' => auth()->user()->rutEmpresa,
             'email' => $data['email'],
             'password' => Hash::make('secreto'),
+            'phone_number' => $data['n_telefono'],    
             'api_token' => Str::random(30),  
             ]);
             

@@ -172,3 +172,64 @@ Stack trace:
 [17-Jul-2019 16:38:45 UTC] PHP Fatal error:  Trait 'Maatwebsite\Excel\Concerns\Exportable' not found in /home/itconsul/public_html/easytask/laravel/app/Exports/EstadoExport.php on line 15
 [17-Jul-2019 16:44:41 UTC] PHP Fatal error:  Trait 'Maatwebsite\Excel\Concerns\Exportable' not found in /home/itconsul/public_html/easytask/laravel/app/Exports/EstadoExport.php on line 15
 [17-Jul-2019 16:47:58 UTC] PHP Fatal error:  Trait 'Maatwebsite\Excel\Concerns\Exportable' not found in /home/itconsul/public_html/easytask/laravel/app/Exports/EstadoExport.php on line 15
+[17-Feb-2020 19:57:56 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosAdministradorController.php on line 181
+[17-Feb-2020 20:18:35 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosAdministradorController.php on line 181
+[19-Feb-2020 12:33:30 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosAdministradorController.php on line 186
+[19-Feb-2020 12:52:15 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosAdministradorController.php on line 181
+[19-Feb-2020 12:55:55 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosAdministradorController.php on line 185
+[19-Feb-2020 13:00:28 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosAdministradorController.php on line 231
+[19-Feb-2020 13:01:45 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosAdministradorController.php on line 236
+[19-Feb-2020 13:04:00 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosAdministradorController.php on line 240
+[19-Feb-2020 13:06:52 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosAdministradorController.php on line 238
+[19-Feb-2020 13:22:14 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosAdministradorController.php on line 468
+[19-Feb-2020 13:26:59 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosAdministradorController.php on line 485
+[19-Feb-2020 14:51:45 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosLiderController.php on line 194
+[19-Feb-2020 16:55:58 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosLiderController.php on line 280
+[19-Feb-2020 16:59:13 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosLiderController.php on line 280
+[19-Feb-2020 17:32:44 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosResolutorController.php on line 186
+[19-Feb-2020 17:33:49 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosResolutorController.php on line 186
+[12-Mar-2020 13:38:21 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosAdministradorController.php on line 222
+[12-Mar-2020 13:51:15 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosAdministradorController.php on line 225
+[12-Mar-2020 13:54:48 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosAdministradorController.php on line 468
+[12-Mar-2020 19:30:29 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosLiderController.php on line 226
+[13-Mar-2020 17:33:28 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosAdministradorController.php on line 714
+[13-Mar-2020 17:42:59 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosAdministradorController.php on line 715
+[28-Mar-2020 02:22:19 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosResolutorController.php on line 330
+[28-Mar-2020 02:28:09 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosResolutorController.php on line 331
+[28-Mar-2020 02:30:22 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home1/kinchika/public_html/laravel/app/Http/Controllers/GraficosResolutorController.php on line 337
+[27-May-2020 16:08:59 UTC] PHP Warning:  Uncaught ErrorException: Object of class stdClass could not be converted to string in /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php:289
+Stack trace:
+#0 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(4096, 'Object of class...', '/home1/kinchika...', 289, Array)
+#1 /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php(289): array_unique(Array)
+#2 [internal function]: App\Http\Controllers\ExtraerController->porEstado(Object(Illuminate\Http\Request))
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): call_user_func_array(Array, Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(45): Illuminate\Routing\Controller->callAction('porEstado', Array)
+#5 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Routing/Route.php(219): Illuminate\Routing\ControllerDispatcher->dispatch(Objec in /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php on line 289
+[27-May-2020 16:08:59 UTC] PHP Fatal error:  Object of class stdClass could not be converted to string in /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php on line 289
+[27-May-2020 16:31:36 UTC] PHP Warning:  Uncaught ErrorException: Object of class stdClass could not be converted to string in /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php:289
+Stack trace:
+#0 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(4096, 'Object of class...', '/home1/kinchika...', 289, Array)
+#1 /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php(289): array_unique(Array)
+#2 [internal function]: App\Http\Controllers\ExtraerController->porEstado(Object(Illuminate\Http\Request))
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): call_user_func_array(Array, Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(45): Illuminate\Routing\Controller->callAction('porEstado', Array)
+#5 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Routing/Route.php(219): Illuminate\Routing\ControllerDispatcher->dispatch(Objec in /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php on line 289
+[27-May-2020 16:31:36 UTC] PHP Fatal error:  Object of class stdClass could not be converted to string in /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php on line 289
+[27-May-2020 16:33:11 UTC] PHP Warning:  Uncaught ErrorException: Object of class stdClass could not be converted to string in /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php:289
+Stack trace:
+#0 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(4096, 'Object of class...', '/home1/kinchika...', 289, Array)
+#1 /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php(289): array_unique(Array)
+#2 [internal function]: App\Http\Controllers\ExtraerController->porEstado(Object(Illuminate\Http\Request))
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): call_user_func_array(Array, Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(45): Illuminate\Routing\Controller->callAction('porEstado', Array)
+#5 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Routing/Route.php(219): Illuminate\Routing\ControllerDispatcher->dispatch(Objec in /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php on line 289
+[27-May-2020 16:33:11 UTC] PHP Fatal error:  Object of class stdClass could not be converted to string in /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php on line 289
+[27-May-2020 16:36:19 UTC] PHP Warning:  Uncaught ErrorException: Object of class stdClass could not be converted to string in /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php:288
+Stack trace:
+#0 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(4096, 'Object of class...', '/home1/kinchika...', 288, Array)
+#1 /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php(288): array_unique(Array)
+#2 [internal function]: App\Http\Controllers\ExtraerController->porEstado(Object(Illuminate\Http\Request))
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Routing/Controller.php(54): call_user_func_array(Array, Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(45): Illuminate\Routing\Controller->callAction('porEstado', Array)
+#5 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Routing/Route.php(219): Illuminate\Routing\ControllerDispatcher->dispatch(Objec in /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php on line 288
+[27-May-2020 16:36:19 UTC] PHP Fatal error:  Object of class stdClass could not be converted to string in /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php on line 288

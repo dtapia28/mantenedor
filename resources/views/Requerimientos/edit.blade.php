@@ -37,10 +37,12 @@
                             <label for='fechaCierre'>Fecha de Solicitud:</label>
                             <input value="{{ $solicitud }}" class="form-control col-md-12" type="date" name="fechaSolicitud">
                         </div>
+                        <!--
                         <div class="col-sm-6 form-group">         
                             <label for='fechaCierre'>Fecha de Cierre:</label>
                             <input value="{{ $cierre }}" class="form-control col-md-12" type="date" name="fechaCierre">
                         </div>
+                        -->
                         <div class="col-sm-6 form-group">       
                             <label for="idSolicitante">Solicitante:</label>   
                             <select class="form-control col-md-12" name="idSolicitante">

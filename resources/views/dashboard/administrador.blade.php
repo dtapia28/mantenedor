@@ -61,7 +61,7 @@
 			</div>
 			@endfor
 		</div>
-	</div>
+        </div>
 </div>
 
 @section('scripts_dash')
@@ -136,7 +136,7 @@
 			dataFormat: "json",
 			dataSource: {
 				chart: {
-					caption: "Requerimientos por Equipo",
+					caption: "Requerimientos activos por Equipo",
 					subcaption: "Por Estatus",
 					numvisibleplot: "6",
 					showvalues: "1",
@@ -248,7 +248,7 @@
 			dataFormat: "json",
 			dataSource: {
 				chart: {
-					caption: "Requerimientos en General",
+					caption: "Medidor Requerimientos Cerrados en General",
 					lowerlimit: "0",
 					upperlimit: "100",
 					showvalue: "1",

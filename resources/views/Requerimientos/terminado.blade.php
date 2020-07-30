@@ -42,8 +42,8 @@
                             <textarea class="form-control col-md-12" name="cierre"  placeholder="Texto del cierre" rows="5" cols="50"></textarea>
                         </div>
                         <div class="col-sm-6 form-group">
-                            <label for='fechaCierre'>Fecha Real de Cierre (no obligatoria)</label>
-                            <input class="form-control col-md-12" value="{{ old('fecha', $fecha->format("yy-m-d")) }}" type="date" name="fechaRealCierre">
+                            <label style="display: none" for='fechaCierre'>Fecha Real de Cierre (no obligatoria)</label>
+                            <input style="display: none" class="form-control col-md-12" value="{{ old('fecha', $fecha->format("yy-m-d")) }}" type="date" name="fechaRealCierre">
                         </div>
                         <div class="col-sm-6 form-group">
                             <div class="col-md-12 form-inline">

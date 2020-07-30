@@ -12,7 +12,7 @@
                 <div class="ibox">
                     <div class="ibox-body text-center">
                         <i class="fa fa-certificate fa-2x text-warning"></i>
-                        <div class="m-b-20 text-dark">Resolutor Destacado</div>
+                        <div class="m-b-20 text-dark">Resolutor Destacado {{$mes_texto}}</div>
                         <div class="m-t-20"><i class="fa fa-address-book fa-3x"></i></div>
                         <h5 class="font-strong m-b-10 m-t-10">{{ $destacadoNombre }}</h5>
                         <h5 class="text-info m-b-20 m-t-10">Requerimientos Cerrados Al Día</h5>
@@ -26,7 +26,7 @@
                     <div class="ibox-body">
                         <ul class="nav nav-tabs tabs-line">
                             <li class="nav-item">
-                                <a class="nav-link active" href="#tab-1" data-toggle="tab"><i class="ti-bar-chart"></i> Requerimientos por estatus</a>
+                                <a class="nav-link active" href="#tab-1" data-toggle="tab"><i class="ti-bar-chart"></i> Requerimientos cerrados por estatus {{$mes_texto}}</a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -42,13 +42,13 @@
                                     <li class="media">
                                         <div class="media-img"><i class="ti-info-alt font-18 text-muted"></i></div>
                                         <div class="media-body">
-                                            <div class="media-heading text-warning">Requerimientos por vencer <div class="float-right text-dark h4 m-0">{{ $vencer }}</div></div>
+                                            <div class="media-heading text-warning">Requerimientos cerrados por vencer <div class="float-right text-dark h4 m-0">{{ $vencer }}</div></div>
                                         </div>
                                     </li>
                                     <li class="media">
                                         <div class="media-img"><i class="ti-reload font-18 text-muted"></i></div>
                                         <div class="media-body">
-                                            <div class="media-heading text-danger">Requerimientos vencidos <div class="float-right text-dark h4 m-0">{{ $vencido }}</div></div>
+                                            <div class="media-heading text-danger">Requerimientos cerrados vencidos <div class="float-right text-dark h4 m-0">{{ $vencido }}</div></div>
                                         </div>
                                     </li>                                    
                                 </ul>

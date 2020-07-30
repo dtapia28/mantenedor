@@ -40,11 +40,9 @@
 			@if($user[0]->nombre == "gestor" or $user[0]->nombre == "supervisor" or $user[0]->nombre =="administrador")
 			<option value="6" @if ($estado == "6") selected @endif>Por autorizar</option>
 			@endif
-                        @if($user[0]->nombre == "resolutor")
-                        @if($user2->lider == 1)
-                            <option value="6" @if ($estado == "6") selected @endif>Por autorizar</option>
-                        @endif			
-                        @endif                         
+                        @if($user[0]->nombre == "solicitante")
+                            <option value="6" @if ($estado == "6") selected @endif>Por autorizar</option>		
+                        @endif                        
 			@if($user[0]->nombre == "resolutor")
 			<option value="7" @if ($estado == "7") selected @endif>Esperando autorización</option>
 			@endif							
@@ -78,13 +76,7 @@
 			</div>
 			@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
 			<div class="pull-right"><a class="btn btn-success" href="{{ url('requerimientos/nuevo') }}" style="white-space: normal;"><i class="fa fa-plus"></i> Nuevo Requerimiento</a></div>
-			@endif
-<<<<<<< HEAD
-=======
-			@if($user[0]->nombre == "resolutor" and $lider == 1)
-			<div class="pull-right"><a class="btn btn-success" href="{{ url('requerimientos/nuevo') }}" style="white-space: normal;"><i class="fa fa-plus"></i> Nuevo Requerimiento</a></div>
-			@endif                    
->>>>>>> Mejoras_anidar
+			@endif                     
 		</div>
 		<div class="ibox-body">	
 			<div class="table-responsive">
@@ -147,10 +139,7 @@
 								</form>
 							</td>
 							@endif
-<<<<<<< HEAD
-=======
                                                         @if ($state == 1 or $state == 4)
->>>>>>> Mejoras_anidar
 							<td style="white-space: nowrap;">
                                                             @if($requerimiento->tipo == "tarea")
                                                                 <a href="{{ url("requerimientos/{$requerimiento->idRequerimiento}") }}">
@@ -166,22 +155,18 @@
                                                         </td>
                                                         @endif
                                                         @if($state == 1 or $state == 4)
-							<td>	
+							<td style="font-size: 0.9rem; max-width: 15vw; overflow-wrap: break-word;">	
                                                             @if($requerimiento->tipo == "tarea")
-                                                                {{ $requerimiento->textoTarea }}
+                                                                {{ $requerimiento->titulo_tarea }}
                                                             @else
                                                                 {{ $requerimiento->textoRequerimiento }}
                                                             @endif
-<<<<<<< HEAD
-							</td>				
-=======
 							</td>
                                                         @else
-                                                        <td>
+                                                        <td style="font-size: 0.9rem; max-width: 15vw; overflow-wrap: break-word;">
                                                               {{ $requerimiento->textoRequerimiento }}  
                                                         </td>
                                                         @endif
->>>>>>> Mejoras_anidar
 							<td style="font-size:13px !important">	
 								{{ date('Y-m-d', strtotime($requerimiento->fechaSolicitud)) }}
 							</td>
@@ -237,18 +222,12 @@
 							<div scope="row" class="btn-group">
                                                         @if($state != 6 and $state != 7 and $state != 0)    
 							@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
-<<<<<<< HEAD
-=======
                                                             @if($requerimiento->tipo != "tarea")
->>>>>>> Mejoras_anidar
 								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/anidar") }}">
 									{{ csrf_field() }}
 									<button type="submit" class="btn btn-warning btn-sm" data-toggle="tooltip" data-original-title="Anidar" style="cursor:pointer"><i class="fa fa-compress"></i></button>
 								</form>
-<<<<<<< HEAD
-=======
                                                             @endif
->>>>>>> Mejoras_anidar
 							@endif						
                                     @if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor")
                                     @if($user[0]->nombre == "resolutor" and $res->id == $requerimiento->resolutor)
@@ -285,12 +264,6 @@
                                     @endif
                                     @if( $user[0]->nombre == "administrador")
                                     &nbsp;
-<<<<<<< HEAD
-                                    <form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/terminado") }}">
-                                        {{ csrf_field() }}
-                                        <button type="submit" class="btn btn-success btn-sm btn-terminar" data-toggle="tooltip" data-original-title="Terminar" style="cursor:pointer"><i class="fa fa-check"></i></button>
-                                    </form>
-=======
                                         @if($requerimiento->tipo == "tarea")
                                             <form method='GET' action="{{ url("/requerimientos/{$requerimiento->idRequerimiento}/tareas/{$requerimiento->id}/terminar")}}">					
                                                 {{ csrf_field() }}
@@ -304,36 +277,20 @@
                                             <button type="submit" class="btn btn-success btn-sm" data-toggle="tooltip" data-original-title="Terminar" style="cursor:pointer"><i class="fa fa-check"></i></button>
                                         </form>
                                         @endif
->>>>>>> Mejoras_anidar
                                     @endif
                                     @endif 
 							@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
 								&nbsp;
-<<<<<<< HEAD
-=======
                                                                 @if($requerimiento->tipo == "tarea")
 								<form method='HEAD' action="{{ url('/requerimientos/'.$requerimiento->idRequerimiento.'/tareas/'.$requerimiento->id.'/editar') }}">
                                                                     {{ csrf_field() }}
                                                                     <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
 								</form>                                                                
                                                                 @else
->>>>>>> Mejoras_anidar
 								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/editar") }}">
 									{{ csrf_field() }}
 									<button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
 								</form>
-<<<<<<< HEAD
-							@endif
-                                                        @if($user[0]->nombre == "resolutor" and $lider == 1)
-                                                        &nbsp;
-                                                        <form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/editar") }}">
-                                                        {{ csrf_field() }}
-                                                             <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
-                                                        </form>
-                                                        @endif                                            
-							@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
-								&nbsp;
-=======
                                                                 @endif
 							@endif
                                                         @if($user[0]->nombre == "resolutor" and $lider == 1)
@@ -361,16 +318,12 @@
                                                                     <input type="hidden" name="req" value={{$requerimiento->idRequerimiento}}>
 								</form                                                                
                                                                 @else
->>>>>>> Mejoras_anidar
 								<form method='POST' action="{{ url('/requerimientos/'.$requerimiento->id) }}">
 									{{ csrf_field() }}
 									{{ method_field('DELETE') }}						
 									<button type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Eliminar" style="cursor:pointer"><i class="fa fa-trash"></i></button>
 								</form>
-<<<<<<< HEAD
-=======
                                                                 @endif
->>>>>>> Mejoras_anidar
 							@endif
                                                         @endif
 							</div>

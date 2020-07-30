@@ -49,42 +49,6 @@
             </div>
         </form>
     </div>
-    @if($user[0]->nombre != 'solicitante')
-    <div class="row">
-        <div class="col-lg-3 col-md-6">
-            <div class="ibox bg-success color-white widget-stat">
-                <div class="ibox-body">
-                    <h2 class="m-b-5 font-strong">{{$valores['requerimientos']}}</h2>
-                    <div class="m-b-5">REQUERIMIENTOS</div><i class="fa fa-address-card widget-stat-icon"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="ibox bg-info color-white widget-stat">
-                <div class="ibox-body">
-                    <h2 class="m-b-5 font-strong">{{$valores['resolutores']}}</h2>
-                    <div class="m-b-5">TOTAL RESOLUTORES</div><i class="fa fa-address-book widget-stat-icon"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="ibox bg-warning color-white widget-stat">
-                <div class="ibox-body">
-                    <h2 class="m-b-5 font-strong">{{$valores['solicitantes']}}</h2>
-                    <div class="m-b-5">TOTAL SOLICITANTES</div><i class="fa fa-address-book-o widget-stat-icon"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="ibox bg-danger color-white widget-stat">
-                <div class="ibox-body">
-                    <h2 class="m-b-5 font-strong">{{$valores['equipos']}}</h2>
-                    <div class="m-b-5">TOTAL EQUIPOS</div><i class="fa fa-users widget-stat-icon"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
     @if ($user[0]->nombre == "administrador" || $user[0]->nombre == "supervisor")
         @include('dashboard.administrador')
     @endif
