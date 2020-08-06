@@ -269,6 +269,14 @@ Route::get('/user/changepassword', 'UserController@cambiarPassword')
 Route::post('/user/change', 'UserController@change')
 	->middleware('auth');					
 
+	Route::get('/user/account', 'UserController@miCuenta')
+	->middleware('auth');
+
+Route::post('/user/account/guardar', 'UserController@miCuentaGuardar')
+	->middleware('auth');
+
+Route::post('/user/account/eliminarfoto', 'UserController@eliminarFoto')
+	->middleware('auth');
 
 
 Route::get('/requerimientos/{requerimiento}/avances', 'AvanceController@index')

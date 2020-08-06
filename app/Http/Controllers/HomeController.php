@@ -46,4 +46,10 @@ class HomeController extends Controller
         $nomEmpresa = $sql[0]->nombreEmpresa;      
         return $nomEmpresa;
     }
+
+    static function fotoPerfil() {
+        $param = DB::select('SELECT linkFoto FROM fotos_perfil where user_id = ?', [Auth::user()->id]);        
+        $linkFoto = ($param != "" && $param != null) ? $param[0]->linkFoto : null;
+        return $linkFoto;
+    }
 }

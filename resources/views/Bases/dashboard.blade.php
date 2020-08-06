@@ -14,7 +14,7 @@
   <link href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('vendor/themify-icons/css/themify-icons.css') }}" rel="stylesheet" />
   <link href="{{ asset('css/main.min.css') }}" rel="stylesheet" />
-  <?php use \App\Http\Controllers\HomeController; $color = HomeController::colorSitio(); $linkLogo = HomeController::logoEmpresa(); $nomEmpresa = HomeController::nombreEmpresa();?>
+  <?php use \App\Http\Controllers\HomeController; $color = HomeController::colorSitio(); $linkLogo = HomeController::logoEmpresa(); $nomEmpresa = HomeController::nombreEmpresa(); $linkFoto = HomeController::fotoPerfil(); ?>
   @switch($color)
 	  	@case(1)
 		  	<link href="{{ asset('css/themes/red.css') }}" rel="stylesheet" />
@@ -56,7 +56,11 @@
 				<ul class="nav navbar-toolbar">
 					<li class="dropdown dropdown-user">
 						<a class="nav-link dropdown-toggle link" data-toggle="dropdown">
-							<img src="{{ asset('img/avatar.png') }}" />
+							@if($linkFoto != "" && $linkFoto != null)
+								<img src="{{ asset($linkFoto) }}" max-width="64px" max-height="64px" alt="Foto" class="rounded"/>
+							@else
+								<img src="{{ asset('img/avatar.png') }}" />
+							@endif
 							<span></span>
 							<div class="admin-info">
 								<div class="font-strong">{{ Auth::user()->name }} <i class="fa fa-angle-down m-l-5"></i></div>
@@ -67,6 +71,7 @@
 							@if($user[0]->nombre == "administrador")
 							<a class="dropdown-item" href="{{ url('user/parametros') }}"><i class="fa fa-cog"></i> Parámetros</a>
 							@endif
+							<a class="dropdown-item" href="{{ url('user/account') }}"><i class="fa fa-user"></i> Mi cuenta</a>
 							<a class="dropdown-item" href="{{ url('user/changepassword') }}"><i class="fa fa-lock"></i> Cambiar contraseña</a>
 							<li class="dropdown-divider"></li>
 							<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i> Cerrar Sesión</a>
