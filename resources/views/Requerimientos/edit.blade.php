@@ -37,12 +37,10 @@
                             <label for='fechaCierre'>Fecha de Solicitud:</label>
                             <input value="{{ $solicitud }}" class="form-control col-md-12" type="date" name="fechaSolicitud">
                         </div>
-                        <!--
-                        <div class="col-sm-6 form-group">         
+                        <div id="fechaCierre" class="col-sm-6 form-group" style='display: none;'>         
                             <label for='fechaCierre'>Fecha de Cierre:</label>
                             <input value="{{ $cierre }}" class="form-control col-md-12" type="date" name="fechaCierre">
                         </div>
-                        -->
                         <div class="col-sm-6 form-group">       
                             <label for="idSolicitante">Solicitante:</label>   
                             <select class="form-control col-md-12" name="idSolicitante">
@@ -110,6 +108,7 @@
         </div>
     </div>
 </div>
+<input type="hidden" id="id_resolutor" name="id_resolutor" value={{$id_resolutor}}>
 @endsection
 
 @section('script')
@@ -183,6 +182,22 @@
             sessionStorage.setItem('stComentario', $('#comentario').val());
             sessionStorage.setItem('stTextAvance', $('#textAvance').val());
         }
-    }
+    }   
+</script>
+<script type="text/javascript">
+    var id_resolutor = document.getElementById('id_resolutor').value;
+
+    sessionStorage.setItem('id_resolutor', id_resolutor);
+    var resolutor = document.getElementById('resolutor');
+    resolutor.addEventListener('change', ()=>{
+        var resultado = resolutor.value;
+        var resolutor_store = sessionStorage.getItem('id_resolutor');
+        
+        if (resultado != resolutor_store) {
+           document.getElementById('fechaCierre').style.display = "block"; 
+        } else {
+            document.getElementById('fechaCierre').style.display = "none";
+        }
+    });
 </script>
 @endsection

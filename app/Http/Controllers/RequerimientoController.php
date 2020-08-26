@@ -93,7 +93,7 @@ class RequerimientoController extends Controller
      */
 
     public function index(Request $request)
-    {
+    {   
         $state = $request->state;
         $anidados = Anidado::all();
 
@@ -2456,6 +2456,11 @@ class RequerimientoController extends Controller
                     $var = "INC-".$team[0]->id2."-".$conteoA;
                 }
                 
+                $variable = new DateTime($data['fechaCierre']);
+                $intervalo = new DateInterval('PT23H59M59S');
+                $variable->add($intervalo);
+                $data['fechaCierre'] = $variable;
+                
                 Requerimiento::create([
                     'textoRequerimiento' => preg_replace("/[\r\n|\n|\r|\t]+/", " ", $data['textoRequerimiento']),
                     'comentario' => preg_replace("/[\r\n|\n|\r|\t]+/", " ", $data['comentario']),            
@@ -2652,6 +2657,8 @@ class RequerimientoController extends Controller
             ['id', $requerimiento->resolutor],
         ])->get();
         
+        $id_resolutor = $resolutorEspecifico[0]['id'];
+        
         $priorities = Priority::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         $fechaCierre = new DateTime($requerimiento->fechaCierre);
@@ -2664,7 +2671,11 @@ class RequerimientoController extends Controller
             $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         }
         
-        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'fechaCierre', 'cierre', 'solicitud', 'solicitanteEspecifico', 'prioridadEspecifica', 'resolutorEspecifico', 'user', 'lider', 'teams'));        
+        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 
+                                                   'resolutors', 'fechaCierre', 'cierre',
+                                                   'solicitud', 'solicitanteEspecifico',
+                                                   'prioridadEspecifica', 'resolutorEspecifico',
+                                                   'user', 'lider', 'teams', 'id_resolutor'));        
     }
 
     /**
@@ -3184,10 +3195,10 @@ class RequerimientoController extends Controller
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
         $id2 = substr($requerimiento->id2,0,3);
         
-        //Desde acá deberé borrar
+        //Desde acï¿½ deberï¿½ borrar
         $log_requerimiento = LogRequerimientos::where('idRequerimiento', $requerimiento->id)->get();
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
-        // Hasta acá deberé borrar
+        // Hasta acï¿½ deberï¿½ borrar
         
         //dd($log_requerimiento);
         if(count($log_requerimiento)==1){
@@ -3313,6 +3324,36 @@ class RequerimientoController extends Controller
             }
         }
        
-        return back()->with('msj', 'Se realizó el envío de email.');
-    }    
+        return back()->with('msj', 'Se realizï¿½ el envï¿½o de email.');
+    }
+
+    public function recalcular(){
+        $requerimientos = Requerimiento::where([
+            ['estado', '=', 1],
+            ['rutEmpresa', '=', auth()->user()->rutEmpresa],            
+        ])->get();
+        
+        $data = request()->validate([
+            'textoRequerimiento' => 'nullable',
+            'idSolicitante' => 'nullable',
+            'idPrioridad' => 'nullable',
+            'resolutor' => 'nullable',
+            'fechaCierre' => 'nullable',
+            'textAvance' => 'nullable',            
+            'fechaSolicitud' => 'nullable',
+        ]);        
+        foreach ($requerimientos as $requerimiento){
+            $variable = new DateTime($requerimiento['fechaCierre']);
+            $intervalo = new DateInterval('PT23H59M59S');
+            $variable->add($intervalo);
+            $data['fechaCierre'] = $variable;
+            if($requerimiento['fechaRealCierre'] != "" and $requerimiento['fechaRealCierre'] != null){
+                $variable = new DateTime($requerimiento['fechaRealCierre']);
+                $intervalo = new DateInterval('PT23H59M59S');
+                $variable->add($intervalo);
+                $data['fechaRealCierre'] = $variable;
+            }
+            $requerimiento->update($data);
+        }
+    }
 }

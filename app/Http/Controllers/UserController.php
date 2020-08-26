@@ -12,6 +12,7 @@ use App\Resolutor;
 use App\Solicitante;
 use App\Parametros;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -262,4 +263,71 @@ class UserController extends Controller
         $color = $parametros->idColor;
         return view('Users.parametros', compact('email', 'color', 'user'));
     }
+    
+    public function miCuenta()
+    {
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        $userData = User::where('id', auth()->user()->id)->get(['name', 'email']);
+
+        $nombre = $userData[0]->name;
+        $email = $userData[0]->email;
+        return view('Users.micuenta', compact('nombre', 'email', 'user'));        
+    }
+    
+    public function miCuentaGuardar(Request $request)
+    {
+        $foto = DB::select('select COUNT(*) registros from fotos_perfil where user_id = ?', [auth()->user()->id]);
+        $existeFoto = $foto[0]->registros;
+
+        if (!empty($_FILES['archivo']['tmp_name']) || is_uploaded_file($_FILES['archivo']['tmp_name'])) {
+            $file = Input::file('archivo'); 
+            //Ruta donde queremos guardar las imagenes
+            $path = public_path().'/img/fotos_perfil/';
+            //archivo con extension
+            $filenameWithExt = $request->file('archivo')->getClientOriginalName(); 
+            //solo nombre archivo 
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            //solo extension
+            $extension = $request->file('archivo')->getClientOriginalExtension();
+            //crear nuevo nombre archivo
+            $filenameToStore = "foto_".auth()->user()->id.".".$extension;
+            \Request::file('archivo')->move($path, $filenameToStore);
+        } else {
+            session()->flash('message',[
+                'alert'=>'warning',
+                'text'=>'Debe seleccionar la foto de perfil'
+            ]);
+
+            return redirect('user/account');
+        }
+
+        if(isset($filenameToStore)) {
+            $rutaArchivo = '/img/fotos_perfil/'.$filenameToStore;
+
+            if ($existeFoto > 0) {
+                DB::update('update fotos_perfil set linkFoto = ? where user_id = ?', [$rutaArchivo, auth()->user()->id]);
+            } else {
+                DB::insert('insert into fotos_perfil (id, user_id, linkFoto, created_at, updated_at) values (?, ?, ?, ?, ?)', [null, auth()->user()->id, $rutaArchivo, now(), now()]);
+            }
+        }
+
+        session()->flash('message',[
+            'alert'=>'success',
+            'text'=>'Foto de perfil guardada con exito!'
+        ]);
+
+        return redirect('user/account');
+    }
+
+    public function eliminarFoto(Request $request) {
+
+        DB::delete('delete from fotos_perfil where user_id = ?', [auth()->user()->id]);
+
+        session()->flash('message',[
+            'alert'=>'success',
+            'text'=>'Foto de perfil eliminada con exito!'
+        ]);
+
+        return response()->json(200);
+    }    
 }

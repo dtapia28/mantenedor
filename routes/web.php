@@ -48,7 +48,10 @@ Route::get('extracciones/ver', 'ExtraerController@porEstado')
 		->middleware('auth');
 
 Route::get('extracciones/word', 'ExtraerController@word')
-		->middleware('auth');		
+		->middleware('auth');
+
+Route::get('extracciones/incidentes', 'ExtraerController@incidentes')
+		->middleware('auth');
 
 Route::get('/extracciones/estado', 'ExtraerController@porEstado')
 		->middleware('auth');
@@ -187,7 +190,10 @@ Route::get('/requerimientos/{requerimiento}/log', 'RequerimientoController@ver_l
 	->middleware('auth');
 
 Route::post('/requerimientos/{requerimiento}/autorizar', 'RequerimientoController@autorizar')
-	->middleware('auth');		
+	->middleware('auth');
+
+Route::get('/requerimientos/recalcular', 'RequerimientoController@recalcular')
+        ->middleware('auth');
 
 
 
@@ -281,6 +287,14 @@ Route::get('/user/changepassword', 'UserController@cambiarPassword')
 Route::post('/user/change', 'UserController@change')
 	->middleware('auth');					
 
+Route::get('/user/account', 'UserController@miCuenta')
+	->middleware('auth');
+
+Route::post('/user/account/guardar', 'UserController@miCuentaGuardar')
+	->middleware('auth');
+
+Route::post('/user/account/eliminarfoto', 'UserController@eliminarFoto')
+	->middleware('auth');
 
 
 Route::get('/requerimientos/{requerimiento}/avances', 'AvanceController@index')

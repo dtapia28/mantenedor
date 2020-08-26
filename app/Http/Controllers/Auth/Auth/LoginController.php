@@ -127,7 +127,7 @@ class LoginController extends Controller
 
                                 $recep = $resolutor->email;                        
 
-                                Notification::route('mail',$recep)->notify(new RequerimientoEmail($obj));
+                                //Notification::route('mail',$recep)->notify(new RequerimientoEmail($obj));
 
                             }
                         }
@@ -164,7 +164,7 @@ class LoginController extends Controller
 
                                     $recep = $resolutor->email;                        
 
-                                    Notification::route('mail',$recep)->notify(new RequerimientoEmail($obj));
+                                    //Notification::route('mail',$recep)->notify(new RequerimientoEmail($obj));
 
                                 }
                             }

@@ -162,7 +162,13 @@ if (isset($requerimientos)) {
 						<br>						
 						<button class="btn btn-primary" type="submit">Extraer</button>
 					</form>
-				</div>	
+				</div>
+				<div id="word" class="from-row col-md-4">
+					<h5>Incidentes activos:</h5>
+					<form method="GET" action="{{ url('/extracciones/incidentes') }}">					
+						<button class="btn btn-primary" type="submit">Extraer</button>
+					</form>
+				</div>	                            
 			</div>
 			@endif
 		</div>
@@ -201,12 +207,12 @@ if (isset($requerimientos)) {
                     <tr>
                         <th width=10%>&#193rea</th>
                         <th width=20%>Resolutor</th>
-                        <th width=10%>Cantidad de RQ pendientes al {{$ayer}}</th>
+                        <th width=10%>Cantidad de RQ activos al {{$ayer}}</th>
                         <th width=10%>Vencidos</th>
                         <th width=10%>Cantidad de RQ generado el d&#237a de hoy {{ $hoy }}</th>
                         <th width=10%>Cantidad de RQ cerrado el  d&#237a de hoy {{ $hoy }}</th>
-                        <th width=10%>Cantidad de RQ Pendientes al {{$hoy}}</th>
-                        <th width=10%>Sem&#225foro</th>
+                        <th width=10%>Cantidad de RQ activos al {{$hoy}}</th>
+                        <th width=10%>Color seg&#250n cant de RQ vencidos</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -214,8 +220,12 @@ if (isset($requerimientos)) {
                             <tr>
                                 <td>{{$valores['equipos_array'][$i]}}</td>
                                 <td>{{$valores['resolutores_array'][$i]}}</td>
-                                <td style="text-align: center;">{{$valores['pendientes_resolutor'][$i]}}</td>
+                                <td style="text-align: center;">{{$valores['pendientes_resolutor_hoy'][$i]+$valores['cerrados'][$i]-$valores['creadoHoy_resolutor'][$i]}}</td>
+                                @if ($valores['vencidos'][$i] >= 1)
+                                <td style="text-align: center; color: red; font-weight: bold;">{{$valores['vencidos'][$i]}}</td>
+                                @else
                                 <td style="text-align: center;">{{$valores['vencidos'][$i]}}</td>
+                                @endif
                                 <td style="text-align: center;">{{$valores['creadoHoy_resolutor'][$i]}}</td>
                                 <td style="text-align: center;">{{$valores['cerrados'][$i]}}</td>
                                 <td style="text-align: center;">{{$valores['pendientes_resolutor_hoy'][$i]}}</td>
@@ -229,7 +239,15 @@ if (isset($requerimientos)) {
                                 <td style="background-color: green"></td>
                                 @endif                               
                             </tr>
-                    @endfor        
+                    @endfor
+                    <tr>
+                        <td colspan="2" style="font-weight: bold;">Total RQ</td>
+                        <td style="font-weight: bold;">{{$valores['total_activos_ayer']}}</td>
+                        <td style="color: red; font-weight: bold;">{{$valores['total_vencidos']}}</td>
+                        <td style="font-weight: bold;">{{$valores['total_creados_hoy']}}</td>
+                        <td style="font-weight: bold;">{{$valores['total_cerrados_hoy']}}</td>
+                        <td style="font-weight: bold;">{{$valores['total_activos_hoy']}}</td>
+                    </tr>
                 </tbody>
             </table>
         </table>    

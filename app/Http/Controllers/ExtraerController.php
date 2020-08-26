@@ -63,27 +63,15 @@ class ExtraerController extends Controller
          ['estado', 1],
         ])->get();
         
-        
-        $a = intval(date("dH"));
-        $b = intval(date("d")."22");
-    
-        if($a > $b)
-        {
-            $hoy = date("d-m-Y");
-        } else
-        {
-            $hoy = date("d-m-Y", strtotime("-1 day"));
-        }
-
-        $ayer = date("d-m-Y", strtotime("-1 day"));
-        
+        $hoy = date("d-m-Y", strtotime("-4 hours"));
+        $ayer = date("d-m-Y", strtotime("-1 day -4hours"));
+   
         $ayer_dtt = new DateTime($ayer);
         $hoy_dtt = new DateTime($hoy);
         
         $horas_modifica_ayer = new DateInterval('PT23H59M59S');
         $ayer_dtt = $ayer_dtt->add($horas_modifica_ayer);
-        
-        $hoy_dtt = $hoy_dtt->add($horas_modifica_ayer);
+        //$hoy_dtt = $hoy_dtt->add($horas_modifica_ayer);
         
         $array_equipos = [];
         $array_resolutores = [];
@@ -93,6 +81,11 @@ class ExtraerController extends Controller
         $array_vencidos = [];
         $array_cerrados_hoy=[];
         $array_pendientes_resolutor_hoy= [];
+        $total_activos_ayer = 0;
+        $total_vencidos = 0;
+        $total_creado_hoy = 0;
+        $total_cerrados_hoy = 0;
+        $total_activos_hoy = 0;
         
         
         foreach ($equipos as $equipo)
@@ -125,26 +118,20 @@ class ExtraerController extends Controller
                if($fecha_crea_req < $ayer_dtt)
                {
                    $contador = $contador+1;
+                   ++$total_activos_ayer;
                }
             }
             
             $contador_2 = 0;
             foreach ($requerimientos_resolutor as $requerimiento)
             {
-                if($requerimiento['fechaRealCierre'] != "")
-                {
-                    $fecha_cierre_req = new DateTime($requerimiento['fechaRealCierre']);
-                } else
-                {
-                    $fecha_cierre_req = new DateTime($requerimiento['fechaCierre']);
-                }
-                
+                $fecha_cierre_req = new DateTime($requerimiento['fechaCierre']);
                 if($fecha_cierre_req<$hoy_dtt)
                 {
                     ++$contador_2;
+                    ++$total_vencidos;
                 }
             }
-            $array_vencidos[] = $contador_2;
             
             $requerimientos_resolutor = Requerimiento::where([
                 ['rutEmpresa', '90413000-1'],
@@ -160,8 +147,34 @@ class ExtraerController extends Controller
                if($fecha_crea_req < $ayer_dtt)
                {
                    $contador = $contador+1;
+                   ++$total_activos_ayer;
                }
-            }            
+                $fecha_cierre_req = new DateTime($requerimiento['fechaCierre']);
+                
+                if($fecha_cierre_req<$hoy_dtt)
+                {
+                    ++$contador_2;
+                    ++$total_vencidos;
+                }               
+            }
+            
+            $array_vencidos[] = $contador_2;
+            
+            $requerimientos_resolutor = Requerimiento::where([
+               ['rutEmpresa', '90413000-1'],
+               ['resolutor', $resolutor['id']],
+               ['fechaLiquidacion', '!=', null] 
+            ])->get();
+            
+            foreach ($requerimientos_resolutor as $requerimiento)
+            {
+                $fecha_liquida = new DateTime($requerimiento['fechaLiquidacion']);
+                if($fecha_liquida>$ayer_dtt)
+                {
+                   $contador = $contador+1;
+                   ++$total_activos_ayer;                    
+                }
+            }
             $array_pendientes_resolutor[] = $contador;
             //Acá termina
             
@@ -176,10 +189,14 @@ class ExtraerController extends Controller
             $contador = 0;
             foreach ($requerimientos_resolutor as $requerimiento)
             {
-                $fecha_crea_req = new DateTime($requerimiento['created_at']);
-                
-                if($fecha_crea_req->getTimestamp() > $ayer_dtt->getTimestamp() and $fecha_crea_req->getTimestamp()<$hoy_dtt->getTimestamp()){
+                $hoy_dtt = new DateTime($hoy);
+                $fecha_crea = new DateTime($requerimiento['created_at']);
+                $intervalo = new DateInterval('PT4H');
+                $fecha_crea_req = $fecha_crea->sub($intervalo);
+                $hoy_dtt = $hoy_dtt->add($horas_modifica_ayer);
+                if($fecha_crea_req > $ayer_dtt and $fecha_crea_req < $hoy_dtt){
                     ++$contador;
+                    ++$total_creado_hoy;
                 }
             }
 
@@ -192,10 +209,14 @@ class ExtraerController extends Controller
 
             foreach ($requerimientos_resolutor as $requerimiento)
             {
-                $fecha_crea_req = new DateTime($requerimiento['created_at']);
-                
-                if($fecha_crea_req->getTimestamp() > $ayer_dtt->getTimestamp() and $fecha_crea_req->getTimestamp()<$hoy_dtt->getTimestamp()){
+                $hoy_dtt = new DateTime($hoy);
+                $fecha_crea = new DateTime($requerimiento['created_at']);
+                $intervalo = new DateInterval('PT4H');
+                $fecha_crea_req = $fecha_crea->sub($intervalo);
+                $hoy_dtt = $hoy_dtt->add($horas_modifica_ayer);
+                if($fecha_crea_req > $ayer_dtt and $fecha_crea_req < $hoy_dtt){
                     ++$contador;
+                    ++$total_creado_hoy;
                 }
             }            
             $array_creadoHoy_resolutor[]=$contador;
@@ -215,13 +236,15 @@ class ExtraerController extends Controller
             $cerrados = 0;
             foreach ($requerimientos_resolutor as $requerimiento)
             {
+                $hoy_dtt = new DateTime($hoy);
                 $fl = new DateTime($requerimiento['fechaLiquidacion']);
-                $fecha_liquidacion = $fl->format('d-m-Y');
-                $al = new DateTime();
-                $actual = $al->format('d-m-Y');
-                if($actual == $fecha_liquidacion)
+                $intervalo = new DateInterval('PT4H');
+                $fecha_liquidacion = $fl->sub($intervalo);
+                
+                if($hoy_dtt < $fecha_liquidacion)
                 {
                     ++$cerrados;
+                    ++$total_cerrados_hoy;
                 }   
             }
             
@@ -234,13 +257,15 @@ class ExtraerController extends Controller
             
             foreach ($requerimientos_resolutor as $requerimiento)
             {
+                $hoy_dtt = new DateTime($hoy);
                 $fl = new DateTime($requerimiento['fechaLiquidacion']);
-                $fecha_liquidacion = $fl->format('d-m-Y');
-                $al = new DateTime();
-                $actual = $al->format('d-m-Y');
-                if($actual == $fecha_liquidacion)
+                $intervalo = new DateInterval('PT4H');
+                $fecha_liquidacion = $fl->sub($intervalo);
+                
+                if($hoy_dtt < $fecha_liquidacion)
                 {
                     ++$cerrados;
+                    ++$total_cerrados_hoy;
                 }   
             }
             $array_cerrados_hoy[] = $cerrados;
@@ -255,12 +280,8 @@ class ExtraerController extends Controller
             $contador = 0;
             foreach ($requerimientos_resolutor as $requerimiento)
             {
-               $fecha_crea_req = new DateTime($requerimiento['created_at']);
-               
-               if($fecha_crea_req < $hoy_dtt)
-               {
                    $contador = $contador+1;
-               }
+                   ++$total_activos_hoy;
             }
 
             $requerimientos_resolutor = Requerimiento::where([
@@ -272,12 +293,8 @@ class ExtraerController extends Controller
 
             foreach ($requerimientos_resolutor as $requerimiento)
             {
-               $fecha_crea_req = new DateTime($requerimiento['created_at']);
-               
-               if($fecha_crea_req < $hoy_dtt)
-               {
                    $contador = $contador+1;
-               }
+                   ++$total_activos_hoy;
             }            
             $array_pendientes_resolutor_hoy[] = $contador;           
         }
@@ -297,16 +314,20 @@ class ExtraerController extends Controller
             ++$puntero_1;
         }
 
-        $hoy = date("d-m-Y");
-        $ayer = date("d-m-Y", strtotime("-1 day"));
+        $hoy = date("d-m-Y", strtotime("-4 hours"));
+        $ayer = date("d-m-Y", strtotime("-1 day -4 hours"));
 
         $valores['resolutores_array'] = $array_resolutores;
         $valores['equipos_array'] = $array_equipos;
-        $valores['pendientes_resolutor'] = $array_pendientes_resolutor;
         $valores['vencidos'] = $array_vencidos;
         $valores['creadoHoy_resolutor'] = $array_creadoHoy_resolutor;
         $valores['cerrados'] = $array_cerrados_hoy;
         $valores['pendientes_resolutor_hoy'] = $array_pendientes_resolutor_hoy;
+        $valores['total_activos_ayer'] = $total_cerrados_hoy+$total_activos_hoy-$total_creado_hoy;;
+        $valores['total_vencidos'] = $total_vencidos;
+        $valores['total_creados_hoy'] = $total_creado_hoy;
+        $valores['total_cerrados_hoy'] = $total_cerrados_hoy;
+        $valores['total_activos_hoy'] = $total_activos_hoy;
         
         return view('Extraer.index', compact('solicitantes', 'resolutors', 'teams', 'user', 'lider',
                     'hoy', 'ayer', 'valores'));
@@ -750,7 +771,11 @@ class ExtraerController extends Controller
                 ['rutEmpresa', auth()->user()->rutEmpresa],
                 ['teamId', $request['idTeam']],
                 ['estado', 1],
-            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email', 'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre', 'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado', 'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo', 'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+            ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email',
+                    'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre',
+                    'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado',
+                    'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo',
+                    'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
         }
         $base2 = [];
         $requerimientos = [];
@@ -768,5 +793,40 @@ class ExtraerController extends Controller
         } else {         
             return view('Extraer.index', compact('requerimientos'));
         }          
-    }    
+    }
+
+    public function incidentes()
+    {
+        $base = DB::table('requ_view')->where([
+            ['rutEmpresa', auth()->user()->rutEmpresa],
+            ['estado', 1]
+        ])->get(['id2 as id', 'textoRequerimiento', 'fechaEmail AS Fecha de Email',
+                'fechaSolicitud AS Fecha de solicitud', 'fechaCierre AS Fecha de cierre',
+                'fechaRealCierre AS Fecha real de cierre', 'porcentajeEjecutado AS Porcentaje ejecutado',
+                'nombreSolicitante AS Solicitante', 'nombreResolutor AS Resolutor', 'nameTeam AS Equipo',
+                'namePriority AS Prioridad', 'textAvance AS Avance'])->toArray();
+        
+        
+        $base2 = [];
+        $requerimientos = [];
+        foreach($base as $req)
+        {
+            $inicial = substr($req->id, 0, 3);
+            if($inicial == "INC")
+            {
+            $req->textoRequerimiento = utf8_decode($req->textoRequerimiento);
+            $req->Solicitante = utf8_decode($req->Solicitante);
+            $req->Resolutor = utf8_decode($req->Resolutor);            
+            $req->Equipo = utf8_decode($req->Equipo);
+            $req->Avance = utf8_decode($req->Avance);                        
+            $base2 = (array) $req;
+            array_push($requerimientos, $base2);
+            }            
+        }
+        if (empty($requerimientos)) {
+            return back()->with('msj', 'No existen requerimientos que cumplan con su solicitud.');                
+        } else {         
+            return view('Extraer.index', compact('requerimientos'));
+        }
+    }
 }

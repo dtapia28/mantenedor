@@ -82,6 +82,11 @@ class EnvioReporteSemanal extends Command
         $array_vencidos = [];
         $array_cerrados_hoy=[];
         $array_pendientes_resolutor_hoy= [];
+        $total_activos_ayer = 0;
+        $total_vencidos = 0;
+        $total_creado_hoy = 0;
+        $total_cerrados_hoy = 0;
+        $total_activos_hoy = 0;
         
         
         foreach ($equipos as $equipo)
@@ -114,26 +119,20 @@ class EnvioReporteSemanal extends Command
                if($fecha_crea_req < $ayer_dtt)
                {
                    $contador = $contador+1;
+                   ++$total_activos_ayer;
                }
             }
             
             $contador_2 = 0;
             foreach ($requerimientos_resolutor as $requerimiento)
             {
-                if($requerimiento['fechaRealCierre'] != "")
-                {
-                    $fecha_cierre_req = new DateTime($requerimiento['fechaRealCierre']);
-                } else
-                {
-                    $fecha_cierre_req = new DateTime($requerimiento['fechaCierre']);
-                }
-                
+                $fecha_cierre_req = new DateTime($requerimiento['fechaCierre']);
                 if($fecha_cierre_req<$hoy_dtt)
                 {
                     ++$contador_2;
+                    ++$total_vencidos;
                 }
             }
-            $array_vencidos[] = $contador_2;
             
             $requerimientos_resolutor = Requerimiento::where([
                 ['rutEmpresa', '90413000-1'],
@@ -149,8 +148,33 @@ class EnvioReporteSemanal extends Command
                if($fecha_crea_req < $ayer_dtt)
                {
                    $contador = $contador+1;
+                   ++$total_activos_ayer;
                }
-            }            
+                $fecha_cierre_req = new DateTime($requerimiento['fechaCierre']);
+                if($fecha_cierre_req<$hoy_dtt)
+                {
+                    ++$contador_2;
+                    ++$total_vencidos;
+                }               
+            }
+            
+            $array_vencidos[] = $contador_2;
+            
+            $requerimientos_resolutor = Requerimiento::where([
+               ['rutEmpresa', '90413000-1'],
+               ['resolutor', $resolutor['id']],
+               ['fechaLiquidacion', '!=', null] 
+            ])->get();
+            
+            foreach ($requerimientos_resolutor as $requerimiento)
+            {
+                $fecha_liquida = new DateTime($requerimiento['fechaLiquidacion']);
+                if($fecha_liquida>$ayer_dtt)
+                {
+                   $contador = $contador+1;
+                   ++$total_activos_ayer;                    
+                }
+            }
             $array_pendientes_resolutor[] = $contador;
             //Acá termina
             
@@ -169,6 +193,7 @@ class EnvioReporteSemanal extends Command
                 
                 if($fecha_crea_req->getTimestamp() > $ayer_dtt->getTimestamp() and $fecha_crea_req->getTimestamp()<$hoy_dtt->getTimestamp()){
                     ++$contador;
+                    ++$total_creado_hoy;
                 }
             }
 
@@ -185,6 +210,7 @@ class EnvioReporteSemanal extends Command
                 
                 if($fecha_crea_req->getTimestamp() > $ayer_dtt->getTimestamp() and $fecha_crea_req->getTimestamp()<$hoy_dtt->getTimestamp()){
                     ++$contador;
+                    ++$total_creado_hoy;
                 }
             }            
             $array_creadoHoy_resolutor[]=$contador;
@@ -211,6 +237,7 @@ class EnvioReporteSemanal extends Command
                 if($actual == $fecha_liquidacion)
                 {
                     ++$cerrados;
+                    ++$total_cerrados_hoy;
                 }   
             }
             
@@ -230,6 +257,7 @@ class EnvioReporteSemanal extends Command
                 if($actual == $fecha_liquidacion)
                 {
                     ++$cerrados;
+                    ++$total_cerrados_hoy;
                 }   
             }
             $array_cerrados_hoy[] = $cerrados;
@@ -249,6 +277,7 @@ class EnvioReporteSemanal extends Command
                if($fecha_crea_req < $hoy_dtt)
                {
                    $contador = $contador+1;
+                   ++$total_activos_hoy;
                }
             }
 
@@ -266,6 +295,7 @@ class EnvioReporteSemanal extends Command
                if($fecha_crea_req < $hoy_dtt)
                {
                    $contador = $contador+1;
+                   ++$total_activos_hoy;
                }
             }            
             $array_pendientes_resolutor_hoy[] = $contador;           
@@ -291,11 +321,15 @@ class EnvioReporteSemanal extends Command
 
         $valores['resolutores_array'] = $array_resolutores;
         $valores['equipos_array'] = $array_equipos;
-        $valores['pendientes_resolutor'] = $array_pendientes_resolutor;
         $valores['vencidos'] = $array_vencidos;
         $valores['creadoHoy_resolutor'] = $array_creadoHoy_resolutor;
         $valores['cerrados'] = $array_cerrados_hoy;
         $valores['pendientes_resolutor_hoy'] = $array_pendientes_resolutor_hoy;
+        $valores['total_activos_ayer'] = $total_activos_ayer;
+        $valores['total_vencidos'] = $total_vencidos;
+        $valores['total_creados_hoy'] = $total_creado_hoy;
+        $valores['total_cerrados_hoy'] = $total_cerrados_hoy;
+        $valores['total_activos_hoy'] = $total_activos_hoy;
     
         Mail::to('dtapia1025@gmail.com')->send(new SendMailable($hoy, $ayer, $valores));
     }
