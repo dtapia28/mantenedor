@@ -63,7 +63,10 @@ class LoginController extends Controller
                 'fecha' => $fecha,
                 'descripcion' => 'proceso ejecutado',
             ]);            
-            $requerimientos = Requerimiento::where('estado', 1)->get();
+            $requerimientos = Requerimiento::where([
+                ['estado', 1],
+                ['aprobacion', 3],
+            ])->get();
             $resolutores = Resolutor::all();
             foreach ($requerimientos as $requerimiento) {
                 if($requerimiento->fechaRealCierre != null and $requerimiento->fechaRealCierre != "9999-12-31 00:00:00"){
@@ -127,7 +130,7 @@ class LoginController extends Controller
 
                                 $recep = $resolutor->email;                        
 
-                                //Notification::route('mail',$recep)->notify(new RequerimientoEmail($obj));
+                                Notification::route('mail',$recep)->notify(new RequerimientoEmail($obj));
 
                             }
                         }
@@ -164,7 +167,7 @@ class LoginController extends Controller
 
                                     $recep = $resolutor->email;                        
 
-                                    //Notification::route('mail',$recep)->notify(new RequerimientoEmail($obj));
+                                    Notification::route('mail',$recep)->notify(new RequerimientoEmail($obj));
 
                                 }
                             }

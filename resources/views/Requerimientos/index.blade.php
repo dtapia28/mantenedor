@@ -42,7 +42,10 @@
 			@endif
                         @if($user[0]->nombre == "solicitante")
                             <option value="6" @if ($estado == "6") selected @endif>Por autorizar</option>		
-                        @endif                        
+                        @endif
+                        @if($user[0]->nombre == "resolutor" and $lider == 1)
+                            <option value="6" @if ($estado == "6") selected @endif>Por autorizar</option>
+                        @endif
 			@if($user[0]->nombre == "resolutor")
 			<option value="7" @if ($estado == "7") selected @endif>Esperando autorización</option>
 			@endif							

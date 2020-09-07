@@ -33,18 +33,8 @@ class TableroController extends Controller
         $valores['requerimientos'] = $data['valores']['requerimientos'];
         $valores['resolutores'] = $data['valores']['resolutores'];
         $valores['solicitantes'] = $data['valores']['solicitantes'];
-        $valores['equipos'] = $data['valores']['equipos'];
-        $valores['equipos_array'] = $data['array_equipos'];
-        $valores['resolutores_array'] = $data['array_resolutores'];
-        $valores['pendientes_resolutor'] = $data['array_pendientes_resolutor'];
-        $valores['creadoHoy_resolutor'] = $data['array_creadoHoy_resolutor'];
-        $valores['vencidos'] = $data['array_vencidos'];
-        $valores['cerrados'] = $data['array_cerrados_hoy'];
-        $valores['pendientes_resolutor_hoy'] = $data['array_pendientes_resolutor_hoy'];
+        $valores['equipos'] = $data['valores']['equipos'];     
         
-        $hoy = date("d-m-Y");
-        $ayer = date("d-m-Y", strtotime("-1 day"));        
-        
-    	return view('dashboard.index', compact('user', 'resolutor_lider', 'data', 'valores','hoy','ayer'));
+    	return view('dashboard.index', compact('user', 'resolutor_lider', 'data', 'valores'));
     }
 }

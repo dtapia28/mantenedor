@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width initial-scale=1.0 shrink-to-fit=no">
   <meta name="description" content="">
@@ -61,7 +61,7 @@
                                                                     <img src="{{ asset($linkFoto) }}" max-width="64px" max-height="64px" alt="Foto" class="rounded"/>
                                                             @else
                                                                     <img src="{{ asset('img/avatar.png') }}" />
-                                                            @endif                                                        
+                                                            @endif 
 							<span></span>
 							<div class="admin-info">
 								<div class="font-strong">{{ Auth::user()->name }} <i class="fa fa-angle-down m-l-5"></i></div>
@@ -73,7 +73,7 @@
 							<a class="dropdown-item" href="{{ url('user/parametros') }}"><i class="fa fa-cog"></i> Parámetros</a>
 							@endif
                                                         <a class="dropdown-item" href="{{ url('user/account') }}"><i class="fa fa-user"></i> Mi cuenta</a>
-							<a class="dropdown-item" href="{{ url('user/changepassword') }}"><i class="fa fa-lock"></i> Cambiar contraseña</a>
+							<a class="dropdown-item" href="{{ url('user/changepassword') }}"><i class="fa fa-lock"></i> Cambiar contrase&ntildea</a>
 							<li class="dropdown-divider"></li>
 							<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i> Cerrar Sesión</a>
 							<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -114,7 +114,7 @@
 						</a>
 					</li>
 					@endif
-					<li class="heading">PÁGINAS</li>
+					<li class="heading">P&#193GINAS</li>
 					<li id="mRequerimientos">
 						<a href="{{ url('/requerimientos') }}"><i class="sidebar-item-icon fa fa-address-card"></i>
 							<span class="nav-label">Requerimientos</span>

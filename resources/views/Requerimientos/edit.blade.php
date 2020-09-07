@@ -37,10 +37,19 @@
                             <label for='fechaCierre'>Fecha de Solicitud:</label>
                             <input value="{{ $solicitud }}" class="form-control col-md-12" type="date" name="fechaSolicitud">
                         </div>
-                        <div id="fechaCierre" class="col-sm-6 form-group" style='display: none;'>         
+                        @if($user[0]->nombre == "administrador")
+                        <div id="fechaCierre" class="col-sm-6 form-group">
+                            <input id="tipo_usuario" type="hidden" value={{$user[0]->nombre}}>
                             <label for='fechaCierre'>Fecha de Cierre:</label>
                             <input value="{{ $cierre }}" class="form-control col-md-12" type="date" name="fechaCierre">
                         </div>
+                        @else
+                        <div id="fechaCierre" class="col-sm-6 form-group" style="display: none;">
+                            <input id="tipo_usuario" type="hidden" value={{$user[0]->nombre}}>
+                            <label for='fechaCierre'>Fecha de Cierre:</label>
+                            <input value="{{ $cierre }}" class="form-control col-md-12" type="date" name="fechaCierre">
+                        </div>
+                        @endif
                         <div class="col-sm-6 form-group">       
                             <label for="idSolicitante">Solicitante:</label>   
                             <select class="form-control col-md-12" name="idSolicitante">
@@ -182,22 +191,24 @@
             sessionStorage.setItem('stComentario', $('#comentario').val());
             sessionStorage.setItem('stTextAvance', $('#textAvance').val());
         }
-    }   
+    }
 </script>
 <script type="text/javascript">
     var id_resolutor = document.getElementById('id_resolutor').value;
+    var tipo = document.getElementById('tipo_usuario').value;
+    if(tipo != "administrador"){
+        sessionStorage.setItem('id_resolutor', id_resolutor);
+        var resolutor = document.getElementById('resolutor');
+        resolutor.addEventListener('change', ()=>{
+            var resultado = resolutor.value;
+            var resolutor_store = sessionStorage.getItem('id_resolutor');
 
-    sessionStorage.setItem('id_resolutor', id_resolutor);
-    var resolutor = document.getElementById('resolutor');
-    resolutor.addEventListener('change', ()=>{
-        var resultado = resolutor.value;
-        var resolutor_store = sessionStorage.getItem('id_resolutor');
-        
-        if (resultado != resolutor_store) {
-           document.getElementById('fechaCierre').style.display = "block"; 
-        } else {
-            document.getElementById('fechaCierre').style.display = "none";
-        }
-    });
+            if (resultado != resolutor_store) {
+               document.getElementById('fechaCierre').style.display = "block"; 
+            } else {
+                document.getElementById('fechaCierre').style.display = "none";
+            }
+        });
+    }
 </script>
 @endsection

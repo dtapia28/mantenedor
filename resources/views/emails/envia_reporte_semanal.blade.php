@@ -1,6 +1,9 @@
 <div class="ibox">
+    <div style="background-color: whitesmoke; opacity:0.3; padding: 10px;">
+        <h1 style="text-align: center; color: darkgray">Kinchika</h1>
+    </div>
     <div class="ibox-head">
-        <div class="ibox-title">Reporte RQ</div>       
+        <div class="ibox-title"><h1>Reporte Requerimientos</h1></div>       
     </div>
     <div class="ibox-body">
         <style>
@@ -18,22 +21,25 @@
                 border: 1px solid black;
                 text-align: left;
             }
+            table,td {
+                border: 1px solid black;
+            }           
         </style>
         <table width=80%>
             <tr >
-                <td class="head_table">Requerimientos al {{ $hoy }}</td>
+                <td class="head_table"><h2>Requerimientos al {{ $hoy }}</h2></td>
             </tr>
-            <table width=80%>
+            <table border="2" width=80%>
                 <thead>
                     <tr>
-                        <th width=10%>&#193rea</th>
+                        <th width=10%>Area</th>
                         <th width=20%>Resolutor</th>
                         <th width=10%>Cantidad de RQ activos al {{$ayer}}</th>
                         <th width=10%>Vencidos</th>
-                        <th width=10%>Cantidad de RQ generado el d&#237a de hoy {{ $hoy }}</th>
-                        <th width=10%>Cantidad de RQ cerrado el  d&#237a de hoy {{ $hoy }}</th>
+                        <th width=10%>Cantidad de RQ generado el dia de hoy {{ $hoy }}</th>
+                        <th width=10%>Cantidad de RQ cerrado el  dia de hoy {{ $hoy }}</th>
                         <th width=10%>Cantidad de RQ activos al {{$hoy}}</th>
-                        <th width=10%>Color seg&#250n cant de RQ vencidos</th>
+                        <th width=10%>Color segun cant de RQ vencidos</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,7 +61,7 @@
                                 @elseif($valores['vencidos'][$i]>=4 and $valores['vencidos'][$i]<=6)
                                 <td style="background-color: red"></td>
                                 @elseif($valores['vencidos'][$i]>=7)
-                                <td style="background-color: #45046a; font-weight: bold; color: white;">GRAVE</td>
+                                <td style="background-color: #45046a; font-weight: bold; color: white; text-align: center;">GRAVE</td>
                                 @else
                                 <td style="background-color: green"></td>
                                 @endif                               
@@ -63,15 +69,91 @@
                     @endfor
                     <tr>
                         <td colspan="2" style="font-weight: bold;">Total RQ</td>
-                        <td style="font-weight: bold;">{{$valores['total_activos_ayer']}}</td>
-                        <td style="color: red; font-weight: bold;">{{$valores['total_vencidos']}}</td>
-                        <td style="font-weight: bold;">{{$valores['total_creados_hoy']}}</td>
-                        <td style="font-weight: bold;">{{$valores['total_cerrados_hoy']}}</td>
-                        <td style="font-weight: bold;">{{$valores['total_activos_hoy']}}</td>
+                        <td style="font-weight: bold; text-align: center;">{{$valores['total_activos_ayer']}}</td>
+                        <td style="color: red; font-weight: bold; text-align: center;">{{$valores['total_vencidos']}}</td>
+                        <td style="font-weight: bold; text-align: center;">{{$valores['total_creados_hoy']}}</td>
+                        <td style="font-weight: bold; text-align: center;">{{$valores['total_cerrados_hoy']}}</td>
+                        <td style="font-weight: bold; text-align: center;">{{$valores['total_activos_hoy']}}</td>
                     </tr>
                 </tbody>
             </table>
-        </table>    
+        </table>
+        <br>
+        <table border='1'>
+            <thead>
+                <tr>
+                    <th>Semaforo</th>
+                    @foreach($valores["dias"] as $dia)
+                    <th>{{$dia}}</th>
+                    @endforeach
+                </tr>
+            </thead>
+            <tbody>
+            @for ($i=0; $i < count((array)$valores["resolutores_array"]); $i++)
+            @foreach($valores['dias'] as $dia)
+            @if($valores['dias'][0] == $dia)
+            <tr>
+                    <td>{{$valores['resolutores_array'][$i]}}</td>
+            @endif
+                    @foreach($valores['todo'] as $elemento)
+                    @foreach($valores['array_id_resolutor'] as $res)
+                    @if($elemento->fecha == $dia and $valores['resolutores_array'][$i] == $res[0]->nombreResolutor and $res[0]->id == $elemento->id_resolutor)
+                                @if ($elemento->nota >= 1 and $elemento->nota <=3)
+                                <td style="background-color: yellow"></td>
+                                @elseif($elemento->nota >=4 and $elemento->nota <=6)
+                                <td style="background-color: red"></td>
+                                @elseif($elemento->nota >=7)
+                                <td style="background-color: #45046a; font-weight: bold; color: white; text-align: center;">GRAVE</td>
+                                @else
+                                <td style="background-color: green"></td>
+                                @endif
+                    @endif
+                    @endforeach
+                    @endforeach
+            @endforeach
+            </tr>
+            @endfor
+            </tbody>
+        </table>
+        <br>
+        <table border='1'>
+            <thead>
+                <tr>
+                    <th>Nota</th>
+                    @foreach($valores["dias"] as $dia)
+                    <th>{{$dia}}</th>
+                    @endforeach
+                    <th style="text-align: center">Promedio</th>
+                </tr>
+            </thead>
+            <tbody>
+            @for ($i=0; $i < count((array)$valores["resolutores_array"]); $i++)
+            @foreach($valores['dias'] as $dia)
+            @if($valores['dias'][0] == $dia)
+            <tr>
+                    <td>{{$valores['resolutores_array'][$i]}}</td>
+            @endif
+                    @foreach($valores['todo'] as $elemento)
+                    @foreach($valores['array_id_resolutor'] as $res)
+                    @if($elemento->fecha == $dia and $valores['resolutores_array'][$i] == $res[0]->nombreResolutor and $res[0]->id == $elemento->id_resolutor)
+                                @if ($elemento->nota >= 1 and $elemento->nota <=3)
+                                <td style="text-align: center">6</td>
+                                @elseif($elemento->nota >=4 and $elemento->nota <=6)
+                                <td style="text-align: center">4</td>
+                                @elseif($elemento->nota >=7)
+                                <td style="text-align: center">1</td>
+                                @else
+                                <td style="text-align: center">10</td>
+                                @endif
+                    @endif
+                    @endforeach
+                    @endforeach
+            @endforeach
+            <td style="text-align: center; font-weight: bold;">{{$valores['totales_notas'][$i]}}</td>
+            </tr>
+            @endfor
+            </tbody>            
+        </table>
     </div>
 </div>
 

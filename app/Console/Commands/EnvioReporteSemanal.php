@@ -4,9 +4,11 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 use App\Team;
 use App\Resolutor;
 use App\Requerimiento;
+use App\User;
 use App\Mail\SendMailable;
 use DateTime;
 use DateInterval;
@@ -52,27 +54,15 @@ class EnvioReporteSemanal extends Command
          ['estado', 1],
         ])->get();
         
-        
-        $a = intval(date("dH"));
-        $b = intval(date("d")."22");
-    
-        if($a > $b)
-        {
-            $hoy = date("d-m-Y");
-        } else
-        {
-            $hoy = date("d-m-Y", strtotime("-1 day"));
-        }
-
-        $ayer = date("d-m-Y", strtotime("-1 day"));
-        
+        $hoy = date("d-m-Y", strtotime("-4 hours"));
+        $ayer = date("d-m-Y", strtotime("-1 day -4hours"));
+   
         $ayer_dtt = new DateTime($ayer);
         $hoy_dtt = new DateTime($hoy);
         
         $horas_modifica_ayer = new DateInterval('PT23H59M59S');
         $ayer_dtt = $ayer_dtt->add($horas_modifica_ayer);
-        
-        $hoy_dtt = $hoy_dtt->add($horas_modifica_ayer);
+        //$hoy_dtt = $hoy_dtt->add($horas_modifica_ayer);
         
         $array_equipos = [];
         $array_resolutores = [];
@@ -101,7 +91,7 @@ class EnvioReporteSemanal extends Command
             }
         } 
         
-        //Calcular pendientes al dÃ­a anterior al actual
+        //Calcular pendientes al día anterior al actual
         foreach($array_resolutores_completo as $resolutor)
         {
             $requerimientos_resolutor = Requerimiento::where([
@@ -151,6 +141,7 @@ class EnvioReporteSemanal extends Command
                    ++$total_activos_ayer;
                }
                 $fecha_cierre_req = new DateTime($requerimiento['fechaCierre']);
+                
                 if($fecha_cierre_req<$hoy_dtt)
                 {
                     ++$contador_2;
@@ -176,7 +167,7 @@ class EnvioReporteSemanal extends Command
                 }
             }
             $array_pendientes_resolutor[] = $contador;
-            //AcÃ¡ termina
+            //Acá termina
             
             //Calcular creados hoy
             $requerimientos_resolutor = Requerimiento::where([
@@ -189,9 +180,12 @@ class EnvioReporteSemanal extends Command
             $contador = 0;
             foreach ($requerimientos_resolutor as $requerimiento)
             {
-                $fecha_crea_req = new DateTime($requerimiento['created_at']);
-                
-                if($fecha_crea_req->getTimestamp() > $ayer_dtt->getTimestamp() and $fecha_crea_req->getTimestamp()<$hoy_dtt->getTimestamp()){
+                $hoy_dtt = new DateTime($hoy);
+                $fecha_crea = new DateTime($requerimiento['created_at']);
+                $intervalo = new DateInterval('PT4H');
+                $fecha_crea_req = $fecha_crea->sub($intervalo);
+                $hoy_dtt = $hoy_dtt->add($horas_modifica_ayer);
+                if($fecha_crea_req > $ayer_dtt and $fecha_crea_req < $hoy_dtt){
                     ++$contador;
                     ++$total_creado_hoy;
                 }
@@ -206,9 +200,12 @@ class EnvioReporteSemanal extends Command
 
             foreach ($requerimientos_resolutor as $requerimiento)
             {
-                $fecha_crea_req = new DateTime($requerimiento['created_at']);
-                
-                if($fecha_crea_req->getTimestamp() > $ayer_dtt->getTimestamp() and $fecha_crea_req->getTimestamp()<$hoy_dtt->getTimestamp()){
+                $hoy_dtt = new DateTime($hoy);
+                $fecha_crea = new DateTime($requerimiento['created_at']);
+                $intervalo = new DateInterval('PT4H');
+                $fecha_crea_req = $fecha_crea->sub($intervalo);
+                $hoy_dtt = $hoy_dtt->add($horas_modifica_ayer);
+                if($fecha_crea_req > $ayer_dtt and $fecha_crea_req < $hoy_dtt){
                     ++$contador;
                     ++$total_creado_hoy;
                 }
@@ -230,11 +227,12 @@ class EnvioReporteSemanal extends Command
             $cerrados = 0;
             foreach ($requerimientos_resolutor as $requerimiento)
             {
+                $hoy_dtt = new DateTime($hoy);
                 $fl = new DateTime($requerimiento['fechaLiquidacion']);
-                $fecha_liquidacion = $fl->format('d-m-Y');
-                $al = new DateTime();
-                $actual = $al->format('d-m-Y');
-                if($actual == $fecha_liquidacion)
+                $intervalo = new DateInterval('PT4H');
+                $fecha_liquidacion = $fl->sub($intervalo);
+                
+                if($hoy_dtt < $fecha_liquidacion)
                 {
                     ++$cerrados;
                     ++$total_cerrados_hoy;
@@ -250,11 +248,12 @@ class EnvioReporteSemanal extends Command
             
             foreach ($requerimientos_resolutor as $requerimiento)
             {
+                $hoy_dtt = new DateTime($hoy);
                 $fl = new DateTime($requerimiento['fechaLiquidacion']);
-                $fecha_liquidacion = $fl->format('d-m-Y');
-                $al = new DateTime();
-                $actual = $al->format('d-m-Y');
-                if($actual == $fecha_liquidacion)
+                $intervalo = new DateInterval('PT4H');
+                $fecha_liquidacion = $fl->sub($intervalo);
+                
+                if($hoy_dtt < $fecha_liquidacion)
                 {
                     ++$cerrados;
                     ++$total_cerrados_hoy;
@@ -272,13 +271,8 @@ class EnvioReporteSemanal extends Command
             $contador = 0;
             foreach ($requerimientos_resolutor as $requerimiento)
             {
-               $fecha_crea_req = new DateTime($requerimiento['created_at']);
-               
-               if($fecha_crea_req < $hoy_dtt)
-               {
                    $contador = $contador+1;
                    ++$total_activos_hoy;
-               }
             }
 
             $requerimientos_resolutor = Requerimiento::where([
@@ -290,13 +284,8 @@ class EnvioReporteSemanal extends Command
 
             foreach ($requerimientos_resolutor as $requerimiento)
             {
-               $fecha_crea_req = new DateTime($requerimiento['created_at']);
-               
-               if($fecha_crea_req < $hoy_dtt)
-               {
                    $contador = $contador+1;
                    ++$total_activos_hoy;
-               }
             }            
             $array_pendientes_resolutor_hoy[] = $contador;           
         }
@@ -316,8 +305,8 @@ class EnvioReporteSemanal extends Command
             ++$puntero_1;
         }
 
-        $hoy = date("d-m-Y");
-        $ayer = date("d-m-Y", strtotime("-1 day"));
+        $hoy = date("d-m-Y", strtotime("-4 hours"));
+        $ayer = date("d-m-Y", strtotime("-1 day -4 hours"));
 
         $valores['resolutores_array'] = $array_resolutores;
         $valores['equipos_array'] = $array_equipos;
@@ -325,12 +314,94 @@ class EnvioReporteSemanal extends Command
         $valores['creadoHoy_resolutor'] = $array_creadoHoy_resolutor;
         $valores['cerrados'] = $array_cerrados_hoy;
         $valores['pendientes_resolutor_hoy'] = $array_pendientes_resolutor_hoy;
-        $valores['total_activos_ayer'] = $total_activos_ayer;
+        $valores['total_activos_ayer'] = $total_cerrados_hoy+$total_activos_hoy-$total_creado_hoy;;
         $valores['total_vencidos'] = $total_vencidos;
         $valores['total_creados_hoy'] = $total_creado_hoy;
         $valores['total_cerrados_hoy'] = $total_cerrados_hoy;
         $valores['total_activos_hoy'] = $total_activos_hoy;
-    
-        Mail::to('dtapia1025@gmail.com')->send(new SendMailable($hoy, $ayer, $valores));
+        
+        $hoy_2 = new DateTime();
+        
+        for ($i=0;$i < count($valores['resolutores_array']);$i++)
+        {
+           $res = $valores['resolutores_array'][$i];
+           $resolutor = Resolutor::where('nombreResolutor', $res)->first('id');
+           $valor_vencido = $valores['vencidos'][$i];
+            $data = ([
+                'id_resolutor' => $resolutor->id,
+                'fecha' => $hoy_2,
+                'nota' => $valor_vencido
+            ]);
+            
+            DB::table('notas_resolutores')->insert($data);
+        }
+        
+        $todoA = DB::table('notas_resolutores')->get();
+        $array_fechas = [];
+        $array_colores = [];
+        foreach ($todoA as $elemento)
+        {
+            $array_fechas[] = $elemento->fecha;
+        }
+        $array_fechas = array_unique($array_fechas);
+        
+        $valores['dias'] = $array_fechas;
+
+        $array_nota = [];
+        
+        foreach ($array_fechas as $fechita){
+            foreach ($valores['resolutores_array'] as $resolutor)
+            {
+                $res = Resolutor::where('nombreResolutor', $resolutor)->first();
+                $nota = DB::table('notas_resolutores')->where('id_resolutor', $res['id'])->first();
+                    if($fechita == $nota->fecha){
+                        $array_nota[]=$nota;
+                    }
+            }            
+        }
+        $valores['notas'] = $array_nota;
+        
+        $array_id_res = [];
+        foreach ($valores['resolutores_array'] as $resolutor)
+        {
+            $res = Resolutor::where('nombreResolutor', $resolutor)->get();
+            $array_id_res[] = $res;
+        }
+        $valores['array_id_resolutor'] = $array_id_res;
+        
+        $todo = DB::table('notas_resolutores')->get();
+        $valores['todo'] = $todo;
+        
+        $totales_notas = [];
+        foreach ($array_resolutores_completo as $resolutor){
+            $notas = DB::table('notas_resolutores')->where('id_resolutor', $resolutor->id)->get();
+            $variable = 0;
+            foreach ($notas as $nota)
+            {
+                if($nota->nota >= 1 and $nota->nota <=3)
+                {
+                    $variable = $variable+6;
+                } elseif ($nota->nota >=4 and $nota->nota <=6)
+                {
+                    $variable = $variable+4;
+                }elseif ($nota->nota >=7) {
+                    $variable = $variable+1;
+                } else {
+                    $variable = $variable+10;
+                }
+            }
+            $totales_notas[] = $variable/count($array_fechas);
+            $totales_fechas[] = count($array_fechas);
+            $totales_variable[] = $variable; 
+        }
+        
+        $valores['totales_notas'] = $totales_notas;
+        
+        $usuarios = User::where('rutEmpresa', '90413000-1')->get();
+        foreach ($usuarios as $usuario) {
+            Mail::to($usuario['email'])->send(new SendMailable($hoy, $ayer, $valores));
+        }
+        
+        Mail::to('dtapia@itconsultants.cl')->send(new SendMailable($hoy, $ayer, $valores));
     }
 }

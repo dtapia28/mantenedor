@@ -190,9 +190,9 @@ class ExtraerController extends Controller
             foreach ($requerimientos_resolutor as $requerimiento)
             {
                 $hoy_dtt = new DateTime($hoy);
-                $fecha_crea = new DateTime($requerimiento['created_at']);
-                $intervalo = new DateInterval('PT4H');
-                $fecha_crea_req = $fecha_crea->sub($intervalo);
+                $fecha_crea_req = new DateTime($requerimiento['created_at']);
+                //$intervalo = new DateInterval('PT4H');
+                //$fecha_crea_req = $fecha_crea->sub($intervalo);
                 $hoy_dtt = $hoy_dtt->add($horas_modifica_ayer);
                 if($fecha_crea_req > $ayer_dtt and $fecha_crea_req < $hoy_dtt){
                     ++$contador;
@@ -210,9 +210,9 @@ class ExtraerController extends Controller
             foreach ($requerimientos_resolutor as $requerimiento)
             {
                 $hoy_dtt = new DateTime($hoy);
-                $fecha_crea = new DateTime($requerimiento['created_at']);
-                $intervalo = new DateInterval('PT4H');
-                $fecha_crea_req = $fecha_crea->sub($intervalo);
+                $fecha_crea_req = new DateTime($requerimiento['created_at']);
+                //$intervalo = new DateInterval('PT4H');
+                //$fecha_crea_req = $fecha_crea->sub($intervalo);
                 $hoy_dtt = $hoy_dtt->add($horas_modifica_ayer);
                 if($fecha_crea_req > $ayer_dtt and $fecha_crea_req < $hoy_dtt){
                     ++$contador;
@@ -237,9 +237,9 @@ class ExtraerController extends Controller
             foreach ($requerimientos_resolutor as $requerimiento)
             {
                 $hoy_dtt = new DateTime($hoy);
-                $fl = new DateTime($requerimiento['fechaLiquidacion']);
-                $intervalo = new DateInterval('PT4H');
-                $fecha_liquidacion = $fl->sub($intervalo);
+                $fecha_liquidacion = new DateTime($requerimiento['fechaLiquidacion']);
+                //$intervalo = new DateInterval('PT4H');
+                //$fecha_liquidacion = $fl->sub($intervalo);
                 
                 if($hoy_dtt < $fecha_liquidacion)
                 {
@@ -258,9 +258,9 @@ class ExtraerController extends Controller
             foreach ($requerimientos_resolutor as $requerimiento)
             {
                 $hoy_dtt = new DateTime($hoy);
-                $fl = new DateTime($requerimiento['fechaLiquidacion']);
-                $intervalo = new DateInterval('PT4H');
-                $fecha_liquidacion = $fl->sub($intervalo);
+                $fecha_liquidacion = new DateTime($requerimiento['fechaLiquidacion']);
+                //$intervalo = new DateInterval('PT4H');
+                //$fecha_liquidacion = $fl->sub($intervalo);
                 
                 if($hoy_dtt < $fecha_liquidacion)
                 {
@@ -313,7 +313,6 @@ class ExtraerController extends Controller
             }    
             ++$puntero_1;
         }
-
         $hoy = date("d-m-Y", strtotime("-4 hours"));
         $ayer = date("d-m-Y", strtotime("-1 day -4 hours"));
 

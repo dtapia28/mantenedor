@@ -93,7 +93,7 @@ class RequerimientoController extends Controller
      */
 
     public function index(Request $request)
-    {   
+    {
         $state = $request->state;
         $anidados = Anidado::all();
 
@@ -225,25 +225,25 @@ class RequerimientoController extends Controller
                         ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                         ['idEquipo', $equipo->id],
                     ])->get();
-                $requerimientos = [];
-                $estado = true;
-                $estatus = [];
-                $hoy = new DateTime();
+                    $requerimientos = [];
+                    $estado = true;
+                    $estatus = [];
+                    $hoy = new DateTime();
 
-                foreach ($req as $requerimiento) {
-                    foreach ($anidados as $anidado) {
-                        if ($anidado->idRequerimientoAnexo == $requerimiento->id) {
-                            $estado = false;
+                    foreach ($req as $requerimiento) {
+                        foreach ($anidados as $anidado) {
+                            if ($anidado->idRequerimientoAnexo == $requerimiento->id) {
+                                $estado = false;
+                            }
                         }
+                        if ($estado == true) {
+                            $requerimientos [] = $requerimiento;
+                        }                    
+                        $estado = true;                    
                     }
-                    if ($estado == true) {
-                        $requerimientos [] = $requerimiento;
-                    }                    
-                    $estado = true;                    
-                }
 
-                $requerimientos = (object)$requerimientos;              
-                break;  
+                    $requerimientos = (object)$requerimientos;              
+                    break;  
                     case '2':
                     $req = DB::table('requerimientos_equipos')->where([
                         ['estado', '=', 1],
@@ -252,6 +252,7 @@ class RequerimientoController extends Controller
                         ['rutEmpresa', '=', auth()->user()->rutEmpresa],
                         ['idEquipo', $equipo->id],
                     ])->get();
+                       
                     $requerimientos = [];
                     $estado = true;
                     $estatus = [];
@@ -260,6 +261,7 @@ class RequerimientoController extends Controller
                     foreach ($req as $requerimiento) 
                     {
                         $requerimiento = (array)$requerimiento;
+                        $requerimiento['tipo'] = "requerimiento";
                         foreach ($anidados as $anidado) 
                         {
                             if ($anidado->idRequerimientoAnexo == $requerimiento['id']) 
@@ -331,6 +333,7 @@ class RequerimientoController extends Controller
                     $hoy = new DateTime();
                     foreach ($req as $requerimiento) {
                         $requerimiento = (array)$requerimiento;
+                        $requerimiento['tipo'] = "requerimiento";
                         foreach ($anidados as $anidado) {
                             if ($anidado->idRequerimientoAnexo == $requerimiento['id']) {
                                 $estado = false;
@@ -473,6 +476,7 @@ class RequerimientoController extends Controller
                     foreach ($req as $requerimiento) 
                     {
                         $requerimiento = (array)$requerimiento;
+                        $requerimiento['tipo'] = "requerimiento";
                         foreach ($anidados as $anidado) {
                             if ($anidado->idRequerimientoAnexo == $requerimiento['id']) {
                                 $estado = false;
@@ -517,14 +521,16 @@ class RequerimientoController extends Controller
                     }
                     $requerimientos = (object)$requerimientos;                 
                     break;
-                    case '6':
+                    
+                    case '6':   
+                    $sol = Solicitante::where('idUser', $user[0]->idUser)->first();  
                     $req = DB::table('requerimientos_equipos')->where([
                         ['estado', 1],
                         ['rutEmpresa', '=', auth()->user()->rutEmpresa],
-                        ['idEquipo', $equipo->id],
                         ['aprobacion','=',4],
-                        ['resolutor', '!=', $res->id],
+                        ['idSolicitante', $sol->id]
                     ])->get();
+
                     $requerimientos = [];
                     $estado = true;
                     $estatus = [];
@@ -1231,6 +1237,7 @@ class RequerimientoController extends Controller
                     ['aprobacion', 4],
                     ['idSolicitante', $sol->id]
                 ])->get();
+                    
                 $requerimientos = [];
                 $estado = true;
                 $estatus = [];
@@ -2441,7 +2448,7 @@ class RequerimientoController extends Controller
                 }
 
                 $conteoA = $ultimo_req_n+1;
-                
+
                 if($conteoA<10){
                     $conteoA = "00".$conteoA;
                 } else if($conteoA > 10 and $conteoA<100){
@@ -2459,7 +2466,7 @@ class RequerimientoController extends Controller
                 $variable = new DateTime($data['fechaCierre']);
                 $intervalo = new DateInterval('PT23H59M59S');
                 $variable->add($intervalo);
-                $data['fechaCierre'] = $variable;
+                $data['fechaCierre'] = $variable;                
                 
                 Requerimiento::create([
                     'textoRequerimiento' => preg_replace("/[\r\n|\n|\r|\t]+/", " ", $data['textoRequerimiento']),
@@ -2671,11 +2678,7 @@ class RequerimientoController extends Controller
             $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         }
         
-        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 
-                                                   'resolutors', 'fechaCierre', 'cierre',
-                                                   'solicitud', 'solicitanteEspecifico',
-                                                   'prioridadEspecifica', 'resolutorEspecifico',
-                                                   'user', 'lider', 'teams', 'id_resolutor'));        
+        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'fechaCierre', 'cierre', 'solicitud', 'solicitanteEspecifico', 'prioridadEspecifica', 'resolutorEspecifico', 'user', 'lider', 'teams', 'id_resolutor'));        
     }
 
     /**
@@ -2812,7 +2815,9 @@ class RequerimientoController extends Controller
                 'tipo' => 'edicion',
                 'campo' => 'fecha solicitud',
             ]);
-        }                          
+        }
+        
+        $data['fechaRealCierre'] = null;
               
         $requerimiento->update($data);
 
@@ -3010,38 +3015,18 @@ class RequerimientoController extends Controller
         if($resolutor->email == $parametros->emailSupervisor){
             self::autorizar($requerimiento);
         } else{
-            if ($resolutor->lider == 0) {
-                $solicitante = Solicitante::where('id', $requerimiento->idSolicitante)->first();
-                $resolutores = Resolutor::where('idTeam',Team::where('id',$resolutor->idTeam)->first()->id)->get();
-                foreach ($resolutores as $resol) {
-                    if ($resol->lider == 1) {
-                        $lider = $resol;
-                    }
-                }
-                $obj = new \stdClass();
-                $obj->idReq = $requerimiento->id2;
-                $obj->id = $requerimiento->id;
-                $obj->sol = $requerimiento->textoRequerimiento;
-                $obj->nombre = $resolutor->nombreResolutor;
-                $obj->solicitante = $solicitante->nombreSolicitante;
+            $solicitante = Solicitante::where('id', $requerimiento->idSolicitante)->first();
+            $usuario_solicitante = User::where('name', $solicitante->nombreSolicitante)->first();
+            $parametros = Parametros::where('rutEmpresa', auth()->user()->rutEmpresa)->first();
+            $obj = new \stdClass();
+            $obj->idReq = $requerimiento->id2;
+            $obj->id = $requerimiento->id;
+            $obj->sol = $requerimiento->textoRequerimiento;
+            $obj->nombre = $resolutor->nombreResolutor;
+            $obj->solicitante = $solicitante->nombreSolicitante;
+            $email = $usuario_solicitante->email;
 
-                $recep = $lider->email;
-
-                Notification::route('mail', $recep)->notify(new FinalizadoNotifi($obj));
-            } else 
-            {
-                $solicitante = Solicitante::where('id', $requerimiento->idSolicitante)->first();
-                $parametros = Parametros::where('rutEmpresa', auth()->user()->rutEmpresa)->first();
-                $obj = new \stdClass();
-                $obj->idReq = $requerimiento->id2;
-                $obj->id = $requerimiento->id;
-                $obj->sol = $requerimiento->textoRequerimiento;
-                $obj->nombre = $resolutor->nombreResolutor;
-                $obj->solicitante = $solicitante->nombreSolicitante;
-                $email = $parametros->emailSupervisor;
-
-                Notification::route('mail', $email)->notify(new FinalizadoNotifi($obj));
-            }             
+            Notification::route('mail', $email)->notify(new FinalizadoNotifi($obj));            
         }
    
         return redirect('requerimientos'); 
@@ -3195,10 +3180,10 @@ class RequerimientoController extends Controller
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
         $id2 = substr($requerimiento->id2,0,3);
         
-        //Desde acï¿½ deberï¿½ borrar
+        //Desde acá deberé borrar
         $log_requerimiento = LogRequerimientos::where('idRequerimiento', $requerimiento->id)->get();
         $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
-        // Hasta acï¿½ deberï¿½ borrar
+        // Hasta acá deberé borrar
         
         //dd($log_requerimiento);
         if(count($log_requerimiento)==1){
@@ -3324,7 +3309,7 @@ class RequerimientoController extends Controller
             }
         }
        
-        return back()->with('msj', 'Se realizï¿½ el envï¿½o de email.');
+        return back()->with('msj', 'Se realizó el envío de email.');
     }
 
     public function recalcular(){
@@ -3355,5 +3340,5 @@ class RequerimientoController extends Controller
             }
             $requerimiento->update($data);
         }
-    }
+    }    
 }

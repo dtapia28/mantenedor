@@ -33,15 +33,9 @@
                                 @if($solicitante->idUser == $user[0]->idUser and $requerimiento->aprobacion == 4)
                                 <div class="ibox-head">
                                     <div class="ibox-title">Datos del Requerimiento</div>
-                                    <div class="pull-right"><a class="btn btn-primary" onclick="return confirm('¿Estás seguro/a de autorizar el cierre del requerimiento?')" href="{{ url('requerimientos/'.$requerimiento->id.'/aceptar') }}" style="white-space: normal;"><i class="fa fa-check"></i> Aceptar</a> <a class="btn btn-outline-danger" href="{{ url('requerimientos/'.$requerimiento->id.'/rechazar') }}" style="white-space: normal;"><i class="fa fa-close"></i> Rechazar</a></div>
+                                    <div class="pull-right"><a class="btn btn-primary" onclick="return confirm('&#191Est&#225s seguro/a de autorizar el cierre del requerimiento?')" href="{{ url('requerimientos/'.$requerimiento->id.'/aceptar') }}" style="white-space: normal;"><i class="fa fa-check"></i> Aceptar</a> <a class="btn btn-outline-danger" href="{{ url('requerimientos/'.$requerimiento->id.'/rechazar') }}" style="white-space: normal;"><i class="fa fa-close"></i> Rechazar</a></div>
                                 </div>
-                                @endif
-				@if($user[0]->nombre=="supervisor" and $requerimiento->aprobacion == 4)
-				<div class="ibox-head">
-					<div class="ibox-title">Datos del Requerimiento</div>
-					<div class="pull-right"><a class="btn btn-primary" onclick="return confirm('Â¿EstÃ¡s seguro/a de autorizar el cierre del requerimiento?')" href="{{ url('requerimientos/'.$requerimiento->id.'/aceptar') }}" style="white-space: normal;"><i class="fa fa-check"></i> Aceptar</a> <a class="btn btn-outline-danger" href="{{ url('requerimientos/'.$requerimiento->id.'/rechazar') }}" style="white-space: normal;"><i class="fa fa-close"></i> Rechazar</a></div>
-				</div>
-				@endif				
+                                @endif			
 				<div class="ibox-body">
 					<div class="row">
 						<div class="col-md-6">
@@ -270,7 +264,7 @@
 					</div>
 					@endif					
 					{{-- TAREAS --}}
-					@if($user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor" or $user[0]->nombre == "resolutor")
+					@if($user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor")
 					<div class="row">
                                             <div class="col-md-12">
                                                 <h2>Tareas</h2>

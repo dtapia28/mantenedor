@@ -209,8 +209,8 @@ if (isset($requerimientos)) {
                         <th width=20%>Resolutor</th>
                         <th width=10%>Cantidad de RQ activos al {{$ayer}}</th>
                         <th width=10%>Vencidos</th>
-                        <th width=10%>Cantidad de RQ generado el d&#237a de hoy {{ $hoy }}</th>
-                        <th width=10%>Cantidad de RQ cerrado el  d&#237a de hoy {{ $hoy }}</th>
+                        <th width=10%>Cantidad de RQ generados el d&#237a de hoy {{ $hoy }}</th>
+                        <th width=10%>Cantidad de RQ cerrados el  d&#237a de hoy {{ $hoy }}</th>
                         <th width=10%>Cantidad de RQ activos al {{$hoy}}</th>
                         <th width=10%>Color seg&#250n cant de RQ vencidos</th>
                     </tr>
@@ -250,9 +250,9 @@ if (isset($requerimientos)) {
                     </tr>
                 </tbody>
             </table>
-        </table>    
+        </table>
     </div>
-</div>
+</div>    
 @endsection
 
 @section('script')

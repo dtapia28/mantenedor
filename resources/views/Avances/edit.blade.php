@@ -13,7 +13,7 @@
 </div>
 @endif
 <div class="page-heading">
-<h1 class="page-title"><i class="fa fa-address-card"></i> Editar Avance Requerimiento {{ $requerimiento->id }}</h1>
+<h1 class="page-title"><i class="fa fa-address-card"></i> Editar Avance Requerimiento {{ $requerimiento->id2 }}</h1>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-pencil"></i> Editar Avance</li>
     </ol>

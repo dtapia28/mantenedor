@@ -272,7 +272,7 @@ class UserController extends Controller
         $nombre = $userData[0]->name;
         $email = $userData[0]->email;
         return view('Users.micuenta', compact('nombre', 'email', 'user'));        
-    }
+    }    
     
     public function miCuentaGuardar(Request $request)
     {
