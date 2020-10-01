@@ -2513,7 +2513,7 @@ class RequerimientoController extends Controller
         }else {
             $valor = 0;
         }
-
+        return redirect('https://kit.voximplant.com');
         return view('Requerimientos.index', compact('requerimientos', 'resolutors', 'teams', 'valor', 'user', 'anidados', 'solicitantes', 'state', 'res', 'user2', 'lider'));
 
     }
