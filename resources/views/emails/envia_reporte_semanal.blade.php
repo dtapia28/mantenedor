@@ -1,6 +1,7 @@
-<div class="ibox">
-    <div style="background-color: whitesmoke; opacity:0.3; padding: 10px;">
-        <h1 style="text-align: center; color: darkgray">Kinchika</h1>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200&display=swap" rel="stylesheet">
+<div class="ibox" style="background-color: #E7EDF5;">
+    <div style=" opacity:0.3; padding: 10px; text-align: center;">
+        <a href="https://app.kinchika.com/login"><img src="{{ asset('img/logo-blue.png') }}" alt="logo"></a>
     </div>
     <div class="ibox-head">
         <div class="ibox-title"><h1>Reporte Requerimientos</h1></div>       

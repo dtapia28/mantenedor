@@ -54,7 +54,10 @@
 			<option value="2" @if ($estado == "2") selected @endif>% mayor o igual que</option>
 			<option value="3" @if ($estado == "3") selected @endif>% menor o igual que</option>
 			<option value="4" @if ($estado == "4") selected @endif>Vencidos</option>
-			<option value="5" @if ($estado == "5") selected @endif>Por solicitante</option>     	
+			<option value="5" @if ($estado == "5") selected @endif>Por solicitante</option>
+                        @if($user[0]->nombre != "administrador")
+                        <option value="9" @if ($estado == "8") selected @endif>Mis solicitudes</option>
+                        @endif
 		</select>
 		<input class="form-control col-md-12" type="number" id="valor"  @if ($valor=="" || $valor==null) style="display: none" @endif name="valorN" placeholder="porcentaje avance" min="1" max="100" @if ($valor!="") value="{{ $valor }}" @endif>
 		<select id='solicitante' class='form-control col-md-12 custom-select' name='solicitante' @if ($solicitantereq=="" || $solicitantereq==null) style='display: none;' @endif>

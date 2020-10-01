@@ -390,7 +390,7 @@ class EnvioReporteSemanal extends Command
                     $variable = $variable+10;
                 }
             }
-            $totales_notas[] = $variable/count($array_fechas);
+            $totales_notas[] = round($variable/count($array_fechas),2);
             $totales_fechas[] = count($array_fechas);
             $totales_variable[] = $variable; 
         }
