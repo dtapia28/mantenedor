@@ -1,0 +1,1 @@
+[29-Aug-2020 19:00:02 America/Santiago] PHP Parse error:  syntax error, unexpected 'App' (T_STRING) in /home1/kinchika/public_html/laravel/app/Console/Kernel.php on line 1

@@ -2513,7 +2513,7 @@ class RequerimientoController extends Controller
         }else {
             $valor = 0;
         }
-        return redirect('https://kit.voximplant.com');
+
         return view('Requerimientos.index', compact('requerimientos', 'resolutors', 'teams', 'valor', 'user', 'anidados', 'solicitantes', 'state', 'res', 'user2', 'lider'));
 
     }
@@ -2900,7 +2900,7 @@ class RequerimientoController extends Controller
             'textoRequerimiento' => 'nullable',
             'idSolicitante' => 'nullable',
             'idPrioridad' => 'nullable',
-            'resolutor' => 'nullable',
+            'resolutor' => 'required',
             'fechaCierre' => 'nullable',
             'textAvance' => 'nullable',            
             'fechaSolicitud' => 'nullable',

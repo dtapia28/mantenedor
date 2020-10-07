@@ -233,3 +233,339 @@ Stack trace:
 #4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php(45): Illuminate\Routing\Controller->callAction('porEstado', Array)
 #5 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Routing/Route.php(219): Illuminate\Routing\ControllerDispatcher->dispatch(Objec in /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php on line 288
 [27-May-2020 16:36:19 UTC] PHP Fatal error:  Object of class stdClass could not be converted to string in /home1/kinchika/public_html/laravel/app/Http/Controllers/ExtraerController.php on line 288
+[06-Oct-2020 14:59:09 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 14:59:09 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 14:59:19 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 14:59:19 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 14:59:27 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 14:59:27 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 14:59:34 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 14:59:34 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:02:08 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:02:08 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:05:02 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:05:02 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:05:11 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:05:11 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:05:21 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:05:21 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:05:27 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:05:27 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:05:41 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:05:41 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:16:07 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:16:07 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:16:35 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:16:35 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:16:50 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:16:50 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:16:55 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:16:55 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:17:49 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:17:49 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:17:57 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:17:57 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:18:03 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:18:03 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:18:43 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:18:43 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:19:23 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:19:23 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:21:00 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:21:00 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:22:15 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[06-Oct-2020 15:22:15 UTC] PHP Fatal error:  Uncaught ReflectionException: Class translator does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('translator')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('translator')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('translator', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
+#5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790

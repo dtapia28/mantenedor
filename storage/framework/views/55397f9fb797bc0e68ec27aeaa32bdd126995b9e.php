@@ -1,0 +1,1 @@
+404.blade.php<?php /**PATH /home1/kinchika/public_html/laravel/resources/views/errors/404.blade.php ENDPATH**/ ?>

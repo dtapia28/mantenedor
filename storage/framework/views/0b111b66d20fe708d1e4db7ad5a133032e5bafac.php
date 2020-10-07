@@ -1,0 +1,1 @@
+404.blade.php<?php /**PATH /home/itconsul/public_html/easytask/laravel/resources/views/errors/404.blade.php ENDPATH**/ ?>

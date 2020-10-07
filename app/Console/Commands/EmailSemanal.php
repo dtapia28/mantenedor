@@ -68,6 +68,7 @@ class EmailSemanal extends Command
             $vencidos_miercoles = [];
             $vencidos_jueves = [];
             $vencidos_viernes = [];
+            $cantidad_total = 0;
             
             $requerimientos_resolutor = Requerimiento::where([
                 ['rutEmpresa', '90413000-1'],
@@ -81,12 +82,14 @@ class EmailSemanal extends Command
                     $fecha = new DateTime($req['fechaRealCierre']);
                     if($fecha > $lunes_date and $fecha < $martes_date){
                         $vencidos_lunes[] = $req;
+                        $cantidad_total++;
                     }
                 } else {
                     $fecha = new DateTime($req['fechaCierre']);
                    if($fecha > $lunes_date and $fecha < $martes_date)
                    {
                        $vencidos_lunes[] = $req;
+                       $cantidad_total++;
                    }
                 }
             }
@@ -96,12 +99,14 @@ class EmailSemanal extends Command
                     $fecha = new DateTime($req['fechaRealCierre']);
                     if($fecha > $martes_date and $fecha < $miercoles_date){
                         $vencidos_martes[] = $req;
+                        $cantidad_total++;
                     }
                 } else {
                     $fecha = new DateTime($req['fechaCierre']);
                    if($fecha > $martes_date and $fecha < $miercoles_date)
                    {
                        $vencidos_martes[] = $req;
+                       $cantidad_total++;
                    }
                 }
             }
@@ -111,12 +116,14 @@ class EmailSemanal extends Command
                     $fecha = new DateTime($req['fechaRealCierre']);
                     if($fecha > $miercoles_date and $fecha < $jueves_date){
                         $vencidos_miercoles[] = $req;
+                        $cantidad_total++;
                     }
                 } else {
                     $fecha = new DateTime($req['fechaCierre']);
                    if($fecha > $miercoles_date and $fecha < $jueves_date)
                    {
                        $vencidos_miercoles[] = $req;
+                       $cantidad_total++;
                    }
                 }
             }
@@ -126,12 +133,14 @@ class EmailSemanal extends Command
                     $fecha = new DateTime($req['fechaRealCierre']);
                     if($fecha > $jueves_date and $fecha < $viernes_date){
                         $vencidos_jueves[] = $req;
+                        $cantidad_total++;
                     }
                 } else {
                     $fecha = new DateTime($req['fechaCierre']);
                    if($fecha > $jueves_date and $fecha < $viernes_date)
                    {
                        $vencidos_jueves[] = $req;
+                       $cantidad_total++;
                    }
                 }
             }
@@ -141,12 +150,14 @@ class EmailSemanal extends Command
                     $fecha = new DateTime($req['fechaRealCierre']);
                     if($fecha > $viernes_date and $fecha < $viernes_final){
                         $vencidos_viernes[] = $req;
+                        $cantidad_total++;
                     }
                 } else {
                     $fecha = new DateTime($req['fechaCierre']);
                    if($fecha > $viernes_date and $fecha < $viernes_final)
                    {
                        $vencidos_viernes[] = $req;
+                       $cantidad_total++;
                    }
                 }
             }  
@@ -164,12 +175,14 @@ class EmailSemanal extends Command
                     $fecha = new DateTime($req['fechaRealCierre']);
                     if($fecha > $lunes_date and $fecha < $martes_date){
                         $vencidos_lunes[] = $req;
+                        $cantidad_total++;
                     }
                 } else {
                     $fecha = new DateTime($req['fechaCierre']);
                    if($fecha > $lunes_date and $fecha < $martes_date)
                    {
                        $vencidos_lunes[] = $req;
+                       $cantidad_total++;
                    }
                 }
             }
@@ -179,12 +192,14 @@ class EmailSemanal extends Command
                     $fecha = new DateTime($req['fechaRealCierre']);
                     if($fecha > $martes_date and $fecha < $miercoles_date){
                         $vencidos_martes[] = $req;
+                        $cantidad_total++;
                     }
                 } else {
                     $fecha = new DateTime($req['fechaCierre']);
                    if($fecha > $martes_date and $fecha < $miercoles_date)
                    {
                        $vencidos_martes[] = $req;
+                       $cantidad_total++;
                    }
                 }
             }
@@ -194,12 +209,14 @@ class EmailSemanal extends Command
                     $fecha = new DateTime($req['fechaRealCierre']);
                     if($fecha > $miercoles_date and $fecha < $jueves_date){
                         $vencidos_miercoles[] = $req;
+                        $cantidad_total++;
                     }
                 } else {
                     $fecha = new DateTime($req['fechaCierre']);
                    if($fecha > $miercoles_date and $fecha < $jueves_date)
                    {
                        $vencidos_miercoles[] = $req;
+                       $cantidad_total++;
                    }
                 }
             }
@@ -209,12 +226,14 @@ class EmailSemanal extends Command
                     $fecha = new DateTime($req['fechaRealCierre']);
                     if($fecha > $jueves_date and $fecha < $viernes_date){
                         $vencidos_jueves[] = $req;
+                        $cantidad_total++;
                     }
                 } else {
                     $fecha = new DateTime($req['fechaCierre']);
                    if($fecha > $jueves_date and $fecha < $viernes_date)
                    {
                        $vencidos_jueves[] = $req;
+                       $cantidad_total++;
                    }
                 }
             }
@@ -224,12 +243,14 @@ class EmailSemanal extends Command
                     $fecha = new DateTime($req['fechaRealCierre']);
                     if($fecha > $viernes_date and $fecha < $viernes_final){
                         $vencidos_viernes[] = $req;
+                        $cantidad_total++;
                     }
                 } else {
                     $fecha = new DateTime($req['fechaCierre']);
                    if($fecha > $viernes_date and $fecha < $viernes_final)
                    {
                        $vencidos_viernes[] = $req;
+                       $cantidad_total++;
                    }
                 }
             } 
@@ -241,12 +262,15 @@ class EmailSemanal extends Command
             $valores['vencidos_viernes'] = $vencidos_viernes;
             $valores['nombre_resolutor'] = $resolutor['nombreResolutor'];
             
-            if(count($valores['vencidos_lunes'])>0 or count($valores['vencidos_martes'])>0 or
-                count($valores['vencidos_miercoles'])>0 or count($valores['vencidos_jueves'])>0 or
-                count($valores['vencidos_viernes'])>0)
-            {
-               Mail::to('dtapia@itconsultants.cl')->send(new EnviaEmailResumen($valores)); 
-            }  
+//            if(count($valores['vencidos_lunes'])>0 or count($valores['vencidos_martes'])>0 or
+//                count($valores['vencidos_miercoles'])>0 or count($valores['vencidos_jueves'])>0 or
+//                count($valores['vencidos_viernes'])>0)
+//            {
+               Mail::to('dtapia@itconsultants.cl')->send(new EnviaEmailResumen($valores));
+               
+               //EmailSemanal::enviar_voximplant('56953551286', $resolutor['nombreResolutor'], $cantidad_total);
+//            }  
         }
     }
+     
 }

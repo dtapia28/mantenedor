@@ -4,7 +4,7 @@
 @section('contenido')
 @if ($errors->any())
     <div class="alert alert-danger">
-        <h6>Por favor corrige los errores debajo:</h6>
+        <h6>Por favor corrige los siguientes errores:</h6>
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>

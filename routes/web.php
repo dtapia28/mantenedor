@@ -296,7 +296,6 @@ Route::post('/user/account/guardar', 'UserController@miCuentaGuardar')
 Route::post('/user/account/eliminarfoto', 'UserController@eliminarFoto')
 	->middleware('auth');
 
-
 Route::get('/requerimientos/{requerimiento}/avances', 'AvanceController@index')
 
 	->middleware('auth');
