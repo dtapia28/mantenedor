@@ -8,6 +8,7 @@ use App\Resolutor;
 use App\Requerimiento;
 use DateTime;
 use DateInterval;
+use Ixudra\Curl\Facades\Curl;
 use App\Mail\EnviaEmailResumen;
 
 class EmailSemanal extends Command
@@ -266,11 +267,48 @@ class EmailSemanal extends Command
 //                count($valores['vencidos_miercoles'])>0 or count($valores['vencidos_jueves'])>0 or
 //                count($valores['vencidos_viernes'])>0)
 //            {
-               Mail::to('dtapia@itconsultants.cl')->send(new EnviaEmailResumen($valores));
+//               Mail::to('dtapia@itconsultants.cl')->send(new EnviaEmailResumen($valores));
                
-               //EmailSemanal::enviar_voximplant('56953551286', $resolutor['nombreResolutor'], $cantidad_total);
+                //EmailSemanal::enviar_voximplant('56953551286', $resolutor['nombreResolutor'], $cantidad_total);
 //            }  
         }
+       EmailSemanal::enviar_voximplant('56953551286', 'Daniel Tapia', 9); 
     }
-     
+
+    public function enviar_voximplant($numero, $name, $cantidad)
+    {
+        //Defino dominio voximplant
+        define('KIT_DOMAIN', 'itcdaniel');
+        
+        //Defino token
+        define('KIT_ACCESS_TOKEN', '8e537ea23c79260ee98885cf30031903');
+        
+        //Defino id de telefono que llama
+        define('KIT_CALLERID_PHONE_ID', 1976);
+        
+        //Defino id de escenario
+        define('KIT_SCENARIO_ID', 16997);
+        
+        //Defino Url API Voximplant
+        define("KIT_API_URL", 'https://kitapi-us.voximplant.com/api/v3/');
+        
+        $data = [
+                'domain' => KIT_DOMAIN,
+                'access_token' => KIT_ACCESS_TOKEN,
+                'scenario_id' => KIT_SCENARIO_ID,
+                'phone' => $numero,
+                'phone_number_id' => KIT_CALLERID_PHONE_ID,
+                'variables' => json_encode(
+                    ['nombre' => $name,
+                    'cantidad' => $cantidad])
+                ];
+        
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, KIT_API_URL . "scenario/runScenario");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        $var = curl_exec($curl);
+        curl_close($curl);
+    }    
 }

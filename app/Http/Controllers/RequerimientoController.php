@@ -85,7 +85,7 @@ class WhatsmsApi
                     
             }
 class RequerimientoController extends Controller
-{
+{   
     /**
      * Display a listing of the resource.
      *
@@ -94,6 +94,48 @@ class RequerimientoController extends Controller
 
     public function index(Request $request)
     {
+        
+        //Defino dominio voximplant
+        define('KIT_DOMAIN', 'itcdaniel');
+        
+        //Defino token
+        define('KIT_ACCESS_TOKEN', '8e537ea23c79260ee98885cf30031903');
+        
+        //Defino id de telefono que llama
+        define('KIT_CALLERID_PHONE_ID', 1976);
+        
+        //Defino id de escenario
+        define('KIT_SCENARIO_ID', 16997);
+        
+        //Defino Url API Voximplant
+        define("KIT_API_URL", 'https://kitapi-us.voximplant.com/api/v3/');
+        
+        $numero = 56953551286;
+        $name = 'Daniel Tapia';
+        $cantidad = 9;
+        
+        $data = [
+                'domain' => KIT_DOMAIN,
+                'access_token' => KIT_ACCESS_TOKEN,
+                'scenario_id' => KIT_SCENARIO_ID,
+                'phone' => $numero,
+                'phone_number_id' => KIT_CALLERID_PHONE_ID,
+                'variables' => json_encode(
+                    ['nombre' => $name,
+                    'cantidad' => $cantidad])
+                ];
+        
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, KIT_API_URL . "scenario/runScenario");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        $var = curl_exec($curl);
+        curl_close($curl);
+        
+        //Prueba 2
+       
+        
         $state = $request->state;
         $anidados = Anidado::all();
 
@@ -2727,7 +2769,9 @@ class RequerimientoController extends Controller
             
             //$request->user()->notify(new EnvioWhatsapp($requerimiento));
             
-            Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
+            RequerimientoController::enviar_voximplant('56953551286', 'Daniel Tapia', 9);
+            
+            //Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
             
             
             if ($request->idTipo == 1) {
@@ -3546,5 +3590,43 @@ class RequerimientoController extends Controller
             }
             $requerimiento->update($data);
         }
+    }
+
+    public function enviar_voximplant($numero, $name, $cantidad)
+    {
+        //Defino dominio voximplant
+        define('KIT_DOMAIN', 'itcdaniel');
+        
+        //Defino token
+        define('KIT_ACCESS_TOKEN', '8e537ea23c79260ee98885cf30031903');
+        
+        //Defino id de telefono que llama
+        define('KIT_CALLERID_PHONE_ID', 1976);
+        
+        //Defino id de escenario
+        define('KIT_SCENARIO_ID', 16997);
+        
+        //Defino Url API Voximplant
+        define("KIT_API_URL", 'https://kitapi-us.voximplant.com/api/v3/');
+        
+        $data = [
+                'domain' => KIT_DOMAIN,
+                'access_token' => KIT_ACCESS_TOKEN,
+                'scenario_id' => KIT_SCENARIO_ID,
+                'phone' => $numero,
+                'phone_number_id' => KIT_CALLERID_PHONE_ID,
+                'variables' => json_encode(
+                    ['nombre' => $name,
+                    'cantidad' => $cantidad])
+                ];
+        
+        dd(json_encode($data));
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, KIT_API_URL . "scenario/runScenario");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        $var = curl_exec($curl);
+        curl_close($curl);
     }    
 }
