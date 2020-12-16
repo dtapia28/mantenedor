@@ -55,8 +55,14 @@
 			<option value="4" <?php if($estado == "4"): ?> selected <?php endif; ?>>Vencidos</option>
 			<option value="5" <?php if($estado == "5"): ?> selected <?php endif; ?>>Por solicitante</option>
                         <?php if($user[0]->nombre != "administrador"): ?>
-                        <option value="9" <?php if($estado == "8"): ?> selected <?php endif; ?>>Mis solicitudes</option>
+                        <option value="9" <?php if($estado == "9"): ?> selected <?php endif; ?>>Mis solicitudes</option>
                         <?php endif; ?>
+                        <?php if($user[0]->nombre == "resolutor" and $lider == 1): ?>
+                            <option value="10" <?php if($estado == "10"): ?> selected <?php endif; ?>>Mis Requerimientos</option>
+                        <?php endif; ?>
+                        <?php if($user[0]->nombre == "supervisor"): ?>
+                            <option value="10" <?php if($estado == "10"): ?> selected <?php endif; ?>>Mis Requerimientos</option>
+                        <?php endif; ?>                         
 		</select>
 		<input class="form-control col-md-12" type="number" id="valor"  <?php if($valor=="" || $valor==null): ?> style="display: none" <?php endif; ?> name="valorN" placeholder="porcentaje avance" min="1" max="100" <?php if($valor!=""): ?> value="<?php echo e($valor); ?>" <?php endif; ?>>
 		<select id='solicitante' class='form-control col-md-12 custom-select' name='solicitante' <?php if($solicitantereq=="" || $solicitantereq==null): ?> style='display: none;' <?php endif; ?>>

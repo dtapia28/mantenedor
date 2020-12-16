@@ -120,6 +120,20 @@
 							<span class="nav-label">Requerimientos</span>
 						</a>
 					</li>
+                                        @if(in_array($user[0]->nombre, ["supervisor", "resolutor"]))
+					<li id="mDate">
+						<a href="{{ url('/for_date') }}"><i class="sidebar-item-icon fa fa-sort-amount-desc"></i>
+							<span class="nav-label">Por Fechas</span>
+						</a>
+					</li>
+                                        @endif
+                                        @if(in_array($user[0]->nombre, ["supervisor", "resolutor"]))
+					<li id="mPriority">
+						<a href="{{ url('/for_priority') }}"><i class="sidebar-item-icon fa fa-sort-amount-desc"></i>
+							<span class="nav-label">Por Prioridad</span>
+						</a>
+					</li>
+                                        @endif                                        
 					@if($user[0]->nombre == "administrador") 
 					<li id="mPrioridades">
 						<a href="{{ url('/priorities') }}"><i class="sidebar-item-icon fa fa-sort-amount-desc"></i>

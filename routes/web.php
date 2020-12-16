@@ -592,3 +592,5 @@ Route::get('/callback', 'Auth\LoginController@handleProviderCallback');
 
 Route::post('/requerimientos/{requerimiento}/mail_info', 'RequerimientoController@mail_info');
 
+Route::get('/for_date', 'RequerimientoController@for_date');
+Route::get('/for_priority', 'RequerimientoController@for_priority');

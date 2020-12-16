@@ -333,6 +333,8 @@ class EnvioReporteSemanal extends Command
                 'nota' => $valor_vencido
             ]);
             
+            //Es necesario sacar el comentario para que grabe
+            //
             DB::table('notas_resolutores')->insert($data);
         }
         

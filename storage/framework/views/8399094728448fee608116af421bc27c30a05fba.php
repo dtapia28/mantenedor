@@ -120,6 +120,20 @@
 							<span class="nav-label">Requerimientos</span>
 						</a>
 					</li>
+                                        <?php if(in_array($user[0]->nombre, ["supervisor", "resolutor"])): ?>
+					<li id="mDate">
+						<a href="<?php echo e(url('/for_date')); ?>"><i class="sidebar-item-icon fa fa-sort-amount-desc"></i>
+							<span class="nav-label">Por Fechas</span>
+						</a>
+					</li>
+                                        <?php endif; ?>
+                                        <?php if(in_array($user[0]->nombre, ["supervisor", "resolutor"])): ?>
+					<li id="mPriority">
+						<a href="<?php echo e(url('/for_priority')); ?>"><i class="sidebar-item-icon fa fa-sort-amount-desc"></i>
+							<span class="nav-label">Por Prioridad</span>
+						</a>
+					</li>
+                                        <?php endif; ?>                                        
 					<?php if($user[0]->nombre == "administrador"): ?> 
 					<li id="mPrioridades">
 						<a href="<?php echo e(url('/priorities')); ?>"><i class="sidebar-item-icon fa fa-sort-amount-desc"></i>

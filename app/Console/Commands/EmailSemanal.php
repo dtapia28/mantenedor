@@ -44,6 +44,21 @@ class EmailSemanal extends Command
      */
     public function handle()
     {
+        //Defino dominio voximplant
+        define('KIT_DOMAIN', 'itcdaniel');
+        
+        //Defino token
+        define('KIT_ACCESS_TOKEN', '8e537ea23c79260ee98885cf30031903');
+        
+        //Defino id de telefono que llama
+        define('KIT_CALLERID_PHONE_ID', 1976);
+        
+        //Defino id de escenario
+        define('KIT_SCENARIO_ID', 16997);
+        
+        //Defino Url API Voximplant
+        define("KIT_API_URL", 'https://kitapi-us.voximplant.com/api/v3/');
+        
         $resolutores = Resolutor::where([
          ['rutEmpresa', '90413000-1'],
          ['estado', 1],
@@ -272,26 +287,12 @@ class EmailSemanal extends Command
                 //EmailSemanal::enviar_voximplant('56953551286', $resolutor['nombreResolutor'], $cantidad_total);
 //            }  
         }
-       EmailSemanal::enviar_voximplant('56953551286', 'Daniel Tapia', 9); 
+       EmailSemanal::enviar_voximplant('56953551286', 'Daniel Tapia', 9);
+       //EmailSemanal::enviar_voximplant('56935627840', 'Natalia Araya', 20);
     }
 
     public function enviar_voximplant($numero, $name, $cantidad)
-    {
-        //Defino dominio voximplant
-        define('KIT_DOMAIN', 'itcdaniel');
-        
-        //Defino token
-        define('KIT_ACCESS_TOKEN', '8e537ea23c79260ee98885cf30031903');
-        
-        //Defino id de telefono que llama
-        define('KIT_CALLERID_PHONE_ID', 1976);
-        
-        //Defino id de escenario
-        define('KIT_SCENARIO_ID', 16997);
-        
-        //Defino Url API Voximplant
-        define("KIT_API_URL", 'https://kitapi-us.voximplant.com/api/v3/');
-        
+    {   
         $data = [
                 'domain' => KIT_DOMAIN,
                 'access_token' => KIT_ACCESS_TOKEN,

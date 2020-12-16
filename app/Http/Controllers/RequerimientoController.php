@@ -26,66 +26,9 @@ use DateInterval;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 
-class WhatsmsApi 
-            {
-                var $apikey;
-                    
-                public function setApiKey($apikey){
-                    $this->apikey = $apikey;
-                }
-                    
-                public function sendSms($phone, $message){
-                    if(empty($phone)){
-                        return array("status" => false, "message" => "example -> api->sendSms('+5555555555','message'); ");
-                    }
-                        
-                    if(empty($message)){
-                        return array("status" => false, "message" => "example -> api->sendSms('+5555555555','message'); ");
-                    }
-                        
-                    if(!is_string($phone) || !is_string($message)){
-                        return array("status" => false, "message" => "example -> api->sendSms('string','string'); ");
-                    }
-                        
-                    $curl = curl_init();
-                    curl_setopt_array($curl, array(
-                        CURLOPT_RETURNTRANSFER => 1,
-                        CURLOPT_URL => 'https://whatsmsapi.com/api/send_sms',
-                        CURLOPT_USERAGENT => 'WhatsmsApi',
-                        CURLOPT_POST => 1,
-                        CURLOPT_POSTFIELDS => array(
-                            "phone" => $phone,
-                            "text" => $message
-                        ),
-                        CURLOPT_HTTPHEADER => array(
-                            "x-api-key: $this->apikey"
-                        )
-                    ));
-                    $resp = curl_exec($curl);
-                    if(!$resp){
-                        $response = array(
-                            "phones" => array(
-                                $phone
-                            ), 
-                            "text" => $message,
-                            "sms" => array(
-                                ((object) array(
-                                    "idsms" => -1,
-                                    "success" => false,
-                                    "message" => "Error al ejecutar la operación"
-                                ))
-                            )
-                        );
-                        return $response;
-                    }else{
-                        curl_close($curl);
-                        return json_decode($resp);
-                    }
-                }
-                    
-            }
+
 class RequerimientoController extends Controller
-{   
+{
     /**
      * Display a listing of the resource.
      *
@@ -94,48 +37,6 @@ class RequerimientoController extends Controller
 
     public function index(Request $request)
     {
-        
-        //Defino dominio voximplant
-        define('KIT_DOMAIN', 'itcdaniel');
-        
-        //Defino token
-        define('KIT_ACCESS_TOKEN', '8e537ea23c79260ee98885cf30031903');
-        
-        //Defino id de telefono que llama
-        define('KIT_CALLERID_PHONE_ID', 1976);
-        
-        //Defino id de escenario
-        define('KIT_SCENARIO_ID', 16997);
-        
-        //Defino Url API Voximplant
-        define("KIT_API_URL", 'https://kitapi-us.voximplant.com/api/v3/');
-        
-        $numero = 56953551286;
-        $name = 'Daniel Tapia';
-        $cantidad = 9;
-        
-        $data = [
-                'domain' => KIT_DOMAIN,
-                'access_token' => KIT_ACCESS_TOKEN,
-                'scenario_id' => KIT_SCENARIO_ID,
-                'phone' => $numero,
-                'phone_number_id' => KIT_CALLERID_PHONE_ID,
-                'variables' => json_encode(
-                    ['nombre' => $name,
-                    'cantidad' => $cantidad])
-                ];
-        
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, KIT_API_URL . "scenario/runScenario");
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        $var = curl_exec($curl);
-        curl_close($curl);
-        
-        //Prueba 2
-       
-        
         $state = $request->state;
         $anidados = Anidado::all();
 
@@ -818,7 +719,69 @@ class RequerimientoController extends Controller
                     }
 
                     $requerimientos = (object)$requerimientos;                        
-                    break;    
+                    break;
+                    
+                    case '10':
+                        $req = Requerimiento::where([
+                            ['rutEmpresa', auth()->user()->rutEmpresa],
+                            ['estado', '=', 1],
+                            ['porcentajeEjecutado','<',100],
+                            ['resolutor', $res->id]
+                        ])->get();                        
+                    $requerimientos = [];
+                    $estado = true;
+                    $estatus = [];
+                    $hoy = new DateTime();
+
+                    foreach ($req as $requerimiento) {
+                        foreach ($anidados as $anidado) {
+                            if ($anidado->idRequerimientoAnexo == $requerimiento->id) {
+                                $estado = false;
+                            }
+                        }
+                        if ($estado == true) {
+                            if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
+                                $requerimiento ['status'] = 1;
+                                $requerimiento = (object) $requerimiento;
+                                $requerimientos [] = $requerimiento;
+                            } else
+                            {
+                                if($requerimiento['fechaRealCierre'] != ""){
+                                    $cierre = new Datetime($requerimiento['fechaRealCierre']);
+                                } else {
+                                    $cierre = new DateTime($requerimiento['fechaCierre']);
+                                }
+                                if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                                    $requerimiento ['status'] = 3;
+                                } else {
+                                    $variable = 0;
+                                    while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+
+                                       if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                            $hoy->modify("+1 days");               
+                                        }else{
+                                            $variable++;
+                                            $hoy->modify("+1 days");                       
+                                        }                   
+                                    }
+
+                                    if ($variable<=3) {
+                                        $requerimiento ['status'] = 2;
+                                    } else {
+                                        $requerimiento ['status'] = 1;
+                                    }
+                                    $variable = 0;
+                                    unset($hoy);
+                                    $hoy = new DateTime();                           
+                                }
+                                $requerimiento = (object) $requerimiento;
+                                $requerimientos [] = $requerimiento;
+                            }                        
+                        }                    
+                        $estado = true;                    
+                    }
+
+                    $requerimientos = (object)$requerimientos;                        
                 }                
             } else 
             {
@@ -1975,6 +1938,67 @@ class RequerimientoController extends Controller
                 }
                 $requerimientos = (object)$requerimientos;                     
                 break;
+                case '10':
+                    $req = Requerimiento::where([
+                            ['rutEmpresa', auth()->user()->rutEmpresa],
+                            ['estado', '=', 1],
+                            ['resolutor', $res->id]
+                        ])->get();
+
+                    $requerimientos = [];
+                    $estado = true;
+                    $estatus = [];
+                    $hoy = new DateTime();
+
+                    foreach ($req as $requerimiento) {
+                        foreach ($anidados as $anidado) {
+                            if ($anidado->idRequerimientoAnexo == $requerimiento->id) {
+                                $estado = false;
+                            }
+                        }
+                        if ($estado == true) {
+                            if ($requerimiento->fechaCierre == "9999-12-31 00:00:00") {
+                                $requerimiento ['status'] = 1;
+                                $requerimiento = (object) $requerimiento;
+                                $requerimientos [] = $requerimiento;
+                            } else
+                            {
+                                if($requerimiento['fechaRealCierre'] != ""){
+                                    $cierre = new Datetime($requerimiento['fechaRealCierre']);
+                                } else {
+                                    $cierre = new DateTime($requerimiento['fechaCierre']);
+                                }
+                                if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                                    $requerimiento ['status'] = 3;
+                                } else {
+                                    $variable = 0;
+                                    while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+
+                                       if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                            $hoy->modify("+1 days");               
+                                        }else{
+                                            $variable++;
+                                            $hoy->modify("+1 days");                       
+                                        }                   
+                                    }
+
+                                    if ($variable<=3) {
+                                        $requerimiento ['status'] = 2;
+                                    } else {
+                                        $requerimiento ['status'] = 1;
+                                    }
+                                    $variable = 0;
+                                    unset($hoy);
+                                    $hoy = new DateTime();                           
+                                }
+                                $requerimiento = (object) $requerimiento;
+                                $requerimientos [] = $requerimiento;
+                            }                        
+                        }                    
+                        $estado = true;                    
+                    }
+
+                    $requerimientos = (object)$requerimientos;                 
             }
         } 
         else 
@@ -2769,9 +2793,7 @@ class RequerimientoController extends Controller
             
             //$request->user()->notify(new EnvioWhatsapp($requerimiento));
             
-            RequerimientoController::enviar_voximplant('56953551286', 'Daniel Tapia', 9);
-            
-            //Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
+            Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
             
             
             if ($request->idTipo == 1) {
@@ -3592,41 +3614,826 @@ class RequerimientoController extends Controller
         }
     }
 
-    public function enviar_voximplant($numero, $name, $cantidad)
+    public function for_date(Request $request){
+        //dd($request);
+        $tipo = $request->tipo;
+  
+        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->orderBy('nombreSolicitante')->get();
+        
+        $anidados = Anidado::all();
+
+        if (isset($request->tipo)) {
+            $request->session()->put('tipo', $request->tipo);
+        } else {
+            $request->session()->put('tipo', "1");
+            $tipo = 1;
+        }
+        //dd($tipo);
+        
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->first();
+        $res = Resolutor::where('idUser', $user->idUser)->first();
+        $hoy = new DateTime(date('Y-m-d'));
+        $un_dia = $hoy->add(new DateInterval('P1D'));
+        $hoy = new DateTime(date('Y-m-d'));
+        $dos_dia = $hoy->add(new DateInterval('P2D'));
+        $hoy = new DateTime(date('Y-m-d'));
+        $tres_dia = $hoy->add(new DateInterval('P3D'));
+        $hoy = new DateTime(date('Y-m-d'));
+        $siet_dia = $hoy->add(new DateInterval('P7D'));
+        $hoy = new DateTime(date('Y-m-d'));
+        $diez_dia = $hoy->add(new DateInterval('P10D'));
+        $hoy = new DateTime(date('Y-m-d'));
+        
+        switch ($tipo) {
+            case '1':
+                $req = DB::table('requerimientos_equipos')->where([
+                            ['estado', 1],
+                            ['aprobacion', '=', '3'],
+                            ['rutEmpresa', auth()->user()->rutEmpresa],
+                            ['resolutor', $res->id],
+                        ])->get();
+                
+                //dd($req);
+                
+                $requerimientos = [];
+
+                if (count($req) != 0) {
+                    foreach ($req as $requerimiento) {
+                        $requerimiento = (array) $requerimiento;
+                        $requerimiento ['tipo'] = "requerimiento";
+                        $requerimient [] = $requerimiento;
+                        $tareas = Tarea::where([
+                                    ['idRequerimiento', $requerimiento['id']],
+                                    ['estado', 1]
+                                ])->get();
+                        if (count($tareas) != 0) {
+                            foreach ($tareas as $tarea) {
+                                $tarea ['tipo'] = "tarea";
+                                $requerimient [] = $tarea;
+                            }
+                        }
+                    }
+                }
+                
+                foreach ($requerimient as $requerimiento) {
+                    foreach ($anidados as $anidado) {
+                        if ($anidado->idRequerimientoAnexo == $requerimiento['id']) {
+                            $estado = false;
+                        }
+                    }
+                    if ($requerimiento['fechaCierre'] == "9999-12-31 00:00:00") {
+                        $requerimiento ['status'] = 1;
+                    } else 
+                    {
+                        if($requerimiento['fechaRealCierre'] != ""){
+                            $cierre = new Datetime($requerimiento['fechaRealCierre']);
+                        } else 
+                        {
+                            $cierre = new DateTime($requerimiento['fechaCierre']);
+                        }
+                                    
+                        if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                            $requerimiento ['status'] = 3;
+                        } else {
+                            $variable = 0;
+                            while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+                                if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                    $hoy->modify("+1 days");               
+                                }else{
+                                    $variable++;
+                                    $hoy->modify("+1 days");                       
+                                }                   
+                            }
+
+                            if ($variable<=3) {
+                                $requerimiento ['status'] = 2;
+                            } else {
+                                $requerimiento ['status'] = 1;
+                            }
+                            $variable = 0;
+                            unset($hoy);
+                            $hoy = new DateTime();                           
+                        }                        
+                    }
+                    if ($requerimiento['fechaRealCierre'] != "") {
+                        $cierre_req = new DateTime($requerimiento['fechaRealCierre']);
+                        if ($cierre_req->getTimestamp() > $hoy->getTimestamp() and
+                                $cierre_req->getTimestamp() < $un_dia->getTimestamp()){
+                            $requerimiento = (object) $requerimiento;
+                            $requerimientos[]=$requerimiento;
+                        }   
+                    } else {
+                        $cierre_req = new DateTime($requerimiento['fechaCierre']);
+                        if ($cierre_req->getTimestamp() > $hoy->getTimestamp() and
+                                $cierre_req->getTimestamp() < $un_dia->getTimestamp()){
+                            $requerimiento = (object) $requerimiento;
+                            $requerimientos[]=$requerimiento;
+                        }                        
+                    }
+                }
+                
+                $valor = 1;
+                if ($request->session()->get('tipo') == 1) {
+                    $valor = 1;
+                } else {
+                    $valor = 0;
+                }
+                $lider = 0;
+                if ($user->nombre == "resolutor") {
+                    $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+                    $lider = $resolutor->lider;
+                }
+                //dd($requerimientos);
+                $requerimientos = (object)$requerimientos; 
+            break;
+            case '2':
+                $req = DB::table('requerimientos_equipos')->where([
+                            ['estado', 1],
+                            ['aprobacion', '=', '3'],
+                            ['rutEmpresa', auth()->user()->rutEmpresa],
+                            ['resolutor', $res->id],
+                        ])->get();
+                
+                //dd($req);
+                
+                $requerimientos = [];
+
+                if (count($req) != 0) {
+                    foreach ($req as $requerimiento) {
+                        $requerimiento = (array) $requerimiento;
+                        $requerimiento ['tipo'] = "requerimiento";
+                        $requerimient [] = $requerimiento;
+                        $tareas = Tarea::where([
+                                    ['idRequerimiento', $requerimiento['id']],
+                                    ['estado', 1]
+                                ])->get();
+                        if (count($tareas) != 0) {
+                            foreach ($tareas as $tarea) {
+                                $tarea ['tipo'] = "tarea";
+                                $requerimient [] = $tarea;
+                            }
+                        }
+                    }
+                }
+                
+                foreach ($requerimient as $requerimiento) {
+                    foreach ($anidados as $anidado) {
+                        if ($anidado->idRequerimientoAnexo == $requerimiento['id']) {
+                            $estado = false;
+                        }
+                    }
+                    if ($requerimiento['fechaCierre'] == "9999-12-31 00:00:00") {
+                        $requerimiento ['status'] = 1;
+                    } else 
+                    {
+                        if($requerimiento['fechaRealCierre'] != ""){
+                            $cierre = new Datetime($requerimiento['fechaRealCierre']);
+                        } else 
+                        {
+                            $cierre = new DateTime($requerimiento['fechaCierre']);
+                        }
+                                    
+                        if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                            $requerimiento ['status'] = 3;
+                        } else {
+                            $variable = 0;
+                            while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+                                if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                    $hoy->modify("+1 days");               
+                                }else{
+                                    $variable++;
+                                    $hoy->modify("+1 days");                       
+                                }                   
+                            }
+
+                            if ($variable<=3) {
+                                $requerimiento ['status'] = 2;
+                            } else {
+                                $requerimiento ['status'] = 1;
+                            }
+                            $variable = 0;
+                            unset($hoy);
+                            $hoy = new DateTime();                           
+                        }                        
+                    }                    
+                    if ($requerimiento['fechaRealCierre'] != "") {
+                        $cierre_req = new DateTime($requerimiento['fechaRealCierre']);
+                        if ($cierre_req->getTimestamp() > $hoy->getTimestamp() and
+                                $cierre_req->getTimestamp() < $dos_dia->getTimestamp()){
+                            $requerimiento = (object) $requerimiento;
+                            $requerimientos[]=$requerimiento;
+                        }   
+                    } else {
+                        $cierre_req = new DateTime($requerimiento['fechaCierre']);
+                        if ($cierre_req->getTimestamp() > $hoy->getTimestamp() and
+                                $cierre_req->getTimestamp() < $dos_dia->getTimestamp()){
+                            $requerimiento = (object) $requerimiento;
+                            $requerimientos[]=$requerimiento;
+                        }                        
+                    }
+                }
+                
+                $valor = 1;
+                if ($request->session()->get('tipo') == 1) {
+                    $valor = 1;
+                } else {
+                    $valor = 0;
+                }
+                $lider = 0;
+                if ($user->nombre == "resolutor") {
+                    $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+                    $lider = $resolutor->lider;
+                }
+                
+                $requerimientos = (object)$requerimientos;
+            break;
+            case '3':
+                $req = DB::table('requerimientos_equipos')->where([
+                            ['estado', 1],
+                            ['aprobacion', '=', '3'],
+                            ['rutEmpresa', auth()->user()->rutEmpresa],
+                            ['resolutor', $res->id],
+                        ])->get();
+                
+                //dd($req);
+                
+                $requerimientos = [];
+
+                if (count($req) != 0) {
+                    foreach ($req as $requerimiento) {
+                        $requerimiento = (array) $requerimiento;
+                        $requerimiento ['tipo'] = "requerimiento";
+                        $requerimient [] = $requerimiento;
+                        $tareas = Tarea::where([
+                                    ['idRequerimiento', $requerimiento['id']],
+                                    ['estado', 1]
+                                ])->get();
+                        if (count($tareas) != 0) {
+                            foreach ($tareas as $tarea) {
+                                $tarea ['tipo'] = "tarea";
+                                $requerimient [] = $tarea;
+                            }
+                        }
+                    }
+                }
+                
+                foreach ($requerimient as $requerimiento) {
+                    foreach ($anidados as $anidado) {
+                        if ($anidado->idRequerimientoAnexo == $requerimiento['id']) {
+                            $estado = false;
+                        }
+                    }
+                    if ($requerimiento['fechaCierre'] == "9999-12-31 00:00:00") {
+                        $requerimiento ['status'] = 1;
+                    } else 
+                    {
+                        if($requerimiento['fechaRealCierre'] != ""){
+                            $cierre = new Datetime($requerimiento['fechaRealCierre']);
+                        } else 
+                        {
+                            $cierre = new DateTime($requerimiento['fechaCierre']);
+                        }
+                                    
+                        if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                            $requerimiento ['status'] = 3;
+                        } else {
+                            $variable = 0;
+                            while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+                                if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                    $hoy->modify("+1 days");               
+                                }else{
+                                    $variable++;
+                                    $hoy->modify("+1 days");                       
+                                }                   
+                            }
+
+                            if ($variable<=3) {
+                                $requerimiento ['status'] = 2;
+                            } else {
+                                $requerimiento ['status'] = 1;
+                            }
+                            $variable = 0;
+                            unset($hoy);
+                            $hoy = new DateTime();                           
+                        }                        
+                    }                    
+                    if ($requerimiento['fechaRealCierre'] != "") {
+                        $cierre_req = new DateTime($requerimiento['fechaRealCierre']);
+                        if ($cierre_req->getTimestamp() > $hoy->getTimestamp() and
+                                $cierre_req->getTimestamp() < $tres_dia->getTimestamp()){
+                            $requerimiento = (object) $requerimiento;
+                            $requerimientos[]=$requerimiento;
+                        }   
+                    } else {
+                        $cierre_req = new DateTime($requerimiento['fechaCierre']);
+                        if ($cierre_req->getTimestamp() > $hoy->getTimestamp() and
+                                $cierre_req->getTimestamp() < $tres_dia->getTimestamp()){
+                            $requerimiento = (object) $requerimiento;
+                            $requerimientos[]=$requerimiento;
+                        }                        
+                    }
+                }
+                
+                $valor = 1;
+                if ($request->session()->get('tipo') == 1) {
+                    $valor = 1;
+                } else {
+                    $valor = 0;
+                }
+                $lider = 0;
+                if ($user->nombre == "resolutor") {
+                    $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+                    $lider = $resolutor->lider;
+                }
+                
+                $requerimientos = (object)$requerimientos;
+            break;
+            case '4':
+                $req = DB::table('requerimientos_equipos')->where([
+                            ['estado', 1],
+                            ['aprobacion', '=', '3'],
+                            ['rutEmpresa', auth()->user()->rutEmpresa],
+                            ['resolutor', $res->id],
+                        ])->get();
+                
+                //dd($req);
+                
+                $requerimientos = [];
+
+                if (count($req) != 0) {
+                    foreach ($req as $requerimiento) {
+                        $requerimiento = (array) $requerimiento;
+                        $requerimiento ['tipo'] = "requerimiento";
+                        $requerimient [] = $requerimiento;
+                        $tareas = Tarea::where([
+                                    ['idRequerimiento', $requerimiento['id']],
+                                    ['estado', 1]
+                                ])->get();
+                        if (count($tareas) != 0) {
+                            foreach ($tareas as $tarea) {
+                                $tarea ['tipo'] = "tarea";
+                                $requerimient [] = $tarea;
+                            }
+                        }
+                    }
+                }
+                
+                foreach ($requerimient as $requerimiento) {
+                    foreach ($anidados as $anidado) {
+                        if ($anidado->idRequerimientoAnexo == $requerimiento['id']) {
+                            $estado = false;
+                        }
+                    }
+                    if ($requerimiento['fechaCierre'] == "9999-12-31 00:00:00") {
+                        $requerimiento ['status'] = 1;
+                    } else 
+                    {
+                        if($requerimiento['fechaRealCierre'] != ""){
+                            $cierre = new Datetime($requerimiento['fechaRealCierre']);
+                        } else 
+                        {
+                            $cierre = new DateTime($requerimiento['fechaCierre']);
+                        }
+                                    
+                        if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                            $requerimiento ['status'] = 3;
+                        } else {
+                            $variable = 0;
+                            while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+                                if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                    $hoy->modify("+1 days");               
+                                }else{
+                                    $variable++;
+                                    $hoy->modify("+1 days");                       
+                                }                   
+                            }
+
+                            if ($variable<=3) {
+                                $requerimiento ['status'] = 2;
+                            } else {
+                                $requerimiento ['status'] = 1;
+                            }
+                            $variable = 0;
+                            unset($hoy);
+                            $hoy = new DateTime();                           
+                        }                        
+                    }                    
+                    if ($requerimiento['fechaRealCierre'] != "") {
+                        $cierre_req = new DateTime($requerimiento['fechaRealCierre']);
+                        if ($cierre_req->getTimestamp() > $hoy->getTimestamp() and
+                            $cierre_req->getTimestamp() < $siet_dia->getTimestamp()){
+                            $requerimiento = (object) $requerimiento;
+                            $requerimientos[]=$requerimiento;
+                        }   
+                    } else {
+                        $cierre_req = new DateTime($requerimiento['fechaCierre']);
+                        if ($cierre_req->getTimestamp() > $hoy->getTimestamp() and
+                            $cierre_req->getTimestamp() < $siet_dia->getTimestamp()){
+                            $requerimiento = (object) $requerimiento;
+                            $requerimientos[]=$requerimiento;
+                        }                        
+                    }
+                }
+                
+                $valor = 1;
+                if ($request->session()->get('tipo') == 1) {
+                    $valor = 1;
+                } else {
+                    $valor = 0;
+                }
+                $lider = 0;
+                if ($user->nombre == "resolutor") {
+                    $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+                    $lider = $resolutor->lider;
+                }
+                
+                $requerimientos = (object)$requerimientos;
+            break;
+            case '5':
+                $req = DB::table('requerimientos_equipos')->where([
+                            ['estado', 1],
+                            ['aprobacion', '=', '3'],
+                            ['rutEmpresa', auth()->user()->rutEmpresa],
+                            ['resolutor', $res->id],
+                        ])->get();
+                
+                //dd($req);
+                
+                $requerimientos = [];
+
+                if (count($req) != 0) {
+                    foreach ($req as $requerimiento) {
+                        $requerimiento = (array) $requerimiento;
+                        $requerimiento ['tipo'] = "requerimiento";
+                        $requerimient [] = $requerimiento;
+                        $tareas = Tarea::where([
+                                    ['idRequerimiento', $requerimiento['id']],
+                                    ['estado', 1]
+                                ])->get();
+                        if (count($tareas) != 0) {
+                            foreach ($tareas as $tarea) {
+                                $tarea ['tipo'] = "tarea";
+                                $requerimient [] = $tarea;
+                            }
+                        }
+                    }
+                }
+                
+                foreach ($requerimient as $requerimiento) {
+                    foreach ($anidados as $anidado) {
+                        if ($anidado->idRequerimientoAnexo == $requerimiento['id']) {
+                            $estado = false;
+                        }
+                    }
+                    if ($requerimiento['fechaCierre'] == "9999-12-31 00:00:00") {
+                        $requerimiento ['status'] = 1;
+                    } else 
+                    {
+                        if($requerimiento['fechaRealCierre'] != ""){
+                            $cierre = new Datetime($requerimiento['fechaRealCierre']);
+                        } else 
+                        {
+                            $cierre = new DateTime($requerimiento['fechaCierre']);
+                        }
+                                    
+                        if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                            $requerimiento ['status'] = 3;
+                        } else {
+                            $variable = 0;
+                            while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+                                if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                    $hoy->modify("+1 days");               
+                                }else{
+                                    $variable++;
+                                    $hoy->modify("+1 days");                       
+                                }                   
+                            }
+
+                            if ($variable<=3) {
+                                $requerimiento ['status'] = 2;
+                            } else {
+                                $requerimiento ['status'] = 1;
+                            }
+                            $variable = 0;
+                            unset($hoy);
+                            $hoy = new DateTime();                           
+                        }                        
+                    }                    
+                    if ($requerimiento['fechaRealCierre'] != "") {
+                        $cierre_req = new DateTime($requerimiento['fechaRealCierre']);
+                        if ($cierre_req->getTimestamp() > $hoy->getTimestamp() and
+                                $cierre_req->getTimestamp() < $diez_dia->getTimestamp()){
+                            $requerimiento = (object) $requerimiento;
+                            $requerimientos[]=$requerimiento;
+                        }   
+                    } else {
+                        $cierre_req = new DateTime($requerimiento['fechaCierre']);
+                        if ($cierre_req->getTimestamp() > $hoy->getTimestamp() and
+                                $cierre_req->getTimestamp() < $diez_dia->getTimestamp()){
+                            $requerimiento = (object) $requerimiento;
+                            $requerimientos[]=$requerimiento;
+                        }                        
+                    }
+                }
+                
+                $valor = 1;
+                if ($request->session()->get('tipo') == 1) {
+                    $valor = 1;
+                } else {
+                    $valor = 0;
+                }
+                $lider = 0;
+                if ($user->nombre == "resolutor") {
+                    $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+                    $lider = $resolutor->lider;
+                }
+                
+                $requerimientos = (object)$requerimientos;
+            break;                
+        }
+        return view('Requerimientos.index2', compact('requerimientos', 'resolutors', 'valor', 'user', 'anidados', 'solicitantes', 'tipo', 'res', 'lider'));
+    }
+
+    public function for_priority(Request $request)
     {
-        //Defino dominio voximplant
-        define('KIT_DOMAIN', 'itcdaniel');
+        $tipo = $request->tipo;
+     
+        $resolutors = Resolutor::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
+        $solicitantes = Solicitante::where('rutEmpresa', auth()->user()->rutEmpresa)->orderBy('nombreSolicitante')->get();
         
-        //Defino token
-        define('KIT_ACCESS_TOKEN', '8e537ea23c79260ee98885cf30031903');
+        $anidados = Anidado::all();
+
+        if (isset($request->tipo)) {
+            $request->session()->put('tipo', $request->tipo);
+        } else {
+            $request->session()->put('tipo', "1");
+            $tipo = 1;
+        }
         
-        //Defino id de telefono que llama
-        define('KIT_CALLERID_PHONE_ID', 1976);
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->first();
+        $res = Resolutor::where('idUser', $user->idUser)->first(); 
+        switch ($tipo) {
+            case '1':
+                $req = DB::table('requerimientos_equipos')->where([
+                            ['estado', 1],
+                            ['aprobacion', '=', '3'],
+                            ['rutEmpresa', auth()->user()->rutEmpresa],
+                            ['resolutor', $res->id],
+                            ['idPrioridad', '1'] 
+                        ])->get();
+
+                $requerimientos = [];
+                
+                $hoy = new DateTime(date('Y-m-d'));
+
+                if (count($req) != 0) {
+                    foreach ($req as $requerimiento) {
+                        $requerimiento = (array) $requerimiento;
+                        $requerimiento ['tipo'] = "requerimiento";
+                        $requerimient [] = $requerimiento;
+                        $tareas = Tarea::where([
+                                    ['idRequerimiento', $requerimiento['id']],
+                                    ['estado', 1]
+                                ])->get();
+                        if (count($tareas) != 0) {
+                            foreach ($tareas as $tarea) {
+                                $tarea ['tipo'] = "tarea";
+                                $requerimient [] = $tarea;
+                            }
+                        }
+                    }
+                }
+                
+                foreach ($requerimient as $requerimiento) {
+                    foreach ($anidados as $anidado) {
+                        if ($anidado->idRequerimientoAnexo == $requerimiento['id']) {
+                            $estado = false;
+                        }
+                    }
+                    
+                    if ($requerimiento['fechaCierre'] == "9999-12-31 00:00:00") {
+                        $requerimiento ['status'] = 1;
+                    } else 
+                    {
+                        if($requerimiento['fechaRealCierre'] != ""){
+                            $cierre = new Datetime($requerimiento['fechaRealCierre']);
+                        } else 
+                        {
+                            $cierre = new DateTime($requerimiento['fechaCierre']);
+                        }
+                                    
+                        if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                            $requerimiento ['status'] = 3;
+                        } else {
+                            $variable = 0;
+                            while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+                                if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                    $hoy->modify("+1 days");               
+                                }else{
+                                    $variable++;
+                                    $hoy->modify("+1 days");                       
+                                }                   
+                            }
+
+                            if ($variable<=3) {
+                                $requerimiento ['status'] = 2;
+                            } else {
+                                $requerimiento ['status'] = 1;
+                            }
+                            $variable = 0;
+                            unset($hoy);
+                            $hoy = new DateTime();                           
+                        }                        
+                    }
+                    $requerimiento = (object)$requerimiento;
+                    $requerimientos[] = $requerimiento;
+                }
+                $lider = 0;
+                if ($user->nombre == "resolutor") {
+                    $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+                    $lider = $resolutor->lider;
+                }                
+                $requerimientos = (object)$requerimientos;
+            break;
+            
+            case '2':
+                $req = DB::table('requerimientos_equipos')->where([
+                            ['estado', 1],
+                            ['aprobacion', '=', '3'],
+                            ['rutEmpresa', auth()->user()->rutEmpresa],
+                            ['resolutor', $res->id],
+                            ['idPrioridad', '2'] 
+                        ])->get();
+
+                $requerimientos = [];
+                
+                $hoy = new DateTime(date('Y-m-d'));
+
+                if (count($req) != 0) {
+                    foreach ($req as $requerimiento) {
+                        $requerimiento = (array) $requerimiento;
+                        $requerimiento ['tipo'] = "requerimiento";
+                        $requerimient [] = $requerimiento;
+                        $tareas = Tarea::where([
+                                    ['idRequerimiento', $requerimiento['id']],
+                                    ['estado', 1]
+                                ])->get();
+                        if (count($tareas) != 0) {
+                            foreach ($tareas as $tarea) {
+                                $tarea ['tipo'] = "tarea";
+                                $requerimient [] = $tarea;
+                            }
+                        }
+                    }
+                }
+                
+                foreach ($requerimient as $requerimiento) {
+                    foreach ($anidados as $anidado) {
+                        if ($anidado->idRequerimientoAnexo == $requerimiento['id']) {
+                            $estado = false;
+                        }
+                    }
+                    
+                    if ($requerimiento['fechaCierre'] == "9999-12-31 00:00:00") {
+                        $requerimiento ['status'] = 1;
+                    } else 
+                    {
+                        if($requerimiento['fechaRealCierre'] != ""){
+                            $cierre = new Datetime($requerimiento['fechaRealCierre']);
+                        } else 
+                        {
+                            $cierre = new DateTime($requerimiento['fechaCierre']);
+                        }
+                                    
+                        if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                            $requerimiento ['status'] = 3;
+                        } else {
+                            $variable = 0;
+                            while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+                                if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                    $hoy->modify("+1 days");               
+                                }else{
+                                    $variable++;
+                                    $hoy->modify("+1 days");                       
+                                }                   
+                            }
+
+                            if ($variable<=3) {
+                                $requerimiento ['status'] = 2;
+                            } else {
+                                $requerimiento ['status'] = 1;
+                            }
+                            $variable = 0;
+                            unset($hoy);
+                            $hoy = new DateTime();                           
+                        }                        
+                    }
+                    $requerimiento = (object)$requerimiento;
+                    $requerimientos[] = $requerimiento;
+                }
+                $lider = 0;
+                if ($user->nombre == "resolutor") {
+                    $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+                    $lider = $resolutor->lider;
+                }                
+                $requerimientos = (object)$requerimientos;
+            break;
+
+            case '3':
+                $req = DB::table('requerimientos_equipos')->where([
+                            ['estado', 1],
+                            ['aprobacion', '=', '3'],
+                            ['rutEmpresa', auth()->user()->rutEmpresa],
+                            ['resolutor', $res->id],
+                            ['idPrioridad', '3'] 
+                        ])->get();
+                
+                if(count($req) == 0){
+                    $lider = 0;
+                    if ($user->nombre == "resolutor") {
+                        $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+                        $lider = $resolutor->lider;
+                    }                     
+                    $requerimientos = [];
+                    $requerimientos = (object)$requerimientos;
+                } else {
+                    $requerimientos = [];
+
+                    $hoy = new DateTime(date('Y-m-d'));
+
+                    if (count($req) != 0) {
+                        foreach ($req as $requerimiento) {
+                            $requerimiento = (array) $requerimiento;
+                            $requerimiento ['tipo'] = "requerimiento";
+                            $requerimient [] = $requerimiento;
+                            $tareas = Tarea::where([
+                                        ['idRequerimiento', $requerimiento['id']],
+                                        ['estado', 1]
+                                    ])->get();
+                            if (count($tareas) != 0) {
+                                foreach ($tareas as $tarea) {
+                                    $tarea ['tipo'] = "tarea";
+                                    $requerimient [] = $tarea;
+                                }
+                            }
+                        }
+                    }
+
+                    foreach ($requerimient as $requerimiento) {
+                        foreach ($anidados as $anidado) {
+                            if ($anidado->idRequerimientoAnexo == $requerimiento['id']) {
+                                $estado = false;
+                            }
+                        }
+
+                        if ($requerimiento['fechaCierre'] == "9999-12-31 00:00:00") {
+                            $requerimiento ['status'] = 1;
+                        } else 
+                        {
+                            if($requerimiento['fechaRealCierre'] != ""){
+                                $cierre = new Datetime($requerimiento['fechaRealCierre']);
+                            } else 
+                            {
+                                $cierre = new DateTime($requerimiento['fechaCierre']);
+                            }
+
+                            if ($cierre->getTimestamp()<$hoy->getTimestamp()) {
+                                $requerimiento ['status'] = 3;
+                            } else {
+                                $variable = 0;
+                                while ($hoy->getTimestamp() < $cierre->getTimestamp()) {
+                                    if ($hoy->format('l') == 'Saturday' or $hoy->format('l') == 'Sunday') {
+                                        $hoy->modify("+1 days");               
+                                    }else{
+                                        $variable++;
+                                        $hoy->modify("+1 days");                       
+                                    }                   
+                                }
+
+                                if ($variable<=3) {
+                                    $requerimiento ['status'] = 2;
+                                } else {
+                                    $requerimiento ['status'] = 1;
+                                }
+                                $variable = 0;
+                                unset($hoy);
+                                $hoy = new DateTime();                           
+                            }                        
+                        }
+                        $requerimiento = (object)$requerimiento;
+                        $requerimientos[] = $requerimiento;
+                    }
+                    $lider = 0;
+                    if ($user->nombre == "resolutor") {
+                        $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
+                        $lider = $resolutor->lider;
+                    }                
+                    $requerimientos = (object)$requerimientos;                    
+                }
+            break;
+        }
         
-        //Defino id de escenario
-        define('KIT_SCENARIO_ID', 16997);
-        
-        //Defino Url API Voximplant
-        define("KIT_API_URL", 'https://kitapi-us.voximplant.com/api/v3/');
-        
-        $data = [
-                'domain' => KIT_DOMAIN,
-                'access_token' => KIT_ACCESS_TOKEN,
-                'scenario_id' => KIT_SCENARIO_ID,
-                'phone' => $numero,
-                'phone_number_id' => KIT_CALLERID_PHONE_ID,
-                'variables' => json_encode(
-                    ['nombre' => $name,
-                    'cantidad' => $cantidad])
-                ];
-        
-        dd(json_encode($data));
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, KIT_API_URL . "scenario/runScenario");
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        $var = curl_exec($curl);
-        curl_close($curl);
+        return view('Requerimientos.index3', compact('requerimientos', 'resolutors', 'user', 'anidados', 'solicitantes', 'tipo', 'res', 'lider'));
     }    
 }
