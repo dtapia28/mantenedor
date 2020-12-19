@@ -100,6 +100,32 @@ function menu_activo(activo) {
             $('#mUsuarios').removeClass('active');
             $('#mExportar').addClass('active');
             break;
+        case 'mDate':
+            $('#mTablero').removeClass('active');
+            $('#mIndicadores').removeClass('active');
+            $('#mRequerimientos').removeClass('active');
+            $('#mPrioridades').removeClass('active');
+            $('#mResolutores').removeClass('active');
+            $('#mSolicitantes').removeClass('active');
+            $('#mEquipos').removeClass('active');
+            $('#mUsuarios').removeClass('active');
+            $('#mExportar').removeClass('active');
+            $('#mDate').addClass('active');
+            $('#mPriority').removeClass('active');
+        break;
+            case 'mPriority':
+            $('#mTablero').removeClass('active');
+            $('#mIndicadores').removeClass('active');
+            $('#mRequerimientos').removeClass('active');
+            $('#mPrioridades').removeClass('active');
+            $('#mResolutores').removeClass('active');
+            $('#mSolicitantes').removeClass('active');
+            $('#mEquipos').removeClass('active');
+            $('#mUsuarios').removeClass('active');
+            $('#mExportar').removeClass('active');
+            $('#mDate').removeClass('active');
+            $('#mPriority').addClass('active');
+            break;
         default:
             $('#mTablero').removeClass('active');
             $('#mIndicadores').removeClass('active');
