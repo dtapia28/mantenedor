@@ -21,6 +21,7 @@ use App\Notifications\Mail_info;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use DateTime;
 use DateInterval;
 use App\Http\Controllers\Controller;
@@ -2635,6 +2636,8 @@ class RequerimientoController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->files);
+        
         auth()->user()->authorizeRoles(['administrador', 'solicitante', 'resolutor']);
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
         $sol = Solicitante::where('idUser', $user[0]->idUser)->first();
@@ -2793,15 +2796,28 @@ class RequerimientoController extends Controller
             
             //$request->user()->notify(new EnvioWhatsapp($requerimiento));
             
-            Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
+            // Guarda el documento adjunto al registrar el requerimiento
+            $path = public_path().'/docs/requerimientos/';
+            $files = $request->file('files');
+            $nro_files = count($files);
+            if ($nro_files > 0)
+            {
+                for($i=0; $i<$nro_files; $i++)
+                {
+                    $file = $files[$i];
+                    $fileName = "Req".$requerimiento->id."_".uniqid().".".$file->getClientOriginalExtension();
+                    $file->move($path, $fileName);
+                }
+            }
             
+            // Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
             
             if ($request->idTipo == 1) {
                 return redirect('requerimientos')->with('msj', 'Requerimiento '.$requerimiento->id2.' guardado correctamente');
             } else {
                 return redirect('requerimientos')->with('msj', 'Incidente '.$requerimiento->id2.' guardado correctamente');
             }
-        }else 
+        } else 
         {
             return back()->with('msj', 'La fecha de cierre del requerimiento debe ser mayor a la fecha de solicitud');
         }

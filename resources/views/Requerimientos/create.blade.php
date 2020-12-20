@@ -1,6 +1,10 @@
 @extends('Bases.dashboard')
 @section('titulo', "Crear Requerimiento")
 
+@section('css')
+    <link href="{{ asset('vendor/dropzone/dropzone.css') }}" rel="stylesheet">
+@endsection
+
 @section('contenido')
 @if(session()->has('msj'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -34,7 +38,7 @@
                     <div class="ibox-title">Nuevo Registro de Requerimiento</div>
                 </div>
                 <div class="ibox-body">
-                    <form method="POST" action="{{ url('requerimientos/crear') }}">
+                    <form method="POST" action="{{ url('requerimientos/crear') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="col-sm-6 form-group">
                             <label for='idTipo'>Tipo</label>               
@@ -120,10 +124,24 @@
                                 <textarea class="form-control col-md-12" name="textAvance" id="textAvance" placeholder="Texto del avance" rows="5" cols="50"></textarea>                    
                             </div>
                         </div>
-                        <div class="col-sm-6 form-group">
+                        <div class="col-md-6 form-group">
+                            <div id="creaAdjuntos">
+                                <label for="textAvance">Adjuntar archivos al requerimiento</label>
+                                <div class="dropzone" id="myDropzone">
+                                    <div class="fallback">
+                                        <input id="files" multiple="true" name="files[]" type="file" title="Seleccionar archivos"><br>
+                                        <small class="text-dark">Extesiones permitidas: <strong>jpg, jpeg, png, pdf, docx, xlsx, pptx</strong></small><br>
+                                        <small class="text-dark">Tamaño máximo: <strong>2 MB</strong></small>
+                                        <div id="valor" style="font-size: 11px"><!-- fix --></div>
+                                        <div class="limpiar"><!-- fix --></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 pt-4 form-group">
                             <div class="col-md-12 form-inline">
                                 <div class="col-md-7">
-                                    <button type="submit" onclick="storeCacheForm()" class="btn btn-success btn-block mb-2 mr-sm-2 mb-sm-0" style="cursor:pointer"><i class="fa fa-check-circle"></i> Guardar Registro</button>
+                                    <button type="submit" onclick="storeCacheForm()" class="btn btn-success btn-block mb-2 mr-sm-2 mb-sm-0" style="cursor:pointer"><i class="fa fa-check-circle" id="submitBtn"></i> Guardar Registro</button>
                                 </div>
                                 <div class="col-md-5">
                                     <a href="{{url('requerimientos')}}" class="btn btn-outline-primary btn-block"><i class="fa fa-arrow-left"></i> Regresar</a>
@@ -138,6 +156,7 @@
 </div>
 @endsection
 @section('script2')
+<script src="{{ asset('vendor/dropzone/dropzone.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('#team').on('change', function(){
@@ -205,5 +224,26 @@
             sessionStorage.setItem('stTextAvance', $('#textAvance').val());
         }
     }
+</script>
+<script type="text/javascript">
+    Dropzone.autoDiscover = false;
+    var myDropzone = new Dropzone(".myDropzone", {
+        url: "{{ url('requerimientos/crear') }}",
+        uploadMultiple: true,
+        autoProcessQueue: false,
+        uploadMultiple: true,
+        parallelUploads: 10,
+        maxFilesize: 5,
+    });
+
+    var uploaded = []
+    myDropzone.on("complete", function (file, response) {
+        uploaded.push(file)
+        
+        if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+            console.log('awais');
+        }
+        myDropzone.removeFile(file);
+    });
 </script>
 @endsection
