@@ -126,12 +126,12 @@
                         </div>
                         <div class="col-md-6 form-group">
                             <div id="creaAdjuntos">
-                                <label for="textAvance">Adjuntar archivos al requerimiento</label>
+                                <label for="textAvance">Adjuntar archivo al requerimiento</label>
                                 <div class="dropzone" id="myDropzone">
                                     <div class="fallback">
-                                        <input id="files" multiple="true" name="files[]" type="file" title="Seleccionar archivos"><br>
+                                        <input id="archivo" name="archivo" type="file" title="Seleccionar archivo" onchange="validar_archivo_req(this.id)"><br>
                                         <small class="text-dark">Extesiones permitidas: <strong>jpg, jpeg, png, pdf, docx, xlsx, pptx</strong></small><br>
-                                        <small class="text-dark">Tamaño máximo: <strong>2 MB</strong></small>
+                                        <small class="text-dark">Tamaño máximo: <strong>5 MB</strong></small>
                                         <div id="valor" style="font-size: 11px"><!-- fix --></div>
                                         <div class="limpiar"><!-- fix --></div>
                                     </div>
@@ -224,26 +224,54 @@
             sessionStorage.setItem('stTextAvance', $('#textAvance').val());
         }
     }
-</script>
-<script type="text/javascript">
-    Dropzone.autoDiscover = false;
-    var myDropzone = new Dropzone(".myDropzone", {
-        url: "{{ url('requerimientos/crear') }}",
-        uploadMultiple: true,
-        autoProcessQueue: false,
-        uploadMultiple: true,
-        parallelUploads: 10,
-        maxFilesize: 5,
-    });
 
-    var uploaded = []
-    myDropzone.on("complete", function (file, response) {
-        uploaded.push(file)
-        
-        if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
-            console.log('awais');
-        }
-        myDropzone.removeFile(file);
-    });
+    function validar_archivo_req(id_archivo) {
+		var archivo = document.getElementById(id_archivo).value;
+
+		var uploadedFile = document.getElementById(id_archivo);
+		var fileSize = uploadedFile.files[0].size;      
+
+		if(navigator.userAgent.indexOf('Linux') != -1){
+		var SO = "Linux"; }
+		else if((navigator.userAgent.indexOf('Win') != -1) &&(navigator.userAgent.indexOf('95') != -1)){
+		var SO = "Win"; }
+		else if((navigator.userAgent.indexOf('Win') != -1) &&(navigator.userAgent.indexOf('NT') != -1)){
+		var SO = "Win"; }
+		else if(navigator.userAgent.indexOf('Win') != -1){
+		var SO = "Win"; }
+		else if(navigator.userAgent.indexOf('Mac') != -1){
+		var SO = "Mac"; }
+		else { var SO = "no definido";
+		}
+
+		if (SO = "Win") {
+			var arr_ruta = archivo.split("\\");
+		} else {
+			var arr_ruta = archivo.split("/");
+		}
+
+		var nombre_archivo = (arr_ruta[arr_ruta.length-1]);
+		var ext_validas = /\.(jpg|jpeg|png|pdf|doc|docx|xls|xlsx|csv|ppt|pptx)$/i.test(nombre_archivo);
+		
+		if (!ext_validas){
+			alert("Archivo con extensión no válida\nSu archivo: " + nombre_archivo);
+			borrar_req();
+			return false;
+		}
+
+		if(fileSize > 5000000){
+			alert("Archivo con tamaño no válido\nSu archivo: " + nombre_archivo);
+			borrar_req();
+			return false;
+		}
+
+		document.getElementById('valor').innerHTML = "Archivo seleccionado: <b>" + nombre_archivo + "<\/b>";       
+	}
+
+    function borrar_req() {
+		document.getElementById('valor').innerHTML = "";
+		var vacio = document.getElementById('archivo').value = "";
+		return true
+	}
 </script>
 @endsection

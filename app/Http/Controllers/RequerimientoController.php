@@ -2798,16 +2798,16 @@ class RequerimientoController extends Controller
             
             // Guarda el documento adjunto al registrar el requerimiento
             $path = public_path().'/docs/requerimientos/';
-            $files = $request->file('files');
-            $nro_files = count($files);
-            if ($nro_files > 0)
+            $file = $request->file('files');
+            
+            if (!empty($_FILES['archivo']['tmp_name']) || is_uploaded_file($_FILES['archivo']['tmp_name']))
             {
-                for($i=0; $i<$nro_files; $i++)
-                {
-                    $file = $files[$i];
-                    $fileName = "Req".$requerimiento->id."_".uniqid().".".$file->getClientOriginalExtension();
-                    $file->move($path, $fileName);
-                }
+                $file = Input::file('archivo'); 
+                $filenameWithExt = $request->file('archivo')->getClientOriginalName(); 
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $extension = $request->file('archivo')->getClientOriginalExtension();
+                $filenameToStore = "Req".$requerimiento->id."_".uniqid().".".$extension;
+                \Request::file('archivo')->move($path, $filenameToStore);
             }
             
             // Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
