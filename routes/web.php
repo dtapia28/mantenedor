@@ -442,8 +442,11 @@ Route::post('/requerimientos/{requerimiento}/adjuntar', 'RequerimientoController
 
 	->middleware('auth');
 
-
 Route::post('/requerimientos/adjuntar', 'RequerimientoController@adjuntar_archivo')->name('Requerimientos.adjuntar_archivo')
+
+	->middleware('auth');
+
+Route::post('/requerimientos/descargaradjunto', 'RequerimientoController@descargar_adjunto')->name('Requerimientos.descargar.adjunto')
 
 	->middleware('auth');
 

@@ -2898,10 +2898,33 @@ class RequerimientoController extends Controller
             $ver_log = true;
         }
         
+        // Obtiene el archivo adjuntado al requerimiento
+        $extensiones = ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'ppt', 'pptx'];
+        $existe = false;
+        foreach ($extensiones as $extension) {
+            $archivo = public_path().'/docs/requerimientos/'.'Req_'.$requerimiento->id.'.'.$extension;
+            if (file_exists($archivo)) {
+                $existe = true;
+                $url_file = $archivo;
+                $name_file = 'Req_'.$requerimiento->id.'.'.$extension;
+                break;
+            } else {
+                $existe = false;
+            }
+        }
+        
+        if ($existe) {
+            $adjunto_url = $url_file;
+            $adjunto_name = $name_file;
+        } else {
+            $adjunto_url = "no";
+            $adjunto_name = "no";
+        }
+        
         return view('Requerimientos.show', compact('user','requerimiento', 'resolutors',
                     'priorities', 'avances', 'teams', 'fechaCierre', 'requerimientosAnidados',
                     'tareas', 'requerimientos', 'solicitante', 'resolutor','resolutor2',
-                    'resolutores', 'lider', 'res', 'id2', 'ver_log'));        
+                    'resolutores', 'lider', 'res', 'id2', 'ver_log', 'adjunto_url', 'adjunto_name'));        
     }
 
     /**
@@ -4475,7 +4498,7 @@ class RequerimientoController extends Controller
             $filenameWithExt = $request->file('archivo')->getClientOriginalName(); 
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             $extension = $request->file('archivo')->getClientOriginalExtension();
-            $filenameToStore = "Req".$request->id_req."_".uniqid().".".$extension;
+            $filenameToStore = "Req_".$request->id_req.".".$extension;
             \Request::file('archivo')->move($path, $filenameToStore);
 
             return redirect('requerimientos')->with('msj', 'Archivo adjuntado correctamente al Requerimiento '.$request->id_req2);
@@ -4483,5 +4506,13 @@ class RequerimientoController extends Controller
             return redirect('requerimientos')->with('msj', 'Debe seleccionar un archivo para adjuntar al requerimiento');
         }
 
+    }
+
+    public function descargar_adjunto(Request $request) {
+        $file= public_path(). "/docs/requerimientos/".$request->adjunto;
+        $headers = array(
+              'Content-Type: application/octet-stream',
+            );
+        return \Response::download($file, $request->adjunto, $headers);
     }
 }
