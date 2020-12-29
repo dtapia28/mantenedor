@@ -438,6 +438,16 @@ Route::get('/requerimientos/{requerimiento}/editar', 'RequerimientoController@ed
 	->middleware('auth');
 
 
+Route::post('/requerimientos/{requerimiento}/adjuntar', 'RequerimientoController@adjuntar')->name('Requerimientos.adjuntar')
+
+	->middleware('auth');
+
+
+Route::post('/requerimientos/adjuntar', 'RequerimientoController@adjuntar_archivo')->name('Requerimientos.adjuntar_archivo')
+
+	->middleware('auth');
+
+
 
 Route::put('/requerimientos/{requerimiento}', 'RequerimientoController@update')
 

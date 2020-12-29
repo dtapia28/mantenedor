@@ -2810,7 +2810,7 @@ class RequerimientoController extends Controller
                 \Request::file('archivo')->move($path, $filenameToStore);
             }
             
-            // Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
+            Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
             
             if ($request->idTipo == 1) {
                 return redirect('requerimientos')->with('msj', 'Requerimiento '.$requerimiento->id2.' guardado correctamente');
@@ -4452,4 +4452,36 @@ class RequerimientoController extends Controller
         
         return view('Requerimientos.index3', compact('requerimientos', 'resolutors', 'user', 'anidados', 'solicitantes', 'tipo', 'res', 'lider'));
     }    
+
+    public function adjuntar(Requerimiento $requerimiento)
+    {
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        
+        return view('Requerimientos.adjuntar', compact('requerimiento', 'user'));
+    }
+
+    public function adjuntar_archivo(Request $request)
+    {
+        // dd($request);
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+
+        // Guarda el documento adjunto al registrar el requerimiento
+        $path = public_path().'/docs/requerimientos/';
+        $file = $request->file('files');
+        
+        if (!empty($_FILES['archivo']['tmp_name']) || is_uploaded_file($_FILES['archivo']['tmp_name']))
+        {
+            $file = Input::file('archivo'); 
+            $filenameWithExt = $request->file('archivo')->getClientOriginalName(); 
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('archivo')->getClientOriginalExtension();
+            $filenameToStore = "Req".$request->id_req."_".uniqid().".".$extension;
+            \Request::file('archivo')->move($path, $filenameToStore);
+
+            return redirect('requerimientos')->with('msj', 'Archivo adjuntado correctamente al Requerimiento '.$request->id_req2);
+        } else {
+            return redirect('requerimientos')->with('msj', 'Debe seleccionar un archivo para adjuntar al requerimiento');
+        }
+
+    }
 }
