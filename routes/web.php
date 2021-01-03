@@ -586,6 +586,12 @@ Route::post('/dashboard/getReqResolutorGralByEstado', 'DashboardController@getRe
 Route::post('/dashboard/getReqSolicitanteGralByEstado', 'DashboardController@getReqSolicitanteGralByEstado')->name('getReqSolicitanteGralByEstado');
 Route::get('/indicadores', 'IndicadoresController@index')->name('indicadores');
 
+Route::get('/mensajes', 'MensajesController@index')->name('mensajes.index');
+Route::get('/mensajes/nuevo', 'MensajesController@nuevo')->name('mensajes.create');
+Route::post('/mensajes/store', 'MensajesController@store')->name('mensajes.store');
+Route::post('/mensajes/show', 'MensajesController@show')->name('mensajes.show');
+Route::post('/mensajes/delete', 'MensajesController@delete')->name('mensajes.delete');
+
 /* ************************** */
 
 Route::get('/clear_cache', function()

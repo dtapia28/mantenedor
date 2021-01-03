@@ -168,6 +168,13 @@
 						</a>
 					</li>
 					@endif
+					@if($user[0]->nombre == "supervisor" or $user[0]->nombre == "administrador")
+					<li id="mMensajes">
+						<a href="{{ url('/mensajes') }}"><i class="sidebar-item-icon fa fa-comments-o"></i>
+							<span class="nav-label">Mensajes</span>
+						</a>
+					</li>
+					@endif
 				</ul>
 			</div>
 		</nav>
