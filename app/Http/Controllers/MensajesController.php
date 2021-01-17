@@ -14,7 +14,8 @@ class MensajesController extends Controller
 
     public function index()
     {
-        $mensajes = DB::select('select a.id, a.de, (select b.name from users b where a.de=b.id) de_name, para, (select c.name from users c where a.para=c.id) para_name, a.asunto, a.fecha, a.leido from mensajes a where a.rutEmpresa = ? order by leido asc, fecha desc', [auth()->user()->rutEmpresa]);
+        $user = auth()->user()->id;
+        $mensajes = DB::select('select a.id, a.de, (select b.name from users b where a.de=b.id) de_name, para, (select c.name from users c where a.para=c.id) para_name, a.asunto, a.fecha, a.leido from mensajes a where a.rutEmpresa=? and (a.de=? or a.para=?) order by leido asc, fecha desc', [auth()->user()->rutEmpresa, $user, $user]);
 
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
 
@@ -49,10 +50,13 @@ class MensajesController extends Controller
 
     public function show(Request $request)
     {
-        DB::update('update mensajes set leido = ? where id = ?', [1, $request->id]);
+        $user = auth()->user()->id;
         $mensaje = DB::select("select a.id, a.de, (select b.name from users b where a.de=b.id) de_name, para, (select c.name from users c where a.para=c.id) para_name, a.asunto, a.mensaje, DATE_FORMAT(a.fecha, '%d/%m/%Y %H:%i:%s') fecha, a.leido from mensajes a where a.id = ?", [$request->id]);
         $records = ['respuesta' => true, 'msg' => $mensaje];
-
+        
+        if ($mensaje[0]->para == $user)
+            DB::update('update mensajes set leido = ? where id = ?', [1, $request->id]);
+        
         return response()->json($records, 200);
     }
 
@@ -61,5 +65,15 @@ class MensajesController extends Controller
         DB::delete('delete from mensajes where id = ?', [$request->id]);
 
         return redirect('mensajes');
+    }
+
+    static function mensajesSinLeer() {
+        $user = auth()->user()->id;
+        $empresa = auth()->user()->rutEmpresa;
+
+        $sql = DB::select('SELECT COUNT(*) sinleer FROM mensajes where rutEmpresa = ? AND para = ? AND leido = ?', [$empresa, $user, 0]);
+        $msgSinLeer = $sql[0]->sinleer;
+
+        return $msgSinLeer;
     }
 }

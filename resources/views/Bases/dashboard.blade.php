@@ -15,7 +15,7 @@
   <link href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('vendor/themify-icons/css/themify-icons.css') }}" rel="stylesheet" />
   <link href="{{ asset('css/main.min.css') }}" rel="stylesheet" />
-  <?php use \App\Http\Controllers\HomeController; $color = HomeController::colorSitio(); $linkLogo = HomeController::logoEmpresa(); $nomEmpresa = HomeController::nombreEmpresa(); $linkFoto = HomeController::fotoPerfil();?>
+  <?php use \App\Http\Controllers\HomeController; use \App\Http\Controllers\MensajesController; $color = HomeController::colorSitio(); $linkLogo = HomeController::logoEmpresa(); $nomEmpresa = HomeController::nombreEmpresa(); $linkFoto = HomeController::fotoPerfil(); $msgSinLeer = MensajesController::mensajesSinLeer();?>
   @switch($color)
 	  	@case(1)
 		  	<link href="{{ asset('css/themes/red.css') }}" rel="stylesheet" />
@@ -168,13 +168,11 @@
 						</a>
 					</li>
 					@endif
-					@if($user[0]->nombre == "supervisor" or $user[0]->nombre == "administrador")
 					<li id="mMensajes">
 						<a href="{{ url('/mensajes') }}"><i class="sidebar-item-icon fa fa-comments-o"></i>
-							<span class="nav-label">Mensajes</span>
+							<span class="nav-label">Mensajes @if ($msgSinLeer > 0) <span class="badge badge-light text-dark">{{$msgSinLeer}}</span> @endif</span>
 						</a>
 					</li>
-					@endif
 				</ul>
 			</div>
 		</nav>

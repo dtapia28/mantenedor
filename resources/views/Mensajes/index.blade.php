@@ -22,9 +22,9 @@
 	<div class="ibox">
 		<div class="ibox-head">
 			<div class="ibox-title">Bandeja de mensajes</div>
-			@if($user[0]->nombre == "administrador")
+			{{-- @if($user[0]->nombre == "administrador") --}}
 				<div class="pull-right"><a class="btn btn-success" href="{{ url('mensajes/nuevo') }}" style="white-space: normal;"><i class="fa fa-plus"></i> Nuevo Mensaje</a></div>
-			@endif
+			{{-- @endif --}}
 		</div>
 		<div class="ibox-body">
 			<div class="table-responsive">
@@ -143,6 +143,9 @@
     
     function mostrarMensaje(id) {
         $("#dataModalMsg").modal("show");
+        let user_id = '<?=$user[0]->idUser?>';
+        let para = "";
+        
         $.ajax({
             type: 'post',
             url: 'mensajes/show',
@@ -157,13 +160,15 @@
                     $('#datoAsunto').text(data.msg[0]['asunto']);
                     $('#datoFecha').text(data.msg[0]['fecha']);
                     $('#datoMensaje').text(data.msg[0]['mensaje']);
+                    para = data.msg[0]['para'];
                 } else {
                     console.log("El mensaje no pudo ser cargado");
                     return;
                 }
             },
             complete: function (data) {
-                $('#fila'+id).removeClass('font-weight-bold');
+                if (para == user_id)
+                    $('#fila'+id).removeClass('font-weight-bold');
             },
             error: function (data) {
                 console.log('Error:', data);
