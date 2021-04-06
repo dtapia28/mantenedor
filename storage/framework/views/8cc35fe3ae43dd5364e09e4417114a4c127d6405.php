@@ -49,5 +49,5 @@
 				</tr>
 		</tbody>		
 	</table>
-<?php $__env->stopSection(); ?>	
+<?php $__env->stopSection(); ?>	
 <?php echo $__env->make('Bases.base', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Mantenedor\resources\views/Empresas/index.blade.php ENDPATH**/ ?>

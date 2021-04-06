@@ -569,3 +569,19 @@ Stack trace:
 #3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('translator', Array)
 #4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php(121): Illuminate\Foundation\Application->make('translator', Array)
 #5 /home1/kinchika/p in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[08-Oct-2020 04:11:52 UTC] PHP Fatal error:  Uncaught ReflectionException: Class view does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('view')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('view')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('view', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('view', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(1229): Illuminate\Foundation\Application->make('view')
+#5 /home1/kinchika/public_html/laravel/vendor/laravel/framewo in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790
+[08-Oct-2020 04:11:52 UTC] PHP Fatal error:  Uncaught ReflectionException: Class view does not exist in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('view')
+#1 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('view')
+#2 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(615): Illuminate\Container\Container->resolve('view', Array)
+#3 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(767): Illuminate\Container\Container->make('view', Array)
+#4 /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php(1229): Illuminate\Foundation\Application->make('view')
+#5 /home1/kinchika/public_html/laravel/vendor/laravel/framewo in /home1/kinchika/public_html/laravel/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790

@@ -1,6 +1,10 @@
 @extends('Bases.dashboard')
 @section('titulo', "Crear Requerimiento")
 
+@section('css')
+    <link href="{{ asset('vendor/dropzone/dropzone.css') }}" rel="stylesheet">
+@endsection
+
 @section('contenido')
 @if(session()->has('msj'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -34,7 +38,7 @@
                     <div class="ibox-title">Nuevo Registro de Requerimiento</div>
                 </div>
                 <div class="ibox-body">
-                    <form method="POST" action="{{ url('requerimientos/crear') }}">
+                    <form method="POST" action="{{ url('requerimientos/crear') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="col-sm-6 form-group">
                             <label for='idTipo'>Tipo</label>               
@@ -120,10 +124,24 @@
                                 <textarea class="form-control col-md-12" name="textAvance" id="textAvance" placeholder="Texto del avance" rows="5" cols="50"></textarea>                    
                             </div>
                         </div>
-                        <div class="col-sm-6 form-group">
+                        <div class="col-md-6 form-group">
+                            <div id="creaAdjuntos">
+                                <label for="textAvance">Adjuntar archivo al requerimiento</label>
+                                <div class="dropzone" id="myDropzone">
+                                    <div class="fallback">
+                                        <input id="archivo" name="archivo" type="file" title="Seleccionar archivo" onchange="validar_archivo_req(this.id)"><br>
+                                        <small class="text-dark">Extesiones permitidas: <strong>jpg, jpeg, png, pdf, docx, xlsx, pptx</strong></small><br>
+                                        <small class="text-dark">Tama√±o m√°ximo: <strong>5 MB</strong></small>
+                                        <div id="valor" style="font-size: 11px"><!-- fix --></div>
+                                        <div class="limpiar"><!-- fix --></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 pt-4 form-group">
                             <div class="col-md-12 form-inline">
                                 <div class="col-md-7">
-                                    <button type="submit" onclick="storeCacheForm()" class="btn btn-success btn-block mb-2 mr-sm-2 mb-sm-0" style="cursor:pointer"><i class="fa fa-check-circle"></i> Guardar Registro</button>
+                                    <button type="submit" onclick="storeCacheForm()" class="btn btn-success btn-block mb-2 mr-sm-2 mb-sm-0" style="cursor:pointer"><i class="fa fa-check-circle" id="submitBtn"></i> Guardar Registro</button>
                                 </div>
                                 <div class="col-md-5">
                                     <a href="{{url('requerimientos')}}" class="btn btn-outline-primary btn-block"><i class="fa fa-arrow-left"></i> Regresar</a>
@@ -138,6 +156,7 @@
 </div>
 @endsection
 @section('script2')
+<script src="{{ asset('vendor/dropzone/dropzone.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('#team').on('change', function(){
@@ -205,5 +224,47 @@
             sessionStorage.setItem('stTextAvance', $('#textAvance').val());
         }
     }
+
+    function validar_archivo_req(id_archivo) {
+		var archivo = document.getElementById(id_archivo).value;
+		var uploadedFile = document.getElementById(id_archivo);
+		var fileSize = uploadedFile.files[0].size;      
+		if(navigator.userAgent.indexOf('Linux') != -1){
+		var SO = "Linux"; }
+		else if((navigator.userAgent.indexOf('Win') != -1) &&(navigator.userAgent.indexOf('95') != -1)){
+		var SO = "Win"; }
+		else if((navigator.userAgent.indexOf('Win') != -1) &&(navigator.userAgent.indexOf('NT') != -1)){
+		var SO = "Win"; }
+		else if(navigator.userAgent.indexOf('Win') != -1){
+		var SO = "Win"; }
+		else if(navigator.userAgent.indexOf('Mac') != -1){
+		var SO = "Mac"; }
+		else { var SO = "no definido";
+		}
+		if (SO = "Win") {
+			var arr_ruta = archivo.split("\\");
+		} else {
+			var arr_ruta = archivo.split("/");
+		}
+		var nombre_archivo = (arr_ruta[arr_ruta.length-1]);
+		var ext_validas = /\.(jpg|jpeg|png|pdf|doc|docx|xls|xlsx|csv|ppt|pptx)$/i.test(nombre_archivo);
+		
+		if (!ext_validas){
+			alert("Archivo con extensiÛn no v·lida\nSu archivo: " + nombre_archivo);
+			borrar_req();
+			return false;
+		}
+		if(fileSize > 5000000){
+			alert("Archivo con tamaÒo no v·lido\nSu archivo: " + nombre_archivo);
+			borrar_req();
+			return false;
+		}
+		document.getElementById('valor').innerHTML = "Archivo seleccionado: <b>" + nombre_archivo + "<\/b>";       
+	}
+    function borrar_req() {
+		document.getElementById('valor').innerHTML = "";
+		var vacio = document.getElementById('archivo').value = "";
+		return true
+	}
 </script>
 @endsection

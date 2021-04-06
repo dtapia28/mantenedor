@@ -117,7 +117,7 @@
 									@endif
 								</tr>
 								<tr>
-									<td><strong>Número de cambios</strong></td>
+									<td><strong>N&#250mero de cambios</strong></td>
 									<td>{{ $requerimiento->numeroCambios }}</td>
 								</tr>
 								<tr>
@@ -277,7 +277,7 @@
                                                     <table class="table table-striped table-hover table-sm">
                                                         <thead>
                                                             <tr>
-                                                                <th>N°</th>
+                                                                <th>N&#176</th>
                                                                 <th>Tarea</th>
                                                                 <th>Solicitud</th>
                                                                 <th>Cierre</th>
@@ -363,7 +363,7 @@
                                                     <table class="table table-striped table-hover table-sm">
                                                         <thead>
                                                             <tr>
-                                                                <th>N°</th>
+                                                                <th>N�</th>
                                                                 <th>Tarea</th>
                                                                 <th>Solicitud</th>
                                                                 <th>Cierre</th>
@@ -433,8 +433,45 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @endif				
-                                        <br>
+                                        @endif
+										<br>
+										{{-- ADJUNTOS --}}
+									@if($user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor")
+									<div class="row">
+										<div class="col-md-12">
+											<h2>Archivos adjuntos</h2>
+											<br>
+											<div class="table-responsive">
+												<table class="table table-striped table-hover table-sm">
+													<thead>
+														<tr>
+															<th>Nombre del Archivo</th>
+															<th>Acciones</th>
+														</tr>		
+													</thead>
+													<tbody>
+														@if ($adjunto_url!="no")
+														<tr>
+															<td>{{$adjunto_name}}</td>
+															<td>
+																<form method='POST' action="{{route('Requerimientos.descargar.adjunto')}}">
+																{{ csrf_field() }}
+																<button type="submit" class="btn btn-info btn-sm" data-toggle="tooltip" data-original-title="Descargar" style="cursor:pointer"><i class="fa fa-download"></i></button>
+																<input type="hidden" name="adjunto" value={{$adjunto_name}}>
+															</form>
+														</tr>
+														@else
+														<tr>
+															<td colspan="2">Este requerimiento no tiene archivos adjuntos guardados</td>
+														</tr>
+														@endif
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									@endif
+									<br>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <h2>Env&#237o detalle de requerimiento</h2>
@@ -456,7 +493,6 @@
 	</div>
 </div>
 @endsection
-
 @section('script')
 <script type="text/javascript">
     $(document).ready(function(){

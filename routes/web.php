@@ -437,6 +437,19 @@ Route::get('/requerimientos/{requerimiento}/editar', 'RequerimientoController@ed
 
 	->middleware('auth');
 
+Route::post('/requerimientos/{requerimiento}/adjuntar', 'RequerimientoController@adjuntar')->name('Requerimientos.adjuntar')
+
+	->middleware('auth');
+
+
+Route::post('/requerimientos/adjuntar', 'RequerimientoController@adjuntar_archivo')->name('Requerimientos.adjuntar_archivo')
+
+	->middleware('auth');
+
+Route::post('/requerimientos/descargaradjunto', 'RequerimientoController@descargar_adjunto')->name('Requerimientos.descargar.adjunto')
+
+	->middleware('auth');
+
 
 
 Route::put('/requerimientos/{requerimiento}', 'RequerimientoController@update')
@@ -594,3 +607,9 @@ Route::post('/requerimientos/{requerimiento}/mail_info', 'RequerimientoControlle
 
 Route::get('/for_date', 'RequerimientoController@for_date');
 Route::get('/for_priority', 'RequerimientoController@for_priority');
+
+Route::get('/mensajes', 'MensajesController@index')->name('mensajes.index');
+Route::get('/mensajes/nuevo', 'MensajesController@nuevo')->name('mensajes.create');
+Route::post('/mensajes/store', 'MensajesController@store')->name('mensajes.store');
+Route::post('/mensajes/show', 'MensajesController@show')->name('mensajes.show');
+Route::post('/mensajes/delete', 'MensajesController@delete')->name('mensajes.delete');

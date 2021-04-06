@@ -102,6 +102,9 @@
 							@if($user[0]->nombre=="gestor" or $user[0]->nombre == "supervisor")
 							<th>Autorizar</th>
 							@endif
+                                                        @if($user[0]->nombre == "resolutor" and $lider == 1)
+							<th>Autorizar</th>
+							@endif                                                        
 							@endif							
 							<th>Id</th>
 							<th>Requerimiento/Tarea</th>
@@ -142,6 +145,14 @@
 								</form>
 							</td>							
 							@endif
+                                                        @if($user[0]->nombre == "resolutor" and $lider == 1)
+							<td id="tabla" scope="row">
+								<form method="POST" action="{{ url("requerimientos/{$requerimiento->id}/autorizar") }}">
+									{{ csrf_field() }}
+									<button onclick="return confirm('�Est�s seguro/a de autorizar el cierre del requerimiento?')" type="submit" value="Nuevo Requerimiento" class="btn btn-success" name="">Autorizar</button>
+								</form>
+							</td>							
+							@endif                                                        
 							@endif
 							@if($state == 0)
 							<td id="tabla" scope="row">
@@ -232,16 +243,16 @@
 							@endif
 							<td>
 							<div scope="row" class="btn-group">
-                                                        @if($state != 6 and $state != 7 and $state != 0)    
-							@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
-                                                            @if($requerimiento->tipo != "tarea")
-								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/anidar") }}">
-									{{ csrf_field() }}
-									<button type="submit" class="btn btn-warning btn-sm" data-toggle="tooltip" data-original-title="Anidar" style="cursor:pointer"><i class="fa fa-compress"></i></button>
-								</form>
-                                                            @endif
-							@endif						
-                                    @if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor")
+							@if($state != 6 and $state != 7 and $state != 0)    
+								@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador")
+									@if($requerimiento->tipo != "tarea")
+									<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/anidar") }}">
+										{{ csrf_field() }}
+										<button type="submit" class="btn btn-warning btn-sm" data-toggle="tooltip" data-original-title="Anidar" style="cursor:pointer"><i class="fa fa-compress"></i></button>
+									</form>
+									@endif
+								@endif						
+								@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor")
                                     @if($user[0]->nombre == "resolutor" and $res->id == $requerimiento->resolutor)
                                     &nbsp;
                                         @if($requerimiento->tipo == "tarea")
@@ -305,6 +316,13 @@
 								</form>
                                                                 @endif
 							@endif
+							@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor")
+								&nbsp;
+								<form method='POST' action="{{ url("requerimientos/{$requerimiento->id}/adjuntar") }}">
+									{{ csrf_field() }}
+									<button type="submit" class="btn btn-info btn-sm" data-toggle="tooltip" data-original-title="Adjuntar" style="cursor:pointer"><i class="fa fa-paperclip"></i></button>
+								</form>
+							@endif                                                        
                                                         @if($user[0]->nombre == "resolutor" and $lider == 1)
                                                         &nbsp;
                                                                 @if($requerimiento->tipo == "tarea")

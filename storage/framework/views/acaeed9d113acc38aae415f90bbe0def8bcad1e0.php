@@ -30,5 +30,5 @@
 	<p>
 		<a href="/solicitantes/">Volver al listado de solicitantes</a>
     </p>
-<?php $__env->stopSection(); ?>    
+<?php $__env->stopSection(); ?>    
 <?php echo $__env->make('Bases.dashboard', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\Mantenedor\resources\views/Solicitantes/edit.blade.php ENDPATH**/ ?>

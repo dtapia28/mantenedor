@@ -1,5 +1,5 @@
-<?php
-$texto = $_GET['texto'];
-
-dd($texto);
+<?php
+$texto = $_GET['texto'];
+
+dd($texto);
 ?>

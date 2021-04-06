@@ -20,22 +20,20 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="ibox">
+				<?php if($resolutor->idUser != $user[0]->idUser): ?>
+				<?php if($lider == 1 and $requerimiento->aprobacion == 4): ?>
 				<div class="ibox-head">
-                                        <?php if($user[0]->nombre == "administrador"): ?>
-                                        <?php if($ver_log == True): ?>
 					<div class="ibox-title">Datos del Requerimiento</div>
-					<div class="pull-right">
-                                            <a class="btn btn-primary" href="<?php echo e(url('requerimientos/'.$requerimiento->id.'/log')); ?>" style="white-space: normal;"><i class="fa fa-check"></i>Log de requerimiento</a>
-                                        </div>
-                                        <?php endif; ?>
-                                        <?php endif; ?>
-				</div>                            
-                                <?php if($solicitante->idUser == $user[0]->idUser and $requerimiento->aprobacion == 4): ?>
-                                <div class="ibox-head">
-                                    <div class="ibox-title">Datos del Requerimiento</div>
-                                    <div class="pull-right"><a class="btn btn-primary" onclick="return confirm('&#191Est&#225s seguro/a de autorizar el cierre del requerimiento?')" href="<?php echo e(url('requerimientos/'.$requerimiento->id.'/aceptar')); ?>" style="white-space: normal;"><i class="fa fa-check"></i> Aceptar</a> <a class="btn btn-outline-danger" href="<?php echo e(url('requerimientos/'.$requerimiento->id.'/rechazar')); ?>" style="white-space: normal;"><i class="fa fa-close"></i> Rechazar</a></div>
-                                </div>
-                                <?php endif; ?>			
+					<div class="pull-right"><a class="btn btn-primary" onclick="return confirm('¿Estás seguro/a de autorizar el cierre del requerimiento?')" href="<?php echo e(url('requerimientos/'.$requerimiento->id.'/aceptar')); ?>" style="white-space: normal;"><i class="fa fa-check"></i> Aceptar</a> <a class="btn btn-outline-danger" href="<?php echo e(url('requerimientos/'.$requerimiento->id.'/rechazar')); ?>" style="white-space: normal;"><i class="fa fa-close"></i> Rechazar</a></div>
+				</div>
+				<?php endif; ?>
+				<?php endif; ?>
+				<?php if($user[0]->nombre=="supervisor" and $requerimiento->aprobacion == 4): ?>
+				<div class="ibox-head">
+					<div class="ibox-title">Datos del Requerimiento</div>
+					<div class="pull-right"><a class="btn btn-primary" onclick="return confirm('¿Estás seguro/a de autorizar el cierre del requerimiento?')" href="<?php echo e(url('requerimientos/'.$requerimiento->id.'/aceptar')); ?>" style="white-space: normal;"><i class="fa fa-check"></i> Aceptar</a> <a class="btn btn-outline-danger" href="<?php echo e(url('requerimientos/'.$requerimiento->id.'/rechazar')); ?>" style="white-space: normal;"><i class="fa fa-close"></i> Rechazar</a></div>
+				</div>
+				<?php endif; ?>				
 				<div class="ibox-body">
 					<div class="row">
 						<div class="col-md-6">
@@ -141,7 +139,7 @@
 								</tr>
 								<?php endif; ?>
 								</tr>
-								<?php if($requerimiento->rechazo != ""): ?>
+								<?php if($requerimiento->rechazo != "" and $requerimiento->porcentajeEjecutado != 100): ?>
 								<tr>
 									<td><strong>Motivo rechazo</strong></td>
 									<td><?php echo e($requerimiento->rechazo); ?></td>
@@ -155,7 +153,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<h2>Avances</h2>
-							<?php if($requerimiento->estado == 1 and $requerimiento->aprobacion != 4): ?>
+							<?php if($requerimiento->estado == 1 and $requerimiento->aprobacion == 3): ?>
 							<?php if($res->id == $requerimiento->resolutor): ?>
 								<form method='HEAD' action="<?php echo e(url('/requerimientos/'.$requerimiento->id.'/avances/nuevo')); ?>">
 									<button type="submit" value="Ingresar" class="btn btn-primary" name="" style="cursor:pointer"><i class="fa fa-plus"></i> Ingresar</button>
@@ -272,202 +270,186 @@
 					</div>
 					<?php endif; ?>					
 					
-					<?php if($user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor"): ?>
+					<?php if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador"): ?>
 					<div class="row">
-                                            <div class="col-md-12">
-                                                <h2>Tareas</h2>
-                                                <?php if($requerimiento->estado == 1 and $requerimiento->aprobacion == 3): ?>
-                                                <form method='HEAD' action="<?php echo e(url('/requerimientos/'.$requerimiento->id.'/tareas/nueva')); ?>">
-                                                    <button type="submit" value="Ingresar" class="btn btn-primary" name="" style="cursor:pointer"><i class="fa fa-plus"></i> Ingresar</button>
+						<div class="col-md-12">
+						<h2>Tareas</h2>
+						<?php if($requerimiento->estado == 1 and $requerimiento->aprobacion == 3): ?>
+						<form method='HEAD' action="<?php echo e(url('/requerimientos/'.$requerimiento->id.'/tareas/nueva')); ?>">
+							<button type="submit" value="Ingresar" class="btn btn-primary" name="" style="cursor:pointer"><i class="fa fa-plus"></i> Ingresar</button>
 						</form>
 						<?php endif; ?>
 						<div class="table-responsive">
-                                                    <table class="table table-striped table-hover table-sm">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>N°</th>
-                                                                <th>Tarea</th>
-                                                                <th>Solicitud</th>
-                                                                <th>Cierre</th>
-                                                                <th>Resolutor</th>
-                                                                <th>Estado</th>
-                                                                <th>Acciones</th>
-                                                            </tr>		
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php $__empty_1 = true; $__currentLoopData = $tareas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tarea): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>	
-                                                            <tr>
-                                                                <?php if($tarea->estado == 1 or $tarea->estado == 2): ?>
-                                                                <td><?php echo e($tarea->id2); ?></td>
-                                                                <td><?php echo e($tarea->titulo_tarea); ?></td>
-                                                                <td style="max-width: 500px; overflow-wrap: break-word;"><?php echo e($tarea->textoTarea); ?></td>
-                                                                <td><?php echo e(date('d-m-Y', strtotime($tarea->fechaSolicitud))); ?></td>
-                                                                <td><?php echo e(date('d-m-Y', strtotime($tarea->fechaCierre))); ?></td>
-                                                                <?php endif; ?>
-                                                                <?php if($tarea->estado == 1 or $tarea->estado == 2): ?>				
-                                                                <td>	
-                                                                    <?php echo e($resolutor2->nombreResolutor); ?>	
-                                                                </td>
-                                                                <td>			
-                                                                    <?php if($tarea->estado == 1): ?>
-                                                                    <span class="badge badge-default">Pendiente <i class="fa fa-circle text-warning"></i></span>
-                                                                    <?php else: ?>
-                                                                    <span class="badge badge-default">Completada <i class="fa fa-circle text-success"></i></span>
-                                                                    <?php endif; ?>	
-                                                                </td>
-                                                                <td>
-                                                                    <div scope="row" class="btn-group">
-                                                                        <?php if($tarea->estado == 1): ?>
-                                                                        <form method='GET' action="<?php echo e(url("/requerimientos/{$requerimiento->id}/tareas/{$tarea->id}/terminar")); ?>">					
-                                                                            <?php echo e(csrf_field()); ?>
+							<table class="table table-striped table-hover table-sm">
+								<thead>
+									<tr>
+										<th>N°</th>
+										<th>Tarea</th>
+										<th>Solicitud</th>
+										<th>Cierre</th>
+										<th>Resolutor</th>
+										<th>Estado</th>
+										<th>Acciones</th>
+									</tr>		
+								</thead>
+								<tbody>
+									<?php $__empty_1 = true; $__currentLoopData = $tareas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tarea): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>	
+									<tr>
+										<?php if($tarea->estado == 1 or $tarea->estado == 2): ?>
+											<td><?php echo e($tarea->id2); ?></td>	
+											<td><?php echo e($tarea->textoTarea); ?></td>
+											<td><?php echo e(date('d-m-Y', strtotime($tarea->fechaSolicitud))); ?></td>
+											<td><?php echo e(date('d-m-Y', strtotime($tarea->fechaCierre))); ?></td>
+										<?php endif; ?>
+										<?php if($tarea->estado == 1 or $tarea->estado == 2): ?>				
+											<td>
+											<?php $__empty_2 = true; $__currentLoopData = $resolutores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $resolutor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>	
+												<?php echo e($resolutor->nombreResolutor); ?>
 
-                                                                            <button type="submit" class="btn btn-success btn-sm" data-toggle="tooltip" data-original-title="Terminar" style="cursor:pointer"><i class="fa fa-check"></i></button>
-                                                                            <input type="hidden" name="tarea" value=<?php echo e($tarea->id); ?>>
-                                                                            <input type="hidden" name="req" value="<?php echo e($requerimiento->id); ?>">
-                                                                        </form>
-                                                                        <?php endif; ?>
-                                                                        &nbsp;&nbsp;
-                                                                        <?php if($tarea->estado == 1): ?>
-                                                                        <?php if($user[0]->nombre != "resolutor"): ?>
-                                                                        <form method='HEAD' action="<?php echo e(url('/requerimientos/'.$requerimiento->id.'/tareas/'.$tarea->id.'/editar')); ?>">
-                                                                            <?php echo e(csrf_field()); ?>
+											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
+											<?php endif; ?>	
+											</td>
+											<td>			
+												<?php if($tarea->estado == 1): ?>
+												<span class="badge badge-default">Pendiente <i class="fa fa-circle text-warning"></i></span>
+												<?php else: ?>
+												<span class="badge badge-default">Completada <i class="fa fa-circle text-success"></i></span>
+												<?php endif; ?>	
+											</td>
+											<td>
+											<div scope="row" class="btn-group">
+											<?php if($tarea->estado == 1): ?>
+												<form method='GET' action="<?php echo e(url("/requerimientos/{$requerimiento->id}/tareas/{$tarea->id}/terminar")); ?>">					
+													<?php echo e(csrf_field()); ?>
 
-                                                                            <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
-                                                                        </form>
-                                                                        <?php endif; ?>
-                                                                        <?php endif; ?>
-                                                                        &nbsp;&nbsp;
-                                                                        <?php if($tarea->estado == 1): ?>
-                                                                        <?php if($user[0]->nombre != "resolutor"): ?>
-                                                                        <form method='POST' action="<?php echo e(url('/requerimientos/'.$requerimiento->id.'/tareas/'.$tarea->id.'/eliminar')); ?>">
-                                                                            <?php echo e(csrf_field()); ?>
+													<button type="submit" class="btn btn-success btn-sm" data-toggle="tooltip" data-original-title="Terminar" style="cursor:pointer"><i class="fa fa-check"></i></button>
+													<input type="hidden" name="tarea" value=<?php echo e($tarea->id); ?>>
+													<input type="hidden" name="req" value="<?php echo e($requerimiento->id); ?>">
+												</form>
+											<?php endif; ?>
+											&nbsp;&nbsp;
+											<?php if($tarea->estado == 1): ?>									
+												<form method='HEAD' action="<?php echo e(url('/requerimientos/'.$requerimiento->id.'/tareas/'.$tarea->id.'/editar')); ?>">
+													<?php echo e(csrf_field()); ?>
 
-                                                                            <?php echo e(method_field('DELETE')); ?>						
-                                                                            <button type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Eliminar" style="cursor:pointer"><i class="fa fa-trash"></i></button>
-                                                                            <input type="hidden" name="tarea" value=<?php echo e($tarea->id); ?>>
-                                                                            <input type="hidden" name="req" value=<?php echo e($requerimiento->id); ?>>
-                                                                        </form>
-                                                                        <?php endif; ?>
-                                                                        <?php endif; ?>
-                                                                    </div>
-                                                                </td>
-                                                                <?php endif; ?>	
-                                                            </tr>						
-                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                                                            <?php endif; ?> 
-                                                        </tbody>	
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <?php endif; ?>
-                                        <?php if($user[0]->nombre == "resolutor" and $lider == 1): ?>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <h2>Tareas</h2>
-                                                <?php if($requerimiento->estado == 1 and $requerimiento->aprobacion == 3): ?>
-                                                <form method='HEAD' action="<?php echo e(url('/requerimientos/'.$requerimiento->id.'/tareas/nueva')); ?>">
-                                                    <button type="submit" value="Ingresar" class="btn btn-primary" name="" style="cursor:pointer"><i class="fa fa-plus"></i> Ingresar</button>
-                                                </form>
-                                                <?php endif; ?>
-                                                <div class="table-responsive">
-                                                    <table class="table table-striped table-hover table-sm">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>N°</th>
-                                                                <th>Tarea</th>
-                                                                <th>Solicitud</th>
-                                                                <th>Cierre</th>
-                                                                <th>Resolutor</th>
-                                                                <th>Estado</th>
-                                                                <th>Acciones</th>
-                                                            </tr>		
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php $__empty_1 = true; $__currentLoopData = $tareas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tarea): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>	
-                                                            <tr>
-                                                                <?php if($tarea->estado == 1 or $tarea->estado == 2): ?>
-                                                                <td><?php echo e($tarea->id2); ?></td>	
-                                                                <td><?php echo e($tarea->textoTarea); ?></td>
-                                                                <td><?php echo e(date('d-m-Y', strtotime($tarea->fechaSolicitud))); ?></td>
-                                                                <td><?php echo e(date('d-m-Y', strtotime($tarea->fechaCierre))); ?></td>
-                                                                <?php endif; ?>
-                                                                <?php if($tarea->estado == 1 or $tarea->estado == 2): ?>				
-                                                                <td>
-                                                                    <?php $__empty_2 = true; $__currentLoopData = $resolutores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $resolutor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>	
-                                                                    <?php echo e($resolutor->nombreResolutor); ?>
+													<button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
+												</form>
+											<?php endif; ?>
+											&nbsp;&nbsp;
+											<?php if($tarea->estado == 1): ?>							
+												<form method='POST' action="<?php echo e(url('/requerimientos/'.$requerimiento->id.'/tareas/'.$tarea->id.'/eliminar')); ?>">
+													<?php echo e(csrf_field()); ?>
 
-                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
-                                                                    <?php endif; ?>	
-                                                                </td>
-                                                                <td>			
-                                                                    <?php if($tarea->estado == 1): ?>
-                                                                    <span class="badge badge-default">Pendiente <i class="fa fa-circle text-warning"></i></span>
-                                                                    <?php else: ?>
-                                                                    <span class="badge badge-default">Completada <i class="fa fa-circle text-success"></i></span>
-                                                                    <?php endif; ?>	
-                                                                </td>
-                                                                <td>
-                                                                    <div scope="row" class="btn-group">
-                                                                        <?php if($tarea->estado == 1): ?>
-                                                                        <form method='GET' action="<?php echo e(url("/requerimientos/{$requerimiento->id}/tareas/{$tarea->id}/terminar")); ?>">					
-                                                                            <?php echo e(csrf_field()); ?>
+													<?php echo e(method_field('DELETE')); ?>						
+													<button type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Eliminar" style="cursor:pointer"><i class="fa fa-trash"></i></button>
+													<input type="hidden" name="tarea" value=<?php echo e($tarea->id); ?>>
+													<input type="hidden" name="req" value=<?php echo e($requerimiento->id); ?>>
+												</form>
+											<?php endif; ?>
+											</div>
+											</td>
+										<?php endif; ?>	
+									</tr>						
+									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+									<?php endif; ?> 
+								</tbody>	
+							</table>
+						</div>
+					</div>
+				</div>
+				<?php endif; ?>
+					<?php if($user[0]->nombre == "resolutor" and $lider == 1): ?>
+					<div class="row">
+						<div class="col-md-12">
+						<h2>Tareas</h2>
+						<?php if($requerimiento->estado == 1 and $requerimiento->aprobacion == 3): ?>
+						<form method='HEAD' action="<?php echo e(url('/requerimientos/'.$requerimiento->id.'/tareas/nueva')); ?>">
+							<button type="submit" value="Ingresar" class="btn btn-primary" name="" style="cursor:pointer"><i class="fa fa-plus"></i> Ingresar</button>
+						</form>
+						<?php endif; ?>
+						<div class="table-responsive">
+							<table class="table table-striped table-hover table-sm">
+								<thead>
+									<tr>
+										<th>N°</th>
+										<th>Tarea</th>
+										<th>Solicitud</th>
+										<th>Cierre</th>
+										<th>Resolutor</th>
+										<th>Estado</th>
+										<th>Acciones</th>
+									</tr>		
+								</thead>
+								<tbody>
+									<?php $__empty_1 = true; $__currentLoopData = $tareas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tarea): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>	
+									<tr>
+										<?php if($tarea->estado == 1 or $tarea->estado == 2): ?>
+											<td><?php echo e($tarea->id2); ?></td>	
+											<td><?php echo e($tarea->textoTarea); ?></td>
+											<td><?php echo e(date('d-m-Y', strtotime($tarea->fechaSolicitud))); ?></td>
+											<td><?php echo e(date('d-m-Y', strtotime($tarea->fechaCierre))); ?></td>
+										<?php endif; ?>
+										<?php if($tarea->estado == 1 or $tarea->estado == 2): ?>				
+											<td>
+											<?php $__empty_2 = true; $__currentLoopData = $resolutores; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $resolutor): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>	
+												<?php echo e($resolutor->nombreResolutor); ?>
 
-                                                                            <button type="submit" class="btn btn-success btn-sm" data-toggle="tooltip" data-original-title="Terminar" style="cursor:pointer"><i class="fa fa-check"></i></button>
-                                                                            <input type="hidden" name="tarea" value=<?php echo e($tarea->id); ?>>
-                                                                            <input type="hidden" name="req" value="<?php echo e($requerimiento->id); ?>">
-                                                                        </form>
-                                                                        <?php endif; ?>
-                                                                        &nbsp;&nbsp;
-                                                                        <?php if($tarea->estado == 1): ?>									
-                                                                        <form method='HEAD' action="<?php echo e(url('/requerimientos/'.$requerimiento->id.'/tareas/'.$tarea->id.'/editar')); ?>">
-                                                                            <?php echo e(csrf_field()); ?>
+											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
+											<?php endif; ?>	
+											</td>
+											<td>			
+												<?php if($tarea->estado == 1): ?>
+												<span class="badge badge-default">Pendiente <i class="fa fa-circle text-warning"></i></span>
+												<?php else: ?>
+												<span class="badge badge-default">Completada <i class="fa fa-circle text-success"></i></span>
+												<?php endif; ?>	
+											</td>
+											<td>
+											<div scope="row" class="btn-group">
+											<?php if($tarea->estado == 1): ?>
+												<form method='GET' action="<?php echo e(url("/requerimientos/{$requerimiento->id}/tareas/{$tarea->id}/terminar")); ?>">					
+													<?php echo e(csrf_field()); ?>
 
-                                                                            <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
-                                                                        </form>
-                                                                        <?php endif; ?>
-                                                                        &nbsp;&nbsp;
-                                                                        <?php if($tarea->estado == 1): ?>							
-                                                                        <form method='POST' action="<?php echo e(url('/requerimientos/'.$requerimiento->id.'/tareas/'.$tarea->id.'/eliminar')); ?>">
-                                                                            <?php echo e(csrf_field()); ?>
+													<button type="submit" class="btn btn-success btn-sm" data-toggle="tooltip" data-original-title="Terminar" style="cursor:pointer"><i class="fa fa-check"></i></button>
+													<input type="hidden" name="tarea" value=<?php echo e($tarea->id); ?>>
+													<input type="hidden" name="req" value="<?php echo e($requerimiento->id); ?>">
+												</form>
+											<?php endif; ?>
+											&nbsp;&nbsp;
+											<?php if($tarea->estado == 1): ?>									
+												<form method='HEAD' action="<?php echo e(url('/requerimientos/'.$requerimiento->id.'/tareas/'.$tarea->id.'/editar')); ?>">
+													<?php echo e(csrf_field()); ?>
 
-                                                                            <?php echo e(method_field('DELETE')); ?>						
-                                                                            <button type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Eliminar" style="cursor:pointer"><i class="fa fa-trash"></i></button>
-                                                                            <input type="hidden" name="tarea" value=<?php echo e($tarea->id); ?>>
-                                                                            <input type="hidden" name="req" value=<?php echo e($requerimiento->id); ?>>
-                                                                        </form>
-                                                                        <?php endif; ?>
-                                                                    </div>
-                                                                </td>
-                                                                <?php endif; ?>	
-                                                            </tr>						
-                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                                                            <?php endif; ?> 
-                                                        </tbody>	
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <?php endif; ?>				
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <h2>Env&#237o detalle de requerimiento</h2>
-                                                <br>
-                                                <form method="POST" action="<?php echo e(url('requerimientos/'.$requerimiento->id.'/mail_info')); ?>">
-                                                    <?php echo e(csrf_field()); ?>
+													<button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
+												</form>
+											<?php endif; ?>
+											&nbsp;&nbsp;
+											<?php if($tarea->estado == 1): ?>							
+												<form method='POST' action="<?php echo e(url('/requerimientos/'.$requerimiento->id.'/tareas/'.$tarea->id.'/eliminar')); ?>">
+													<?php echo e(csrf_field()); ?>
 
-                                                    <label for="input_email">Indica email(s) para env&#237o:</label>
-                                                    <input title="emails separados por coma y sin espacios." name="input_email" type="text" class="form-control col-md-3">
-                                                    <br>
-                                                    <button type="submit" class="btn btn-primary" style="cursor:pointer">Enviar</button>
-                                                </form>   
-                                            </div>
-                                        </div>    
-                                        <br>                                
-                                        <p><a href="<?php echo e(url('requerimientos')); ?>" class="btn btn-outline-primary"><i class="fa fa-arrow-left"></i> Regresar al listado</a></p>
-                                </div>
-                        </div>
+													<?php echo e(method_field('DELETE')); ?>						
+													<button type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Eliminar" style="cursor:pointer"><i class="fa fa-trash"></i></button>
+													<input type="hidden" name="tarea" value=<?php echo e($tarea->id); ?>>
+													<input type="hidden" name="req" value=<?php echo e($requerimiento->id); ?>>
+												</form>
+											<?php endif; ?>
+											</div>
+											</td>
+										<?php endif; ?>	
+									</tr>						
+									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+									<?php endif; ?> 
+								</tbody>	
+							</table>
+						</div>
+					</div>
+				</div>
+				<?php endif; ?>				
+				<br>
+				<p><a href="<?php echo e(url('requerimientos')); ?>" class="btn btn-outline-primary"><i class="fa fa-arrow-left"></i> Regresar al listado</a></p>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

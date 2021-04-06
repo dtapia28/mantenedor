@@ -11,6 +11,7 @@ function menu_activo(activo) {
             $('#mEquipos').removeClass('active');
             $('#mUsuarios').removeClass('active');
             $('#mExportar').removeClass('active');
+            $('#mMensajes').removeClass('active');
             break;
         case 'mIndicadores':
             $('#mTablero').removeClass('active');
@@ -22,6 +23,7 @@ function menu_activo(activo) {
             $('#mEquipos').removeClass('active');
             $('#mUsuarios').removeClass('active');
             $('#mExportar').removeClass('active');
+            $('#mMensajes').removeClass('active');
             break;
         case 'mRequerimientos':
             $('#mTablero').removeClass('active');
@@ -33,6 +35,7 @@ function menu_activo(activo) {
             $('#mEquipos').removeClass('active');
             $('#mUsuarios').removeClass('active');
             $('#mExportar').removeClass('active');
+            $('#mMensajes').removeClass('active');
             break;
         case 'mPrioridades':
             $('#mTablero').removeClass('active');
@@ -44,6 +47,7 @@ function menu_activo(activo) {
             $('#mEquipos').removeClass('active');
             $('#mUsuarios').removeClass('active');
             $('#mExportar').removeClass('active');
+            $('#mMensajes').removeClass('active');
             break;
         case 'mResolutores':
             $('#mTablero').removeClass('active');
@@ -55,6 +59,7 @@ function menu_activo(activo) {
             $('#mEquipos').removeClass('active');
             $('#mUsuarios').removeClass('active');
             $('#mExportar').removeClass('active');
+            $('#mMensajes').removeClass('active');
             break;
         case 'mSolicitantes':
             $('#mTablero').removeClass('active');
@@ -66,6 +71,7 @@ function menu_activo(activo) {
             $('#mEquipos').removeClass('active');
             $('#mUsuarios').removeClass('active');
             $('#mExportar').removeClass('active');
+            $('#mMensajes').removeClass('active');
             break;
         case 'mEquipos':
             $('#mTablero').removeClass('active');
@@ -77,6 +83,7 @@ function menu_activo(activo) {
             $('#mEquipos').addClass('active');
             $('#mUsuarios').removeClass('active');
             $('#mExportar').removeClass('active');
+            $('#mMensajes').removeClass('active');
             break;
         case 'mUsuarios':
             $('#mTablero').removeClass('active');
@@ -88,6 +95,7 @@ function menu_activo(activo) {
             $('#mEquipos').removeClass('active');
             $('#mUsuarios').addClass('active');
             $('#mExportar').removeClass('active');
+            $('#mMensajes').removeClass('active');
             break;
         case 'mExportar':
             $('#mTablero').removeClass('active');
@@ -99,7 +107,50 @@ function menu_activo(activo) {
             $('#mEquipos').removeClass('active');
             $('#mUsuarios').removeClass('active');
             $('#mExportar').addClass('active');
+            $('#mMensajes').removeClass('active');
             break;
+        case 'mDate':
+            $('#mTablero').removeClass('active');
+            $('#mIndicadores').removeClass('active');
+            $('#mRequerimientos').removeClass('active');
+            $('#mPrioridades').removeClass('active');
+            $('#mResolutores').removeClass('active');
+            $('#mSolicitantes').removeClass('active');
+            $('#mEquipos').removeClass('active');
+            $('#mUsuarios').removeClass('active');
+            $('#mExportar').removeClass('active');
+            $('#mDate').addClass('active');
+            $('#mPriority').removeClass('active');
+            $('#mMensajes').removeClass('active');
+        break;
+            case 'mPriority':
+            $('#mTablero').removeClass('active');
+            $('#mIndicadores').removeClass('active');
+            $('#mRequerimientos').removeClass('active');
+            $('#mPrioridades').removeClass('active');
+            $('#mResolutores').removeClass('active');
+            $('#mSolicitantes').removeClass('active');
+            $('#mEquipos').removeClass('active');
+            $('#mUsuarios').removeClass('active');
+            $('#mExportar').removeClass('active');
+            $('#mDate').removeClass('active');
+            $('#mPriority').addClass('active');
+            $('#mMensajes').removeClass('active');
+            break;
+        case 'mMensajes':
+            $('#mTablero').removeClass('active');
+            $('#mIndicadores').removeClass('active');
+            $('#mRequerimientos').removeClass('active');
+            $('#mPrioridades').removeClass('active');
+            $('#mResolutores').removeClass('active');
+            $('#mSolicitantes').removeClass('active');
+            $('#mEquipos').removeClass('active');
+            $('#mUsuarios').removeClass('active');
+            $('#mExportar').removeClass('active');
+            $('#mDate').removeClass('active');
+            $('#mPriority').removeClass('active');
+            $('#mMensajes').addClass('active');
+            break;        
         default:
             $('#mTablero').removeClass('active');
             $('#mIndicadores').removeClass('active');
@@ -110,6 +161,7 @@ function menu_activo(activo) {
             $('#mEquipos').removeClass('active');
             $('#mUsuarios').removeClass('active');
             $('#mExportar').removeClass('active');
+            $('#mMensajes').removeClass('active');
             break;
     }
 }

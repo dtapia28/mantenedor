@@ -39,7 +39,7 @@
 
                         <div class="col-sm-6 form-group">
                             <label for='idTipo'>Tipo</label>               
-                            <select class="form-control col-md-12" name="idTipo" id="idTipo">
+                            <select class="form-control col-md-12" name="tipo" id="idTipo">
                                 <option value=1>Requerimiento</option>
                                 <option value=2>Incidente</option>
                             </select>
@@ -124,7 +124,7 @@
                         <div class="col-sm-6 form-group">
                             <div class="col-md-12 form-inline">
                                 <div class="col-md-7">
-                                    <button type="submit" onclick="storeCacheForm()" class="btn btn-success btn-block mb-2 mr-sm-2 mb-sm-0" style="cursor:pointer"><i class="fa fa-check-circle"></i> Guardar Registro</button>
+                                    <button type="submit" class="btn btn-success btn-block mb-2 mr-sm-2 mb-sm-0" style="cursor:pointer"><i class="fa fa-check-circle"></i> Guardar Registro</button>
                                 </div>
                                 <div class="col-md-5">
                                     <a href="<?php echo e(url('requerimientos')); ?>" class="btn btn-outline-primary btn-block"><i class="fa fa-arrow-left"></i> Regresar</a>
@@ -164,7 +164,7 @@
             idResolutor    = sessionStorage.getItem('stIdResolutor'),
             idPrioridad    = sessionStorage.getItem('stIdPrioridad'),
             comentario     = sessionStorage.getItem('stComentario'),
-            textAvance     = sessionStorage.getItem('stTextAvance'),
+            textAvance     = sessionStorage.getItem('stTextAvance');
             tipo           = sessionStorage.getItem('stTipo');
 
         (textoReq!="" && textoReq!=null) ? $('#texto').val(textoReq) : $('#texto').val("");

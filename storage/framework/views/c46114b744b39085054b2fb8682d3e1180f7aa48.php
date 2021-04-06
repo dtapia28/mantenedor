@@ -55,8 +55,14 @@
 			<option value="4" <?php if($estado == "4"): ?> selected <?php endif; ?>>Vencidos</option>
 			<option value="5" <?php if($estado == "5"): ?> selected <?php endif; ?>>Por solicitante</option>
                         <?php if($user[0]->nombre != "administrador"): ?>
-                        <option value="9" <?php if($estado == "8"): ?> selected <?php endif; ?>>Mis solicitudes</option>
+                        <option value="9" <?php if($estado == "9"): ?> selected <?php endif; ?>>Mis solicitudes</option>
                         <?php endif; ?>
+                        <?php if($user[0]->nombre == "resolutor" and $lider == 1): ?>
+                            <option value="10" <?php if($estado == "10"): ?> selected <?php endif; ?>>Mis Requerimientos</option>
+                        <?php endif; ?>
+                        <?php if($user[0]->nombre == "supervisor"): ?>
+                            <option value="10" <?php if($estado == "10"): ?> selected <?php endif; ?>>Mis Requerimientos</option>
+                        <?php endif; ?>                         
 		</select>
 		<input class="form-control col-md-12" type="number" id="valor"  <?php if($valor=="" || $valor==null): ?> style="display: none" <?php endif; ?> name="valorN" placeholder="porcentaje avance" min="1" max="100" <?php if($valor!=""): ?> value="<?php echo e($valor); ?>" <?php endif; ?>>
 		<select id='solicitante' class='form-control col-md-12 custom-select' name='solicitante' <?php if($solicitantereq=="" || $solicitantereq==null): ?> style='display: none;' <?php endif; ?>>
@@ -95,6 +101,9 @@
 							<?php if($user[0]->nombre=="gestor" or $user[0]->nombre == "supervisor"): ?>
 							<th>Autorizar</th>
 							<?php endif; ?>
+                                                        <?php if($user[0]->nombre == "resolutor" and $lider == 1): ?>
+							<th>Autorizar</th>
+							<?php endif; ?>                                                        
 							<?php endif; ?>							
 							<th>Id</th>
 							<th>Requerimiento/Tarea</th>
@@ -125,6 +134,15 @@
 								</form>
 							</td>							
 							<?php endif; ?>
+                                                        <?php if($user[0]->nombre == "resolutor" and $lider == 1): ?>
+							<td id="tabla" scope="row">
+								<form method="POST" action="<?php echo e(url("requerimientos/{$requerimiento->id}/autorizar")); ?>">
+									<?php echo e(csrf_field()); ?>
+
+									<button onclick="return confirm('�Est�s seguro/a de autorizar el cierre del requerimiento?')" type="submit" value="Nuevo Requerimiento" class="btn btn-success" name="">Autorizar</button>
+								</form>
+							</td>							
+							<?php endif; ?>                                                        
 							<?php endif; ?>
 							<?php if($state == 0): ?>
 							<td id="tabla" scope="row">
@@ -224,17 +242,17 @@
 							<?php endif; ?>
 							<td>
 							<div scope="row" class="btn-group">
-                                                        <?php if($state != 6 and $state != 7 and $state != 0): ?>    
-							<?php if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador"): ?>
-                                                            <?php if($requerimiento->tipo != "tarea"): ?>
-								<form method='HEAD' action="<?php echo e(url("requerimientos/{$requerimiento->id}/anidar")); ?>">
-									<?php echo e(csrf_field()); ?>
+							<?php if($state != 6 and $state != 7 and $state != 0): ?>    
+								<?php if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador"): ?>
+									<?php if($requerimiento->tipo != "tarea"): ?>
+									<form method='HEAD' action="<?php echo e(url("requerimientos/{$requerimiento->id}/anidar")); ?>">
+										<?php echo e(csrf_field()); ?>
 
-									<button type="submit" class="btn btn-warning btn-sm" data-toggle="tooltip" data-original-title="Anidar" style="cursor:pointer"><i class="fa fa-compress"></i></button>
-								</form>
-                                                            <?php endif; ?>
-							<?php endif; ?>						
-                                    <?php if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor"): ?>
+										<button type="submit" class="btn btn-warning btn-sm" data-toggle="tooltip" data-original-title="Anidar" style="cursor:pointer"><i class="fa fa-compress"></i></button>
+									</form>
+									<?php endif; ?>
+								<?php endif; ?>						
+								<?php if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor"): ?>
                                     <?php if($user[0]->nombre == "resolutor" and $res->id == $requerimiento->resolutor): ?>
                                     &nbsp;
                                         <?php if($requerimiento->tipo == "tarea"): ?>
@@ -306,6 +324,14 @@
 								</form>
                                                                 <?php endif; ?>
 							<?php endif; ?>
+							<?php if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor"): ?>
+								&nbsp;
+								<form method='POST' action="<?php echo e(url("requerimientos/{$requerimiento->id}/adjuntar")); ?>">
+									<?php echo e(csrf_field()); ?>
+
+									<button type="submit" class="btn btn-info btn-sm" data-toggle="tooltip" data-original-title="Adjuntar" style="cursor:pointer"><i class="fa fa-paperclip"></i></button>
+								</form>
+							<?php endif; ?>                                                        
                                                         <?php if($user[0]->nombre == "resolutor" and $lider == 1): ?>
                                                         &nbsp;
                                                                 <?php if($requerimiento->tipo == "tarea"): ?>
