@@ -451,6 +451,19 @@ Route::post('/requerimientos/descargaradjunto', 'RequerimientoController@descarg
 	->middleware('auth');
 
 
+Route::post('/requerimientos/{requerimiento}/adjuntar', 'RequerimientoController@adjuntar')->name('Requerimientos.adjuntar')
+
+	->middleware('auth');
+
+Route::post('/requerimientos/adjuntar', 'RequerimientoController@adjuntar_archivo')->name('Requerimientos.adjuntar_archivo')
+
+	->middleware('auth');
+
+Route::post('/requerimientos/descargaradjunto', 'RequerimientoController@descargar_adjunto')->name('Requerimientos.descargar.adjunto')
+
+	->middleware('auth');
+
+
 
 Route::put('/requerimientos/{requerimiento}', 'RequerimientoController@update')
 
@@ -585,6 +598,12 @@ Route::post('/dashboard/getReqResolutorByEstado', 'DashboardController@getReqRes
 Route::post('/dashboard/getReqResolutorGralByEstado', 'DashboardController@getReqResolutorGralByEstado')->name('getReqResolutorGralByEstado');
 Route::post('/dashboard/getReqSolicitanteGralByEstado', 'DashboardController@getReqSolicitanteGralByEstado')->name('getReqSolicitanteGralByEstado');
 Route::get('/indicadores', 'IndicadoresController@index')->name('indicadores');
+
+Route::get('/mensajes', 'MensajesController@index')->name('mensajes.index');
+Route::get('/mensajes/nuevo', 'MensajesController@nuevo')->name('mensajes.create');
+Route::post('/mensajes/store', 'MensajesController@store')->name('mensajes.store');
+Route::post('/mensajes/show', 'MensajesController@show')->name('mensajes.show');
+Route::post('/mensajes/delete', 'MensajesController@delete')->name('mensajes.delete');
 
 /* ************************** */
 

@@ -2628,6 +2628,8 @@ class RequerimientoController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->files);
+        
         auth()->user()->authorizeRoles(['administrador', 'solicitante', 'resolutor']);
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
         $sol = Solicitante::where('idUser', $user[0]->idUser)->first();
@@ -2790,6 +2792,7 @@ class RequerimientoController extends Controller
             $recep = $resolutor->email;
             
             
+<<<<<<< HEAD
             Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
 
             // Guarda el documento adjunto al registrar el requerimiento
@@ -2807,13 +2810,30 @@ class RequerimientoController extends Controller
             }
             
             //Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
+=======
+            // Guarda el documento adjunto al registrar el requerimiento
+            $path = public_path().'/docs/requerimientos/';
+            $file = $request->file('files');
+            
+            if (!empty($_FILES['archivo']['tmp_name']) || is_uploaded_file($_FILES['archivo']['tmp_name']))
+            {
+                $file = Input::file('archivo'); 
+                $filenameWithExt = $request->file('archivo')->getClientOriginalName(); 
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $extension = $request->file('archivo')->getClientOriginalExtension();
+                $filenameToStore = "Req".$requerimiento->id."_".uniqid().".".$extension;
+                \Request::file('archivo')->move($path, $filenameToStore);
+            }
+            
+            Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
+>>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
             
             if ($request->idTipo == 1) {
                 return redirect('requerimientos')->with('msj', 'Requerimiento '.$requerimiento->id2.' guardado correctamente');
             } else {
                 return redirect('requerimientos')->with('msj', 'Incidente '.$requerimiento->id2.' guardado correctamente');
             }
-        }else 
+        } else 
         {
             return back()->with('msj', 'La fecha de cierre del requerimiento debe ser mayor a la fecha de solicitud');
         }
@@ -2917,10 +2937,37 @@ class RequerimientoController extends Controller
             $adjunto_name = "no";
         }
         
+        // Obtiene el archivo adjuntado al requerimiento
+        $extensiones = ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'ppt', 'pptx'];
+        $existe = false;
+        foreach ($extensiones as $extension) {
+            $archivo = public_path().'/docs/requerimientos/'.'Req_'.$requerimiento->id.'.'.$extension;
+            if (file_exists($archivo)) {
+                $existe = true;
+                $url_file = $archivo;
+                $name_file = 'Req_'.$requerimiento->id.'.'.$extension;
+                break;
+            } else {
+                $existe = false;
+            }
+        }
+        
+        if ($existe) {
+            $adjunto_url = $url_file;
+            $adjunto_name = $name_file;
+        } else {
+            $adjunto_url = "no";
+            $adjunto_name = "no";
+        }
+        
         return view('Requerimientos.show', compact('user','requerimiento', 'resolutors',
                     'priorities', 'avances', 'teams', 'fechaCierre', 'requerimientosAnidados',
                     'tareas', 'requerimientos', 'solicitante', 'resolutor','resolutor2',
+<<<<<<< HEAD
                     'resolutores', 'lider', 'res', 'id2', 'ver_log', 'adjunto_url', 'adjunto_name'));       
+=======
+                    'resolutores', 'lider', 'res', 'id2', 'ver_log', 'adjunto_url', 'adjunto_name'));        
+>>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
     }
 
     /**
@@ -4516,4 +4563,44 @@ class RequerimientoController extends Controller
             );
         return \Response::download($file, $request->adjunto, $headers);
     }    
+
+    public function adjuntar(Requerimiento $requerimiento)
+    {
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        
+        return view('Requerimientos.adjuntar', compact('requerimiento', 'user'));
+    }
+
+    public function adjuntar_archivo(Request $request)
+    {
+        // dd($request);
+        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+
+        // Guarda el documento adjunto al registrar el requerimiento
+        $path = public_path().'/docs/requerimientos/';
+        $file = $request->file('files');
+        
+        if (!empty($_FILES['archivo']['tmp_name']) || is_uploaded_file($_FILES['archivo']['tmp_name']))
+        {
+            $file = Input::file('archivo'); 
+            $filenameWithExt = $request->file('archivo')->getClientOriginalName(); 
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('archivo')->getClientOriginalExtension();
+            $filenameToStore = "Req_".$request->id_req.".".$extension;
+            \Request::file('archivo')->move($path, $filenameToStore);
+
+            return redirect('requerimientos')->with('msj', 'Archivo adjuntado correctamente al Requerimiento '.$request->id_req2);
+        } else {
+            return redirect('requerimientos')->with('msj', 'Debe seleccionar un archivo para adjuntar al requerimiento');
+        }
+
+    }
+
+    public function descargar_adjunto(Request $request) {
+        $file= public_path(). "/docs/requerimientos/".$request->adjunto;
+        $headers = array(
+              'Content-Type: application/octet-stream',
+            );
+        return \Response::download($file, $request->adjunto, $headers);
+    }
 }

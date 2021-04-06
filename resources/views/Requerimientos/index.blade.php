@@ -301,7 +301,7 @@
                                         </form>
                                         @endif
                                     @endif
-                                    @endif 
+								@endif 
 							@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
 								&nbsp;
                                                                 @if($requerimiento->tipo == "tarea")
@@ -336,7 +336,14 @@
 									<button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
 								</form>
                                                                 @endif
-                                                        @endif                                            
+														@endif                                            
+							@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor")
+								&nbsp;
+								<form method='POST' action="{{ url("requerimientos/{$requerimiento->id}/adjuntar") }}">
+									{{ csrf_field() }}
+									<button type="submit" class="btn btn-info btn-sm" data-toggle="tooltip" data-original-title="Adjuntar" style="cursor:pointer"><i class="fa fa-paperclip"></i></button>
+								</form>
+							@endif
 							@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
 								&nbsp;
                                                                 @if($requerimiento->tipo == "tarea")
@@ -346,7 +353,7 @@
                                                                     <button type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Eliminar" style="cursor:pointer"><i class="fa fa-trash"></i></button>
                                                                     <input type="hidden" name="tarea" value={{$requerimiento->id}}>
                                                                     <input type="hidden" name="req" value={{$requerimiento->idRequerimiento}}>
-								</form                                                                
+								</form>
                                                                 @else
 								<form method='POST' action="{{ url('/requerimientos/'.$requerimiento->id) }}">
 									{{ csrf_field() }}

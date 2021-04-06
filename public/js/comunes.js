@@ -108,6 +108,51 @@ function menu_activo(activo) {
             $('#mUsuarios').removeClass('active');
             $('#mExportar').addClass('active');
             $('#mMensajes').removeClass('active');
+<<<<<<< HEAD
+=======
+            break;
+        case 'mDate':
+            $('#mTablero').removeClass('active');
+            $('#mIndicadores').removeClass('active');
+            $('#mRequerimientos').removeClass('active');
+            $('#mPrioridades').removeClass('active');
+            $('#mResolutores').removeClass('active');
+            $('#mSolicitantes').removeClass('active');
+            $('#mEquipos').removeClass('active');
+            $('#mUsuarios').removeClass('active');
+            $('#mExportar').removeClass('active');
+            $('#mDate').addClass('active');
+            $('#mPriority').removeClass('active');
+            $('#mMensajes').removeClass('active');
+            break;
+        case 'mPriority':
+            $('#mTablero').removeClass('active');
+            $('#mIndicadores').removeClass('active');
+            $('#mRequerimientos').removeClass('active');
+            $('#mPrioridades').removeClass('active');
+            $('#mResolutores').removeClass('active');
+            $('#mSolicitantes').removeClass('active');
+            $('#mEquipos').removeClass('active');
+            $('#mUsuarios').removeClass('active');
+            $('#mExportar').removeClass('active');
+            $('#mDate').removeClass('active');
+            $('#mPriority').addClass('active');
+            $('#mMensajes').removeClass('active');
+            break;
+        case 'mMensajes':
+            $('#mTablero').removeClass('active');
+            $('#mIndicadores').removeClass('active');
+            $('#mRequerimientos').removeClass('active');
+            $('#mPrioridades').removeClass('active');
+            $('#mResolutores').removeClass('active');
+            $('#mSolicitantes').removeClass('active');
+            $('#mEquipos').removeClass('active');
+            $('#mUsuarios').removeClass('active');
+            $('#mExportar').removeClass('active');
+            $('#mDate').removeClass('active');
+            $('#mPriority').removeClass('active');
+            $('#mMensajes').addClass('active');
+>>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
             break;
         case 'mDate':
             $('#mTablero').removeClass('active');

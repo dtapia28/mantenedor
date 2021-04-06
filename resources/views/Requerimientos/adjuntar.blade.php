@@ -94,10 +94,20 @@
     $(document).ready(function() {
         menu_activo('mRequerimientos');
     }); 
+<<<<<<< HEAD
     function validar_archivo_req(id_archivo) {
 		var archivo = document.getElementById(id_archivo).value;
 		var uploadedFile = document.getElementById(id_archivo);
 		var fileSize = uploadedFile.files[0].size;      
+=======
+
+    function validar_archivo_req(id_archivo) {
+		var archivo = document.getElementById(id_archivo).value;
+
+		var uploadedFile = document.getElementById(id_archivo);
+		var fileSize = uploadedFile.files[0].size;      
+
+>>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
 		if(navigator.userAgent.indexOf('Linux') != -1){
 		var SO = "Linux"; }
 		else if((navigator.userAgent.indexOf('Win') != -1) &&(navigator.userAgent.indexOf('95') != -1)){
@@ -110,11 +120,19 @@
 		var SO = "Mac"; }
 		else { var SO = "no definido";
 		}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
 		if (SO = "Win") {
 			var arr_ruta = archivo.split("\\");
 		} else {
 			var arr_ruta = archivo.split("/");
 		}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
 		var nombre_archivo = (arr_ruta[arr_ruta.length-1]);
 		var ext_validas = /\.(jpg|jpeg|png|pdf|doc|docx|xls|xlsx|csv|ppt|pptx)$/i.test(nombre_archivo);
 		
@@ -123,17 +141,32 @@
 			borrar_req();
 			return false;
 		}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
 		if(fileSize > 5000000){
 			alert("Archivo con tamaño no válido\nSu archivo: " + nombre_archivo);
 			borrar_req();
 			return false;
 		}
+<<<<<<< HEAD
 		document.getElementById('valor').innerHTML = "Archivo seleccionado: <b>" + nombre_archivo + "<\/b>";       
 	}
+=======
+
+		document.getElementById('valor').innerHTML = "Archivo seleccionado: <b>" + nombre_archivo + "<\/b>";       
+	}
+
+>>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
     function borrar_req() {
 		document.getElementById('valor').innerHTML = "";
 		var vacio = document.getElementById('archivo').value = "";
 		return true
 	}
 </script>
+<<<<<<< HEAD
 @endsection
+=======
+@endsection
+>>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6

@@ -172,7 +172,11 @@
 						<a href="{{ url('/mensajes') }}"><i class="sidebar-item-icon fa fa-comments-o"></i>
 							<span class="nav-label">Mensajes @if ($msgSinLeer > 0) <span class="badge badge-light text-dark">{{$msgSinLeer}}</span> @endif</span>
 						</a>
+<<<<<<< HEAD
 					</li>                                       
+=======
+					</li>
+>>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
 				</ul>
 			</div>
 		</nav>
