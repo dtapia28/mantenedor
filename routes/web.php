@@ -605,6 +605,12 @@ Route::post('/mensajes/store', 'MensajesController@store')->name('mensajes.store
 Route::post('/mensajes/show', 'MensajesController@show')->name('mensajes.show');
 Route::post('/mensajes/delete', 'MensajesController@delete')->name('mensajes.delete');
 
+Route::prefix('estadisticas')->name('estadisticas.')->group(function () {
+    Route::get('/', 'EstadisticasController@index')->name('index');
+	Route::post('/filtro', 'EstadisticasController@filtro')->name('filtro');
+});
+
+
 /* ************************** */
 
 Route::get('/clear_cache', function()

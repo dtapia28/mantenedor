@@ -114,6 +114,13 @@
 						</a>
 					</li>
 					@endif
+					@if(in_array($user[0]->nombre, ["administrador"]))
+					<li id="mEstadisticas">
+						<a href="{{ route('estadisticas.index') }}"><i class="sidebar-item-icon fa fa-pie-chart"></i>
+							<span class="nav-label">Estadísticas</span>
+						</a>
+					</li>
+					@endif
 					<li class="heading">P&#193GINAS</li>
 					<li id="mRequerimientos">
 						<a href="{{ url('/requerimientos') }}"><i class="sidebar-item-icon fa fa-address-card"></i>
@@ -172,11 +179,7 @@
 						<a href="{{ url('/mensajes') }}"><i class="sidebar-item-icon fa fa-comments-o"></i>
 							<span class="nav-label">Mensajes @if ($msgSinLeer > 0) <span class="badge badge-light text-dark">{{$msgSinLeer}}</span> @endif</span>
 						</a>
-<<<<<<< HEAD
-					</li>                                       
-=======
 					</li>
->>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
 				</ul>
 			</div>
 		</nav>
