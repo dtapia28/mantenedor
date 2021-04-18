@@ -28,6 +28,65 @@
     </div>
 </div>
 <div class="row">
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-head">
+                <div>
+                    <h4 class="m-0">Requerimientos por semana (mes actual)</h4>
+                </div>
+            </div>
+            <div class="ibox-body">
+                <div class="d-flex justify-content-center">
+                    <div class="row">
+                        @php
+                            $total_reqs2 = $total_abie = $total_cerr = 0;
+                            foreach ($tabla_sem as $item) {
+                                $total_abie += $item['abiertos'];
+                                $total_cerr += $item['cerrados'];
+                            }
+                            $total_reqs2 = $total_abie + $total_cerr;
+                        @endphp
+                        @foreach ($tabla_sem as $item)
+                        <div class="px-3 bg-grey text-white">
+                            <div><strong>SEMANA {{$item['semana']}}</strong></div>
+                            <div class="text-center">
+                                <span class="h2 m-0">{{($item['abiertos'] + $item['cerrados'])}}</span>
+                            </div>
+                        </div>
+                        <div class="px-3">
+                            @php
+                                if (($item['abiertos'] + $item['cerrados']) > 0)
+                                    $por_abi = number_format(($item['abiertos'] * 100 ) / ($item['abiertos'] + $item['cerrados']), 0, ',', '.');
+                                else
+                                    $por_abi = 0;
+                            @endphp
+                            <div class="text-muted">Abiertos</div>
+                            <div>
+                                <span class="h2 m-0">{{$item['abiertos']}}</span>
+                                <span class="text-warning ml-1">{{number_format($por_abi, 0, ',', '.')}}%</span>
+                            </div>
+                        </div>
+                        <div class="px-3">
+                            @php
+                                if (($item['abiertos'] + $item['cerrados']) > 0)
+                                    $por_cer = number_format(($item['cerrados'] * 100 ) / ($item['abiertos'] + $item['cerrados']), 0, ',', '.');
+                                else
+                                    $por_cer = 0;
+                            @endphp
+                            <div class="text-muted">Cerrados</div>
+                            <div>
+                                <span class="h2 m-0">{{$item['cerrados']}}</span>
+                                <span class="text-success ml-1">{{number_format($por_cer, 0, ',', '.')}}%</span>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
     <div class="col-lg-5">
         <div class="ibox">
             <div class="ibox-head">
@@ -67,7 +126,7 @@
     <div class="col-lg-6">
         <div class="ibox">
             <div class="ibox-head">
-                <div class="ibox-title"><h4 class="m-0">Requerimientos por mes</h4></div>
+                <div class="ibox-title"><h4 class="m-0">Requerimientos por mes (últimos 12 meses)</h4></div>
                 <div class="ibox-tools">
                     <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
                 </div>
@@ -115,13 +174,15 @@
                             <th>Área</th>
                             <th>Cantidad Req.</th>
                             <th>Porcentaje</th>
+                            <th>SLA Solución</th>
                         </tr>
                     </thead>
                     <tbody>
                         @php
-                            $total_reqs = 0;
+                            $total_reqs = $total_sla =0;
                             foreach ($req_area as $item) {
                                 $total_reqs += $item->cant_reqs;
+                                $total_sla += $item->sla_solucion;
                             }    
                         @endphp
                         @foreach ($req_area as $item)
@@ -129,6 +190,7 @@
                             <td>{{$item->area}}</td>
                             <td>{{$item->cant_reqs}}</td>
                             <td>{{number_format(($item->cant_reqs * 100) / $total_reqs, 2, ',', '.')}}%</td>
+                            <td>{{$item->sla_solucion}} días</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -137,6 +199,7 @@
                             <th>Total</th>
                             <th>{{$total_reqs}}</th>
                             <th>100%</th>
+                            <th>{{number_format($total_sla/count($req_area), 0, ',', '.')}} días</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -146,7 +209,7 @@
     <div class="col-lg-7">
         <div class="ibox">
             <div class="ibox-head">
-                <div class="ibox-title">Requerimientos por semana</div>
+                <div class="ibox-title">Requerimientos por semana (mes actual)</div>
                 <div class="ibox-tools">
                     <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
                 </div>

@@ -39,7 +39,7 @@ class EstadisticasController extends Controller
         $indicadores = ['abiertos' => count($reqAb), 'cerrados' => count($reqCe), 'total' => $total];
 
         // Gráficos porcentaje/cantidad de requerimientos por área
-        $req_area = DB::select("SELECT c.id, c.nameTeam area, COUNT(*) cant_reqs
+        $req_area = DB::select("SELECT c.id, c.nameTeam area, COUNT(*) cant_reqs, ROUND(AVG(DATEDIFF(a.fechaCierre, a.fechaSolicitud))) sla_solucion
                                 FROM requerimientos a
                                 JOIN resolutors b ON a.resolutor=b.id
                                 JOIN teams c ON b.idTeam=c.id
@@ -179,7 +179,7 @@ class EstadisticasController extends Controller
         $data['rango_fecha'] = $rango_fecha;
 
         // Gráfico % de requerimientos por área
-        $req_area = DB::select("SELECT c.id, c.nameTeam area, COUNT(*) cant_reqs
+        $req_area = DB::select("SELECT c.id, c.nameTeam area, COUNT(*) cant_reqs, ROUND(AVG(DATEDIFF(a.fechaCierre, a.fechaSolicitud))) sla_solucion
                                 FROM requerimientos a
                                 JOIN resolutors b ON a.resolutor=b.id
                                 JOIN teams c ON b.idTeam=c.id
@@ -262,7 +262,7 @@ class EstadisticasController extends Controller
                 array_push($tabla_sem, $data_sem);
             }
         }
-
+        // dd($tabla_sem);
         return view('Estadisticas.index', compact('user', 'data', 'indicadores', 'req_area', 'areas', 'array_data', 'req_area1', 'tabla_sem'));
     }
 
