@@ -55,18 +55,6 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label for="" class="col-md-2 text-md-right">Utilizar notificaciones vía SMS</label>
-							<div class="col-md-4">
-								<input type="checkbox" name="sms_notifi" id="sms_notifi">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="" class="col-md-2 text-md-right">Días de notificación</label>
-							<div class="col-md-1">
-								<input type="number" name="cantidad_dias" id="cantidad_dias">
-							</div>
-						</div>
-						<div class="form-group row">
 							<label for="color" class="col-md-2 text-md-right">Logo de la Empresa</label>
 							<div class="col-md-4">
 								<input type='file' name="archivo" id='archivo' onchange="validar_archivo(this.id)" title="Seleccionar archivo" /><br>

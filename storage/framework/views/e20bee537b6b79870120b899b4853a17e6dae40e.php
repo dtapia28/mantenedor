@@ -15,7 +15,7 @@
   <link href="<?php echo e(asset('vendor/font-awesome/css/font-awesome.min.css')); ?>" rel="stylesheet" />
   <link href="<?php echo e(asset('vendor/themify-icons/css/themify-icons.css')); ?>" rel="stylesheet" />
   <link href="<?php echo e(asset('css/main.min.css')); ?>" rel="stylesheet" />
-  <?php use \App\Http\Controllers\HomeController; $color = HomeController::colorSitio(); $linkLogo = HomeController::logoEmpresa(); $nomEmpresa = HomeController::nombreEmpresa(); $linkFoto = HomeController::fotoPerfil();?>
+  <?php use \App\Http\Controllers\HomeController; use \App\Http\Controllers\MensajesController; $color = HomeController::colorSitio(); $linkLogo = HomeController::logoEmpresa(); $nomEmpresa = HomeController::nombreEmpresa(); $linkFoto = HomeController::fotoPerfil(); $msgSinLeer = MensajesController::mensajesSinLeer();?>
   <?php switch($color):
 	  	case (1): ?>
 		  	<link href="<?php echo e(asset('css/themes/red.css')); ?>" rel="stylesheet" />
@@ -168,6 +168,11 @@
 						</a>
 					</li>
 					<?php endif; ?>
+					<li id="mMensajes">
+						<a href="<?php echo e(url('/mensajes')); ?>"><i class="sidebar-item-icon fa fa-comments-o"></i>
+							<span class="nav-label">Mensajes <?php if($msgSinLeer > 0): ?> <span class="badge badge-light text-dark"><?php echo e($msgSinLeer); ?></span> <?php endif; ?></span>
+						</a>
+					</li>                                       
 				</ul>
 			</div>
 		</nav>

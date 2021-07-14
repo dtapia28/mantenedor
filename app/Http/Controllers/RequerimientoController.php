@@ -2628,8 +2628,7 @@ class RequerimientoController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->files);
-        
+
         auth()->user()->authorizeRoles(['administrador', 'solicitante', 'resolutor']);
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
         $sol = Solicitante::where('idUser', $user[0]->idUser)->first();
@@ -2688,38 +2687,78 @@ class RequerimientoController extends Controller
         
         if ($fechaCie >= $fechaSoli) 
         {
-                $resolutor = Resolutor::where([
-                    ['rutEmpresa', auth()->user()->rutEmpresa],
-                    ['id', $data['idResolutor']],
-                ])->get();
-
-                $team = Team::where([
-                    ['rutEmpresa', auth()->user()->rutEmpresa],
-                    ['id',$resolutor[0]->idTeam],
-                ])->get(); 
-
-                $resolutors = Resolutor::where([
+            $resolutor = Resolutor::where([
                 ['rutEmpresa', auth()->user()->rutEmpresa],
-                ])->get();
+                ['id', $data['idResolutor']],
+            ])->get();
 
-                $requerimientos = Requerimiento::where([
+            $team = Team::where([
                 ['rutEmpresa', auth()->user()->rutEmpresa],
-                ])->get();
+                ['id',$resolutor[0]->idTeam],
+            ])->get();
+
+            $resolutors = Resolutor::where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+            ])->get();
+
+            $requerimientos = Requerimiento::where([
+                ['rutEmpresa', auth()->user()->rutEmpresa],
+            ])->get();
                 
-                $ultimo_req = DB::table('requerimientos_equipos')
-                        ->where([
-                            ['rutEmpresa', auth()->user()->rutEmpresa],
-                            ['idEquipo', $team[0]->id]
-                        ])->orderBy('created_at','DESC')->first();
+            $ultimo_req = DB::table('requerimientos_equipos')
+                ->where([
+                    ['rutEmpresa', auth()->user()->rutEmpresa],
+                    ['idEquipo', $team[0]->id]
+            ])->orderBy('created_at','DESC')->first();
+
                 
+            $prueba = strpos($ultimo_req->id2, "-", 4);
+            $largo_ultimo = strlen($ultimo_req->id2);
+            $a = $largo_ultimo-($prueba+1);
+
+            if($ultimo_req != null){
+                $ultimo_req_n = intval(substr($ultimo_req->id2, $prueba+1, $a));
+            } else{
+                $ultimo_req_n = 0;
+            }
+
+            $conteoA = $ultimo_req_n+1;
+
+            if($conteoA<10){
+                $conteoA = "00".$conteoA;
+            } else if($conteoA > 10 and $conteoA<100){
+                $conteoA = "0".$conteoA;
+            } else {
+                $conteoA = $conteoA;
+            }
+
+            if ($request->idTipo == 1) {
+                $var = "RQ-".$team[0]->id2."-".$conteoA;
+            } else {
+                $var = "INC-".$team[0]->id2."-".$conteoA;
+            }
+                
+                
+            $variable = new DateTime($data['fechaCierre']);
+            $intervalo = new DateInterval('PT23H59M59S');
+            $variable->add($intervalo);
+            $data['fechaCierre'] = $variable;
+
+
+            $duplicado = Requerimiento::where('id2', $var)->first();
+            if(!empty($duplicado)){
+                $prueba = strpos($var, "-", 4);
+                $largo_ultimo = strlen($var);
+                $a = $largo_ultimo-($prueba+1);
+    
                 if($ultimo_req != null){
-                   $ultimo_req_n = intval(substr($ultimo_req->id2, -3)); 
+                    $ultimo_req_n = intval(substr($var, $prueba+1, $a));
                 } else{
                     $ultimo_req_n = 0;
                 }
-
+    
                 $conteoA = $ultimo_req_n+1;
-
+    
                 if($conteoA<10){
                     $conteoA = "00".$conteoA;
                 } else if($conteoA > 10 and $conteoA<100){
@@ -2727,19 +2766,13 @@ class RequerimientoController extends Controller
                 } else {
                     $conteoA = $conteoA;
                 }
-
+    
                 if ($request->idTipo == 1) {
                     $var = "RQ-".$team[0]->id2."-".$conteoA;
                 } else {
                     $var = "INC-".$team[0]->id2."-".$conteoA;
                 }
-                
-                $variable = new DateTime($data['fechaCierre']);
-                $intervalo = new DateInterval('PT23H59M59S');
-                $variable->add($intervalo);
-                $data['fechaCierre'] = $variable;
 
-                
                 Requerimiento::create([
                     'textoRequerimiento' => preg_replace("/[\r\n|\n|\r|\t]+/", " ", $data['textoRequerimiento']),
                     'comentario' => preg_replace("/[\r\n|\n|\r|\t]+/", " ", $data['comentario']),            
@@ -2754,86 +2787,146 @@ class RequerimientoController extends Controller
                     'id2' => $var,
                     'aprobacion' => 3,
                 ]);
-
-            $req = Requerimiento::where('textoRequerimiento', $data['textoRequerimiento'])->get();
-
-            $user = User::where([
-                ['name', auth()->user()->name],
-                ['rutEmpresa', auth()->user()->rutEmpresa],
-            ])->get();
-
-            LogRequerimientos::create([
-                'idRequerimiento' => $req[0]->id,
-                'idUsuario' => $user[0]->id,
-                'tipo' => 'creacion',
-            ]);
-
-            if ($data['textAvance'] != null) {
-                $guardado = Requerimiento::where([
-                    ['textoRequerimiento', $data['textoRequerimiento']],
-                    ['fechaEmail', $data['fechaEmail']],
-                    ['fechaSolicitud', $data['fechaSolicitud']],
-                ])->first();
-
-                Avance::create([
-                    'textAvance' => $data['textAvance'],
-                    'fechaAvance' => Carbon::now(),
-                    'idRequerimiento' => $guardado->id
+    
+                $req = Requerimiento::where('textoRequerimiento', $data['textoRequerimiento'])->get();
+    
+                $user = User::where([
+                    ['name', auth()->user()->name],
+                    ['rutEmpresa', auth()->user()->rutEmpresa],
+                ])->get();
+    
+                LogRequerimientos::create([
+                    'idRequerimiento' => $req[0]->id,
+                    'idUsuario' => $user[0]->id,
+                    'tipo' => 'creacion',
                 ]);
-            }
-            $requerimiento = Requerimiento::where('id2', $var)->first();
-            $resolutor = Resolutor::where('id', $requerimiento->resolutor)->first();
-            $obj = new \stdClass();
-            $obj->idReq = $requerimiento->id2;
-            $obj->id = $requerimiento->id;
-            $obj->sol = $requerimiento->textoRequerimiento;
-            $obj->nombre = $resolutor->nombreResolutor;
-
-            $recep = $resolutor->email;
-            
-            
-<<<<<<< HEAD
-            Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
-
-            // Guarda el documento adjunto al registrar el requerimiento
-            $path = public_path().'/docs/requerimientos/';
-            $file = $request->file('files');
-            
-            if (!empty($_FILES['archivo']['tmp_name']) || is_uploaded_file($_FILES['archivo']['tmp_name']))
+    
+                if ($data['textAvance'] != null) {
+                    $guardado = Requerimiento::where([
+                        ['textoRequerimiento', $data['textoRequerimiento']],
+                        ['fechaEmail', $data['fechaEmail']],
+                        ['fechaSolicitud', $data['fechaSolicitud']],
+                    ])->first();
+    
+                    Avance::create([
+                        'textAvance' => $data['textAvance'],
+                        'fechaAvance' => Carbon::now(),
+                        'idRequerimiento' => $guardado->id
+                    ]);
+                }
+                $requerimiento = Requerimiento::where('id2', $var)->first();
+                $resolutor = Resolutor::where('id', $requerimiento->resolutor)->first();
+                $obj = new \stdClass();
+                $obj->idReq = $requerimiento->id2;
+                $obj->id = $requerimiento->id;
+                $obj->sol = $requerimiento->textoRequerimiento;
+                $obj->nombre = $resolutor->nombreResolutor;
+    
+                $recep = $resolutor->email;
+                    
+                    
+                Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
+    
+                // Guarda el documento adjunto al registrar el requerimiento
+                $path = public_path().'/docs/requerimientos/';
+                $file = $request->file('files');
+                    
+                if (!empty($_FILES['archivo']['tmp_name']) || is_uploaded_file($_FILES['archivo']['tmp_name']))
+                {
+                    $file = Input::file('archivo'); 
+                    $filenameWithExt = $request->file('archivo')->getClientOriginalName(); 
+                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension = $request->file('archivo')->getClientOriginalExtension();
+                    $filenameToStore = "Req".$requerimiento->id."_".uniqid().".".$extension;
+                    \Request::file('archivo')->move($path, $filenameToStore);
+                }
+                    
+                //Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
+                    
+                if ($request->idTipo == 1) {
+                    return redirect('requerimientos')->with('msj', 'Requerimiento '.$requerimiento->id2.' guardado correctamente');
+                } else {
+                    return redirect('requerimientos')->with('msj', 'Incidente '.$requerimiento->id2.' guardado correctamente');
+                }                
+            } else 
             {
-                $file = Input::file('archivo'); 
-                $filenameWithExt = $request->file('archivo')->getClientOriginalName(); 
-                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                $extension = $request->file('archivo')->getClientOriginalExtension();
-                $filenameToStore = "Req".$requerimiento->id."_".uniqid().".".$extension;
-                \Request::file('archivo')->move($path, $filenameToStore);
+                Requerimiento::create([
+                    'textoRequerimiento' => preg_replace("/[\r\n|\n|\r|\t]+/", " ", $data['textoRequerimiento']),
+                    'comentario' => preg_replace("/[\r\n|\n|\r|\t]+/", " ", $data['comentario']),            
+                    'fechaEmail' => $data['fechaEmail'],
+                    'fechaSolicitud' => $data['fechaSolicitud'],
+                    'fechaCierre' => $data['fechaCierre'],
+                    'gestor' => $data['idGestor'],
+                    'idSolicitante' => $data['idSolicitante'],
+                    'idPrioridad' => $data['idPrioridad'],
+                    'resolutor' => $data['idResolutor'],
+                    'rutEmpresa' => auth()->user()->rutEmpresa,
+                    'id2' => $var,
+                    'aprobacion' => 3,
+                ]);
+    
+                $req = Requerimiento::where('textoRequerimiento', $data['textoRequerimiento'])->get();
+    
+                $user = User::where([
+                    ['name', auth()->user()->name],
+                    ['rutEmpresa', auth()->user()->rutEmpresa],
+                ])->get();
+    
+                LogRequerimientos::create([
+                    'idRequerimiento' => $req[0]->id,
+                    'idUsuario' => $user[0]->id,
+                    'tipo' => 'creacion',
+                ]);
+    
+                if ($data['textAvance'] != null) {
+                    $guardado = Requerimiento::where([
+                        ['textoRequerimiento', $data['textoRequerimiento']],
+                        ['fechaEmail', $data['fechaEmail']],
+                        ['fechaSolicitud', $data['fechaSolicitud']],
+                    ])->first();
+    
+                    Avance::create([
+                        'textAvance' => $data['textAvance'],
+                        'fechaAvance' => Carbon::now(),
+                        'idRequerimiento' => $guardado->id
+                    ]);
+                }
+                $requerimiento = Requerimiento::where('id2', $var)->first();
+                $resolutor = Resolutor::where('id', $requerimiento->resolutor)->first();
+                $obj = new \stdClass();
+                $obj->idReq = $requerimiento->id2;
+                $obj->id = $requerimiento->id;
+                $obj->sol = $requerimiento->textoRequerimiento;
+                $obj->nombre = $resolutor->nombreResolutor;
+    
+                $recep = $resolutor->email;
+                    
+                    
+                Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
+    
+                // Guarda el documento adjunto al registrar el requerimiento
+                $path = public_path().'/docs/requerimientos/';
+                $file = $request->file('files');
+                    
+                if (!empty($_FILES['archivo']['tmp_name']) || is_uploaded_file($_FILES['archivo']['tmp_name']))
+                {
+                    $file = Input::file('archivo'); 
+                    $filenameWithExt = $request->file('archivo')->getClientOriginalName(); 
+                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension = $request->file('archivo')->getClientOriginalExtension();
+                    $filenameToStore = "Req".$requerimiento->id."_".uniqid().".".$extension;
+                    \Request::file('archivo')->move($path, $filenameToStore);
+                }
+                    
+                //Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
+                    
+                if ($request->idTipo == 1) {
+                    return redirect('requerimientos')->with('msj', 'Requerimiento '.$requerimiento->id2.' guardado correctamente');
+                } else {
+                    return redirect('requerimientos')->with('msj', 'Incidente '.$requerimiento->id2.' guardado correctamente');
+                }
             }
-            
-            //Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
-=======
-            // Guarda el documento adjunto al registrar el requerimiento
-            $path = public_path().'/docs/requerimientos/';
-            $file = $request->file('files');
-            
-            if (!empty($_FILES['archivo']['tmp_name']) || is_uploaded_file($_FILES['archivo']['tmp_name']))
-            {
-                $file = Input::file('archivo'); 
-                $filenameWithExt = $request->file('archivo')->getClientOriginalName(); 
-                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                $extension = $request->file('archivo')->getClientOriginalExtension();
-                $filenameToStore = "Req".$requerimiento->id."_".uniqid().".".$extension;
-                \Request::file('archivo')->move($path, $filenameToStore);
-            }
-            
-            Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
->>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
-            
-            if ($request->idTipo == 1) {
-                return redirect('requerimientos')->with('msj', 'Requerimiento '.$requerimiento->id2.' guardado correctamente');
-            } else {
-                return redirect('requerimientos')->with('msj', 'Incidente '.$requerimiento->id2.' guardado correctamente');
-            }
-        } else 
+        }else 
         {
             return back()->with('msj', 'La fecha de cierre del requerimiento debe ser mayor a la fecha de solicitud');
         }
@@ -2937,37 +3030,10 @@ class RequerimientoController extends Controller
             $adjunto_name = "no";
         }
         
-        // Obtiene el archivo adjuntado al requerimiento
-        $extensiones = ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'ppt', 'pptx'];
-        $existe = false;
-        foreach ($extensiones as $extension) {
-            $archivo = public_path().'/docs/requerimientos/'.'Req_'.$requerimiento->id.'.'.$extension;
-            if (file_exists($archivo)) {
-                $existe = true;
-                $url_file = $archivo;
-                $name_file = 'Req_'.$requerimiento->id.'.'.$extension;
-                break;
-            } else {
-                $existe = false;
-            }
-        }
-        
-        if ($existe) {
-            $adjunto_url = $url_file;
-            $adjunto_name = $name_file;
-        } else {
-            $adjunto_url = "no";
-            $adjunto_name = "no";
-        }
-        
         return view('Requerimientos.show', compact('user','requerimiento', 'resolutors',
                     'priorities', 'avances', 'teams', 'fechaCierre', 'requerimientosAnidados',
                     'tareas', 'requerimientos', 'solicitante', 'resolutor','resolutor2',
-<<<<<<< HEAD
                     'resolutores', 'lider', 'res', 'id2', 'ver_log', 'adjunto_url', 'adjunto_name'));       
-=======
-                    'resolutores', 'lider', 'res', 'id2', 'ver_log', 'adjunto_url', 'adjunto_name'));        
->>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
     }
 
     /**
@@ -2980,6 +3046,7 @@ class RequerimientoController extends Controller
     {
 
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
+        //dd($user);
         $lider = 0;
         if ($user[0]->nombre == "resolutor") {
             $resolutor = Resolutor::where('idUser', $user[0]->idUser)->first('lider');
@@ -3017,6 +3084,7 @@ class RequerimientoController extends Controller
             ['rutEmpresa', auth()->user()->rutEmpresa],
             ['id', $requerimiento->resolutor],
         ])->get();
+
         
         $id_resolutor = $resolutorEspecifico[0]['id'];
         
@@ -3121,17 +3189,37 @@ class RequerimientoController extends Controller
                 
                 $texto_ultimo_req = $ultimo_requerimiento->id2;
                 $primera_parte = substr($requerimiento->id2, 0,3);
+                if($primera_parte == "INC"){
+                    $primera_parte = substr($requerimiento->id2, 0,3);
+                } else {
+                    $primera_parte = substr($requerimiento->id2, 0,2);
+                }
+                
                 $segunda_parte = substr($texto_ultimo_req, 3,-3);
+                $busca_guion = substr($segunda_parte,0,1);
+                if($busca_guion != "-"){
+                   $segunda_parte = substr($texto_ultimo_req, 3,-3); 
+                } else {
+                    $segunda_parte = substr($texto_ultimo_req, 4,-3);
+                }
                 $numero_req = (int) substr($texto_ultimo_req, -3);
                 $numero_req = $numero_req+1;
                 if($numero_req<10){
-                    $nuevo_id = $primera_parte.$segunda_parte."00".strval($numero_req);
+                    $nuevo_id = $primera_parte."-".$segunda_parte."00".strval($numero_req);
                 } elseif($numero_req<100){
-                    $nuevo_id = $primera_parte.$segunda_parte."0".strval($numero_req);
+                    $nuevo_id = $primera_parte."-".$segunda_parte."0".strval($numero_req);
                 } else {
-                    $nuevo_id = $primera_parte.$segunda_parte.strval($numero_req);
+                    $nuevo_id = $primera_parte."-".$segunda_parte.strval($numero_req);
                 }
-                $data['id2'] = $nuevo_id;  
+                $data['id2'] = $nuevo_id;
+                $data['created_at']=Carbon::now();
+                
+                LogRequerimientos::create([
+                    'idRequerimiento' => $requerimiento->id,
+                    'idUsuario' => $user[0]->id,
+                    'tipo' => 'edicion',
+                    'campo' => 'created_at-id',
+                ]);                
             }
         } 
 
@@ -3177,7 +3265,7 @@ class RequerimientoController extends Controller
         }
         
         $data['fechaRealCierre'] = null;
-              
+        
         $requerimiento->update($data);
 
         if ($data['textAvance'] != "") {
@@ -4563,44 +4651,4 @@ class RequerimientoController extends Controller
             );
         return \Response::download($file, $request->adjunto, $headers);
     }    
-
-    public function adjuntar(Requerimiento $requerimiento)
-    {
-        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
-        
-        return view('Requerimientos.adjuntar', compact('requerimiento', 'user'));
-    }
-
-    public function adjuntar_archivo(Request $request)
-    {
-        // dd($request);
-        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
-
-        // Guarda el documento adjunto al registrar el requerimiento
-        $path = public_path().'/docs/requerimientos/';
-        $file = $request->file('files');
-        
-        if (!empty($_FILES['archivo']['tmp_name']) || is_uploaded_file($_FILES['archivo']['tmp_name']))
-        {
-            $file = Input::file('archivo'); 
-            $filenameWithExt = $request->file('archivo')->getClientOriginalName(); 
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension = $request->file('archivo')->getClientOriginalExtension();
-            $filenameToStore = "Req_".$request->id_req.".".$extension;
-            \Request::file('archivo')->move($path, $filenameToStore);
-
-            return redirect('requerimientos')->with('msj', 'Archivo adjuntado correctamente al Requerimiento '.$request->id_req2);
-        } else {
-            return redirect('requerimientos')->with('msj', 'Debe seleccionar un archivo para adjuntar al requerimiento');
-        }
-
-    }
-
-    public function descargar_adjunto(Request $request) {
-        $file= public_path(). "/docs/requerimientos/".$request->adjunto;
-        $headers = array(
-              'Content-Type: application/octet-stream',
-            );
-        return \Response::download($file, $request->adjunto, $headers);
-    }
 }

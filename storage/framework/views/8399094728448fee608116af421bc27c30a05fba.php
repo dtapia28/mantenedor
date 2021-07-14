@@ -1,4 +1,3 @@
-  
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -114,6 +113,13 @@
 						</a>
 					</li>
 					<?php endif; ?>
+					<?php if(in_array($user[0]->nombre, ["administrador"])): ?>
+					<li id="mEstadisticas">
+						<a href="<?php echo e(route('estadisticas.index')); ?>"><i class="sidebar-item-icon fa fa-pie-chart"></i>
+							<span class="nav-label">Estadísticas</span>
+						</a>
+					</li>
+					<?php endif; ?>
 					<li class="heading">P&#193GINAS</li>
 					<li id="mRequerimientos">
 						<a href="<?php echo e(url('/requerimientos')); ?>"><i class="sidebar-item-icon fa fa-address-card"></i>
@@ -172,7 +178,7 @@
 						<a href="<?php echo e(url('/mensajes')); ?>"><i class="sidebar-item-icon fa fa-comments-o"></i>
 							<span class="nav-label">Mensajes <?php if($msgSinLeer > 0): ?> <span class="badge badge-light text-dark"><?php echo e($msgSinLeer); ?></span> <?php endif; ?></span>
 						</a>
-					</li>                                       
+					</li>
 				</ul>
 			</div>
 		</nav>
@@ -202,16 +208,13 @@
 	<script src="<?php echo e(asset('vendor/jquery-easing/jquery.easing.min.js')); ?>"></script>
 	<script src="<?php echo e(asset('vendor/metisMenu/dist/metisMenu.min.js')); ?>"></script>
 	<script src="<?php echo e(asset('vendor/jquery-slimscroll/jquery.slimscroll.min.js')); ?>"></script>
-
 	<!-- Page level plugin JavaScript-->
 	<script src="<?php echo e(asset('vendor/chart.js/Chart.min.js')); ?>"></script>
 	
-
 	<!-- Custom scripts for all pages-->
 	<script src="<?php echo e(asset('js/app.min.js')); ?>" type="text/javascript"></script>
 	<script src="<?php echo e(asset('js/comunes.js')); ?>" type="text/javascript"></script>
 	
-
 	<!-- Demo scripts for this page-->
 	
 	

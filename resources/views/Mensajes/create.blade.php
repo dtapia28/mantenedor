@@ -83,8 +83,4 @@
         menu_activo('mMensajes');
     });
 </script>
-<<<<<<< HEAD
 @endsection
-=======
-@endsection
->>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6

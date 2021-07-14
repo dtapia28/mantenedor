@@ -3,23 +3,14 @@
 
 
 /*
-
 |--------------------------------------------------------------------------
-
 | Web Routes
-
 |--------------------------------------------------------------------------
-
 |
-
 | Here is where you can register web routes for your application. These
-
 | routes are loaded by the RouteServiceProvider within a group which
-
 | contains the "web" middleware group. Now create something great!
-
 |
-
 */
 
 
@@ -604,6 +595,12 @@ Route::get('/mensajes/nuevo', 'MensajesController@nuevo')->name('mensajes.create
 Route::post('/mensajes/store', 'MensajesController@store')->name('mensajes.store');
 Route::post('/mensajes/show', 'MensajesController@show')->name('mensajes.show');
 Route::post('/mensajes/delete', 'MensajesController@delete')->name('mensajes.delete');
+
+Route::prefix('estadisticas')->name('estadisticas.')->group(function () {
+    Route::get('/', 'EstadisticasController@index')->name('index');
+	Route::post('/filtro', 'EstadisticasController@filtro')->name('filtro');
+});
+
 
 /* ************************** */
 

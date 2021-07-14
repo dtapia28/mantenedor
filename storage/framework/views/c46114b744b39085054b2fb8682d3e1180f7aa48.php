@@ -423,7 +423,11 @@
 				"url": "<?php echo e(asset('vendor/DataTables/lang/spanish.json')); ?>"
 			},
 			pageLength: 10,
+			<?php if ($estado == "10" && $user[0]->idUser == 25) { ?>
+			order: [3, 'asc'],
+			<?php } else { ?>			
 			stateSave: true,
+			<?php } ?>
 		});
 	});
 	function confirmar(){

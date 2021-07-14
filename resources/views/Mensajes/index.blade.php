@@ -22,13 +22,7 @@
 	<div class="ibox">
 		<div class="ibox-head">
 			<div class="ibox-title">Bandeja de mensajes</div>
-<<<<<<< HEAD
 				<div class="pull-right"><a class="btn btn-success" href="{{ url('mensajes/nuevo') }}" style="white-space: normal;"><i class="fa fa-plus"></i> Nuevo Mensaje</a></div>
-=======
-			{{-- @if($user[0]->nombre == "administrador") --}}
-				<div class="pull-right"><a class="btn btn-success" href="{{ url('mensajes/nuevo') }}" style="white-space: normal;"><i class="fa fa-plus"></i> Nuevo Mensaje</a></div>
-			{{-- @endif --}}
->>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
 		</div>
 		<div class="ibox-body">
 			<div class="table-responsive">
@@ -39,13 +33,7 @@
                             <th scope="col"><strong>Para</strong></th>
                             <th scope="col"><strong>Asunto</strong></th>
                             <th scope="col"><strong>Fecha</strong></th>
-<<<<<<< HEAD
 							<th scope="col"><strong>Acciones</strong></th>
-=======
-							@if($user[0]->nombre == "administrador")
-							<th scope="col"><strong>Acciones</strong></th>
-							@endif
->>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
 						</tr>
 					</thead>
 					<tbody>
@@ -153,11 +141,7 @@
         $("#dataModalMsg").modal("show");
         let user_id = '<?=$user[0]->idUser?>';
         let para = "";
-<<<<<<< HEAD
             
-=======
-        
->>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
         $.ajax({
             type: 'post',
             url: 'mensajes/show',
@@ -180,11 +164,7 @@
             },
             complete: function (data) {
                 if (para == user_id)
-<<<<<<< HEAD
                     $('#fila'+id).removeClass('font-weight-bold');                
-=======
-                    $('#fila'+id).removeClass('font-weight-bold');
->>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
             },
             error: function (data) {
                 console.log('Error:', data);
@@ -192,21 +172,11 @@
             }
         });
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
     function validaEliminar(id) {
         if (confirm('¿Confirma Eliminar el Mensaje '+id+'?')) {
             event.preventDefault();
             document.getElementById('delete-form'+id).submit();
         }
     }
-<<<<<<< HEAD
 </script>
 @endsection
-=======
-
-</script>
-@endsection
->>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6

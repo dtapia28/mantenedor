@@ -1,4 +1,3 @@
-  
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -114,6 +113,13 @@
 						</a>
 					</li>
 					@endif
+					@if(in_array($user[0]->nombre, ["administrador"]))
+					<li id="mEstadisticas">
+						<a href="{{ route('estadisticas.index') }}"><i class="sidebar-item-icon fa fa-pie-chart"></i>
+							<span class="nav-label">Estadísticas</span>
+						</a>
+					</li>
+					@endif
 					<li class="heading">P&#193GINAS</li>
 					<li id="mRequerimientos">
 						<a href="{{ url('/requerimientos') }}"><i class="sidebar-item-icon fa fa-address-card"></i>
@@ -172,11 +178,7 @@
 						<a href="{{ url('/mensajes') }}"><i class="sidebar-item-icon fa fa-comments-o"></i>
 							<span class="nav-label">Mensajes @if ($msgSinLeer > 0) <span class="badge badge-light text-dark">{{$msgSinLeer}}</span> @endif</span>
 						</a>
-<<<<<<< HEAD
-					</li>                                       
-=======
 					</li>
->>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
 				</ul>
 			</div>
 		</nav>
@@ -206,17 +208,14 @@
 	<script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 	<script src="{{ asset('vendor/metisMenu/dist/metisMenu.min.js') }}"></script>
 	<script src="{{ asset('vendor/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
-
 	<!-- Page level plugin JavaScript-->
 	<script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
 	{{-- <script src="{{ asset('vendor/datatables/jquery.dataTables.js') }}"></script>
 	<script src="{{ asset('vendor/datatables/dataTables.bootstrap4.js') }}"></script> --}}
-
 	<!-- Custom scripts for all pages-->
 	<script src="{{ asset('js/app.min.js') }}" type="text/javascript"></script>
 	<script src="{{ asset('js/comunes.js') }}" type="text/javascript"></script>
 	{{-- <script src="{{ asset('js/sb-admin.min.js') }}"></script> --}}
-
 	<!-- Demo scripts for this page-->
 	{{-- <script src="{{ asset('js/datatables-demo.js') }}"></script> --}}
 	{{-- <script src="{{ asset('js/chart-area-demo.js') }}"></script> --}}

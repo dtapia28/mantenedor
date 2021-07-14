@@ -86,7 +86,7 @@
 				<span class="badge badge-default"><i class="fa fa-circle text-danger"></i> Inactivos</span>
 				@endif
 			</div>
-			@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
+			@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador" or $user[0]->nombre == "resolutor")
 			<div class="pull-right"><a class="btn btn-success" href="{{ url('requerimientos/nuevo') }}" style="white-space: normal;"><i class="fa fa-plus"></i> Nuevo Requerimiento</a></div>
 			@endif                     
 		</div>
@@ -301,20 +301,20 @@
                                         </form>
                                         @endif
                                     @endif
-								@endif 
+                                    @endif 
 							@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
 								&nbsp;
-                                                                @if($requerimiento->tipo == "tarea")
+                            	@if($requerimiento->tipo == "tarea")
 								<form method='HEAD' action="{{ url('/requerimientos/'.$requerimiento->idRequerimiento.'/tareas/'.$requerimiento->id.'/editar') }}">
-                                                                    {{ csrf_field() }}
-                                                                    <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
+                                	{{ csrf_field() }}
+                                	<button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
 								</form>                                                                
-                                                                @else
+                                @else
 								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/editar") }}">
 									{{ csrf_field() }}
 									<button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
 								</form>
-                                                                @endif
+                                @endif
 							@endif
 							@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor")
 								&nbsp;
@@ -323,27 +323,42 @@
 									<button type="submit" class="btn btn-info btn-sm" data-toggle="tooltip" data-original-title="Adjuntar" style="cursor:pointer"><i class="fa fa-paperclip"></i></button>
 								</form>
 							@endif                                                        
-                                                        @if($user[0]->nombre == "resolutor" and $lider == 1)
-                                                        &nbsp;
-                                                                @if($requerimiento->tipo == "tarea")
+                            @if($user[0]->nombre == "resolutor" and $lider == 1)
+                            &nbsp;
+                            	@if($requerimiento->tipo == "tarea")
 								<form method='HEAD' action="{{ url('/requerimientos/'.$requerimiento->idRequerimiento.'/tareas/'.$requerimiento->id.'/editar') }}">
-                                                                    {{ csrf_field() }}
-                                                                    <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
+                                    {{ csrf_field() }}
+                                    <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
 								</form>                                                                
-                                                                @else
+                                @else
 								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/editar") }}">
 									{{ csrf_field() }}
 									<button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
 								</form>
-                                                                @endif
-														@endif                                            
-							@if($user[0]->nombre == "resolutor" or $user[0]->nombre == "administrador" or $user[0]->nombre == "supervisor")
-								&nbsp;
-								<form method='POST' action="{{ url("requerimientos/{$requerimiento->id}/adjuntar") }}">
-									{{ csrf_field() }}
-									<button type="submit" class="btn btn-info btn-sm" data-toggle="tooltip" data-original-title="Adjuntar" style="cursor:pointer"><i class="fa fa-paperclip"></i></button>
-								</form>
+                                @endif
+                            @endif
+							@if($user[0]->nombre == "supervisor")
+								<input type="hidden" name="idSolicitante" value={{$solicitante->nombreSolicitante}}>
+								<input type="hidden" name="id_usuario" value={{$user[0]->idUser}}>
 							@endif
+							@foreach($solicitantes as $solicitante)
+							@if($requerimiento->idSolicitante == $solicitante->id)
+							@if($solicitante->idUser == $user[0]->idUser)
+							&nbsp;
+								@if($requerimiento->tipo == "tarea")
+								<form method='HEAD' action="{{ url('/requerimientos/'.$requerimiento->idRequerimiento.'/tareas/'.$requerimiento->id.'/editar') }}">
+                                    {{ csrf_field() }}
+                                    <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
+								</form>                                                                
+                            	@else
+								<form method='HEAD' action="{{ url("requerimientos/{$requerimiento->id}/editar") }}">
+									{{ csrf_field() }}
+									<button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-original-title="Editar" style="cursor:pointer"><i class="fa fa-pencil"></i></button>
+								</form>
+                            	@endif								
+							@endif
+							@endif
+							@endforeach                                           
 							@if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador")
 								&nbsp;
                                                                 @if($requerimiento->tipo == "tarea")
@@ -353,7 +368,7 @@
                                                                     <button type="submit" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Eliminar" style="cursor:pointer"><i class="fa fa-trash"></i></button>
                                                                     <input type="hidden" name="tarea" value={{$requerimiento->id}}>
                                                                     <input type="hidden" name="req" value={{$requerimiento->idRequerimiento}}>
-								</form>
+								</form                                                                
                                                                 @else
 								<form method='POST' action="{{ url('/requerimientos/'.$requerimiento->id) }}">
 									{{ csrf_field() }}
@@ -417,7 +432,11 @@
 				"url": "{{ asset('vendor/DataTables/lang/spanish.json') }}"
 			},
 			pageLength: 10,
+			<?php if ($estado == "10" && $user[0]->idUser == 25) { ?>
+			order: [3, 'asc'],
+			<?php } else { ?>			
 			stateSave: true,
+			<?php } ?>
 		});
 	});
 	function confirmar(){

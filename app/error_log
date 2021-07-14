@@ -1,0 +1,8 @@
+[09-May-2021 07:28:27 America/Santiago] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home1/kinchika/public_html/laravel/app/Role_User.php:7
+Stack trace:
+#0 {main}
+  thrown in /home1/kinchika/public_html/laravel/app/Role_User.php on line 7
+[12-May-2021 21:14:16 America/Santiago] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Database\Eloquent\Model' not found in /home1/kinchika/public_html/laravel/app/Tarea.php:5
+Stack trace:
+#0 {main}
+  thrown in /home1/kinchika/public_html/laravel/app/Tarea.php on line 5

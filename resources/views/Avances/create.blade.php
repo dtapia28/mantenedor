@@ -31,7 +31,7 @@
                         <div class="col-sm-6 form-group">
                             <input type="hidden" id="idRequerimiento" name="idRequerimiento" value="{{$requerimiento->id}}">
                             <label style="display: none" for='fechaCierre'>Fecha real de Cierre (no obligatoria)</label>
-                            <input style="display: none" class="form-control col-md-12" value="{{ old('fecha', $fecha->format("yy-m-d")) }}" type="date" name="fechaRealCierre">
+                            <input style="display: none" class="form-control col-md-12" value="{{ date(old('fecha', $fecha->format('Y-m-d'))) }}" type="date" name="fechaRealCierre">
                         </div>
                         <div class="col-sm-6 form-group">
                             <label for="porcentajeEjecutado">Porcentaje ejecutado</label>

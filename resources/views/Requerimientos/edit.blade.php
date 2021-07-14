@@ -44,11 +44,21 @@
                             <input value="{{ $cierre }}" class="form-control col-md-12" type="date" name="fechaCierre">
                         </div>
                         @else
-                        <div id="fechaCierre" class="col-sm-6 form-group" style="display: none;">
-                            <input id="tipo_usuario" type="hidden" value={{$user[0]->nombre}}>
-                            <label for='fechaCierre'>Fecha de Cierre:</label>
-                            <input value="{{ $cierre }}" class="form-control col-md-12" type="date" name="fechaCierre">
-                        </div>
+                            @if($solicitanteEspecifico['0']->idUser != $resolutorEspecifico['0']->idUser)
+                                @if($user[0]->idUser == $solicitanteEspecifico['0']->idUser)
+                                <div id="fechaCierre" class="col-sm-6 form-group">
+                                    <input id="tipo_usuario" type="hidden" value={{$user[0]->nombre}}>
+                                    <label for='fechaCierre'>Fecha de Cierre:</label>
+                                    <input value="{{ $cierre }}" class="form-control col-md-12" type="date" name="fechaCierre">
+                                </div>
+                                @endif
+                            @else
+                            <div id="fechaCierre" class="col-sm-6 form-group">
+                                    <input id="tipo_usuario" type="hidden" value={{$user[0]->nombre}}>
+                                    <label for='fechaCierre'>Fecha de Cierre:</label>
+                                    <input value="{{ $cierre }}" class="form-control col-md-12" type="date" name="fechaCierre">
+                                </div>                                
+                            @endif    
                         @endif
                         <div class="col-sm-6 form-group">       
                             <label for="idSolicitante">Solicitante:</label>   

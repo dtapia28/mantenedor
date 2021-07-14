@@ -85,7 +85,7 @@
 				<span class="badge badge-default"><i class="fa fa-circle text-danger"></i> Inactivos</span>
 				<?php endif; ?>
 			</div>
-			<?php if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador"): ?>
+			<?php if($user[0]->nombre == "solicitante" or $user[0]->nombre == "administrador" or $user[0]->nombre == "resolutor"): ?>
 			<div class="pull-right"><a class="btn btn-success" href="<?php echo e(url('requerimientos/nuevo')); ?>" style="white-space: normal;"><i class="fa fa-plus"></i> Nuevo Requerimiento</a></div>
 			<?php endif; ?>                     
 		</div>
@@ -423,7 +423,11 @@
 				"url": "<?php echo e(asset('vendor/DataTables/lang/spanish.json')); ?>"
 			},
 			pageLength: 10,
+			<?php if ($estado == "10" && $user[0]->idUser == 25) { ?>
+			order: [3, 'asc'],
+			<?php } else { ?>			
 			stateSave: true,
+			<?php } ?>
 		});
 	});
 	function confirmar(){

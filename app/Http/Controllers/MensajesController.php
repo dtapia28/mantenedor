@@ -14,7 +14,6 @@ class MensajesController extends Controller
 
     public function index()
     {
-<<<<<<< HEAD
         
         $user = auth()->user()->id;
         
@@ -23,14 +22,6 @@ class MensajesController extends Controller
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
         
         return view('Mensajes.index', compact('user', 'mensajes'));
-=======
-        $user = auth()->user()->id;
-        $mensajes = DB::select('select a.id, a.de, (select b.name from users b where a.de=b.id) de_name, para, (select c.name from users c where a.para=c.id) para_name, a.asunto, a.fecha, a.leido from mensajes a where a.rutEmpresa=? and (a.de=? or a.para=?) order by leido asc, fecha desc', [auth()->user()->rutEmpresa, $user, $user]);
-
-        $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
-
-        return view('mensajes.index', compact('user', 'mensajes'));
->>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
     }
 
     public function nuevo()
@@ -38,11 +29,7 @@ class MensajesController extends Controller
         $user = DB::table('usuarios')->where('idUser', auth()->user()->id)->get();
         $users = DB::select('select id, name from users where rutEmpresa = ? and id != ?', [auth()->user()->rutEmpresa, auth()->user()->id]);
         
-<<<<<<< HEAD
         return view('Mensajes.create', compact('user', 'users'));
-=======
-        return view('mensajes.create', compact('user', 'users'));
->>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
     }
 
     public function store(Request $request)
@@ -69,17 +56,11 @@ class MensajesController extends Controller
         $mensaje = DB::select("select a.id, a.de, (select b.name from users b where a.de=b.id) de_name, para, (select c.name from users c where a.para=c.id) para_name, a.asunto, a.mensaje, DATE_FORMAT(a.fecha, '%d/%m/%Y %H:%i:%s') fecha, a.leido from mensajes a where a.id = ?", [$request->id]);
         $records = ['respuesta' => true, 'msg' => $mensaje];
         
-<<<<<<< HEAD
 
         if ($mensaje[0]->para == $user)
             DB::update('update mensajes set leido = ? where id = ?', [1, $request->id]);
         
 
-=======
-        if ($mensaje[0]->para == $user)
-            DB::update('update mensajes set leido = ? where id = ?', [1, $request->id]);
-        
->>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
         return response()->json($records, 200);
     }
 
@@ -98,10 +79,5 @@ class MensajesController extends Controller
         $msgSinLeer = $sql[0]->sinleer;
 
         return $msgSinLeer;
-<<<<<<< HEAD
     }    
 }
-=======
-    }
-}
->>>>>>> 43d79fc8df517cf1002d4aaa93c3f516b42cd2f6
