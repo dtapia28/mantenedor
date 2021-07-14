@@ -67,6 +67,10 @@
     <script type="text/javascript" src="{{ asset('vendor/fusioncharts/js/themes/fusioncharts.theme.fusion.js') }}"></script>
 	<script type="text/javascript">
         menu_activo('mEstadisticas');
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3b4c0926a9818fd4677ab35adddeafed324fe973
         function validarTipo(valor) {
             if (valor=='por_rango') {
                 $('#fec_des').prop('disabled', false);
@@ -78,6 +82,10 @@
                 $('#fec_has').prop('disabled', true);
             }
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3b4c0926a9818fd4677ab35adddeafed324fe973
         $(function () {
             $('#fec_des').datetimepicker({
                 locale: 'es',
@@ -87,6 +95,10 @@
                 forceParse: false,
                 maxDate: 'now',
             });
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3b4c0926a9818fd4677ab35adddeafed324fe973
             @isset($data)
                 @if ($data['desde']!="" && $data['desde']!=null && $data['rango_fecha']=="por_rango")
                     $('#fec_des').prop('disabled', false);
@@ -102,6 +114,10 @@
                 forceParse: false,
                 maxDate: 'now',
             });
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3b4c0926a9818fd4677ab35adddeafed324fe973
             @isset($data)
                 @if ($data['hasta']!="" && $data['hasta']!=null && $data['rango_fecha']=="por_rango")
                     $('#fec_has').prop('disabled', false);
@@ -121,4 +137,8 @@
 
     @yield('scripts_dash')
     
+<<<<<<< HEAD
 @endsection
+=======
+@endsection
+>>>>>>> 3b4c0926a9818fd4677ab35adddeafed324fe973

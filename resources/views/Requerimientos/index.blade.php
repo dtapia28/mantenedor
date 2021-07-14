@@ -433,8 +433,13 @@
 			},
 			pageLength: 10,
 			<?php if ($estado == "10" && $user[0]->idUser == 25) { ?>
+<<<<<<< HEAD
 			order: [3, 'asc'],
 			<?php } else { ?>			
+=======
+			order: [3, 'desc'],
+			<?php } else { ?>
+>>>>>>> 3b4c0926a9818fd4677ab35adddeafed324fe973
 			stateSave: true,
 			<?php } ?>
 		});
