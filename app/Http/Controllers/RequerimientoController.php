@@ -2776,16 +2776,12 @@ class RequerimientoController extends Controller
                 } else {
                     $var = "INC-".$team[0]->id2."-".$conteoA;
                 }
-<<<<<<< HEAD
-
-=======
                 
                 $variable = new DateTime($data['fechaCierre']);
                 $intervalo = new DateInterval('PT23H59M59S');
                 $variable->add($intervalo);
                 $data['fechaCierre'] = $variable;                
                 
->>>>>>> 3b4c0926a9818fd4677ab35adddeafed324fe973
                 Requerimiento::create([
                     'textoRequerimiento' => preg_replace("/[\r\n|\n|\r|\t]+/", " ", $data['textoRequerimiento']),
                     'comentario' => preg_replace("/[\r\n|\n|\r|\t]+/", " ", $data['comentario']),            
@@ -2813,7 +2809,6 @@ class RequerimientoController extends Controller
                     'idUsuario' => $user[0]->id,
                     'tipo' => 'creacion',
                 ]);
-<<<<<<< HEAD
     
                 if ($data['textAvance'] != null) {
                     $guardado = Requerimiento::where([
@@ -2939,41 +2934,6 @@ class RequerimientoController extends Controller
                 } else {
                     return redirect('requerimientos')->with('msj', 'Incidente '.$requerimiento->id2.' guardado correctamente');
                 }
-=======
-            }
-            $requerimiento = Requerimiento::where('id2', $var)->first();
-            $resolutor = Resolutor::where('id', $requerimiento->resolutor)->first();
-            $obj = new \stdClass();
-            $obj->idReq = $requerimiento->id2;
-            $obj->id = $requerimiento->id;
-            $obj->sol = $requerimiento->textoRequerimiento;
-            $obj->nombre = $resolutor->nombreResolutor;
-
-            $recep = $resolutor->email;
-            
-            //$request->user()->notify(new EnvioWhatsapp($requerimiento));
-            
-            // Guarda el documento adjunto al registrar el requerimiento
-            $path = public_path().'/docs/requerimientos/';
-            $file = $request->file('files');
-            
-            if (!empty($_FILES['archivo']['tmp_name']) || is_uploaded_file($_FILES['archivo']['tmp_name']))
-            {
-                $file = Input::file('archivo'); 
-                $filenameWithExt = $request->file('archivo')->getClientOriginalName(); 
-                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                $extension = $request->file('archivo')->getClientOriginalExtension();
-                $filenameToStore = "Req".$requerimiento->id."_".uniqid().".".$extension;
-                \Request::file('archivo')->move($path, $filenameToStore);
-            }
-            
-            Notification::route('mail', $recep)->notify(new NewReqResolutor($obj));
-            
-            if ($request->idTipo == 1) {
-                return redirect('requerimientos')->with('msj', 'Requerimiento '.$requerimiento->id2.' guardado correctamente');
-            } else {
-                return redirect('requerimientos')->with('msj', 'Incidente '.$requerimiento->id2.' guardado correctamente');
->>>>>>> 3b4c0926a9818fd4677ab35adddeafed324fe973
             }
         }else 
         {
@@ -3059,11 +3019,7 @@ class RequerimientoController extends Controller
         return view('Requerimientos.show', compact('user','requerimiento', 'resolutors',
                     'priorities', 'avances', 'teams', 'fechaCierre', 'requerimientosAnidados',
                     'tareas', 'requerimientos', 'solicitante', 'resolutor','resolutor2',
-<<<<<<< HEAD
                     'resolutores', 'lider', 'res', 'id2', 'ver_log', 'adjunto_url', 'adjunto_name'));       
-=======
-                    'resolutores', 'lider', 'res', 'id2', 'ver_log', 'adjunto_url', 'adjunto_name'));        
->>>>>>> 3b4c0926a9818fd4677ab35adddeafed324fe973
     }
 
     /**
@@ -3130,7 +3086,10 @@ class RequerimientoController extends Controller
             $teams = Team::where('rutEmpresa', auth()->user()->rutEmpresa)->get();
         }
         
-        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'fechaCierre', 'cierre', 'solicitud', 'solicitanteEspecifico', 'prioridadEspecifica', 'resolutorEspecifico', 'user', 'lider', 'teams', 'id_resolutor'));        
+        $sqlReq = DB::select("SELECT idEquipo FROM requerimientos_equipos WHERE id = ?", [$requerimiento->id]);
+        $id_equipo = $sqlReq[0]->idEquipo;
+
+        return view('Requerimientos.edit', compact('requerimiento', 'solicitantes', 'priorities', 'resolutors', 'fechaCierre', 'cierre', 'solicitud', 'solicitanteEspecifico', 'prioridadEspecifica', 'resolutorEspecifico', 'user', 'lider', 'teams', 'id_resolutor', 'id_equipo'));        
     }
 
     /**

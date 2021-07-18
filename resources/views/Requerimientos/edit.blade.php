@@ -185,6 +185,17 @@
         (idPrioridad!="" && idPrioridad!=null) ? $('#idPrioridad').val(idPrioridad) : $('#idPrioridad').val("");
         (comentario!="" && comentario!=null) ? $('#comentario').val(comentario) : $('#comentario').val("");
         (textAvance!="" && textAvance!=null) ? $('#textAvance').val(textAvance) : $('#textAvance').val("");
+
+        $('#team').val('{{$id_equipo}}').prop('selected', true);
+        var id_team = {{$id_equipo}};
+        $.get('../script', {id_team: id_team}, function(resolutors){
+            $('#resolutor').empty();
+            $('#resolutor').append("<option value=''>Selecciona un resolutor</opcion>");
+            $.each(resolutors, function(index, value){
+                $('#resolutor').append("<option value='"+index+"'>"+value+"</opcion>");
+            });
+        });
+        setTimeout(() => {  $('#resolutor').val('{{$id_resolutor}}').prop('selected', true); }, 700);
     });
 
     function storeCacheForm() {
